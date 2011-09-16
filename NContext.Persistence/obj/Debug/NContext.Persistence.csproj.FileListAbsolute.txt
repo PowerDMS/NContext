@@ -1,0 +1,12 @@
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\NContext.Persistence.dll
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\NContext.Persistence.pdb
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\NContext.Application.dll
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\Newtonsoft.Json.dll
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\Omu.ValueInjecter.dll
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\NContext.Application.pdb
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\Newtonsoft.Json.pdb
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\Newtonsoft.Json.xml
+C:\Waking Venture\NContext\NContext.Persistence\bin\Debug\Omu.ValueInjecter.xml
+C:\Waking Venture\NContext\NContext.Persistence\obj\Debug\ResolveAssemblyReference.cache
+C:\Waking Venture\NContext\NContext.Persistence\obj\Debug\NContext.Persistence.dll
+C:\Waking Venture\NContext\NContext.Persistence\obj\Debug\NContext.Persistence.pdb

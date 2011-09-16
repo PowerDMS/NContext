@@ -1,0 +1,2512 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NContext.Application</name>
+    </assembly>
+    <members>
+        <member name="T:NContext.Application.Domain.NotSpecification`1">
+            <summary>
+            Defines a specification which converts an original specification with inverse logic.
+            </summary>
+            <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
+        </member>
+        <member name="T:NContext.Application.Domain.SpecificationBase`1">
+            <summary>
+            Defines a base abstraction for creating specifications.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.op_BitwiseAnd(NContext.Application.Domain.SpecificationBase{`0},NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+             And operator
+            </summary>
+            <param name="leftSideSpecification">left operand in this AND operation</param>
+            <param name="rightSideSpecification">right operand in this AND operation</param>
+            <returns>New specification</returns>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.op_BitwiseOr(NContext.Application.Domain.SpecificationBase{`0},NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Or operator
+            </summary>
+            <param name="leftSideSpecification">left operand in this OR operation</param>
+            <param name="rightSideSpecification">right operand in this OR operation</param>
+            <returns>New specification </returns>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.op_LogicalNot(NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Not specification
+            </summary>
+            <param name="specification">Specification to negate</param>
+            <returns>New specification</returns>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.op_False(NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Override operator false, only for support AND OR operators
+            </summary>
+            <param name="specification">Specification instance</param>
+            <returns>See False operator in C#</returns>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.op_True(NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Override operator True, only for support AND OR operators
+            </summary>
+            <param name="specification">Specification instance</param>
+            <returns>See True operator in C#</returns>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.IsSatisfied">
+            <summary>
+            Returns a boolean expression which determines whether the specification is satisfied.
+            </summary>
+            <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        </member>
+        <member name="M:NContext.Application.Domain.SpecificationBase`1.IsSatisfiedBy(`0)">
+            <summary>
+            Determines whether [is satisfied by] [the specified entity].
+            </summary>
+            <param name="entity">The entity.</param>
+            <returns><c>true</c> if [is satisfied by] [the specified entity]; otherwise, <c>false</c>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.NotSpecification`1.#ctor(NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Domain.NotSpecification`1"/> class.
+            </summary>
+            <param name="originalSpecification">The original specification.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.NotSpecification`1.#ctor(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Domain.NotSpecification`1"/> class.
+            </summary>
+            <param name="originalSpecification">The original specification.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.NotSpecification`1.IsSatisfied">
+            <summary>
+            Returns a boolean expression which determines whether the specification is satisfied.
+            </summary>
+            <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        </member>
+        <member name="T:NContext.Application.Configuration.SecureDirectoryCatalog">
+            <summary>
+            Defines a MEF catalog which prevents dll hijacking.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.SecureDirectoryCatalog.Parts">
+            <summary>
+            Gets the part definitions that are contained in the catalog.
+            </summary>
+            <returns>
+            The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition"/> contained in the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/>.
+            </returns>
+            <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/> object has been disposed of.</exception>
+        </member>
+        <member name="T:NContext.Application.Configuration.IRunWhenApplicationConfigurationIsComplete">
+            <summary>
+            Defines a role-interface which allows implementors to run 
+            when <see cref="M:NContext.Application.Configuration.IApplicationConfiguration.Setup"/> has completed.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.IRunWhenApplicationConfigurationIsComplete.Run(NContext.Application.Configuration.IApplicationConfiguration)">
+            <summary>
+            Runs when the <see cref="M:NContext.Application.Configuration.IApplicationConfiguration.Setup"/> has completed.
+            </summary>
+            <param name="applicationConfiguration">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.ApplicationConfigurationBuilder">
+            <summary>
+            Defines a fluent interface builder for application configuration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfigurationBuilder.#cctor">
+            <summary>
+            Initializes static members of the <see cref="T:NContext.Application.Configuration.ApplicationConfigurationBuilder"/> class.
+            </summary>
+            <remarks>
+            </remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfigurationBuilder.op_Implicit(NContext.Application.Configuration.ApplicationConfigurationBuilder)~NContext.Application.Configuration.ApplicationConfiguration">
+            <summary>
+            Performs an implicit conversion from <see cref="T:NContext.Application.Configuration.ApplicationConfigurationBuilder"/> 
+            to <see cref="T:NContext.Application.Configuration.ApplicationConfiguration"/>.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration builder.</param>
+            <returns>The result of the conversion.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfigurationBuilder.RegisterComponent``1">
+            <summary>
+            Registers the component with the <see cref="T:NContext.Application.Configuration.ApplicationConfigurationBuilder"/> components collection.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <returns>Instance of <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBuilder"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfigurationBuilder.RegisterComponent``1(System.Func{``0})">
+            <summary>
+            Registers the component with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <param name="componentFactory">The component factory.</param>
+            <returns>Current <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.ApplicationConfigurationBuilder.ApplicationConfiguration">
+            <summary>
+            Gets the application configuration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.JsonNetExtensions">
+            <summary>
+            Defines extension methods to support Json.NET serialization and deserialization.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.ReadAsJsonSerializable``1(System.IO.Stream)">
+            <summary>
+            Deserializes the JSON-serialized stream and casts it to the object type specified.
+            </summary>
+            <typeparam name="T">The type of object to deserialize.</typeparam>
+            <param name="stream">The stream.</param>
+            <returns>The deserialized object as type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.ReadAsBsonSerializable``1(System.IO.Stream)">
+            <summary>
+            Deserializes the BSON-serialized stream and casts it to the object type specified.
+            </summary>
+            <typeparam name="T">The type of object to deserialize.</typeparam>
+            <param name="stream">The stream.</param>
+            <returns>The deserialized object as type <typeparamref name="T"/></returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.ReadAsJsonSerializable(System.IO.Stream,System.Type)">
+            <summary>
+            Reads the JSON-serialized stream and deserializes it into a CLR object.
+            </summary>
+            <param name="stream">The stream to deserialize.</param>
+            <param name="instanceType">Type of the instance.</param>
+            <returns>The deserialized object.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.ReadAsBsonSerializable(System.IO.Stream,System.Type)">
+            <summary>
+            Reads the BSON-serialized stream and deserializes it into a CLR object.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="instanceType">Type of the instance.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.WriteAsJsonSerializable(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the object into JSON and writes the data into the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="instance">The object instance to serialize.</param>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.WriteAsBsonSerializable(System.IO.Stream,System.Object)">
+            <summary>
+            Serializes the object instance into BSON and writes the data into the specified stream.
+            </summary>
+            <param name="stream">The stream.</param>
+            <param name="instance">The object instance to serialize.</param>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.GetJsonSerializer">
+            <summary>
+            Gets the json serializer which supports references and circular referencing.
+            </summary>
+            <returns>The <see cref="T:Newtonsoft.Json.JsonSerializer"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.Deserialize(Newtonsoft.Json.JsonReader,System.Type)">
+            <summary>
+            Deserializes the specified <see cref="T:Newtonsoft.Json.JsonReader"/> stream.
+            </summary>
+            <param name="jsonReader">The json reader.</param>
+            <param name="instanceType">Type of the instance to deserialize.</param>
+            <returns>The deserialized object.</returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.JsonNetExtensions.Serialize(Newtonsoft.Json.JsonWriter,System.Object)">
+            <summary>
+            Serializes the specified <see cref="T:Newtonsoft.Json.JsonWriter"/> stream.
+            </summary>
+            <param name="jsonWriter">The json writer.</param>
+            <param name="instance">The instance to serialize.</param>
+        </member>
+        <member name="T:NContext.Application.ErrorHandling.ErrorBase">
+            <summary>
+            Defines an abstraction for localized application errors.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.ErrorBase.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.ErrorBase.Message">
+            <summary>
+            Gets the message.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.ErrorBase.LocalizationDirectory">
+            <summary>
+            Gets or sets the localization directory.
+            </summary>
+            <value>The localization directory.</value>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.ErrorHandling.ErrorAttribute">
+            <summary>
+            ErrorAttribute can be applied to enum fields within a ErrorBase derived class.
+            The attribute allows for automated localization via the supported properties.
+            </summary>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.ErrorAttribute.DefaultMessage">
+            <summary>
+            Gets or sets the default message.
+            </summary>
+            <value>The default message.</value>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.ErrorAttribute.HelpLinkUrl">
+            <summary>
+            Gets or sets the help link url.
+            </summary>
+            <value>The help link.</value>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.ErrorAttribute.LocalizationKey">
+            <summary>
+            Gets or sets the localization key.
+            </summary>
+            <value>The localization key.</value>
+        </member>
+        <member name="T:NContext.Application.Caching.CachingConfiguration">
+            <summary>
+            Defines a configuration class to build the application's <see cref="T:NContext.Application.Caching.CacheManager"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.ApplicationComponentConfigurationBase">
+            <summary>
+            Defines an abstraction for creating application component configurations which 
+            can in turn be used with an <see cref="T:NContext.Application.Configuration.ApplicationConfigurationBuilder"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBase.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBase"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBase.op_Implicit(NContext.Application.Configuration.ApplicationComponentConfigurationBase)~NContext.Application.Configuration.ApplicationConfiguration">
+            <summary>
+            Performs an implicit conversion from <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBase"/> 
+            to <see cref="T:NContext.Application.Configuration.ApplicationConfiguration"/>.
+            </summary>
+            <param name="componentConfiguration">The configuration builder section.</param>
+            <returns>The result of the conversion.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBase.RegisterComponent``1">
+            <summary>
+            Registers the component with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBase.RegisterComponent``1(System.Func{``0})">
+            <summary>
+            Registers the component with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <param name="componentFactory">The component factory.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBase.Setup">
+            <summary>
+            Applies the component configuration with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.ApplicationComponentConfigurationBase.Builder">
+            <summary>
+            Gets the builder instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CachingConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Caching.CachingConfiguration"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CachingConfiguration.SetProvider``1(System.Func{``0})">
+            <summary>
+            Sets the cache provider.
+            </summary>
+            <typeparam name="TCacheProvider">The type of the cache provider.</typeparam>
+            <param name="cacheProvider">The cache provider.</param>
+            <returns>This <see cref="T:NContext.Application.Caching.CachingConfiguration"/> instance.</returns>
+        </member>
+        <member name="M:NContext.Application.Caching.CachingConfiguration.SetRegionName(System.String)">
+            <summary>
+            Sets the name of the default region to use.
+            </summary>
+            <param name="cacheRegionName">Name of the cache region.</param>
+            <returns>This <see cref="T:NContext.Application.Caching.CachingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CachingConfiguration.SetDefaults(System.DateTimeOffset,System.TimeSpan)">
+            <summary>
+            Sets the cache configuration settings for cache item expiration.
+            </summary>
+            <param name="absoluteExpiration">The absolute expiration.</param>
+            <param name="slidingExpiration">The sliding expiration.</param>
+            <returns>This <see cref="T:NContext.Application.Caching.CachingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CachingConfiguration.Setup">
+            <summary>
+            Sets the application's cache manager using 
+            the configuration created from this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CachingConfiguration.Provider">
+            <summary>
+            Gets the provider.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CachingConfiguration.RegionName">
+            <summary>
+            Gets the name of the region.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CachingConfiguration.AbsoluteExpiration">
+            <summary>
+            Gets the absolute expiration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CachingConfiguration.SlidingExpiration">
+            <summary>
+            Gets the sliding expiration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.SafeDirectoryCatalog">
+            <summary>
+            Defines a MEF catalog which prevents exceptions from being thrown when an assembly cannot be added.
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Configuration.IRunWhenComponentConfigurationIsComplete">
+            <summary>
+            Defines a role-interface which allows implementors to run 
+            when <see cref="M:NContext.Application.Configuration.IApplicationComponent.Configure(NContext.Application.Configuration.IApplicationConfiguration)"/> has completed.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.IRunWhenComponentConfigurationIsComplete.Run(NContext.Application.Configuration.IApplicationComponent)">
+            <summary>
+            Runs when a <see cref="M:NContext.Application.Configuration.IApplicationComponent.Configure(NContext.Application.Configuration.IApplicationConfiguration)"/> has completed.
+            </summary>
+            <param name="applicationComponent">The application component.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.ApplicationComponentConfigurationBuilder">
+            <summary>
+            Defines a fluent-interface builder for application components.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBuilder.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBuilder"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration builder.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBuilder.op_Implicit(NContext.Application.Configuration.ApplicationComponentConfigurationBuilder)~NContext.Application.Configuration.ApplicationConfiguration">
+            <summary>
+            Performs an implicit conversion from <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBase"/>
+            to <see cref="T:NContext.Application.Configuration.ApplicationConfiguration"/>.
+            </summary>
+            <param name="componentConfigurationBuilder">The component configuration builder.</param>
+            <returns>The result of the conversion.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationComponentConfigurationBuilder.With``1">
+            <summary>
+            Configure's the <see cref="T:NContext.Application.Configuration.IApplicationComponent"/> with the specified <typeparamref name="TComponentConfiguration"/> instance.
+            </summary>
+            <typeparam name="TComponentConfiguration">The type of the component configuration.</typeparam>
+            <returns><typeparamref name="TComponentConfiguration"/> instance to configure.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.NameValueCollectionExtensions">
+            <summary>
+            Defines extension methods for <see cref="T:System.Collections.Specialized.NameValueCollection"/>s.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.NameValueCollectionExtensions.ToDictionary(System.Collections.Specialized.NameValueCollection)">
+            <summary>
+            Converts the <see cref="T:System.Collections.Specialized.NameValueCollection"/> to a <see cref="T:System.Collections.Generic.Dictionary`2"/>
+            </summary>
+            <param name="source">The source.</param>
+            <returns><see cref="T:System.Collections.Generic.Dictionary`2"/> which can be enumerated on.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Domain.CompositeSpecification`1">
+            <summary>
+            Defines a base abstraction for creating composite specifications.
+            </summary>
+            <typeparam name="TEntity">Type of entity.</typeparam>
+        </member>
+        <member name="P:NContext.Application.Domain.CompositeSpecification`1.LeftSideSpecification">
+            <summary>
+            Gets the left side specification for this composite element.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Domain.CompositeSpecification`1.RightSideSpecification">
+            <summary>
+            Gets the right side specification for this composite element.
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Utilities.AttributeUtility">
+            <summary>
+            Defines helper methods for using attributes and reflection.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Utilities.AttributeUtility.GetDescriptionAttributeValueFromField(System.Object)">
+            <summary>
+            Gets the description attribute value from a field.
+            </summary>
+            <param name="field">The field.</param>
+            <returns>The value of the <see cref="T:System.ComponentModel.DescriptionAttribute"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Utilities.AttributeUtility.GetEnumValueFromDescriptionAttributeValue``1(System.String)">
+            <summary>
+            Gets the enum value from the specified description attribute value.
+            </summary>
+            <typeparam name="TEnum">The type of the enum.</typeparam>
+            <param name="description">The description.</param>
+            <returns>The <typeparamref name="TEnum"/> value.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Security.ISecurityManager">
+            <summary>
+            Defines interface contract which encapsulates logic for application security-related operations.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.IApplicationComponent">
+            <summary>
+            Defines a contract for all application-level components.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Configuration.IApplicationComponent.Configure(NContext.Application.Configuration.IApplicationConfiguration)">
+            <summary>
+            Configures the component instance.
+            </summary>
+            <param name="applicationConfiguration">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.IApplicationComponent.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.ISecurityManager.SavePrincipal(System.Security.Principal.IPrincipal)">
+            <summary>
+            Saves the principal to cache using the application's <see cref="T:NContext.Application.Caching.ICacheManager"/>.
+            </summary>
+            <param name="principal">The principal.</param>
+            <returns>A token used to retrieve the <see cref="T:System.Security.Principal.IPrincipal"/> from cache.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.ISecurityManager.SavePrincipal``1(System.Security.Principal.IPrincipal)">
+            <summary>
+            Saves the principal to cache using the application's <see cref="T:NContext.Application.Caching.ICacheManager"/>.
+            </summary>
+            <typeparam name="TToken">The type of the token.</typeparam>
+            <param name="principal">The principal.</param>
+            <returns>A <typeparamref name="TToken"/> token used to retrieve the <see cref="T:System.Security.Principal.IPrincipal"/> from cache.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.ISecurityManager.SavePrincipal(System.Security.Principal.IPrincipal,System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Updates the cached principal associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>, using the application's <see cref="T:NContext.Application.Caching.ICacheManager"/>.
+            </summary>
+            <param name="principal">The cached <see cref="T:System.Security.Principal.IPrincipal"/> instance.</param>
+            <param name="token">The <see cref="T:System.IdentityModel.Tokens.SecurityToken"/> to associate with <paramref name="principal"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.ISecurityManager.ExpirePrincipal(System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Expires the principal associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>.
+            </summary>
+            <param name="token">The token.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.ISecurityManager.GetPrincipal(System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Gets the cached <see cref="T:System.Security.Principal.IPrincipal"/> instance associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>.
+            </summary>
+            <param name="token">The token.</param>
+            <returns>Instance of <see cref="T:System.Security.Principal.IPrincipal"/> if found in cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.ISecurityManager.GetPrincipal``1(System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Gets the cached <typeparamref name="TPrincipal"/> instance associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>.
+            </summary>
+            <typeparam name="TPrincipal">The type of the principal.</typeparam>
+            <param name="token">The token.</param>
+            <returns>Instance of <typeparamref name="TPrincipal"/> if found in cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.Configure">
+            <summary>
+            Defines a static class for fluid-interface application configuration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.Configure.Using``1(``0)">
+            <summary>
+            Configures the application using a custom <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <typeparam name="TApplicationConfiguration">The type of the application configuration.</typeparam>
+            <param name="applicationConfiguration">The application manager instance.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.ResponseTransferObjectBase`1">
+            <summary>
+            Defines an abstract, composable, response-transfer-object.
+            </summary>
+            <typeparam name="T">The type of object.</typeparam>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.#ctor(NContext.Application.ErrorHandling.Error)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> class.
+            </summary>
+            <param name="error">The error.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.#ctor(System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> class.
+            </summary>
+            <param name="errors">The errors.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <param name="errors">The errors.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Bind``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}})">
+            <summary>
+            Binds the specified <see cref="T:System.Collections.Generic.IEnumerable`1"/> into the function which returns the specified <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.
+            </summary>
+            <typeparam name="T2">The type of the next <see cref="!:T"/> to return.</typeparam>
+            <param name="func">The func.</param>
+            <returns>Instance of <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Either``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}},System.Func{System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error},NContext.Application.ResponseTransferObjectBase{``0}})">
+            <summary>
+            A combination of <see cref="M:NContext.Application.ResponseTransferObjectBase`1.Bind``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}})"/> and <see cref="M:NContext.Application.ResponseTransferObjectBase`1.Catch(System.Action{System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error}})"/>. 
+            It will invoke data function if there is any data, or errors function if there any errors exist.
+            </summary>
+            <typeparam name="T2">The type of the next <see cref="T:NContext.Application.Services.IDto"/> to return.</typeparam>
+            <param name="data">The function to call if there is data and there are no errors.</param>
+            <param name="errors">The function to call if there are any errors.</param>
+            <returns>Instance of <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.</returns>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Do(System.Action{System.Collections.Generic.IEnumerable{`0}})">
+            <summary>
+            Invokes the specified action if there are no errors or validation results.
+            </summary>
+            <param name="action">The action.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Catch(System.Action{System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error}})">
+            <summary>
+            Invokes the specified action if there are any errors. 
+            Returns the current <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.
+            </summary>
+            <param name="action">The action.</param>
+            <returns>The current <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Translate``1">
+            <summary>
+            Translates the data, if any, into the specified <see cref="T:NContext.Application.Services.IDto"/> type using <see cref="T:Omu.ValueInjecter.LoopValueInjection"/>.
+            </summary>
+            <typeparam name="TDto">The type of the dto.</typeparam>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Translate``2">
+            <summary>
+            Translates the data, if any, into the specified <see cref="T:NContext.Application.Services.IDto"/> type using
+            the specified <see cref="T:Omu.ValueInjecter.IValueInjection"/>.
+            </summary>
+            <typeparam name="TDto">The type of the dto.</typeparam>
+            <typeparam name="TValueInjection">The type of the value injection.</typeparam>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/> is reclaimed by garbage collection.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:NContext.Application.ResponseTransferObjectBase`1.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="P:NContext.Application.ResponseTransferObjectBase`1.Data">
+            <summary>
+            Gets the <typeparam name="T"/> data.
+            </summary>
+        </member>
+        <member name="P:NContext.Application.ResponseTransferObjectBase`1.Errors">
+            <summary>
+            Gets the errors.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.Just`1">
+            <summary>
+            Defines a Just implementation of <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.
+            </summary>
+            <typeparam name="T">The type to wrap.</typeparam>
+        </member>
+        <member name="T:NContext.Application.Extensions.IMaybe`1">
+            <summary>
+            Defines a Maybe monad interface.
+            </summary>
+            <typeparam name="T">The type to wrap.</typeparam>
+            <remarks>
+            http://haskell.org/ghc/docs/latest/html/libraries/base/Data-Maybe.html
+            </remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybe`1.FromMaybe(`0)">
+            <summary>
+            Returns the specified default value if the <see cref="T:NContext.Application.Extensions.IMaybe`1"/> is <see cref="T:NContext.Application.Extensions.Nothing`1"/>; 
+            otherwise, it returns the value contained in the <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.
+            </summary>
+            <param name="defaultValue">The default value.</param>
+            <returns>Instance of <typeparamref name="T"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybe`1.Empty">
+            <summary>
+            Returns <see cref="T:NContext.Application.Extensions.Nothing`1"/>
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybe`1.Bind``1(System.Func{`0,NContext.Application.Extensions.IMaybe{``0}})">
+            <summary>
+            Returns a new <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="bindFunc">The function used to map.</param>
+            <returns>Instance of <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Extensions.IMaybe`1.IsJust">
+            <summary>
+            Gets a value indicating whether the instance is <see cref="T:NContext.Application.Extensions.Just`1"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Extensions.IMaybe`1.IsNothing">
+            <summary>
+            Gets a value indicating whether the instance is <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.Just`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Extensions.Just`1"/> class.
+            </summary>
+            <param name="value">The value.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.Just`1.FromMaybe(`0)">
+            <summary>
+            Returns the specified default value if the <see cref="T:NContext.Application.Extensions.IMaybe`1"/> is <see cref="T:NContext.Application.Extensions.Nothing`1"/>; 
+            otherwise, it returns the value contained in the <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.
+            </summary>
+            <param name="defaultValue">The default value.</param>
+            <returns>Instance of <typeparamref name="T"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.Just`1.Empty">
+            <summary>
+            Returns a new <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.Just`1.Bind``1(System.Func{`0,NContext.Application.Extensions.IMaybe{``0}})">
+            <summary>
+            Returns a new <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="bindFunc">The function used to map.</param>
+            <returns>Instance of <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Extensions.Just`1.IsJust">
+            <summary>
+            Gets a value indicating whether the instance is <see cref="T:NContext.Application.Extensions.Just`1"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Extensions.Just`1.IsNothing">
+            <summary>
+            Gets a value indicating whether the instance is <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.IMaybeExtensions">
+            <summary>
+            Defines extension methods for <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybeExtensions.Select``2(NContext.Application.Extensions.IMaybe{``0},System.Func{``0,NContext.Application.Extensions.IMaybe{``1}})">
+            <summary>
+            Selects the specified maybe.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TU">The type of the U.</typeparam>
+            <param name="maybe">The maybe.</param>
+            <param name="func">The func.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybeExtensions.SelectMany``2(NContext.Application.Extensions.IMaybe{``0},System.Func{``0,NContext.Application.Extensions.IMaybe{``1}},System.Func{``0,``1,NContext.Application.Extensions.IMaybe{``1}})">
+            <summary>
+            Selects the many.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TU">The type of the U.</typeparam>
+            <param name="maybe">The maybe.</param>
+            <param name="func">The func.</param>
+            <param name="select">The select.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybeExtensions.ToMaybe``1(``0)">
+            <summary>
+            Wraps the object in a <see cref="T:NContext.Application.Extensions.IMaybe`1"/>
+            </summary>
+            <typeparam name="T">The type of the object to wrap</typeparam>
+            <param name="obj">The obj.</param>
+            <returns><see cref="T:NContext.Application.Extensions.IMaybe`1"/></returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.IMaybeExtensions.MaybeFirst``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Returns the first element in an <see cref="T:System.Collections.Generic.IEnumerable`1"/> as a
+            <see cref="T:NContext.Application.Extensions.Just`1"/>, or, if the sequence contains no elements, returns
+            a <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <typeparam name="T">The type of the object in the <see cref="T:System.Collections.Generic.IEnumerable`1"/></typeparam>
+            <param name="enumerable">The IEnumerable.</param>
+            <returns><see cref="T:NContext.Application.Extensions.IMaybe`1"/></returns>
+        </member>
+        <member name="T:NContext.Application.Caching.CacheManager">
+            <summary>
+            Defines a default <see cref="T:NContext.Application.Caching.ICacheManager"/> implementation.
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Caching.ICacheManager">
+            <summary>
+            Defines a contract for managing the application's cache provider.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.AddOrUpdateItem``1(System.String,``0,System.String)">
+            <summary>
+            Adds or updates the specified instance to the cache.
+            </summary>
+            <typeparam name="TObject">The type of the object to cache.</typeparam>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="instance">The object instance.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True, if the instance has successfully been added to the cache, else false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.AddOrUpdateItem``1(System.String,``0,System.Runtime.Caching.CacheItemPolicy,System.String)">
+            <summary>
+            Adds or updates the specified instance to the cache.
+            </summary>
+            <typeparam name="TObject">The type of the object to cache.</typeparam>
+            <param name="cacheEntryKey">The cache enty key.</param>
+            <param name="instance">The object instance.</param>
+            <param name="cacheItemPolicy">The cache item policy.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True, if the instance has successfully been added to the cache, else false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.AddOrUpdateItem(System.String,System.Object,System.Runtime.Caching.CacheItemPolicy,System.String)">
+            <summary>
+            Adds or updates the specified instance to the cache.
+            </summary>
+            <param name="cacheEntryKey">The cache enty key.</param>
+            <param name="instance">The object instance.</param>
+            <param name="cacheItemPolicy">The cache item policy.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True, if the instance has successfully been added to the cache, else false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.Contains(System.String,System.String)">
+            <summary>
+            Returns true if key refers to item current stored in cache
+            </summary>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True if item referenced by key is in the cache</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.Flush(System.String)">
+            <summary>
+            Removes all items from the cache. If an error occurs during the removal, the cache is left unchanged.
+            </summary>
+            <param name="regionName">Name of the region.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.Get``1(System.String,System.String)">
+            <summary>
+            Gets the cache item associated with the specified key.
+            </summary>
+            <typeparam name="TObject">The type of the object.</typeparam>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns><typeparamref name="TObject"/> instance if found in the cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.Get(System.String,System.String)">
+            <summary>
+            Gets the cache item associated with the specified key.
+            </summary>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>Object instance if found in the cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.GetCount(System.String)">
+            <summary>
+            Gets the number of items in cache.
+            </summary>
+            <param name="regionName">Name of the region.</param>
+            <returns>Total amount of items in cache.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.ICacheManager.Remove(System.String,System.String)">
+            <summary>
+            Removes the cache item associated with the specified cache entry key.
+            </summary>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.ICacheManager.CacheProvider">
+            <summary>
+            Gets the cache provider.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.ICacheManager.Item(System.String,System.String)">
+            <summary>
+            Returns the item identified by the provided key.
+            </summary>
+            <param name="cacheEntryKey">The cache entry key to retrieve.</param>
+            <param name="regionName">The cache region.</param>
+            <exception cref="T:System.ArgumentNullException">Provided key is null</exception>
+            <exception cref="T:System.ArgumentException">Provided key is an empty string</exception>
+            <remarks>The CacheManager can be configured to use different storage mechanisms in which to store the cache items.
+            Each of these storage mechanisms can throw exceptions particular to their own implementations.</remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.#ctor(NContext.Application.Caching.CachingConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Caching.CacheManager"/> class.
+            </summary>
+            <param name="cachingConfiguration">The caching configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.Configure(NContext.Application.Configuration.IApplicationConfiguration)">
+            <summary>
+            Configures the component instance.
+            </summary>
+            <param name="applicationConfiguration">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.AddOrUpdateItem``1(System.String,``0,System.String)">
+            <summary>
+            Adds or updates the specified instance to the cache.
+            </summary>
+            <typeparam name="TObject">The type of the object to cache.</typeparam>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="instance">The object instance.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True, if the instance has successfully been added to the cache, else false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.AddOrUpdateItem``1(System.String,``0,System.Runtime.Caching.CacheItemPolicy,System.String)">
+            <summary>
+            Adds or updates the specified instance to the cache.
+            </summary>
+            <typeparam name="TObject">The type of the object to cache.</typeparam>
+            <param name="cacheEntryKey">The cache enty key.</param>
+            <param name="instance">The object instance.</param>
+            <param name="cacheItemPolicy">The cache item policy.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True, if the instance has successfully been added to the cache, else false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.AddOrUpdateItem(System.String,System.Object,System.Runtime.Caching.CacheItemPolicy,System.String)">
+            <summary>
+            Adds or updates the specified instance to the cache.
+            </summary>
+            <param name="cacheEntryKey">The cache enty key.</param>
+            <param name="instance">The object instance.</param>
+            <param name="cacheItemPolicy">The cache item policy.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True, if the instance has successfully been added to the cache, else false.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.Contains(System.String,System.String)">
+            <summary>
+            Returns true if key refers to item current stored in cache
+            </summary>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>True if item referenced by key is in the cache</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.Flush(System.String)">
+            <summary>
+            Removes all items from the cache. If an error occurs during the removal, the cache is left unchanged.
+            </summary>
+            <param name="regionName">Name of the region.</param>
+            <remarks>The CacheManager can be configured to use different storage mechanisms in which to store the CacheItems.
+            Each of these storage mechanisms can throw exceptions particular to their own implementations.</remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.Get``1(System.String,System.String)">
+            <summary>
+            Gets the cache item associated with the specified key.
+            </summary>
+            <typeparam name="TObject">The type of the object.</typeparam>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns><typeparamref name="TObject"/> instance if found in the cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.Get(System.String,System.String)">
+            <summary>
+            Gets the cache item associated with the specified key.
+            </summary>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <returns>Object instance if found in the cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.GetCount(System.String)">
+            <summary>
+            Gets the number of items in cache.
+            </summary>
+            <param name="regionName">Name of the region.</param>
+            <returns>Total amount of items in cache.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Caching.CacheManager.Remove(System.String,System.String)">
+            <summary>
+            Removes the cache item associated with the specified cache entry key.
+            </summary>
+            <param name="cacheEntryKey">The cache entry key.</param>
+            <param name="regionName">Name of the region.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CacheManager.CacheProvider">
+            <summary>
+            Gets the cache provider.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CacheManager.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Caching.CacheManager.Item(System.String,System.String)">
+            <summary>
+            Returns the item identified by the provided key.
+            </summary>
+            <param name="cacheEntryKey">The cache entry key to retrieve.</param>
+            <param name="regionName">The cache region.</param>
+            <exception cref="T:System.ArgumentNullException">Provided key is null</exception>
+            <exception cref="T:System.ArgumentException">Provided key is an empty string</exception>
+            <remarks>The CacheManager can be configured to use different storage mechanisms in which to store the cache items.
+            Each of these storage mechanisms can throw exceptions particular to their own implementations.</remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.TypeExtensions">
+            <summary>
+            Defines a static class for providing Type extension methods.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.TypeExtensions.Implements``1(System.Type)">
+            <summary>
+            Evaluates whether the specified type implements the type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">The base type or interface type to check against.</typeparam>
+            <param name="type">The derived type.</param>
+            <returns><c>True</c> if <paramref name="type"/> implements or inherits from type <typeparamref name="T"/>, else <c>false</c>.</returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.TypeExtensions.IsAnonymousType(System.Type)">
+            <summary>
+            Determines whether the specified type is anonymous.
+            </summary>
+            <param name="type">The type.</param>
+            <returns><c>true</c> if [is anonymous type] [the specified type]; otherwise, <c>false</c>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IEnumerableExtensions.AllMatching``1(System.Collections.Generic.IEnumerable{``0},NContext.Application.Domain.SpecificationBase{``0})">
+            <summary>
+            Queries the repository based on the provided specification and returns results that
+            are only satisfied by the specification.
+            </summary>
+            <typeparam name="TEntity">The type of the entity.</typeparam>
+            <param name="enumerable">The enumerable.</param>
+            <param name="specification">A <see cref="T:NContext.Application.Domain.SpecificationBase`1"/> instance used to filter results
+            that only satisfy the specification.</param>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerable`1"/> that can be used to enumerate over the results
+            of the query.
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.IEnumerableExtensions.Into``1(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Projects an <see cref="T:System.Collections.Generic.IEnumerable`1"/> into an enumerable of the specified type <typeparamref name="T"/>.
+            </summary>
+            <typeparam name="T">Type of object to inject the projection into.</typeparam>
+            <param name="projections">The projections.</param>
+            <returns><see cref="T:System.Collections.Generic.IEnumerable`1"/> instance.</returns>
+            <remarks>
+            This extension method is useful when executing query projections of anonymous types into custom DTOs.
+            </remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.IEnumerableExtensions.Into``2(System.Collections.Generic.IEnumerable{System.Object})">
+            <summary>
+            Projects an <see cref="T:System.Collections.Generic.IEnumerable`1"/> into an enumerable of the specified 
+            type <typeparamref name="T"/> using the specified <see cref="T:Omu.ValueInjecter.IValueInjection"/>.
+            </summary>
+            <typeparam name="T">Type of object to inject the projection into.</typeparam>
+            <typeparam name="TValueInjection">The type of the injection implementation to use.</typeparam>
+            <param name="projections">The projections.</param>
+            <returns><see cref="T:System.Collections.Generic.IEnumerable`1"/> instance.</returns>
+            <remarks>This extension method is useful when executing query projections of anonymous types into custom DTOs.</remarks>
+        </member>
+        <member name="T:NContext.Application.Domain.AdHocSpecification`1">
+            <summary>
+            Defines a specification which is composed AdHoc via constructor.
+            </summary>
+            <typeparam name = "TEntity">Type of entity that check this specification</typeparam>
+        </member>
+        <member name="M:NContext.Application.Domain.AdHocSpecification`1.#ctor(System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Domain.AdHocSpecification`1"/> class.
+            </summary>
+            <param name="matchingCriteria">The matching criteria.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.AdHocSpecification`1.IsSatisfied">
+            <summary>
+            Returns a boolean expression which determines whether the specification is satisfied.
+            </summary>
+            <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        </member>
+        <member name="T:NContext.Application.Domain.IEntity">
+            <summary>
+            Defines a marker interface for domain model entities.
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Configuration.IApplicationConfiguration">
+            <summary>
+            Defines an application configuration contract.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.IApplicationConfiguration.GetComponent``1">
+            <summary>
+            Gets the application component by type registered.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <returns>Instance of <typeparamref name="TApplicationComponent"/> if it exists, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.IApplicationConfiguration.RegisterComponent``1(System.Func{NContext.Application.Configuration.IApplicationComponent})">
+            <summary>
+            Registers an application component.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <param name="componentFactory">The component factory.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.IApplicationConfiguration.Setup">
+            <summary>
+            Creates all application components and configures them.
+            </summary>
+            <remarks>Should only be called once from application startup.</remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.IApplicationConfiguration.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <value>
+                <c>true</c> if this instance is configured; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:NContext.Application.Configuration.IApplicationConfiguration.CompositionContainer">
+            <summary>
+            Gets the application composition container.
+            </summary>
+        </member>
+        <member name="P:NContext.Application.Configuration.IApplicationConfiguration.Components">
+            <summary>
+            Gets the application components.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.EnumExtensions">
+            <summary>
+            Defines a static class for providing enum type extension methods.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.EnumExtensions.ToDescriptionValue(System.Enum)">
+            <summary>
+            Gets the <see cref="T:System.ComponentModel.DescriptionAttribute"/> value based upon the enum value specified.
+            </summary>
+            <param name="value">The value.</param>
+            <returns>The value of the <see cref="T:System.ComponentModel.DescriptionAttribute"/> if one exists, else <see cref="F:System.String.Empty"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Domain.AndSpecification`1">
+            <summary>
+            Defines a composite specification for AND-logic.
+            </summary>
+            <typeparam name="TEntity">Type of entity that check this specification</typeparam>
+        </member>
+        <member name="M:NContext.Application.Domain.AndSpecification`1.#ctor(NContext.Application.Domain.SpecificationBase{`0},NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Domain.AndSpecification`1"/> class.
+            </summary>
+            <param name="leftSide">The left side.</param>
+            <param name="rightSide">The right side.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.AndSpecification`1.IsSatisfied">
+            <summary>
+            Returns a boolean expression which determines whether the specification is satisfied.
+            </summary>
+            <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        </member>
+        <member name="P:NContext.Application.Domain.AndSpecification`1.LeftSideSpecification">
+            <summary>
+            Left side specification
+            </summary>
+        </member>
+        <member name="P:NContext.Application.Domain.AndSpecification`1.RightSideSpecification">
+            <summary>
+            Right side specification
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Security.SecurityManager">
+            <summary>
+            Defines a manager class which implements logic for application security-related operations.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.#ctor(NContext.Application.Security.SecurityConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Security.SecurityManager"/> class.
+            </summary>
+            <param name="securityConfiguration">The security configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.SavePrincipal(System.Security.Principal.IPrincipal)">
+            <summary>
+            Saves the principal to cache using the application's <see cref="T:NContext.Application.Caching.ICacheManager"/>.
+            </summary>
+            <param name="principal">The principal.</param>
+            <returns>A token used to retrieve the <see cref="T:System.Security.Principal.IPrincipal"/> from cache.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.SavePrincipal``1(System.Security.Principal.IPrincipal)">
+            <summary>
+            Saves the principal to cache using the application's <see cref="T:NContext.Application.Caching.ICacheManager"/>.
+            </summary>
+            <typeparam name="TToken">The type of the token.</typeparam>
+            <param name="principal">The principal.</param>
+            <returns>A <typeparamref name="TToken"/> token used to retrieve the <see cref="T:System.Security.Principal.IPrincipal"/> from cache.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.SavePrincipal(System.Security.Principal.IPrincipal,System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Adds or updates the cached principal associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>, using the application's <see cref="T:NContext.Application.Caching.ICacheManager"/>.
+            </summary>
+            <param name="principal">The cached <see cref="T:System.Security.Principal.IPrincipal"/> instance.</param>
+            <param name="token">The <see cref="T:System.IdentityModel.Tokens.SecurityToken"/> to associate with <paramref name="principal"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.ExpirePrincipal(System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Expires the principal associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>.
+            </summary>
+            <param name="token">The token.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.GetPrincipal(System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Gets the cached <see cref="T:System.Security.Principal.IPrincipal"/> instance associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>.
+            </summary>
+            <param name="token">The token.</param>
+            <returns>Instance of <see cref="T:System.Security.Principal.IPrincipal"/> if found in cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.GetPrincipal``1(System.IdentityModel.Tokens.SecurityToken)">
+            <summary>
+            Gets the cached <typeparamref name="TPrincipal"/> instance associated with the specified <see cref="T:System.IdentityModel.Tokens.SecurityToken"/>.
+            </summary>
+            <typeparam name="TPrincipal">The type of the principal.</typeparam>
+            <param name="token">The token.</param>
+            <returns>Instance of <typeparamref name="TPrincipal"/> if found in cache, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityManager.Configure(NContext.Application.Configuration.IApplicationConfiguration)">
+            <summary>
+            Configures the component instance.
+            </summary>
+            <param name="applicationConfiguration">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.SecurityManager.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Domain.TrueSpecification`1">
+            <summary>
+            Defines a generic specification which can be used for composition.
+            </summary>
+            <typeparam name="TEntity">Type of entity in this specification.</typeparam>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.TrueSpecification`1.IsSatisfied">
+            <summary>
+            Returns a boolean expression which determines whether the specification is satisfied.
+            </summary>
+            <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        </member>
+        <member name="T:NContext.Application.Validation.ValidationError">
+            <summary>
+            Defines a transfer object which represents results returned from Microsoft Enterprise Library Validation.
+            </summary>
+        </member>
+        <member name="T:NContext.Application.ErrorHandling.Error">
+            <summary>
+            Defines a data-transfer-object which represents an error.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Services.IDto">
+            <summary>
+            Defines the marker interface for data-transfer objects.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.ErrorHandling.Error.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.ErrorHandling.Error"/> class.
+            </summary>
+            <param name="name">The name of the error which occurred.</param>
+            <param name="messages">The messages describing the error.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.Error.Name">
+            <summary>
+            Gets the name.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.Error.Type">
+            <summary>
+            Gets the type of the error.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.ErrorHandling.Error.Messages">
+            <summary>
+            Gets the message.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Validation.ValidationError.#ctor(System.Type,System.Collections.Generic.IEnumerable{System.String})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Validation.ValidationError"/> class.
+            </summary>
+            <param name="entityType">Type of the entity.</param>
+            <param name="messages">The messages.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.Nothing`1">
+            <summary>
+            Defines a Nothing implementation of <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:NContext.Application.Extensions.Nothing`1.FromMaybe(`0)">
+            <summary>
+            Returns the specified default value if the <see cref="T:NContext.Application.Extensions.IMaybe`1"/> is <see cref="T:NContext.Application.Extensions.Nothing`1"/>; 
+            otherwise, it returns the value contained in the <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.
+            </summary>
+            <param name="defaultValue">The default value.</param>
+            <returns>Instance of <typeparamref name="T"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.Nothing`1.Empty">
+            <summary>
+            Returns this instance.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.Nothing`1.Bind``1(System.Func{`0,NContext.Application.Extensions.IMaybe{``0}})">
+            <summary>
+            Returns a new <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <typeparam name="TResult">The type of the result.</typeparam>
+            <param name="bindFunc">The function used to map.</param>
+            <returns>Instance of <see cref="T:NContext.Application.Extensions.IMaybe`1"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Extensions.Nothing`1.IsJust">
+            <summary>
+            Gets a value indicating whether the instance is <see cref="T:NContext.Application.Extensions.Just`1"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Extensions.Nothing`1.IsNothing">
+            <summary>
+            Gets a value indicating whether the instance is <see cref="T:NContext.Application.Extensions.Nothing`1"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.ValueInjecterExtensions">
+            <summary>
+            Defines extension methods for Value Injecter.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.ValueInjecterExtensions.InjectInto``1(``0,System.Object)">
+            <summary>
+            Injects values from source into target using the default <see cref="T:Omu.ValueInjecter.LoopValueInjection"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="target">The target object.</param>
+            <param name="source">The source object.</param>
+            <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.ValueInjecterExtensions.InjectInto``1(System.Object,System.Object)">
+            <summary>
+            Injects values from source into target using the default <see cref="T:Omu.ValueInjecter.LoopValueInjection"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="target">The target object.</param>
+            <param name="source">The source object.</param>
+            <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.ValueInjecterExtensions.InjectInto``2(System.Object,System.Object)">
+            <summary>
+            Injects values from source into target using the specified <see cref="T:Omu.ValueInjecter.ValueInjection"/>.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TValueInjection">The type of the value injection.</typeparam>
+            <param name="target">The target object.</param>
+            <param name="source">The source object.</param>
+            <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Security.Cryptography.ICryptographyManager">
+            <summary>
+            Defines an interface for application-wide security management.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.Cryptography.ICryptographyManager.Provider">
+            <summary>
+            Gets the provider which handles application cryptographic operations.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Configuration.ApplicationConfiguration">
+            <summary>
+            Defines a class for application configuration.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfiguration.#cctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfiguration.GetComponent``1">
+            <summary>
+            Gets the application component by type registered.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <returns>Instance of <typeparamref name="TApplicationComponent"/> if it exists, else null.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfiguration.RegisterComponent``1(System.Func{NContext.Application.Configuration.IApplicationComponent})">
+            <summary>
+            Registers an application component.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <param name="componentFactory">The component factory.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfiguration.Setup">
+            <summary>
+            Creates all application components and configures them.
+            </summary>
+            <remarks>Should only be called once from application startup.</remarks>
+        </member>
+        <member name="M:NContext.Application.Configuration.ApplicationConfiguration.CreateCompositionContainer">
+            <summary>
+            Creates the composition container from the executing assembly.
+            </summary>
+            <returns>
+            Application's <see cref="P:NContext.Application.Configuration.ApplicationConfiguration.CompositionContainer"/> instance.
+            </returns>
+        </member>
+        <member name="P:NContext.Application.Configuration.ApplicationConfiguration.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <value><c>true</c> if this instance is configured; otherwise, <c>false</c>.</value>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.ApplicationConfiguration.CompositionContainer">
+            <summary>
+            Gets the application composition container.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Configuration.ApplicationConfiguration.Components">
+            <summary>
+            Gets the application components.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Security.Cryptography.ICryptographyProvider">
+            <summary>
+            Defines cryptographic operations for hashing and symmetric encryption.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash(System.Byte[],System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash(System.String,System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash``1(System.Byte[],System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash``1(System.String,System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash(System.Byte[],System.Byte[],System.Boolean)">
+            <summary>
+            Compares the hashes.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash(System.String,System.String,System.Boolean)">
+            <summary>
+            Compares the hash.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash``1(System.Byte[],System.Byte[],System.Boolean)">
+            <summary>
+            Compares the hash.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash``1(System.String,System.String,System.Boolean)">
+            <summary>
+            Compares the hash.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash(System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash``1(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash``1(System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash(System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash``1(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHash``1(System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHmac(System.String,System.String)">
+            <summary>
+            Creates a URL-safe Base64-encoded <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CreateHmac``1(System.String,System.String)">
+            <summary>
+            Creates a URL-safe Base64-encoded <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash(System.Byte[],System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash(System.Byte[],System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash(System.String,System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash(System.String,System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash``1(System.Byte[],System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash``1(System.Byte[],System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash``1(System.String,System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHash``1(System.String,System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHmac(System.String,System.String,System.String)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="base64EncodedHashedText">The base64-encoded and hashed text.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.CompareHmac``1(System.String,System.String,System.String)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="base64EncodedHashedText">The base64-encoded and hashed text.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt``1(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the text with the specified <typeparamref name="TSymmetricAlgorithm"/>.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt``1(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the text with the specified <typeparamref name="TSymmetricAlgorithm"/>.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt``1(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Encrypt``1(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the text with the specified <typeparamref name="TSymmetricAlgorithm"/>.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified symmetric key.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt``1(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt``1(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt``1(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.Cryptography.ICryptographyProvider.Decrypt``1(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.CompositionContainerExtensions">
+            <summary>
+            Defines extension methods for <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/>.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.CompositionContainerExtensions.GetExportTypes(System.ComponentModel.Composition.Hosting.CompositionContainer)">
+            <summary>
+            Gets all types within the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/>'s <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog"/>.
+            </summary>
+            <param name="container">The container.</param>
+            <returns>Enumeration of <see cref="T:System.Type"/>s.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Extensions.CompositionContainerExtensions.GetExportTypesThatImplement``1(System.ComponentModel.Composition.Hosting.CompositionContainer)">
+            <summary>
+            Gets all types within the <see cref="T:System.ComponentModel.Composition.Hosting.CompositionContainer"/>'s <see cref="P:System.ComponentModel.Composition.Hosting.CompositionContainer.Catalog"/> 
+            which implement the specified <typeparamref name="TExport"/>.
+            </summary>
+            <typeparam name="TExport">The type of the export.</typeparam>
+            <param name="container">The container.</param>
+            <returns>Enumeration of derived / implementing <see cref="T:System.Type"/>s.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Extensions.CollectionExtensions">
+            <summary>
+            Defines a static class for providing Collection type extension methods.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.CollectionExtensions.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            ForEach extension that enumerates over all items in an <see cref="T:System.Collections.Generic.IEnumerable`1"/> and executes 
+            an action.
+            </summary>
+            <typeparam name="T">The type that this extension is applicable for.</typeparam>
+            <param name="collection">The enumerable instance that this extension operates on.</param>
+            <param name="action">The action executed for each iten in the enumerable.</param>
+        </member>
+        <member name="M:NContext.Application.Extensions.CollectionExtensions.ForEach``1(System.Collections.Generic.IEnumerator{``0},System.Action{``0})">
+            <summary>
+            ForEach extension that enumerates over all items in an <see cref="T:System.Collections.Generic.IEnumerator`1"/> and executes 
+            an action.
+            </summary>
+            <typeparam name="T">The type that this extension is applicable for.</typeparam>
+            <param name="collection">The enumerator instance that this extension operates on.</param>
+            <param name="action">The action executed for each iten in the enumerable.</param>
+        </member>
+        <member name="M:NContext.Application.Extensions.CollectionExtensions.TryForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            For Each extension that enumerates over a enumerable collection and attempts to execute 
+            the provided action delegate and it the action throws an exception, continues enumerating.
+            </summary>
+            <typeparam name="T">The type that this extension is applicable for.</typeparam>
+            <param name="collection">The IEnumerable instance that ths extension operates on.</param>
+            <param name="action">The action excecuted for each item in the enumerable.</param>
+        </member>
+        <member name="M:NContext.Application.Extensions.CollectionExtensions.TryForEach``1(System.Collections.Generic.IEnumerator{``0},System.Action{``0})">
+            <summary>
+            For each extension that enumerates over an enumerator and attempts to execute the provided
+            action delegate and if the action throws an exception, continues executing.
+            </summary>
+            <typeparam name="T">The type that this extension is applicable for.</typeparam>
+            <param name="enumerator">The IEnumerator instace</param>
+            <param name="action">The action executed for each item in the enumerator.</param>
+        </member>
+        <member name="T:NContext.Application.Security.SecurityConfiguration">
+            <summary>
+            Defines a configuration class to build the application's <see cref="T:NContext.Application.Security.SecurityManager"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Security.SecurityConfiguration"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityConfiguration.SetDefaults(System.DateTimeOffset,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Sets the default cache configuration settings for security token expiration.
+            </summary>
+            <param name="tokenAbsoluteExpiration">The token absolute expiration.</param>
+            <param name="tokenInitialLifespan">The token initial lifespan.</param>
+            <param name="tokenSlidingExpiration">The token sliding expiration.</param>
+            <returns>This <see cref="T:NContext.Application.Security.SecurityConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Security.SecurityConfiguration.Setup">
+            <summary>
+            Sets the application's security manager using 
+            the configuration created from this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.SecurityConfiguration.TokenAbsoluteExpiration">
+            <summary>
+            Gets the token absolute expiration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.SecurityConfiguration.TokenSlidingExpiration">
+            <summary>
+            Gets the token sliding expiration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.SecurityConfiguration.TokenInitialLifespan">
+            <summary>
+            Gets the token initial lifetime.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Caching.AppFabricObjectCacheProvider">
+            <summary>
+            Defines a caching provider for AppFabric.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Caching.AppFabricObjectCacheProvider.regionKeyTemplate">
+            <summary>
+            The region key template.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Caching.AppFabricObjectCacheProvider.cacheFactory">
+            <summary>
+            The cache factory.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Caching.AppFabricObjectCacheProvider"/> class.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.AddOrGetExisting(System.String,System.Object,System.Runtime.Caching.CacheItemPolicy,System.String)">
+            <summary>
+            The add or get existing.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+            <param name="policy">
+            The policy.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The add or get existing.
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.AddOrGetExisting(System.String,System.Object,System.DateTimeOffset,System.String)">
+            <summary>
+            The add or get existing.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+            <param name="absoluteExpiration">
+            The absolute expiration.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The add or get existing.
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.AddOrGetExisting(System.Runtime.Caching.CacheItem,System.Runtime.Caching.CacheItemPolicy)">
+            <summary>
+            The add or get existing.
+            </summary>
+            <param name="value">
+            The value.
+            </param>
+            <param name="policy">
+            The policy.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.Contains(System.String,System.String)">
+            <summary>
+            The contains.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The contains.
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.CreateCacheEntryChangeMonitor(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            The create cache entry change monitor.
+            </summary>
+            <param name="keys">
+            The keys.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            </exception>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.Get(System.String,System.String)">
+            <summary>
+            The get.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The get.
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.GetCacheItem(System.String,System.String)">
+            <summary>
+            The get cache item.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.GetCount(System.String)">
+            <summary>
+            The get count.
+            </summary>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The get count.
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            </exception>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.GetValues(System.Collections.Generic.IEnumerable{System.String},System.String)">
+            <summary>
+            The get values.
+            </summary>
+            <param name="keys">
+            The keys.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            </exception>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.Remove(System.String,System.String)">
+            <summary>
+            The remove.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The remove.
+            </returns>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.Set(System.String,System.Object,System.Runtime.Caching.CacheItemPolicy,System.String)">
+            <summary>
+            The set.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+            <param name="policy">
+            The policy.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.Set(System.String,System.Object,System.DateTimeOffset,System.String)">
+            <summary>
+            The set.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="value">
+            The value.
+            </param>
+            <param name="absoluteExpiration">
+            The absolute expiration.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.Set(System.Runtime.Caching.CacheItem,System.Runtime.Caching.CacheItemPolicy)">
+            <summary>
+            The set.
+            </summary>
+            <param name="item">
+            The item.
+            </param>
+            <param name="policy">
+            The policy.
+            </param>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.GetEnumerator">
+            <summary>
+            The get enumerator.
+            </summary>
+            <returns>
+            </returns>
+            <exception cref="T:System.NotSupportedException">
+            </exception>
+        </member>
+        <member name="M:NContext.Application.Caching.AppFabricObjectCacheProvider.GetKey(System.String,System.String)">
+            <summary>
+            The get key.
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <param name="regionName">
+            The region name.
+            </param>
+            <returns>
+            The get key.
+            </returns>
+        </member>
+        <member name="P:NContext.Application.Caching.AppFabricObjectCacheProvider.DefaultCacheCapabilities">
+            <summary>
+            Gets DefaultCacheCapabilities.
+            </summary>
+        </member>
+        <member name="P:NContext.Application.Caching.AppFabricObjectCacheProvider.Name">
+            <summary>
+            Gets Name.
+            </summary>
+        </member>
+        <member name="P:NContext.Application.Caching.AppFabricObjectCacheProvider.Item(System.String)">
+            <summary>
+            The 
+            </summary>
+            <param name="key">
+            The key.
+            </param>
+            <exception cref="T:System.NotSupportedException">
+            </exception>
+        </member>
+        <member name="T:NContext.Application.Extensions.StringExtensions">
+            <summary>
+            Defines a static class for providing String type extension methods.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Extensions.StringExtensions.MinimumFormatParametersRequired(System.String)">
+            <summary>
+            Returns the number of <see cref="M:System.String.Format(System.String,System.Object)"/> parameters in the specified text.
+            </summary>
+            <param name="text">The text to scan.</param>
+            <returns>Number of required String.Format parameters.</returns>
+        </member>
+        <member name="M:NContext.Application.Extensions.StringExtensions.ToNameValueCollection(System.String,System.Char,System.Char)">
+            <summary>
+            Splits a string into a NameValueCollection, where each "namevalue" is separated by
+            the "OuterSeparator". The parameter "NameValueSeparator" sets the split between Name and Value.
+            Example: 
+                        String str = "param1=value1;param2=value2";
+                        NameValueCollection nvOut = str.ToNameValueCollection(';', '=');
+                        
+            The result is a NameValueCollection where:
+                        key[0] is "param1" and value[0] is "value1"
+                        key[1] is "param2" and value[1] is "value2"
+            </summary>
+            <param name="str">String to process</param>
+            <param name="OuterSeparator">Separator for each "NameValue"</param>
+            <param name="NameValueSeparator">Separator for Name/Value splitting</param>
+            <returns></returns>
+        </member>
+        <member name="T:NContext.Application.Domain.OrSpecification`1">
+            <summary>
+            Defines a composite specification for OR-logic.
+            </summary>
+            <typeparam name="TEntity">Type of entity that check this specification</typeparam>
+        </member>
+        <member name="M:NContext.Application.Domain.OrSpecification`1.#ctor(NContext.Application.Domain.SpecificationBase{`0},NContext.Application.Domain.SpecificationBase{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Domain.OrSpecification`1"/> class.
+            </summary>
+            <param name="leftSide">The left side.</param>
+            <param name="rightSide">The right side.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Domain.OrSpecification`1.IsSatisfied">
+            <summary>
+            Returns a boolean expression which determines whether the specification is satisfied.
+            </summary>
+            <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        </member>
+        <member name="P:NContext.Application.Domain.OrSpecification`1.LeftSideSpecification">
+            <summary>
+            Left side specification
+            </summary>
+        </member>
+        <member name="P:NContext.Application.Domain.OrSpecification`1.RightSideSpecification">
+            <summary>
+            Righ side specification
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Security.GuidToken">
+            <summary>
+            Defines a generic <see cref="T:System.IdentityModel.Tokens.SecurityToken"/> using a <see cref="T:System.Guid"/>
+            as token identifier.
+            </summary>
+        </member>
+        <member name="P:NContext.Application.Security.GuidToken.Id">
+            <summary>
+            Gets a unique identifier of the security token.
+            </summary>
+            <returns>The unique identifier of the security token.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.GuidToken.SecurityKeys">
+            <summary>
+            Gets the cryptographic keys associated with the security token.
+            </summary>
+            <returns>A <see cref="T:System.Collections.ObjectModel.ReadOnlyCollection`1"/> of type <see cref="T:System.IdentityModel.Tokens.SecurityKey"/> that contains the set of keys associated with the security token.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.GuidToken.ValidFrom">
+            <summary>
+            Gets the first instant in time at which this security token is valid.
+            </summary>
+            <returns>A <see cref="T:System.DateTime"/> that represents the instant in time at which this security token is first valid.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Security.GuidToken.ValidTo">
+            <summary>
+            Gets the last instant in time at which this security token is valid.
+            </summary>
+            <returns>A <see cref="T:System.DateTime"/> that represents the last instant in time at which this security token is valid.</returns>
+            <remarks></remarks>
+        </member>
+    </members>
+</doc>

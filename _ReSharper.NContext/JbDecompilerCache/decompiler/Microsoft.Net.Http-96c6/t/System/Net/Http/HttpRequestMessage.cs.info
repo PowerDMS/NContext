@@ -1,0 +1,8 @@
+﻿Code version: 6.0.2202.688
+Assembly name Microsoft.Net.Http, Version=0.3.0.0, Culture=neutral, PublicKeyToken=null mvid {d19f426c-6cb2-4330-93c1-30dfe1fa35ad}
+* ref mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  mvid {fcb9dac8-ae3a-4886-93b0-f4cd5b0db0be}
+* ref System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  mvid {c08d55d3-6463-439d-b112-60f6502ec141}
+* ref System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089
+  mvid {0467f5c0-e463-4b2c-acc5-f718cb71f056}

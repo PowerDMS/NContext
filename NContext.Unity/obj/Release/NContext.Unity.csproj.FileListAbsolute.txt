@@ -1,0 +1,70 @@
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.Unity.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.Unity.pdb
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.ServiceLocation.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Configuration.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.Configuration.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.Application.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Omu.ValueInjecter.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Newtonsoft.Json.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Validation.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.dll
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.Application.pdb
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.Application.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.pdb
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.ServiceLocation.pdb
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.ServiceLocation.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Configuration.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.Configuration.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Omu.ValueInjecter.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Newtonsoft.Json.pdb
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Newtonsoft.Json.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Validation.xml
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.xml
+C:\Waking Venture\NContext\NContext.Unity\obj\Release\ResolveAssemblyReference.cache
+C:\Waking Venture\NContext\NContext.Unity\obj\Release\NContext.Unity.dll
+C:\Waking Venture\NContext\NContext.Unity\obj\Release\NContext.Unity.pdb
+C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Unity.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Unity.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.ServiceLocation.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Configuration.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.Configuration.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Omu.ValueInjecter.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Newtonsoft.Json.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Validation.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.ServiceLocation.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.ServiceLocation.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Configuration.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.Unity.Interception.Configuration.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Omu.ValueInjecter.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Newtonsoft.Json.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\Newtonsoft.Json.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Validation.xml
+C:\Projects\NContext\NContext.Unity\obj\Release\ResolveAssemblyReference.cache
+C:\Projects\NContext\NContext.Unity\obj\Release\NContext.Unity.dll
+C:\Projects\NContext\NContext.Unity\obj\Release\NContext.Unity.pdb

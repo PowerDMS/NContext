@@ -1,0 +1,66 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application", "NContext.Application\NContext.Application.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Persistence", "NContext.Persistence\NContext.Persistence.csproj", "{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Unity", "NContext.Unity\NContext.Unity.csproj", "{C6F06E82-728B-4CFD-86BE-CC5DFA815086}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Persistence.EntityFramework", "NContext.Persistence.EntityFramework\NContext.Persistence.EntityFramework.csproj", "{C9F7B439-599F-404C-8203-A67AD5A3FEA9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.EnterpriseLibrary", "NContext.EnterpriseLibrary\NContext.EnterpriseLibrary.csproj", "{14AFB8B4-55E9-4127-B477-65B0549D5C79}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Services", "NContext.Services\NContext.Services.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug DLL and Web|Any CPU = Debug DLL and Web|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B5614B58-83C2-46BE-9463-9E140519298E}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5614B58-83C2-46BE-9463-9E140519298E}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{B5614B58-83C2-46BE-9463-9E140519298E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5614B58-83C2-46BE-9463-9E140519298E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5614B58-83C2-46BE-9463-9E140519298E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5614B58-83C2-46BE-9463-9E140519298E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9049AE7F-F9DE-4B72-94F9-4A77DB63792B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14AFB8B4-55E9-4127-B477-65B0549D5C79}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AFB8B4-55E9-4127-B477-65B0549D5C79}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{14AFB8B4-55E9-4127-B477-65B0549D5C79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14AFB8B4-55E9-4127-B477-65B0549D5C79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14AFB8B4-55E9-4127-B477-65B0549D5C79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14AFB8B4-55E9-4127-B477-65B0549D5C79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35
+	EndGlobalSection
+EndGlobal
