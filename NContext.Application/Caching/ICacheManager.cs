@@ -12,7 +12,9 @@
 //   GNU General Public License for more details.
 //
 //   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.// </copyright>
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+
 // <summary>
 //   Defines a contract from managing the cache provider.
 // </summary>

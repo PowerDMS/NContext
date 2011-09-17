@@ -12,7 +12,9 @@
 //   GNU General Public License for more details.
 //
 //   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.// </copyright>
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+
 // <summary>
 //   Defines an Entity Framework 4 implementation of IUnitOfWork pattern.
 // </summary>
@@ -89,12 +91,21 @@ namespace NContext.Persistence.EntityFramework
         {
             using (var scope = new TransactionScope(_TransactionScopeOption))
             {
-                foreach (var context in ContextContainer.Contexts)
+                try
                 {
-                    context.SaveChanges();
+                    foreach (var context in ContextContainer.Contexts)
+                    {
+                        context.SaveChanges();
+                    }
                 }
-
-                scope.Complete();
+                catch (Exception)
+                {
+                    Rollback();
+                }
+                finally
+                {
+                    scope.Complete();
+                }
             }
         }
 

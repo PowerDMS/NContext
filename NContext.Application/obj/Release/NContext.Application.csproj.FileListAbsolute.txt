@@ -15,6 +15,7 @@ C:\Waking Venture\NContext\NContext.Application\bin\Release\Omu.ValueInjecter.xm
 C:\Waking Venture\NContext\NContext.Application\obj\Release\ResolveAssemblyReference.cache
 C:\Waking Venture\NContext\NContext.Application\obj\Release\NContext.Application.dll
 C:\Waking Venture\NContext\NContext.Application\obj\Release\NContext.Application.pdb
+C:\Projects\NContext\NContext.Application\bin\Release\NContext.Application.xml
 C:\Projects\NContext\NContext.Application\bin\Release\NContext.Application.dll
 C:\Projects\NContext\NContext.Application\bin\Release\NContext.Application.pdb
 C:\Projects\NContext\NContext.Application\bin\Release\Microsoft.ApplicationServer.Caching.Client.dll

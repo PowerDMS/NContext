@@ -285,7 +285,7 @@
             </summary>
             <value>The localization key.</value>
         </member>
-        <member name="T:NContext.Application.Caching.CachingConfiguration">
+        <member name="T:NContext.Application.Caching.CacheConfiguration">
             <summary>
             Defines a configuration class to build the application's <see cref="T:NContext.Application.Caching.CacheManager"/>.
             </summary>
@@ -343,64 +343,64 @@
             </summary>
             <remarks></remarks>
         </member>
-        <member name="M:NContext.Application.Caching.CachingConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+        <member name="M:NContext.Application.Caching.CacheConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
             <summary>
-            Initializes a new instance of the <see cref="T:NContext.Application.Caching.CachingConfiguration"/> class.
+            Initializes a new instance of the <see cref="T:NContext.Application.Caching.CacheConfiguration"/> class.
             </summary>
             <param name="applicationConfigurationBuilder">The application configuration.</param>
             <remarks></remarks>
         </member>
-        <member name="M:NContext.Application.Caching.CachingConfiguration.SetProvider``1(System.Func{``0})">
+        <member name="M:NContext.Application.Caching.CacheConfiguration.SetProvider``1(System.Func{``0})">
             <summary>
             Sets the cache provider.
             </summary>
             <typeparam name="TCacheProvider">The type of the cache provider.</typeparam>
             <param name="cacheProvider">The cache provider.</param>
-            <returns>This <see cref="T:NContext.Application.Caching.CachingConfiguration"/> instance.</returns>
+            <returns>This <see cref="T:NContext.Application.Caching.CacheConfiguration"/> instance.</returns>
         </member>
-        <member name="M:NContext.Application.Caching.CachingConfiguration.SetRegionName(System.String)">
+        <member name="M:NContext.Application.Caching.CacheConfiguration.SetRegionName(System.String)">
             <summary>
             Sets the name of the default region to use.
             </summary>
             <param name="cacheRegionName">Name of the cache region.</param>
-            <returns>This <see cref="T:NContext.Application.Caching.CachingConfiguration"/> instance.</returns>
+            <returns>This <see cref="T:NContext.Application.Caching.CacheConfiguration"/> instance.</returns>
             <remarks></remarks>
         </member>
-        <member name="M:NContext.Application.Caching.CachingConfiguration.SetDefaults(System.DateTimeOffset,System.TimeSpan)">
+        <member name="M:NContext.Application.Caching.CacheConfiguration.SetDefaults(System.DateTimeOffset,System.TimeSpan)">
             <summary>
             Sets the cache configuration settings for cache item expiration.
             </summary>
             <param name="absoluteExpiration">The absolute expiration.</param>
             <param name="slidingExpiration">The sliding expiration.</param>
-            <returns>This <see cref="T:NContext.Application.Caching.CachingConfiguration"/> instance.</returns>
+            <returns>This <see cref="T:NContext.Application.Caching.CacheConfiguration"/> instance.</returns>
             <remarks></remarks>
         </member>
-        <member name="M:NContext.Application.Caching.CachingConfiguration.Setup">
+        <member name="M:NContext.Application.Caching.CacheConfiguration.Setup">
             <summary>
             Sets the application's cache manager using 
             the configuration created from this instance.
             </summary>
             <remarks></remarks>
         </member>
-        <member name="P:NContext.Application.Caching.CachingConfiguration.Provider">
+        <member name="P:NContext.Application.Caching.CacheConfiguration.Provider">
             <summary>
             Gets the provider.
             </summary>
             <remarks></remarks>
         </member>
-        <member name="P:NContext.Application.Caching.CachingConfiguration.RegionName">
+        <member name="P:NContext.Application.Caching.CacheConfiguration.RegionName">
             <summary>
             Gets the name of the region.
             </summary>
             <remarks></remarks>
         </member>
-        <member name="P:NContext.Application.Caching.CachingConfiguration.AbsoluteExpiration">
+        <member name="P:NContext.Application.Caching.CacheConfiguration.AbsoluteExpiration">
             <summary>
             Gets the absolute expiration.
             </summary>
             <remarks></remarks>
         </member>
-        <member name="P:NContext.Application.Caching.CachingConfiguration.SlidingExpiration">
+        <member name="P:NContext.Application.Caching.CacheConfiguration.SlidingExpiration">
             <summary>
             Gets the sliding expiration.
             </summary>
@@ -970,11 +970,11 @@
             <remarks>The CacheManager can be configured to use different storage mechanisms in which to store the cache items.
             Each of these storage mechanisms can throw exceptions particular to their own implementations.</remarks>
         </member>
-        <member name="M:NContext.Application.Caching.CacheManager.#ctor(NContext.Application.Caching.CachingConfiguration)">
+        <member name="M:NContext.Application.Caching.CacheManager.#ctor(NContext.Application.Caching.CacheConfiguration)">
             <summary>
             Initializes a new instance of the <see cref="T:NContext.Application.Caching.CacheManager"/> class.
             </summary>
-            <param name="cachingConfiguration">The caching configuration.</param>
+            <param name="cacheConfiguration">The caching configuration.</param>
             <remarks></remarks>
         </member>
         <member name="M:NContext.Application.Caching.CacheManager.Configure(NContext.Application.Configuration.IApplicationConfiguration)">
@@ -2506,6 +2506,73 @@
             Gets the last instant in time at which this security token is valid.
             </summary>
             <returns>A <see cref="T:System.DateTime"/> that represents the last instant in time at which this security token is valid.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Services.EndpointBinding">
+            <summary>
+            Defines an enumeration of service architecture types.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Services.EndpointBinding.Rest">
+            <summary>
+            Represents a REST service binding.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Services.EndpointBinding.Soap">
+            <summary>
+            Represents a SOAP service binding.
+            </summary>
+        </member>
+        <member name="T:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated">
+            <summary>
+            Defines a role-interface which allows implementors to run when a service route is created.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated.Run(NContext.Application.Services.Routing.Route)">
+            <summary>
+            Runs  specified route.
+            </summary>
+            <param name="route">The route.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Services.Routing.Route">
+            <summary>
+            Defines a class which represents a WCF service route.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Services.Routing.Route.#ctor(System.String,System.Type,System.Type,NContext.Application.Services.EndpointBinding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Services.Routing.Route"/> class.
+            </summary>
+            <param name="routePrefix">The route prefix.</param>
+            <param name="serviceContractType">Type of the service contract.</param>
+            <param name="serviceType">Type of the service.</param>
+            <param name="binding">The binding.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.Binding">
+            <summary>
+            Gets the binding.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.RoutePrefix">
+            <summary>
+            Gets the route prefix.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.ServiceContractType">
+            <summary>
+            Gets the type of the service contract.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.ServiceType">
+            <summary>
+            Gets the type of the service.
+            </summary>
             <remarks></remarks>
         </member>
     </members>

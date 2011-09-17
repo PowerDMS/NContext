@@ -12,7 +12,9 @@
 //   GNU General Public License for more details.
 //
 //   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.// </copyright>
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+
 // <summary>
 //   Implementation of IUnityManager interface for management of a Unity container.
 // </summary>
@@ -97,7 +99,7 @@ namespace NContext.Unity
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks></remarks>
-        public void Configure(IApplicationConfiguration applicationConfiguration)
+        public virtual void Configure(IApplicationConfiguration applicationConfiguration)
         {
             if (!_IsConfigured)
             {
@@ -109,7 +111,6 @@ namespace NContext.Unity
                 
                 applicationConfiguration.CompositionContainer.ComposeExportedValue<IUnityContainer>(_Container);
                 _Container.RegisterInstance<CompositionContainer>(applicationConfiguration.CompositionContainer);
-                _Container.RegisterInstance<IUnityManager>(this);
 
                 applicationConfiguration.CompositionContainer
                                         .GetExports<IConfigureAUnityContainer>()
@@ -124,19 +125,19 @@ namespace NContext.Unity
             }
         }
 
-        private void SetServiceLocator()
+        protected virtual void SetServiceLocator()
         {
             var serviceLocator = new UnityServiceLocator(_Container);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
             EnterpriseLibraryContainer.Current = ServiceLocator.Current;
         }
 
-        private void SetContainerConfigurator(IApplicationConfiguration applicationConfiguration)
+        protected virtual void SetContainerConfigurator(IApplicationConfiguration applicationConfiguration)
         {
-            var elManager = applicationConfiguration.GetComponent<EnterpriseLibraryManager>();
+            var elManager = applicationConfiguration.GetComponent<IEnterpriseLibraryManager>();
             if (elManager != null)
             {
-                elManager.ContainerConfigurator = new UnityContainerConfigurator(_Container);
+                elManager.SetContainerConfigurator(new UnityContainerConfigurator(_Container));
             }
         }
 

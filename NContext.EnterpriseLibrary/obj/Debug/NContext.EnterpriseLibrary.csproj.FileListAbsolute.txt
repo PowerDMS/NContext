@@ -29,3 +29,34 @@ C:\Waking Venture\NContext\NContext.EnterpriseLibrary\bin\Debug\Newtonsoft.Json.
 C:\Waking Venture\NContext\NContext.EnterpriseLibrary\bin\Debug\Newtonsoft.Json.xml
 C:\Waking Venture\NContext\NContext.EnterpriseLibrary\obj\Debug\NContext.EnterpriseLibrary.dll
 C:\Waking Venture\NContext\NContext.EnterpriseLibrary\obj\Debug\NContext.EnterpriseLibrary.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\NContext.EnterpriseLibrary.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\NContext.EnterpriseLibrary.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Security.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Validation.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.Configuration.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.Interception.Configuration.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.Interception.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\NContext.Application.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Omu.ValueInjecter.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\NContext.Application.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Common.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Security.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.EnterpriseLibrary.Validation.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.Configuration.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.Interception.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Microsoft.Practices.Unity.Interception.Configuration.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Omu.ValueInjecter.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Newtonsoft.Json.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Debug\NContext.EnterpriseLibrary.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Debug\NContext.EnterpriseLibrary.pdb

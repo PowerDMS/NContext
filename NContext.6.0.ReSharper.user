@@ -1,10 +1,8 @@
 <Configuration>
   <RecentFiles>
     <RecentFiles>
-      <File id="14AFB8B4-55E9-4127-B477-65B0549D5C79/f:EnterpriseLibraryManager.cs" caret="0" fromTop="0" />
       <File id="C6F06E82-728B-4CFD-86BE-CC5DFA815086/f:UnityManager.cs" caret="4729" fromTop="42" />
       <File id="C6F06E82-728B-4CFD-86BE-CC5DFA815086/f:UnityConfiguration.cs" caret="0" fromTop="0" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="5310" fromTop="55" />
       <File id="B5614B58-83C2-46BE-9463-9E140519298E/d:Configuration/f:ApplicationComponentConfigurationBuilder.cs" caret="0" fromTop="0" />
       <File id="B5614B58-83C2-46BE-9463-9E140519298E/d:Configuration/f:ApplicationConfigurationBuilder.cs" caret="4493" fromTop="6" />
       <File id="B5614B58-83C2-46BE-9463-9E140519298E/d:Caching/f:CacheConfiguration.cs" caret="203" fromTop="2" />
@@ -25,44 +23,43 @@
       <File id="9049AE7F-F9DE-4B72-94F9-4A77DB63792B/d:Properties/f:AssemblyInfo.cs" caret="1347" fromTop="33" />
       <File id="14AFB8B4-55E9-4127-B477-65B0549D5C79/d:Properties/f:AssemblyInfo.cs" caret="1063" fromTop="24" />
       <File id="9049AE7F-F9DE-4B72-94F9-4A77DB63792B/f:EagerLoadingPath.cs" caret="1060" fromTop="19" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:XmlDataContractMediaTypeFormatter.cs" caret="2648" fromTop="56" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:JsonNetMediaTypeFormatter.cs" caret="1269" fromTop="12" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Hosts/f:HttpsConfigurableServiceHostFactory.cs" caret="2775" fromTop="32" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:IHttpHostConfigurationBuilderExtensions.cs" caret="1261" fromTop="25" />
       <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/f:packages.config" caret="105" fromTop="2" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1629" fromTop="31" />
+      <File id="C9F7B439-599F-404C-8203-A67AD5A3FEA9/f:ServiceResponse.cs" caret="1484" fromTop="33" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:XmlDataContractMediaTypeFormatter.cs" caret="2648" fromTop="56" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:JsonNetMediaTypeFormatter.cs" caret="1108" fromTop="19" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="6595" fromTop="37" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="3336" fromTop="15" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/f:ResourceAuthorizationError.cs" caret="104" fromTop="4" />
     </RecentFiles>
     <RecentEdits>
-      <File id="9049AE7F-F9DE-4B72-94F9-4A77DB63792B/f:EagerLoadingStrategy.cs" caret="1471" fromTop="33" />
-      <File id="9049AE7F-F9DE-4B72-94F9-4A77DB63792B/f:EagerLoadingPath.cs" caret="1434" fromTop="32" />
-      <File id="9049AE7F-F9DE-4B72-94F9-4A77DB63792B/f:EagerLoadingPath.cs" caret="1060" fromTop="19" />
-      <File id="B5614B58-83C2-46BE-9463-9E140519298E/d:Specifications/f:AdHocSpecification.cs" caret="1418" fromTop="29" />
-      <File id="C9F7B439-599F-404C-8203-A67AD5A3FEA9/f:GenericRepositoryBase.cs" caret="9386" fromTop="29" />
-      <File id="C9F7B439-599F-404C-8203-A67AD5A3FEA9/f:EfGenericRepository.cs" caret="7116" fromTop="31" />
-      <File id="C9F7B439-599F-404C-8203-A67AD5A3FEA9/f:EfGenericRepository.cs" caret="7731" fromTop="47" />
-      <File id="B5614B58-83C2-46BE-9463-9E140519298E/d:Properties/f:AssemblyInfo.cs" caret="543" fromTop="12" />
-      <File id="C9F7B439-599F-404C-8203-A67AD5A3FEA9/d:Properties/f:AssemblyInfo.cs" caret="570" fromTop="13" />
-      <File id="C6F06E82-728B-4CFD-86BE-CC5DFA815086/d:Properties/f:AssemblyInfo.cs" caret="546" fromTop="11" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Properties/f:AssemblyInfo.cs" caret="551" fromTop="13" />
-      <File id="9049AE7F-F9DE-4B72-94F9-4A77DB63792B/d:Properties/f:AssemblyInfo.cs" caret="548" fromTop="13" />
-      <File id="14AFB8B4-55E9-4127-B477-65B0549D5C79/d:Properties/f:AssemblyInfo.cs" caret="519" fromTop="12" />
-      <File id="14AFB8B4-55E9-4127-B477-65B0549D5C79/d:Properties/f:AssemblyInfo.cs" caret="24" fromTop="0" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:XmlDataContractMediaTypeFormatter.cs" caret="1117" fromTop="18" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:XmlDataContractMediaTypeFormatter.cs" caret="1273" fromTop="24" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:XmlDataContractMediaTypeFormatter.cs" caret="2366" fromTop="32" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:XmlDataContractMediaTypeFormatter.cs" caret="3226" fromTop="47" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:JsonNetMediaTypeFormatter.cs" caret="1533" fromTop="33" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:JsonNetMediaTypeFormatter.cs" caret="1269" fromTop="24" />
       <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:JsonNetMediaTypeFormatter.cs" caret="2409" fromTop="12" />
       <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Formatters/f:JsonNetMediaTypeFormatter.cs" caret="3319" fromTop="28" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Hosts/f:HttpsConfigurableServiceHostFactory.cs" caret="2235" fromTop="19" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Hosts/f:HttpsConfigurableServiceHostFactory.cs" caret="1164" fromTop="2" />
       <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1099" fromTop="8" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1576" fromTop="25" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:IHttpHostConfigurationBuilderExtensions.cs" caret="1487" fromTop="29" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1844" fromTop="39" />
-      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1301" fromTop="19" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1506" fromTop="25" />
       <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/f:packages.config" caret="105" fromTop="2" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="4539" fromTop="62" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="2903" fromTop="20" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="2706" fromTop="12" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="7063" fromTop="39" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="6721" fromTop="33" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="5873" fromTop="19" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="2029" fromTop="28" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="5870" fromTop="29" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="5794" fromTop="26" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="5433" fromTop="17" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="5813" fromTop="32" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="1416" fromTop="30" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="3076" fromTop="33" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="3207" fromTop="37" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1557" fromTop="13" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="3888" fromTop="20" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="4261" fromTop="30" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="2876" fromTop="24" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="4695" fromTop="14" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1186" fromTop="22" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="1628" fromTop="22" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingConfiguration.cs" caret="3336" fromTop="15" />
+      <File id="B59D121B-CEFE-41EA-9B29-5922C0B996D2/d:Routing/f:RoutingManager.cs" caret="6712" fromTop="40" />
     </RecentEdits>
   </RecentFiles>
   <NAntValidationSettings>
@@ -88,14 +85,14 @@
       <Item value="void" priority="95" />
       <Item value="IApplicationConfiguration`0" priority="95" />
       <Item value="applicationConfiguration" priority="194" />
-      <Item value="var" priority="159" />
+      <Item value="var" priority="191" />
       <Item value="_CompositionContainer" priority="31" />
       <Item value="IRunWhenConfigurationIsCompleted`0" priority="63" />
       <Item value="c" priority="31" />
-      <Item value="this" priority="159" />
+      <Item value="this" priority="191" />
       <Item value="public" priority="223" />
       <Item value="ContainerConfigurator" priority="64" />
-      <Item value="new" priority="351" />
+      <Item value="new" priority="480" />
       <Item value="UnityContainerConfigurator" priority="28" />
       <Item value="EnterpriseLibraryContainer`0" priority="31" />
       <Item value="private" priority="223" />
@@ -104,7 +101,7 @@
       <Item value="_IsConfigured" priority="63" />
       <Item value="true" priority="31" />
       <Item value="elManager" priority="63" />
-      <Item value="if" priority="191" />
+      <Item value="if" priority="223" />
       <Item value="null" priority="191" />
       <Item value="T`0" priority="192" />
       <Item value="static" priority="95" />
@@ -137,7 +134,7 @@
       <Item value="Base64FormattingOptions`0" priority="31" />
       <Item value="errors" priority="31" />
       <Item value="ServiceResponse" priority="127" />
-      <Item value="IEnumerable" priority="95" />
+      <Item value="IEnumerable" priority="159" />
       <Item value="ValidationResult`0" priority="31" />
       <Item value="validationResults" priority="97" />
       <Item value="base" priority="95" />
@@ -176,16 +173,36 @@
       <Item value="serviceType" priority="31" />
       <Item value="baseAddresses" priority="31" />
       <Item value="_CacheProvider" priority="31" />
-      <Item value="Net" priority="53" />
-      <Item value="Http" priority="107" />
-      <Item value="using" priority="30" />
-      <Item value="Microsoft" priority="30" />
-      <Item value="ApplicationServer" priority="26" />
-      <Item value="Description" priority="26" />
+      <Item value="Net" priority="80" />
+      <Item value="Http" priority="161" />
+      <Item value="using" priority="61" />
+      <Item value="Microsoft" priority="61" />
+      <Item value="ApplicationServer" priority="53" />
+      <Item value="Description" priority="53" />
       <Item value="Activation" priority="26" />
       <Item value="Configuration" priority="26" />
       <Item value="System" priority="30" />
       <Item value="HttpRequestMessage`0" priority="26" />
+      <Item value="Channels" priority="26" />
+      <Item value="internal" priority="30" />
+      <Item value="class" priority="30" />
+      <Item value="WebApiConfiguration`0" priority="63" />
+      <Item value="WebApiConfiguration" priority="59" />
+      <Item value="Formatters" priority="63" />
+      <Item value="MediaTypeFormatterCollection" priority="28" />
+      <Item value="httpConfiguration" priority="160" />
+      <Item value="_RoutingConfiguration" priority="130" />
+      <Item value="RouteTable`0" priority="31" />
+      <Item value="RouteBase`0" priority="31" />
+      <Item value="else" priority="31" />
+      <Item value="_SoapFactory" priority="31" />
+      <Item value="route" priority="63" />
+      <Item value="serviceRoute" priority="31" />
+      <Item value="WebApiRoute" priority="28" />
+      <Item value="routePrefix" priority="31" />
+      <Item value="_RestFactory" priority="31" />
+      <Item value="HttpServiceHostFactory" priority="28" />
+      <Item value="DelegatingHandler`0" priority="63" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.ComponentModel.Composition.Hosting.CompositionContainer">
       <Item value="GetExportTypes`0" priority="26" />
@@ -196,9 +213,10 @@
       <Item value="Any`1" priority="108" />
       <Item value="Select`2" priority="26" />
       <Item value="Into`1" priority="26" />
+      <Item value="ToList`1" priority="26" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:System.Lazy`1">
-      <Item value="Value" priority="53" />
+      <Item value="Value" priority="107" />
     </ItemStatistics>
     <ItemStatistics item="Qualified:Reverb.Application.Configuration.IRunWhenConfigurationIsCompleted">
       <Item value="Run`0" priority="26" />
@@ -286,6 +304,29 @@
     </ItemStatistics>
     <ItemStatistics item="Qualified:Microsoft.ApplicationServer.Http.Activation.HttpConfigurableServiceHostFactory">
       <Item value="CreateServiceHost`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:Microsoft.ApplicationServer.Http.WebApiConfiguration">
+      <Item value="Formatters" priority="26" />
+      <Item value="CreateInstance" priority="53" />
+      <Item value="MessageHandlerFactory" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Net.Http.Formatting.MediaTypeFormatterCollection">
+      <Item value="AddRange`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NContext.Application.Services.Routing.RoutingConfiguration">
+      <Item value="HttpMessageHandlerFactoryFunc" priority="27" />
+      <Item value="HttpMessageHandlerFactory" priority="27" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:@System.Web.Routing.RouteTable">
+      <Item value="Routes" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:System.Web.Routing.RouteCollection">
+      <Item value="Add`0" priority="26" />
+      <Item value="SetDefaultHttpConfiguration`0" priority="26" />
+    </ItemStatistics>
+    <ItemStatistics item="Qualified:NContext.Application.Services.Routing.Route">
+      <Item value="RoutePrefix" priority="26" />
+      <Item value="ServiceType" priority="26" />
     </ItemStatistics>
   </CompletionStatisticsManager>
 </Configuration>

@@ -30,6 +30,7 @@ C:\Waking Venture\NContext\NContext.EnterpriseLibrary\bin\Release\Newtonsoft.Jso
 C:\Waking Venture\NContext\NContext.EnterpriseLibrary\obj\Release\ResolveAssemblyReference.cache
 C:\Waking Venture\NContext\NContext.EnterpriseLibrary\obj\Release\NContext.EnterpriseLibrary.dll
 C:\Waking Venture\NContext\NContext.EnterpriseLibrary\obj\Release\NContext.EnterpriseLibrary.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.EnterpriseLibrary.xml
 C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.EnterpriseLibrary.dll
 C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.EnterpriseLibrary.pdb
 C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll

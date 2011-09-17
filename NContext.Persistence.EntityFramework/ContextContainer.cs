@@ -12,7 +12,9 @@
 //   GNU General Public License for more details.
 //
 //   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.// </copyright>
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+
 // <summary>
 //   Defines an implementation of IContextContainer which is responsible for ensuring that only one instance 
 //   of a given <see cref="DbContext"/> exists within a <see cref="IUnitOfWork"/>, per thread.

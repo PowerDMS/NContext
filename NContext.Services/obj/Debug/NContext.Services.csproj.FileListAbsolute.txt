@@ -29,3 +29,36 @@ C:\Waking Venture\NContext\NContext.Services\bin\Debug\Newtonsoft.Json.pdb
 C:\Waking Venture\NContext\NContext.Services\bin\Debug\Newtonsoft.Json.xml
 C:\Waking Venture\NContext\NContext.Services\obj\Debug\NContext.Services.dll
 C:\Waking Venture\NContext\NContext.Services\obj\Debug\NContext.Services.pdb
+C:\Projects\NContext\NContext.Services\bin\Debug\NContext.Services.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\NContext.Services.pdb
+C:\Projects\NContext\NContext.Services\bin\Debug\EntityDataModel.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.ApplicationServer.Http.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.ApplicationServer.HttpEnhancements.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Data.Spatial.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Json.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Net.Http.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Net.Http.Formatting.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Net.Http.Formatting.OData.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Practices.ServiceLocation.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Runtime.Serialization.Internal.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Server.Common.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.ServiceModel.Internal.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\NContext.Application.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Omu.ValueInjecter.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\System.Data.OData.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\Newtonsoft.Json.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\NContext.Application.pdb
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.ApplicationServer.Http.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.ApplicationServer.HttpEnhancements.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Json.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Net.Http.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Net.Http.Formatting.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Net.Http.Formatting.OData.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Practices.ServiceLocation.pdb
+C:\Projects\NContext\NContext.Services\bin\Debug\Microsoft.Practices.ServiceLocation.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Omu.ValueInjecter.xml
+C:\Projects\NContext\NContext.Services\bin\Debug\Newtonsoft.Json.pdb
+C:\Projects\NContext\NContext.Services\bin\Debug\Newtonsoft.Json.xml
+C:\Projects\NContext\NContext.Services\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\NContext\NContext.Services\obj\Debug\NContext.Services.dll
+C:\Projects\NContext\NContext.Services\obj\Debug\NContext.Services.pdb

@@ -30,7 +30,6 @@ C:\Waking Venture\NContext\NContext.Services\bin\Release\Newtonsoft.Json.xml
 C:\Waking Venture\NContext\NContext.Services\obj\Release\ResolveAssemblyReference.cache
 C:\Waking Venture\NContext\NContext.Services\obj\Release\NContext.Services.dll
 C:\Waking Venture\NContext\NContext.Services\obj\Release\NContext.Services.pdb
-C:\Projects\NContext\NContext.Services\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Services\bin\Release\NContext.Services.xml
 C:\Projects\NContext\NContext.Services\bin\Release\NContext.Services.dll
 C:\Projects\NContext\NContext.Services\bin\Release\NContext.Services.pdb
@@ -63,5 +62,6 @@ C:\Projects\NContext\NContext.Services\bin\Release\Microsoft.Practices.ServiceLo
 C:\Projects\NContext\NContext.Services\bin\Release\Omu.ValueInjecter.xml
 C:\Projects\NContext\NContext.Services\bin\Release\Newtonsoft.Json.pdb
 C:\Projects\NContext\NContext.Services\bin\Release\Newtonsoft.Json.xml
+C:\Projects\NContext\NContext.Services\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Services\obj\Release\NContext.Services.dll
 C:\Projects\NContext\NContext.Services\obj\Release\NContext.Services.pdb

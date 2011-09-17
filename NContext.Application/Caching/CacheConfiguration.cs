@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CachingConfiguration.cs">
+// <copyright file="CacheConfiguration.cs">
 //   This file is part of NContext.
 //   NContext is free software: you can redistribute it and/or modify
 //   it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ namespace NContext.Application.Caching
     /// Defines a configuration class to build the application's <see cref="CacheManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class CachingConfiguration : ApplicationComponentConfigurationBase
+    public class CacheConfiguration : ApplicationComponentConfigurationBase
     {
         #region Fields
 
@@ -46,11 +46,11 @@ namespace NContext.Application.Caching
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CachingConfiguration"/> class.
+        /// Initializes a new instance of the <see cref="CacheConfiguration"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public CachingConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public CacheConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
         }
@@ -116,8 +116,8 @@ namespace NContext.Application.Caching
         /// </summary>
         /// <typeparam name="TCacheProvider">The type of the cache provider.</typeparam>
         /// <param name="cacheProvider">The cache provider.</param>
-        /// <returns>This <see cref="CachingConfiguration"/> instance.</returns>
-        public CachingConfiguration SetProvider<TCacheProvider>(Func<TCacheProvider> cacheProvider) where TCacheProvider : ObjectCache
+        /// <returns>This <see cref="CacheConfiguration"/> instance.</returns>
+        public CacheConfiguration SetProvider<TCacheProvider>(Func<TCacheProvider> cacheProvider) where TCacheProvider : ObjectCache
         {
             _Provider = cacheProvider;
 
@@ -128,9 +128,9 @@ namespace NContext.Application.Caching
         /// Sets the name of the default region to use.
         /// </summary>
         /// <param name="cacheRegionName">Name of the cache region.</param>
-        /// <returns>This <see cref="CachingConfiguration"/> instance.</returns>
+        /// <returns>This <see cref="CacheConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public CachingConfiguration SetRegionName(String cacheRegionName)
+        public CacheConfiguration SetRegionName(String cacheRegionName)
         {
             _RegionName = cacheRegionName;
 
@@ -142,9 +142,9 @@ namespace NContext.Application.Caching
         /// </summary>
         /// <param name="absoluteExpiration">The absolute expiration.</param>
         /// <param name="slidingExpiration">The sliding expiration.</param>
-        /// <returns>This <see cref="CachingConfiguration"/> instance.</returns>
+        /// <returns>This <see cref="CacheConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public CachingConfiguration SetDefaults(DateTimeOffset absoluteExpiration, TimeSpan slidingExpiration)
+        public CacheConfiguration SetDefaults(DateTimeOffset absoluteExpiration, TimeSpan slidingExpiration)
         {
             _SlidingExpiration = slidingExpiration;
             _AbsoluteExpiration = absoluteExpiration;

@@ -12,7 +12,9 @@
 //   GNU General Public License for more details.
 //
 //   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.// </copyright>
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+
 // <summary>
 //   Defines a default ICacheManager implementation.
 // </summary>
@@ -41,7 +43,7 @@ namespace NContext.Application.Caching
 
         private static Boolean _IsConfigured;
 
-        private readonly CachingConfiguration _CachingConfiguration;
+        private readonly CacheConfiguration _CacheConfiguration;
 
         #endregion
 
@@ -50,16 +52,16 @@ namespace NContext.Application.Caching
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheManager"/> class.
         /// </summary>
-        /// <param name="cachingConfiguration">The caching configuration.</param>
+        /// <param name="cacheConfiguration">The caching configuration.</param>
         /// <remarks></remarks>
-        public CacheManager(CachingConfiguration cachingConfiguration)
+        public CacheManager(CacheConfiguration cacheConfiguration)
         {
-            if (cachingConfiguration == null)
+            if (cacheConfiguration == null)
             {
-                throw new ArgumentNullException("cachingConfiguration");
+                throw new ArgumentNullException("cacheConfiguration");
             }
 
-            _CachingConfiguration = cachingConfiguration;
+            _CacheConfiguration = cacheConfiguration;
         }
 
         #endregion
@@ -124,9 +126,9 @@ namespace NContext.Application.Caching
         {
             if (!_IsConfigured)
             {
-                _CacheProvider = new Lazy<ObjectCache>(_CachingConfiguration.Provider);
-                _DefaultCachItemAbsoluteExpiration = _CachingConfiguration.AbsoluteExpiration;
-                _DefaultCacheItemSlidingExpiration = _CachingConfiguration.SlidingExpiration;
+                _CacheProvider = new Lazy<ObjectCache>(_CacheConfiguration.Provider);
+                _DefaultCachItemAbsoluteExpiration = _CacheConfiguration.AbsoluteExpiration;
+                _DefaultCacheItemSlidingExpiration = _CacheConfiguration.SlidingExpiration;
                 _IsConfigured = true;
             }
         }

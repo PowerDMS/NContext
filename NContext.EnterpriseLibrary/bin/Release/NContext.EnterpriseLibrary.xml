@@ -652,6 +652,52 @@
             </summary>
             <remarks></remarks>
         </member>
+        <member name="T:NContext.Application.EnterpriseLibrary.EnterpriseLibraryManager">
+            <summary>
+            Defines an implementation of IEnterpriseLibraryManager
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.EnterpriseLibrary.IEnterpriseLibraryManager">
+            <summary>
+            Defines an application component for Microsoft Enterprise Library support.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.EnterpriseLibrary.IEnterpriseLibraryManager.SetContainerConfigurator``1(``0)">
+            <summary>
+            Sets the application's container configurator.
+            </summary>
+            <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
+            <param name="containerConfigurator">The container configurator.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.EnterpriseLibrary.IEnterpriseLibraryManager.ContainerConfigurator">
+            <summary>
+            Gets the application's container configurator.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.EnterpriseLibrary.EnterpriseLibraryManager.SetContainerConfigurator``1(``0)">
+            <summary>
+            Sets the application's container configurator.
+            </summary>
+            <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
+            <param name="containerConfigurator">The container configurator.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.EnterpriseLibrary.EnterpriseLibraryManager.ContainerConfigurator">
+            <summary>
+            Gets the application's container configurator.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.EnterpriseLibrary.EnterpriseLibraryManager.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <remarks></remarks>
+        </member>
         <member name="T:NContext.Application.Security.Cryptography.CryptographyConfiguration">
             <summary>
             Defines a configuration class to build the application's <see cref="T:NContext.Application.Security.Cryptography.CryptographyManager"/>.

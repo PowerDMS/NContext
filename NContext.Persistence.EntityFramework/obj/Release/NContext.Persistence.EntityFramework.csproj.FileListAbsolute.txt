@@ -20,6 +20,7 @@ C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\obj\Release\NCon
 C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\obj\Release\NContext.Persistence.EntityFramework.pdb
 C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.xml
 C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.xml
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.xml
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.dll
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.pdb
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\EntityFramework.dll

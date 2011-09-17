@@ -12,7 +12,9 @@
 //   GNU General Public License for more details.
 //
 //   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.// </copyright>
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+
 // <summary>
 //   Defines an application-level manager for configuring WCF service routes.
 // </summary>
@@ -114,7 +116,7 @@ namespace NContext.Application.Services.Routing
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="routePrefix">The route prefix.</param>
         /// <remarks></remarks>
-        public void RegisterServiceRoute<TServiceContract, TService>(String routePrefix)
+        public virtual void RegisterServiceRoute<TServiceContract, TService>(String routePrefix)
         {
             if ((_RoutingConfiguration.EndpointBinding & EndpointBinding.Rest) == EndpointBinding.Rest)
             {
@@ -126,6 +128,7 @@ namespace NContext.Application.Services.Routing
 
             if ((_RoutingConfiguration.EndpointBinding & EndpointBinding.Soap) == EndpointBinding.Soap)
             {
+                // TODO: (DG) Add support for customizing soap endpoint postfix address. (/soap)
                 _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, "/soap"), 
                                                           typeof(TServiceContract), 
                                                           typeof(TService), 

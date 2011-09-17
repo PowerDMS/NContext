@@ -12,6 +12,7 @@ C:\Waking Venture\NContext\NContext.Persistence\obj\Release\ResolveAssemblyRefer
 C:\Waking Venture\NContext\NContext.Persistence\obj\Release\NContext.Persistence.dll
 C:\Waking Venture\NContext\NContext.Persistence\obj\Release\NContext.Persistence.pdb
 C:\Waking Venture\NContext\NContext.Persistence\bin\Release\NContext.Persistence.xml
+C:\Projects\NContext\NContext.Persistence\bin\Release\NContext.Persistence.xml
 C:\Projects\NContext\NContext.Persistence\bin\Release\NContext.Persistence.dll
 C:\Projects\NContext\NContext.Persistence\bin\Release\NContext.Persistence.pdb
 C:\Projects\NContext\NContext.Persistence\bin\Release\NContext.Application.dll
