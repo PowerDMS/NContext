@@ -205,6 +205,8 @@ namespace NContext.Application.Security
                 _TokenSlidingExpiration = _SecurityConfiguration.TokenSlidingExpiration;
                 _TokenInitialLifespan = _SecurityConfiguration.TokenInitialLifespan;
 
+//                Ignore below for now until OAuth2 and WIF support has been added.
+
 //                unityContainer.RegisterType<IAuthorizationProviderInstrumentationProvider, NullAuthorizationProviderInstrumentationProvider>();
 //                unityContainer.RegisterType<IAuthorizationProvider, PublicAuthorizationProvider>(NetworkAuthorization.Public.ToDescriptionValue());
 //                unityContainer.RegisterType<IAuthorizationProvider, ImplicitAuthorizationProvider>(NetworkAuthorization.Implicit.ToDescriptionValue());
