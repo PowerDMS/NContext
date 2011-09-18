@@ -129,10 +129,6 @@
     <Compile Include="Configuration\SecureDirectoryCatalog.cs" />
     <Compile Include="Security\SecurityConfiguration.cs" />
     <Compile Include="Security\SecurityManager.cs" />
-    <Compile Include="Services\EndpointBinding.cs" />
-    <Compile Include="Services\IDto.cs" />
-    <Compile Include="Services\Routing\IRunWhenAServiceRouteIsCreated.cs" />
-    <Compile Include="Services\Routing\Route.cs" />
     <Compile Include="Specifications\AndSpecification.cs" />
     <Compile Include="Specifications\CompositeSpecification.cs" />
     <Compile Include="Specifications\AdHocSpecification.cs" />
@@ -183,7 +179,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
   <ItemGroup>
   </ItemGroup>
   <ItemGroup>

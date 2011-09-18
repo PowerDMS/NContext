@@ -111,8 +111,11 @@
     <Compile Include="Formatters\JsonNetMediaTypeFormatter.cs" />
     <Compile Include="Formatters\XmlDataContractMediaTypeFormatter.cs" />
     <Compile Include="ResourceAuthorizationError.cs" />
+    <Compile Include="EndpointBinding.cs" />
     <Compile Include="Routing\IConfigureServiceRoutes.cs" />
     <Compile Include="Routing\IRoutingManager.cs" />
+    <Compile Include="Routing\IRunWhenAServiceRouteIsCreated.cs" />
+    <Compile Include="Routing\Route.cs" />
     <Compile Include="Routing\RoutingConfiguration.cs" />
     <Compile Include="Routing\RoutingManager.cs" />
   </ItemGroup>

@@ -24,8 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-using NContext.Application.Services;
-
 namespace NContext.Application.ErrorHandling
 {
     /// <summary>
@@ -33,7 +31,7 @@ namespace NContext.Application.ErrorHandling
     /// </summary>
     /// <remarks></remarks>
     [DataContract]
-    public class Error : IDto
+    public class Error
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Error"/> class.

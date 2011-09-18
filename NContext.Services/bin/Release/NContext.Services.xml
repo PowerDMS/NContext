@@ -780,5 +780,72 @@
             </summary>
             <remarks></remarks>
         </member>
+        <member name="T:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated">
+            <summary>
+            Defines a role-interface which allows implementors to run when a service route is created.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated.Run(NContext.Application.Services.Routing.Route)">
+            <summary>
+            Runs  specified route.
+            </summary>
+            <param name="route">The route.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Services.Routing.Route">
+            <summary>
+            Defines a class which represents a WCF service route.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Services.Routing.Route.#ctor(System.String,System.Type,System.Type,NContext.Application.Services.EndpointBinding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Services.Routing.Route"/> class.
+            </summary>
+            <param name="routePrefix">The route prefix.</param>
+            <param name="serviceContractType">Type of the service contract.</param>
+            <param name="serviceType">Type of the service.</param>
+            <param name="binding">The binding.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.Binding">
+            <summary>
+            Gets the binding.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.RoutePrefix">
+            <summary>
+            Gets the route prefix.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.ServiceContractType">
+            <summary>
+            Gets the type of the service contract.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.ServiceType">
+            <summary>
+            Gets the type of the service.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Application.Services.EndpointBinding">
+            <summary>
+            Defines an enumeration of service architecture types.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Services.EndpointBinding.Rest">
+            <summary>
+            Represents a REST service binding.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Services.EndpointBinding.Soap">
+            <summary>
+            Represents a SOAP service binding.
+            </summary>
+        </member>
     </members>
 </doc>

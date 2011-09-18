@@ -33,7 +33,6 @@ C:\Waking Venture\NContext\NContext.Unity\obj\Release\ResolveAssemblyReference.c
 C:\Waking Venture\NContext\NContext.Unity\obj\Release\NContext.Unity.dll
 C:\Waking Venture\NContext\NContext.Unity\obj\Release\NContext.Unity.pdb
 C:\Waking Venture\NContext\NContext.Unity\bin\Release\NContext.EnterpriseLibrary.xml
-C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Unity.xml
 C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Unity.dll
 C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Unity.pdb
 C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLibrary.Common.dll

@@ -26,7 +26,6 @@ using System.Linq;
 
 using NContext.Application.ErrorHandling;
 using NContext.Application.Extensions;
-using NContext.Application.Services;
 
 using Newtonsoft.Json;
 
@@ -165,7 +164,7 @@ namespace NContext.Application
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual ResponseTransferObjectBase<TDto> Translate<TDto>()
-            where TDto : class, IDto, new()
+            where TDto : class, new()
         {
             return Translate<TDto, LoopValueInjection>();
         }
@@ -179,7 +178,7 @@ namespace NContext.Application
         /// <returns></returns>
         /// <remarks></remarks>
         public virtual ResponseTransferObjectBase<TDto> Translate<TDto, TValueInjection>()
-            where TDto : class, IDto, new()
+            where TDto : class, new()
             where TValueInjection : IValueInjection, new()
         {
             if (Errors.Any())

@@ -649,7 +649,7 @@
             A combination of <see cref="M:NContext.Application.ResponseTransferObjectBase`1.Bind``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}})"/> and <see cref="M:NContext.Application.ResponseTransferObjectBase`1.Catch(System.Action{System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error}})"/>. 
             It will invoke data function if there is any data, or errors function if there any errors exist.
             </summary>
-            <typeparam name="T2">The type of the next <see cref="T:NContext.Application.Services.IDto"/> to return.</typeparam>
+            <typeparam name="T2">The type of the next <see cref="!:IDto"/> to return.</typeparam>
             <param name="data">The function to call if there is data and there are no errors.</param>
             <param name="errors">The function to call if there are any errors.</param>
             <returns>Instance of <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.</returns>
@@ -672,7 +672,7 @@
         </member>
         <member name="M:NContext.Application.ResponseTransferObjectBase`1.Translate``1">
             <summary>
-            Translates the data, if any, into the specified <see cref="T:NContext.Application.Services.IDto"/> type using <see cref="T:Omu.ValueInjecter.LoopValueInjection"/>.
+            Translates the data, if any, into the specified <see cref="!:IDto"/> type using <see cref="T:Omu.ValueInjecter.LoopValueInjection"/>.
             </summary>
             <typeparam name="TDto">The type of the dto.</typeparam>
             <returns></returns>
@@ -680,7 +680,7 @@
         </member>
         <member name="M:NContext.Application.ResponseTransferObjectBase`1.Translate``2">
             <summary>
-            Translates the data, if any, into the specified <see cref="T:NContext.Application.Services.IDto"/> type using
+            Translates the data, if any, into the specified <see cref="!:IDto"/> type using
             the specified <see cref="T:Omu.ValueInjecter.IValueInjection"/>.
             </summary>
             <typeparam name="TDto">The type of the dto.</typeparam>
@@ -1363,11 +1363,6 @@
             Defines a data-transfer-object which represents an error.
             </summary>
             <remarks></remarks>
-        </member>
-        <member name="T:NContext.Application.Services.IDto">
-            <summary>
-            Defines the marker interface for data-transfer objects.
-            </summary>
         </member>
         <member name="M:NContext.Application.ErrorHandling.Error.#ctor(System.String,System.Collections.Generic.IEnumerable{System.String})">
             <summary>
@@ -2506,73 +2501,6 @@
             Gets the last instant in time at which this security token is valid.
             </summary>
             <returns>A <see cref="T:System.DateTime"/> that represents the last instant in time at which this security token is valid.</returns>
-            <remarks></remarks>
-        </member>
-        <member name="T:NContext.Application.Services.EndpointBinding">
-            <summary>
-            Defines an enumeration of service architecture types.
-            </summary>
-        </member>
-        <member name="F:NContext.Application.Services.EndpointBinding.Rest">
-            <summary>
-            Represents a REST service binding.
-            </summary>
-        </member>
-        <member name="F:NContext.Application.Services.EndpointBinding.Soap">
-            <summary>
-            Represents a SOAP service binding.
-            </summary>
-        </member>
-        <member name="T:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated">
-            <summary>
-            Defines a role-interface which allows implementors to run when a service route is created.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated.Run(NContext.Application.Services.Routing.Route)">
-            <summary>
-            Runs  specified route.
-            </summary>
-            <param name="route">The route.</param>
-            <remarks></remarks>
-        </member>
-        <member name="T:NContext.Application.Services.Routing.Route">
-            <summary>
-            Defines a class which represents a WCF service route.
-            </summary>
-        </member>
-        <member name="M:NContext.Application.Services.Routing.Route.#ctor(System.String,System.Type,System.Type,NContext.Application.Services.EndpointBinding)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Application.Services.Routing.Route"/> class.
-            </summary>
-            <param name="routePrefix">The route prefix.</param>
-            <param name="serviceContractType">Type of the service contract.</param>
-            <param name="serviceType">Type of the service.</param>
-            <param name="binding">The binding.</param>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.Binding">
-            <summary>
-            Gets the binding.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.RoutePrefix">
-            <summary>
-            Gets the route prefix.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.ServiceContractType">
-            <summary>
-            Gets the type of the service contract.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.ServiceType">
-            <summary>
-            Gets the type of the service.
-            </summary>
             <remarks></remarks>
         </member>
     </members>

@@ -29,7 +29,6 @@ using System.Runtime.Serialization;
 using NContext.Application;
 using NContext.Application.Extensions;
 using NContext.Application.ErrorHandling;
-using NContext.Application.Services;
 using NContext.Application.Validation;
 
 namespace NContext.Persistence.EntityFramework
@@ -174,7 +173,7 @@ namespace NContext.Persistence.EntityFramework
         /// A combination of <see cref="Bind{T2}"/> and <see cref="ResponseTransferObjectBase{T}.Catch"/>. 
         /// It will invoke data function if there is any data, or errors function if there any errors exist.
         /// </summary>
-        /// <typeparam name="T2">The type of the next <see cref="IDto"/> to return.</typeparam>
+        /// <typeparam name="T2">The type of the next data transfer object to return.</typeparam>
         /// <param name="data">The function to call if there is data and there are no errors.</param>
         /// <param name="errors">The function to call if there are any errors.</param>
         /// <returns>Instance of <see cref="ResponseTransferObjectBase{T}"/>.</returns>
