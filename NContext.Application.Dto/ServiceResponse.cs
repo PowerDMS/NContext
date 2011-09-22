@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   Defines a service response implementation of ResponseTransferObjectBase<T>.
 // </summary>
@@ -22,16 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data.Entity.Validation;
 using System.Linq;
 using System.Runtime.Serialization;
 
-using NContext.Application;
-using NContext.Application.Extensions;
-using NContext.Application.ErrorHandling;
-using NContext.Application.Validation;
-
-namespace NContext.Persistence.EntityFramework
+namespace NContext.Application.Dto
 {
     /// <summary>
     /// Defines a service response implementation of <see cref="ResponseTransferObjectBase{T}"/>.
@@ -42,46 +36,6 @@ namespace NContext.Persistence.EntityFramework
     public class ServiceResponse<T> : ResponseTransferObjectBase<T>
     {
         #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="error">The error.</param>
-        /// <remarks></remarks>
-        public ServiceResponse(ErrorBase error)
-            : this(new List<ErrorBase> { error })
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="errors">The errors.</param>
-        /// <remarks></remarks>
-        public ServiceResponse(IEnumerable<ErrorBase> errors)
-            : base(TranslateServiceErrorBaseToErrorCollection(errors))
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="validationResult">The validation result.</param>
-        /// <remarks></remarks>
-        public ServiceResponse(DbEntityValidationResult validationResult)
-            : this(new List<DbEntityValidationResult> { validationResult })
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="validationResults">The validation results.</param>
-        /// <remarks></remarks>
-        public ServiceResponse(IEnumerable<DbEntityValidationResult> validationResults)
-            : base(TranslateDbEntityValidationResultToValidationResults(validationResults))
-        {
-        }
         
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
@@ -96,14 +50,19 @@ namespace NContext.Persistence.EntityFramework
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
         /// </summary>
-        /// <param name="data">The data.</param>
+        /// <param name="data">The response data.</param>
         /// <remarks></remarks>
         public ServiceResponse(IEnumerable<T> data)
             : base(data)
         {
         }
-        
-        private ServiceResponse(IEnumerable<Error> errors)
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ServiceResponse&lt;T&gt;"/> class.
+        /// </summary>
+        /// <param name="errors">The response errors.</param>
+        /// <remarks></remarks>
+        public ServiceResponse(IEnumerable<Error> errors)
             : base(errors)
         {
         }
@@ -122,25 +81,6 @@ namespace NContext.Persistence.EntityFramework
             {
                 return new ServiceResponse<T>(Enumerable.Empty<T>());
             }
-        }
-
-        private static IEnumerable<Error> TranslateServiceErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
-        {
-            return errors.ToMaybe()
-                         .Bind(e => e.Select(error => new Error(error.Name, new List<String> { error.Message })).ToMaybe())
-                         .FromMaybe(Enumerable.Empty<Error>());
-        }
-
-        private static IEnumerable<ValidationError> TranslateDbEntityValidationResultToValidationResults(IEnumerable<DbEntityValidationResult> validationResults)
-        {
-            return validationResults.ToMaybe()
-                                    .Bind(results =>
-                                          results.Select(validationResult =>
-                                                         new ValidationError(validationResult.Entry.Entity.GetType(),
-                                                                             validationResult.ValidationErrors
-                                                                                             .Select(validationError =>
-                                                                                                     validationError.ErrorMessage))).ToMaybe())
-                                    .FromMaybe(Enumerable.Empty<ValidationError>());
         }
 
         #endregion

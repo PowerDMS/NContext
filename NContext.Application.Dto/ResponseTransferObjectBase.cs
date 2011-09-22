@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   Defines an abstract, composable, response-transfer-object.
 // </summary>
@@ -24,14 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using NContext.Application.ErrorHandling;
-using NContext.Application.Extensions;
-
-using Newtonsoft.Json;
-
-using Omu.ValueInjecter;
-
-namespace NContext.Application
+namespace NContext.Application.Dto
 {
     /// <summary>
     /// Defines an abstract, composable, response-transfer-object.
@@ -87,7 +80,6 @@ namespace NContext.Application
         /// <param name="data">The data.</param>
         /// <param name="errors">The errors.</param>
         /// <remarks></remarks>
-        [JsonConstructor]
         private ResponseTransferObjectBase(IEnumerable<T> data, IEnumerable<Error> errors)
         {
             Data = (data != null) ? data.ToList() : Enumerable.Empty<T>();
@@ -120,7 +112,7 @@ namespace NContext.Application
         /// A combination of <see cref="Bind{T2}"/> and <see cref="ResponseTransferObjectBase{T}.Catch"/>. 
         /// It will invoke data function if there is any data, or errors function if there any errors exist.
         /// </summary>
-        /// <typeparam name="T2">The type of the next <see cref="IDto"/> to return.</typeparam>
+        /// <typeparam name="T2">The type of the next data transfer object to return.</typeparam>
         /// <param name="data">The function to call if there is data and there are no errors.</param>
         /// <param name="errors">The function to call if there are any errors.</param>
         /// <returns>Instance of <see cref="ResponseTransferObjectBase{T}"/>.</returns>
@@ -155,38 +147,6 @@ namespace NContext.Application
             }
 
             return this;
-        }
-
-        /// <summary>
-        /// Translates the data, if any, into the specified <see cref="IDto"/> type using <see cref="LoopValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual ResponseTransferObjectBase<TDto> Translate<TDto>()
-            where TDto : class, new()
-        {
-            return Translate<TDto, LoopValueInjection>();
-        }
-
-        /// <summary>
-        /// Translates the data, if any, into the specified <see cref="IDto"/> type using
-        /// the specified <see cref="IValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual ResponseTransferObjectBase<TDto> Translate<TDto, TValueInjection>()
-            where TDto : class, new()
-            where TValueInjection : IValueInjection, new()
-        {
-            if (Errors.Any())
-            {
-                return this as ResponseTransferObjectBase<TDto>;
-            }
-
-            return Activator.CreateInstance(GetType(), Data.Select(data => Activator.CreateInstance(typeof(TDto)).InjectInto<TDto, TValueInjection>(data))) as ResponseTransferObjectBase<TDto>;
         }
         
         #region Implementation of IDisposable

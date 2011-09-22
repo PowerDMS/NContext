@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   Defines a data-transfer-object which represents an error.
 // </summary>
@@ -24,7 +24,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace NContext.Application.ErrorHandling
+namespace NContext.Application.Dto
 {
     /// <summary>
     /// Defines a data-transfer-object which represents an error.

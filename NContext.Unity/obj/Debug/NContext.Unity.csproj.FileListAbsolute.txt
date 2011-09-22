@@ -64,3 +64,5 @@ C:\Projects\NContext\NContext.Unity\bin\Debug\Microsoft.Practices.EnterpriseLibr
 C:\Projects\NContext\NContext.Unity\obj\Debug\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Unity\obj\Debug\NContext.Unity.dll
 C:\Projects\NContext\NContext.Unity\obj\Debug\NContext.Unity.pdb
+C:\Projects\NContext\NContext.Unity\bin\Debug\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Unity\bin\Debug\NContext.Application.Public.pdb

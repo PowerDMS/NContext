@@ -4,6 +4,32 @@
         <name>NContext.Persistence.EntityFramework</name>
     </assembly>
     <members>
+        <member name="T:NContext.Persistence.EntityFramework.UnitOfWorkController">
+            <summary>
+            Defines a controller for management of active units of work.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.UnitOfWorkController.AddUnitOfWork(NContext.Persistence.EntityFramework.IUnitOfWork)">
+            <summary>
+            Adds the unit of work.
+            </summary>
+            <param name="unitOfWork">The unit of work.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.UnitOfWorkController.Retain">
+            <summary>
+            Retains this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.UnitOfWorkController.DisposeUnitOfWork">
+            <summary>
+            Disposes the unit of work.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
         <member name="P:NContext.Persistence.EntityFramework.UnitOfWorkController.AmbientUnitOfWork">
             <summary>
             Gets the ambient <see cref="T:NContext.Persistence.EntityFramework.IUnitOfWork"/>.
@@ -76,6 +102,13 @@
             exists at any given point, per thread. This is done through Unity LifetimeManagers.
             </summary>
         </member>
+        <member name="M:NContext.Persistence.EntityFramework.IContextContainer.GetDefaultContext">
+            <summary>
+            Gets the application's default context.
+            </summary>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
         <member name="M:NContext.Persistence.EntityFramework.IContextContainer.GetContext``1">
             <summary>
             Gets or creates the <typeparamref name="TContext"/> context.
@@ -89,85 +122,18 @@
             Gets all contexts.
             </summary>
         </member>
-        <member name="T:NContext.Persistence.EntityFramework.ServiceResponse`1">
-            <summary>
-            Defines a service response implementation of <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.
-            </summary>
-            <typeparam name="T">The type of the data.</typeparam>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.#ctor(NContext.Application.ErrorHandling.ErrorBase)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/> class.
-            </summary>
-            <param name="error">The error.</param>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.#ctor(System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.ErrorBase})">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/> class.
-            </summary>
-            <param name="errors">The errors.</param>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.#ctor(System.Data.Entity.Validation.DbEntityValidationResult)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/> class.
-            </summary>
-            <param name="validationResult">The validation result.</param>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.#ctor(System.Collections.Generic.IEnumerable{System.Data.Entity.Validation.DbEntityValidationResult})">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/> class.
-            </summary>
-            <param name="validationResults">The validation results.</param>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.#ctor(`0)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/> class.
-            </summary>
-            <param name="data">The data.</param>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/> class.
-            </summary>
-            <param name="data">The data.</param>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.Bind``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}})">
-            <summary>
-            Binds the specified <see cref="T:System.Collections.Generic.IEnumerable`1"/> into the function which returns the specified <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/>.
-            </summary>
-            <typeparam name="T2">The type of the next <see cref="!:T"/> to return.</typeparam>
-            <param name="func">The func.</param>
-            <returns>Instance of <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/>.</returns>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Persistence.EntityFramework.ServiceResponse`1.Either``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}},System.Func{System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error},NContext.Application.ResponseTransferObjectBase{``0}})">
-            <summary>
-            A combination of <see cref="M:NContext.Persistence.EntityFramework.ServiceResponse`1.Bind``1(System.Func{System.Collections.Generic.IEnumerable{`0},NContext.Application.ResponseTransferObjectBase{``0}})"/> and <see cref="M:NContext.Application.ResponseTransferObjectBase`1.Catch(System.Action{System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.Error}})"/>. 
-            It will invoke data function if there is any data, or errors function if there any errors exist.
-            </summary>
-            <typeparam name="T2">The type of the next data transfer object to return.</typeparam>
-            <param name="data">The function to call if there is data and there are no errors.</param>
-            <param name="errors">The function to call if there are any errors.</param>
-            <returns>Instance of <see cref="T:NContext.Application.ResponseTransferObjectBase`1"/>.</returns>
-        </member>
-        <member name="P:NContext.Persistence.EntityFramework.ServiceResponse`1.Empty">
-            <summary>
-            Gets an empty <see cref="T:NContext.Persistence.EntityFramework.ServiceResponse`1"/>.
-            </summary>
-            <remarks></remarks>
-        </member>
         <member name="T:NContext.Persistence.EntityFramework.ContextContainer">
             <summary>
             Defines an implementation of IContextContainer which is responsible for ensuring that only one instance 
             of a given <see cref="T:System.Data.Entity.DbContext"/> exists within a <see cref="T:NContext.Persistence.EntityFramework.IUnitOfWork"/>, per thread.
             </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.ContextContainer.GetDefaultContext">
+            <summary>
+            Gets the application's default context.
+            </summary>
+            <returns>Instance of the application's default DbContext.</returns>
             <remarks></remarks>
         </member>
         <member name="M:NContext.Persistence.EntityFramework.ContextContainer.GetContext``1">
@@ -475,6 +441,70 @@
             <summary>
             Gets the context container.
             </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1">
+            <summary>
+            Defines an Entity Framework <see cref="T:NContext.Application.Dto.ServiceResponse`1"/> adapter.
+            </summary>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.#ctor(NContext.Application.ErrorHandling.ErrorBase)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Dto.ServiceResponse`1"/> class.
+            </summary>
+            <param name="error">The error.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.#ctor(System.Collections.Generic.IEnumerable{NContext.Application.ErrorHandling.ErrorBase})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Dto.ServiceResponse`1"/> class.
+            </summary>
+            <param name="errors">The errors.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.#ctor(System.Data.Entity.Validation.DbEntityValidationResult)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Dto.ServiceResponse`1"/> class.
+            </summary>
+            <param name="validationResult">The validation result.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.#ctor(System.Collections.Generic.IEnumerable{System.Data.Entity.Validation.DbEntityValidationResult})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Dto.ServiceResponse`1"/> class.
+            </summary>
+            <param name="validationResults">The validation results.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1"/> class.
+            </summary>
+            <param name="data">The data.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.Translate``1">
+            <summary>
+            Translates the data, if any, into the specified <typeparamref name="TDto"/> using <see cref="T:Omu.ValueInjecter.LoopValueInjection"/>.
+            </summary>
+            <typeparam name="TDto">The type of the dto.</typeparam>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Persistence.EntityFramework.EfServiceResponseAdapter`1.Translate``2">
+            <summary>
+            Translates the data, if any, into the specified <typeparamref name="TDto"/> using the specified <see cref="T:Omu.ValueInjecter.IValueInjection"/>.
+            </summary>
+            <typeparam name="TDto">The type of the dto.</typeparam>
+            <typeparam name="TValueInjection">The type of the value injection.</typeparam>
+            <returns></returns>
             <remarks></remarks>
         </member>
     </members>

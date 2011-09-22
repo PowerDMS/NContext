@@ -68,3 +68,5 @@ C:\Projects\NContext\NContext.Unity\bin\Release\Microsoft.Practices.EnterpriseLi
 C:\Projects\NContext\NContext.Unity\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Unity\obj\Release\NContext.Unity.dll
 C:\Projects\NContext\NContext.Unity\obj\Release\NContext.Unity.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.Public.pdb

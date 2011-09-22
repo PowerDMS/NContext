@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   ErrorAttribute can be applied to enum fields within a ErrorBase derived class.
 //   The attribute allows for automated localization via the supported properties.

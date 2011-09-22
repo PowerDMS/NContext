@@ -62,3 +62,5 @@ C:\Projects\NContext\NContext.Services\bin\Debug\Newtonsoft.Json.xml
 C:\Projects\NContext\NContext.Services\obj\Debug\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Services\obj\Debug\NContext.Services.dll
 C:\Projects\NContext\NContext.Services\obj\Debug\NContext.Services.pdb
+C:\Projects\NContext\NContext.Services\bin\Debug\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Services\bin\Debug\NContext.Application.Public.pdb

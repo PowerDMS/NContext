@@ -1,0 +1,5 @@
+C:\Projects\NContext\NContext.Application.Dto\bin\Debug\NContext.Application.Dto.dll
+C:\Projects\NContext\NContext.Application.Dto\bin\Debug\NContext.Application.Dto.pdb
+C:\Projects\NContext\NContext.Application.Dto\obj\Debug\ResolveAssemblyReference.cache
+C:\Projects\NContext\NContext.Application.Dto\obj\Debug\NContext.Application.Dto.dll
+C:\Projects\NContext\NContext.Application.Dto\obj\Debug\NContext.Application.Dto.pdb

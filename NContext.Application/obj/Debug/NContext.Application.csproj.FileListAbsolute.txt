@@ -32,3 +32,5 @@ C:\Projects\NContext\NContext.Application\bin\Debug\Omu.ValueInjecter.xml
 C:\Projects\NContext\NContext.Application\obj\Debug\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Application\obj\Debug\NContext.Application.dll
 C:\Projects\NContext\NContext.Application\obj\Debug\NContext.Application.pdb
+C:\Projects\NContext\NContext.Application\bin\Debug\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Application\bin\Debug\NContext.Application.Public.pdb

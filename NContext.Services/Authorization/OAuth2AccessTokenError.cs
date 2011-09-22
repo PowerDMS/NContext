@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   Defines a class which represents an OAuth 2.0 Access Token request error.
 // </summary>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValidationError.cs">
+// <copyright file="EndpointBinding.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -14,35 +14,30 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
-//   Defines a transfer object which represents results returned from Microsoft Enterprise Library Validation.
+//   Defines an enumeration of service architecture types.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
 
-using NContext.Application.ErrorHandling;
-
-namespace NContext.Application.Validation
+namespace NContext.Application.Services
 {
     /// <summary>
-    /// Defines a transfer object which represents results returned from Microsoft Enterprise Library Validation.
+    /// Defines an enumeration of service architecture types.
     /// </summary>
-    [DataContract]
-    public class ValidationError : Error
+    [Flags]
+    public enum EndpointBinding
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationError"/> class.
+        /// Represents a REST service binding.
         /// </summary>
-        /// <param name="entityType">Type of the entity.</param>
-        /// <param name="messages">The messages.</param>
-        /// <remarks></remarks>
-        public ValidationError(Type entityType, IEnumerable<String> messages)
-            : base(entityType.Name, messages)
-        {
-        }
+        Rest = 1 << 0,
+
+        /// <summary>
+        /// Represents a SOAP service binding.
+        /// </summary>
+        Soap = 1 << 1
     }
 }

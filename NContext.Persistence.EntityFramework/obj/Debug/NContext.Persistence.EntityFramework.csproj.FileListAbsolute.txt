@@ -36,3 +36,7 @@ C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Debug\Omu.ValueInj
 C:\Projects\NContext\NContext.Persistence.EntityFramework\obj\Debug\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Persistence.EntityFramework\obj\Debug\NContext.Persistence.EntityFramework.dll
 C:\Projects\NContext\NContext.Persistence.EntityFramework\obj\Debug\NContext.Persistence.EntityFramework.pdb
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Debug\NContext.Application.Dto.dll
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Debug\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Debug\NContext.Application.Dto.pdb
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Debug\NContext.Application.Public.pdb

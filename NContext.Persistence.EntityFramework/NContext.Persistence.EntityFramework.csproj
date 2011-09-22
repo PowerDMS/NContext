@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ContextContainer.cs" />
     <Compile Include="EfGenericRepository.cs" />
+    <Compile Include="EfServiceResponseAdapter.cs" />
     <Compile Include="EfUnitOfWork.cs" />
     <Compile Include="EntityFrameworkExtensions.cs" />
     <Compile Include="GenericRepositoryBase.cs" />
@@ -75,13 +76,20 @@
     <Compile Include="IUnitOfWork.cs" />
     <Compile Include="PersistenceFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ServiceResponse.cs" />
     <Compile Include="UnitOfWorkController.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NContext.Application.Dto\NContext.Application.Dto.csproj">
+      <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
+      <Name>NContext.Application.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NContext.Application.Public\NContext.Application.Public.csproj">
+      <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
+      <Name>NContext.Application.Public</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NContext.Application\NContext.Application.csproj">
       <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
       <Name>NContext.Application</Name>

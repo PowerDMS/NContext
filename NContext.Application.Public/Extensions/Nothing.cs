@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMaybe.cs">
+// <copyright file="Nothing.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -14,9 +14,9 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
-//   Defines a Maybe monad interface.
+//   Defines a Nothing implementation of IMaybe<T>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,25 +25,34 @@ using System;
 namespace NContext.Application.Extensions
 {
     /// <summary>
-    /// Defines a Maybe monad interface.
+    /// Defines a Nothing implementation of <see cref="IMaybe{T}"/>.
     /// </summary>
-    /// <typeparam name="T">The type to wrap.</typeparam>
-    /// <remarks>
-    /// http://haskell.org/ghc/docs/latest/html/libraries/base/Data-Maybe.html
-    /// </remarks>
-    public interface IMaybe<T>
+    /// <typeparam name="T"></typeparam>
+    public sealed class Nothing<T> : IMaybe<T>
     {
         /// <summary>
         /// Gets a value indicating whether the instance is <see cref="Just{T}"/>.
         /// </summary>
         /// <remarks></remarks>
-        Boolean IsJust { get; }
+        public Boolean IsJust
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the instance is <see cref="Nothing{T}"/>.
         /// </summary>
         /// <remarks></remarks>
-        Boolean IsNothing { get; }
+        public Boolean IsNothing
+        {
+            get
+            {
+                return true;
+            }
+        }
 
         /// <summary>
         /// Returns the specified default value if the <see cref="IMaybe{T}"/> is <see cref="Nothing{T}"/>; 
@@ -52,14 +61,19 @@ namespace NContext.Application.Extensions
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Instance of <typeparamref name="T"/>.</returns>
         /// <remarks></remarks>
-        T FromMaybe(T defaultValue);
+        public T FromMaybe(T defaultValue)
+        {
+            return defaultValue;
+        }
 
         /// <summary>
-        /// Returns <see cref="Nothing{T}"/>
+        /// Returns this instance.
         /// </summary>
         /// <returns></returns>
-        /// <remarks></remarks>
-        IMaybe<T> Empty();
+        public IMaybe<T> Empty()
+        {
+            return this;
+        }
 
         /// <summary>
         /// Returns a new <see cref="Nothing{T}"/>.
@@ -68,6 +82,9 @@ namespace NContext.Application.Extensions
         /// <param name="bindFunc">The function used to map.</param>
         /// <returns>Instance of <see cref="IMaybe{TResult}"/>.</returns>
         /// <remarks></remarks>
-        IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc);
+        public IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc)
+        {
+            return new Nothing<TResult>();
+        }
     }
 }

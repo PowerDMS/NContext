@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   Defines a contract which aides in management of a distinct collection of <see cref="DbContext"/>s 
 //   based on type. It is responsible for ensuring that only one instance of a given context 
@@ -38,6 +38,13 @@ namespace NContext.Persistence.EntityFramework
         /// Gets all contexts.
         /// </summary>
         IEnumerable<DbContext> Contexts { get; }
+
+        /// <summary>
+        /// Gets the application's default context.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        DbContext GetDefaultContext();
 
         /// <summary>
         /// Gets or creates the <typeparamref name="TContext"/> context.

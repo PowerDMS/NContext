@@ -14,7 +14,7 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
 //   Defines a class which can be used to help create an OAuth 2.0 authorization error 
 //   for an authorization code request as defined by the specification.

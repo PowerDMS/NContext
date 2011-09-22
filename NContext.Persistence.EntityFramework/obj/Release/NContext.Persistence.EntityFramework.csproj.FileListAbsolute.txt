@@ -20,7 +20,6 @@ C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\obj\Release\NCon
 C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\obj\Release\NContext.Persistence.EntityFramework.pdb
 C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.xml
 C:\Waking Venture\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.xml
-C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.xml
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.dll
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.pdb
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\EntityFramework.dll
@@ -42,3 +41,8 @@ C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\Omu.ValueI
 C:\Projects\NContext\NContext.Persistence.EntityFramework\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Persistence.EntityFramework\obj\Release\NContext.Persistence.EntityFramework.dll
 C:\Projects\NContext\NContext.Persistence.EntityFramework\obj\Release\NContext.Persistence.EntityFramework.pdb
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Dto.dll
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Dto.pdb
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.xml
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Public.pdb

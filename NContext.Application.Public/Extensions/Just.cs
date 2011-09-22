@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Nothing.cs">
+// <copyright file="Just.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -14,9 +14,9 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
-//   Defines a Nothing implementation of IMaybe<T>.
+//   Defines a Just implementation of IMaybe<T>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,11 +25,23 @@ using System;
 namespace NContext.Application.Extensions
 {
     /// <summary>
-    /// Defines a Nothing implementation of <see cref="IMaybe{T}"/>.
+    /// Defines a Just implementation of <see cref="IMaybe{T}"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public sealed class Nothing<T> : IMaybe<T>
+    /// <typeparam name="T">The type to wrap.</typeparam>
+    public sealed class Just<T> : IMaybe<T>
     {
+        private readonly T _Value;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Just{T}"/> class.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <remarks></remarks>
+        public Just(T value)
+        {
+            _Value = value;
+        }
+
         /// <summary>
         /// Gets a value indicating whether the instance is <see cref="Just{T}"/>.
         /// </summary>
@@ -38,7 +50,7 @@ namespace NContext.Application.Extensions
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -50,7 +62,7 @@ namespace NContext.Application.Extensions
         {
             get
             {
-                return true;
+                return false;
             }
         }
 
@@ -63,16 +75,16 @@ namespace NContext.Application.Extensions
         /// <remarks></remarks>
         public T FromMaybe(T defaultValue)
         {
-            return defaultValue;
+            return _Value;
         }
 
         /// <summary>
-        /// Returns this instance.
+        /// Returns a new <see cref="Nothing{T}"/>.
         /// </summary>
         /// <returns></returns>
         public IMaybe<T> Empty()
         {
-            return this;
+            return new Nothing<T>();
         }
 
         /// <summary>
@@ -84,7 +96,7 @@ namespace NContext.Application.Extensions
         /// <remarks></remarks>
         public IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc)
         {
-            return new Nothing<TResult>();
+            return bindFunc.Invoke(_Value);
         }
     }
 }

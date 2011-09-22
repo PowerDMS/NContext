@@ -125,6 +125,21 @@
             </summary>
             <remarks></remarks>
         </member>
+        <member name="T:NContext.Application.Services.EndpointBinding">
+            <summary>
+            Defines an enumeration of service architecture types.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Services.EndpointBinding.Rest">
+            <summary>
+            Represents a REST service binding.
+            </summary>
+        </member>
+        <member name="F:NContext.Application.Services.EndpointBinding.Soap">
+            <summary>
+            Represents a SOAP service binding.
+            </summary>
+        </member>
         <member name="T:NContext.Application.Services.Authorization.OAuth2AuthorizationCodeAuthorizationRequest">
             <summary>
             Defines an OAuth 2.0 service authorization request for authorization code flow.
@@ -378,6 +393,19 @@
             The authorization grant type is not supported by the authorization server.
             </summary>
         </member>
+        <member name="T:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated">
+            <summary>
+            Defines a role-interface which allows implementors to run when a service route is created.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated.Run(NContext.Application.Services.Routing.Route)">
+            <summary>
+            Runs  specified route.
+            </summary>
+            <param name="route">The route.</param>
+            <remarks></remarks>
+        </member>
         <member name="T:Reverb.PowerDms.Application.Services.Authorization.IOAuth2AccessToken">
             <summary>
             
@@ -454,6 +482,45 @@
             Creates the WCF service routes.
             </summary>
             <param name="routingManager">The routing manager.</param>
+        </member>
+        <member name="T:NContext.Application.Services.Routing.Route">
+            <summary>
+            Defines a class which represents a WCF service route.
+            </summary>
+        </member>
+        <member name="M:NContext.Application.Services.Routing.Route.#ctor(System.String,System.Type,System.Type,NContext.Application.Services.EndpointBinding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Services.Routing.Route"/> class.
+            </summary>
+            <param name="routePrefix">The route prefix.</param>
+            <param name="serviceContractType">Type of the service contract.</param>
+            <param name="serviceType">Type of the service.</param>
+            <param name="binding">The binding.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.Binding">
+            <summary>
+            Gets the binding.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.RoutePrefix">
+            <summary>
+            Gets the route prefix.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.ServiceContractType">
+            <summary>
+            Gets the type of the service contract.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Application.Services.Routing.Route.ServiceType">
+            <summary>
+            Gets the type of the service.
+            </summary>
+            <remarks></remarks>
         </member>
         <member name="T:NContext.Application.Services.Authorization.OAuth2ClientCredentialsAccessTokenRequest">
             <summary>
@@ -779,73 +846,6 @@
             Gets the client secret.
             </summary>
             <remarks></remarks>
-        </member>
-        <member name="T:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated">
-            <summary>
-            Defines a role-interface which allows implementors to run when a service route is created.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="M:NContext.Application.Services.Routing.IRunWhenAServiceRouteIsCreated.Run(NContext.Application.Services.Routing.Route)">
-            <summary>
-            Runs  specified route.
-            </summary>
-            <param name="route">The route.</param>
-            <remarks></remarks>
-        </member>
-        <member name="T:NContext.Application.Services.Routing.Route">
-            <summary>
-            Defines a class which represents a WCF service route.
-            </summary>
-        </member>
-        <member name="M:NContext.Application.Services.Routing.Route.#ctor(System.String,System.Type,System.Type,NContext.Application.Services.EndpointBinding)">
-            <summary>
-            Initializes a new instance of the <see cref="T:NContext.Application.Services.Routing.Route"/> class.
-            </summary>
-            <param name="routePrefix">The route prefix.</param>
-            <param name="serviceContractType">Type of the service contract.</param>
-            <param name="serviceType">Type of the service.</param>
-            <param name="binding">The binding.</param>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.Binding">
-            <summary>
-            Gets the binding.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.RoutePrefix">
-            <summary>
-            Gets the route prefix.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.ServiceContractType">
-            <summary>
-            Gets the type of the service contract.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="P:NContext.Application.Services.Routing.Route.ServiceType">
-            <summary>
-            Gets the type of the service.
-            </summary>
-            <remarks></remarks>
-        </member>
-        <member name="T:NContext.Application.Services.EndpointBinding">
-            <summary>
-            Defines an enumeration of service architecture types.
-            </summary>
-        </member>
-        <member name="F:NContext.Application.Services.EndpointBinding.Rest">
-            <summary>
-            Represents a REST service binding.
-            </summary>
-        </member>
-        <member name="F:NContext.Application.Services.EndpointBinding.Soap">
-            <summary>
-            Represents a SOAP service binding.
-            </summary>
         </member>
     </members>
 </doc>

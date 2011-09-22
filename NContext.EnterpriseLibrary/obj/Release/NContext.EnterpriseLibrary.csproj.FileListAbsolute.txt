@@ -62,3 +62,5 @@ C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\Newtonsoft.Json.xml
 C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Release\NContext.EnterpriseLibrary.dll
 C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Release\NContext.EnterpriseLibrary.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.Application.Public.pdb

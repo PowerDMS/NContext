@@ -25,3 +25,5 @@ C:\Projects\NContext\NContext.Persistence\bin\Release\Omu.ValueInjecter.xml
 C:\Projects\NContext\NContext.Persistence\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Persistence\obj\Release\NContext.Persistence.dll
 C:\Projects\NContext\NContext.Persistence\obj\Release\NContext.Persistence.pdb
+C:\Projects\NContext\NContext.Persistence\bin\Release\NContext.Application.Public.dll
+C:\Projects\NContext\NContext.Persistence\bin\Release\NContext.Application.Public.pdb

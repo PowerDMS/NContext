@@ -144,20 +144,13 @@
     <Compile Include="Extensions\ICacheManagerExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\JsonNetExtensions.cs" />
-    <Compile Include="Extensions\IMaybeExtensions.cs" />
-    <Compile Include="Extensions\IMaybe.cs" />
-    <Compile Include="Extensions\Just.cs" />
-    <Compile Include="Extensions\Nothing.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectCacheExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Security\Cryptography\ICryptographyProvider.cs" />
-    <Compile Include="ErrorHandling\Error.cs" />
-    <Compile Include="ResponseTransferObjectBase.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Validation\ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -181,11 +174,16 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
-  </ItemGroup>
-  <ItemGroup>
+    <Folder Include="Validation\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NContext.Application.Public\NContext.Application.Public.csproj">
+      <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
+      <Name>NContext.Application.Public</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

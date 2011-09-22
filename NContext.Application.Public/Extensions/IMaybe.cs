@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Just.cs">
+// <copyright file="IMaybe.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -14,9 +14,9 @@
 //   You should have received a copy of the GNU General Public License
 //   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
 // </copyright>
-
+//
 // <summary>
-//   Defines a Just implementation of IMaybe<T>.
+//   Defines a Maybe monad interface.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -25,46 +25,25 @@ using System;
 namespace NContext.Application.Extensions
 {
     /// <summary>
-    /// Defines a Just implementation of <see cref="IMaybe{T}"/>.
+    /// Defines a Maybe monad interface.
     /// </summary>
     /// <typeparam name="T">The type to wrap.</typeparam>
-    public sealed class Just<T> : IMaybe<T>
+    /// <remarks>
+    /// http://haskell.org/ghc/docs/latest/html/libraries/base/Data-Maybe.html
+    /// </remarks>
+    public interface IMaybe<T>
     {
-        private readonly T _Value;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Just{T}"/> class.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <remarks></remarks>
-        public Just(T value)
-        {
-            _Value = value;
-        }
-
         /// <summary>
         /// Gets a value indicating whether the instance is <see cref="Just{T}"/>.
         /// </summary>
         /// <remarks></remarks>
-        public Boolean IsJust
-        {
-            get
-            {
-                return true;
-            }
-        }
+        Boolean IsJust { get; }
 
         /// <summary>
         /// Gets a value indicating whether the instance is <see cref="Nothing{T}"/>.
         /// </summary>
         /// <remarks></remarks>
-        public Boolean IsNothing
-        {
-            get
-            {
-                return false;
-            }
-        }
+        Boolean IsNothing { get; }
 
         /// <summary>
         /// Returns the specified default value if the <see cref="IMaybe{T}"/> is <see cref="Nothing{T}"/>; 
@@ -73,19 +52,14 @@ namespace NContext.Application.Extensions
         /// <param name="defaultValue">The default value.</param>
         /// <returns>Instance of <typeparamref name="T"/>.</returns>
         /// <remarks></remarks>
-        public T FromMaybe(T defaultValue)
-        {
-            return _Value;
-        }
+        T FromMaybe(T defaultValue);
 
         /// <summary>
-        /// Returns a new <see cref="Nothing{T}"/>.
+        /// Returns <see cref="Nothing{T}"/>
         /// </summary>
         /// <returns></returns>
-        public IMaybe<T> Empty()
-        {
-            return new Nothing<T>();
-        }
+        /// <remarks></remarks>
+        IMaybe<T> Empty();
 
         /// <summary>
         /// Returns a new <see cref="Nothing{T}"/>.
@@ -94,9 +68,6 @@ namespace NContext.Application.Extensions
         /// <param name="bindFunc">The function used to map.</param>
         /// <returns>Instance of <see cref="IMaybe{TResult}"/>.</returns>
         /// <remarks></remarks>
-        public IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc)
-        {
-            return bindFunc.Invoke(_Value);
-        }
+        IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc);
     }
 }
