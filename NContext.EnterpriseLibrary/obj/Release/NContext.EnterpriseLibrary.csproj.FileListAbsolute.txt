@@ -64,3 +64,5 @@ C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Release\NContext.EnterpriseL
 C:\Projects\NContext\NContext.EnterpriseLibrary\obj\Release\NContext.EnterpriseLibrary.pdb
 C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.Application.Public.dll
 C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.Application.Public.pdb
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.EnterpriseLibrary.xml
+C:\Projects\NContext\NContext.EnterpriseLibrary\bin\Release\NContext.Application.Public.xml

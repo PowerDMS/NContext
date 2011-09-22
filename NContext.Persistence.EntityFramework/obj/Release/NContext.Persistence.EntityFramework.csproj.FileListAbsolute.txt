@@ -46,3 +46,5 @@ C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.A
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Persistence.EntityFramework.xml
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Public.dll
 C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Public.pdb
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Dto.xml
+C:\Projects\NContext\NContext.Persistence.EntityFramework\bin\Release\NContext.Application.Public.xml

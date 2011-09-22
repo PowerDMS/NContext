@@ -66,3 +66,5 @@ C:\Projects\NContext\NContext.Services\obj\Release\NContext.Services.dll
 C:\Projects\NContext\NContext.Services\obj\Release\NContext.Services.pdb
 C:\Projects\NContext\NContext.Services\bin\Release\NContext.Application.Public.dll
 C:\Projects\NContext\NContext.Services\bin\Release\NContext.Application.Public.pdb
+C:\Projects\NContext\NContext.Services\bin\Release\NContext.Services.xml
+C:\Projects\NContext\NContext.Services\bin\Release\NContext.Application.Public.xml

@@ -70,3 +70,5 @@ C:\Projects\NContext\NContext.Unity\obj\Release\NContext.Unity.dll
 C:\Projects\NContext\NContext.Unity\obj\Release\NContext.Unity.pdb
 C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.Public.dll
 C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.Public.pdb
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Unity.xml
+C:\Projects\NContext\NContext.Unity\bin\Release\NContext.Application.Public.xml

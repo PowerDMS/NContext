@@ -3,3 +3,4 @@ C:\Projects\NContext\NContext.Application.Public\bin\Release\NContext.Applicatio
 C:\Projects\NContext\NContext.Application.Public\obj\Release\ResolveAssemblyReference.cache
 C:\Projects\NContext\NContext.Application.Public\obj\Release\NContext.Application.Public.dll
 C:\Projects\NContext\NContext.Application.Public\obj\Release\NContext.Application.Public.pdb
+C:\Projects\NContext\NContext.Application.Public\bin\Release\NContext.Application.Public.XML
