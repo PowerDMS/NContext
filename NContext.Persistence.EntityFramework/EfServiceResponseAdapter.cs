@@ -108,9 +108,11 @@ namespace NContext.Persistence.EntityFramework
         /// Translates the data, if any, into the specified <typeparamref name="TDto"/> using <see cref="LoopValueInjection"/>.
         /// </summary>
         /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual ResponseTransferObjectBase<TDto> Translate<TDto>()
+        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
+        /// <remarks>
+        /// Use this to translate domain services / aggregates / entities into service responses using data transfer objects.
+        /// </remarks>
+        public virtual ServiceResponse<TDto> Translate<TDto>()
             where TDto : class, new()
         {
             return Translate<TDto, LoopValueInjection>();
@@ -121,18 +123,22 @@ namespace NContext.Persistence.EntityFramework
         /// </summary>
         /// <typeparam name="TDto">The type of the dto.</typeparam>
         /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public virtual ResponseTransferObjectBase<TDto> Translate<TDto, TValueInjection>()
+        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
+        /// <remarks>
+        /// Use this to translate domain services / aggregates / entities into service responses using data transfer objects.
+        /// </remarks>
+        public virtual ServiceResponse<TDto> Translate<TDto, TValueInjection>()
             where TDto : class, new()
             where TValueInjection : IValueInjection, new()
         {
             if (Errors.Any())
             {
-                return this as ResponseTransferObjectBase<TDto>;
+                return new ServiceResponse<TDto>(Errors);
             }
 
-            return Activator.CreateInstance(GetType(), Data.Select(data => Activator.CreateInstance(typeof(TDto)).InjectInto<TDto, TValueInjection>(data))) as ResponseTransferObjectBase<TDto>;
+            return (ServiceResponse<TDto>)Activator.CreateInstance(typeof(ServiceResponse<TDto>), 
+                                                                   Data.Select(data => Activator.CreateInstance(typeof(TDto))
+                                                                                                .InjectInto<TDto, TValueInjection>(data)));
         }
 
         private static IEnumerable<Error> TranslateServiceErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
@@ -142,8 +148,7 @@ namespace NContext.Persistence.EntityFramework
                          .FromMaybe(Enumerable.Empty<Error>());
         }
 
-        private static IEnumerable<ValidationError> TranslateDbEntityValidationResultToValidationResults(
-            IEnumerable<DbEntityValidationResult> validationResults)
+        private static IEnumerable<ValidationError> TranslateDbEntityValidationResultToValidationResults(IEnumerable<DbEntityValidationResult> validationResults)
         {
             return validationResults.ToMaybe()
                                     .Bind(results => 

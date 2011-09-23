@@ -100,6 +100,7 @@ namespace NContext.Persistence.EntityFramework
                 }
                 catch (Exception)
                 {
+                    // TODO: (DG) Can we catch DbEntityValidationException? Where can we store this?
                     Rollback();
                 }
                 finally

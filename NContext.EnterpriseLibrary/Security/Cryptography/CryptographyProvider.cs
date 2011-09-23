@@ -74,12 +74,12 @@ namespace NContext.Application.Security.Cryptography
 
             if (!defaultKeyedHashAlgorithm.Implements<KeyedHashAlgorithm>())
             {
-                throw new ArgumentException("DefaultKeyedHashAlgorithm is invalid. Must be of type HashAlgorithm.", "defaultKeyedHashAlgorithm");
+                throw new ArgumentException("DefaultKeyedHashAlgorithm is invalid. Must be of type KeyedHashAlgorithm.", "defaultKeyedHashAlgorithm");
             }
 
             if (!defaultSymmetricAlgorithm.Implements<SymmetricAlgorithm>())
             {
-                throw new ArgumentException("DefaultSymmetricAlgorithm is invalid. Must be of type HashAlgorithm.", "defaultSymmetricAlgorithm");
+                throw new ArgumentException("DefaultSymmetricAlgorithm is invalid. Must be of type SymmetricAlgorithm.", "defaultSymmetricAlgorithm");
             }
 
             _DefaultHashAlgorithm = defaultHashAlgorithm;
