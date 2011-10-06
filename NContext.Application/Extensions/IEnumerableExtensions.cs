@@ -1,3 +1,25 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IEnumerableExtensions.cs">
+//   This file is part of NContext.
+//
+//   NContext is free software: you can redistribute it and/or modify
+//   it under the terms of the GNU General Public License as published by
+//   the Free Software Foundation, either version 3 of the License, or any later version.
+//
+//   NContext is distributed in the hope that it will be useful,
+//   but WITHOUT ANY WARRANTY; without even the implied warranty of
+//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//   GNU General Public License for more details.
+//
+//   You should have received a copy of the GNU General Public License
+//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+// </copyright>
+//
+// <summary>
+//   Defines a static class for providing IEnumerable type extension methods.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +30,16 @@ using Omu.ValueInjecter;
 
 namespace NContext.Application.Extensions
 {
+    /// <summary>
+    /// Defines a static class for providing IEnumerable type extension methods.
+    /// </summary>
+    /// <remarks></remarks>
     public static class IEnumerableExtensions
     {
+        // TODO: (DG) These extension methods are prototypes. Should they be moved into GenericRepositoryBase?
+
         /// <summary>
-        /// Queries the repository based on the provided specification and returns results that
+        /// Filters the enumerable based on the provided specification and returns results that
         /// are only satisfied by the specification.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>

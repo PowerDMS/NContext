@@ -202,6 +202,22 @@ namespace NContext.Persistence.EntityFramework
         public abstract IQueryable<TEntity> SqlQuery(String sql, params Object[] parameters);
 
         /// <summary>
+        /// Queries the context based on the provided specification and returns results that
+        /// are only satisfied by the specification.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="specification">A <see cref="SpecificationBase{TEntity}"/> instance used to filter results
+        /// that only satisfy the specification.</param>
+        /// <returns>
+        /// A <see cref="IQueryable{TEntity}"/> that can be used to enumerate over the results
+        /// of the query.
+        /// </returns>
+        public IQueryable<TEntity> AllMatching(SpecificationBase<TEntity> specification)
+        {
+            return Context.Set<TEntity>().Where(specification.IsSatisfiedBy).AsQueryable();
+        }
+
+        /// <summary>
         /// Eagerly fetch associations on the entity.
         /// </summary>
         /// <param name="strategyActions">An <see cref="Action{RepositoryEagerFetchingStrategy}"/> delegate
