@@ -60,13 +60,30 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the specified context.
+        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the application's default <see cref="DbContext"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
-        /// <typeparam name="TDbContext">The type of the db context.</typeparam>
         /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public GenericRepositoryBase<TEntity> CreateRepository<TEntity, TDbContext>() 
+        public GenericRepositoryBase<TEntity> CreateRepository<TEntity>() 
+            where TEntity : class, IEntity
+        {
+            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            {
+                throw new Exception("A repository must be created within the scope of an existing IUnitOfWork instance.");
+            }
+
+            return new EfGenericRepository<TEntity>(GetOrCreateDefaultContext());
+        }
+
+        /// <summary>
+        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the application's default <see cref="DbContext"/>.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of entity to create.</typeparam>
+        /// <typeparam name="TDbContext">The type of <see cref="DbContext"/>.</typeparam>
+        /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
+        /// <remarks></remarks>
+        public GenericRepositoryBase<TEntity> CreateRepository<TEntity, TDbContext>()
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
@@ -75,23 +92,70 @@ namespace NContext.Persistence.EntityFramework
                 throw new Exception("A repository must be created within the scope of an existing IUnitOfWork instance.");
             }
 
-            return new EfGenericRepository<TEntity>(GetContext<TDbContext>());
+            return new EfGenericRepository<TEntity>(GetOrCreateContext<TDbContext>());
         }
 
         /// <summary>
-        /// Gets or creates the context associated with the specified enumeration.
+        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the specified context.
         /// </summary>
-        /// <returns>Instance of <see cref="DbContext"/>. If the context does not exist in 
-        /// the <see cref="IContextContainer"/>, than one is created.</returns>
+        /// <typeparam name="TEntity">The type of entity to create.</typeparam>
+        /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public DbContext GetContext<TDbContext>() where TDbContext : DbContext
+        public GenericRepositoryBase<TEntity> CreateRepository<TEntity>(String dbContextNameForServiceLocation)
+            where TEntity : class, IEntity
+        {
+            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            {
+                throw new Exception("A repository must be created within the scope of an existing IUnitOfWork instance.");
+            }
+
+            return new EfGenericRepository<TEntity>(GetOrCreateContext(dbContextNameForServiceLocation));
+        }
+
+        /// <summary>
+        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// </summary>
+        /// <returns>Instance of <see cref="DbContext"/>.</returns>
+        /// <remarks></remarks>
+        public DbContext GetOrCreateDefaultContext()
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of a valid IUnitOfWork instance.");
             }
 
-            // TODO: Provide application configuration support for defining the default context.
+            return UnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetDefaultContext();
+        }
+
+        /// <summary>
+        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// </summary>
+        /// <param name="registeredNameForServiceLocation">The context's registered name for service location.</param>
+        /// <returns>Instance of <see cref="DbContext"/>.</returns>
+        /// <remarks></remarks>
+        public DbContext GetOrCreateContext(String registeredNameForServiceLocation)
+        {
+            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            {
+                throw new Exception("A repository must be created within the scope of a valid IUnitOfWork instance.");
+            }
+
+            return UnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetContextFromServiceLocation(registeredNameForServiceLocation);
+        }
+
+        /// <summary>
+        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// </summary>
+        /// <returns>Instance of <see cref="DbContext"/>.</returns>
+        /// <remarks></remarks>
+        public TDbContext GetOrCreateContext<TDbContext>()
+            where TDbContext : DbContext
+        {
+            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            {
+                throw new Exception("A repository must be created within the scope of a valid IUnitOfWork instance.");
+            }
+
             return UnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetContext<TDbContext>();
         }
 

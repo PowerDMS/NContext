@@ -63,12 +63,24 @@ namespace NContext.Persistence.EntityFramework
         /// <remarks></remarks>
         public DbContext GetDefaultContext()
         {
-            var defaultContext = ServiceLocator.Current.GetInstance<DbContext>("Default");
+            // TODO: (DG) Find a better way of getting the MappedToType Type object given a ServiceType and Key.
+            // Currently we have to resolve an instance even though we may already have it in our dictionary.
+            // http://commonservicelocator.codeplex.com/workitem/14336
+
+            var defaultContext = ServiceLocator.Current.GetInstance<DbContext>("default");
             if (defaultContext == null)
             {
                 throw new InvalidOperationException(
-                    @"No default context has been set by the application. The default context must be registered using your preferred DI container using typeof 'DbContext' with a named key 'Default'.");
+                    @"No default context has been set by the application. The default context must be registered using your preferred dependency injection container using typeof 'DbContext' with a named key 'default'.");
             }
+
+            var defaultContextType = defaultContext.GetType();
+            if (_Contexts.ContainsKey(defaultContextType))
+            {
+                return _Contexts[defaultContextType];
+            }
+
+            _Contexts.Add(defaultContextType, defaultContext);
 
             return defaultContext;
         }
@@ -79,7 +91,8 @@ namespace NContext.Persistence.EntityFramework
         /// <typeparam name="TContext">The type of the context.</typeparam>
         /// <returns>Instance of <typeparamref name="TContext"/>.</returns>
         /// <remarks></remarks>
-        public TContext GetContext<TContext>() where TContext : DbContext
+        public TContext GetContext<TContext>() 
+            where TContext : DbContext
         {
             if (_Contexts.ContainsKey(typeof(TContext)))
             {
@@ -89,10 +102,29 @@ namespace NContext.Persistence.EntityFramework
             var context = ServiceLocator.Current.GetInstance<TContext>();
             if (context == null)
             {
-                throw new ArgumentException("Context type is not registered for service location.");
+                throw new ArgumentException(String.Format("Context type '{0}' counld not be found and is not registered for service location.", typeof(TContext).Name));
             }
 
             _Contexts.Add(typeof(TContext), context);
+
+            return context;
+        }
+
+        /// <summary>
+        /// Gets the context from the application's service locator.
+        /// </summary>
+        /// <param name="registeredNameForServiceLocation">The context's registered name with the dependency injection container.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public DbContext GetContextFromServiceLocation(String registeredNameForServiceLocation)
+        {
+            var context = ServiceLocator.Current.GetInstance<DbContext>(registeredNameForServiceLocation);
+            if (context == null)
+            {
+                throw new ArgumentException("Context type is not registered for service location.");
+            }
+
+            _Contexts.Add(context.GetType(), context);
 
             return context;
         }

@@ -22,6 +22,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 
@@ -53,5 +54,13 @@ namespace NContext.Persistence.EntityFramework
         /// <returns>Instance of <typeparamref name="TContext"/>.</returns>
         /// <remarks></remarks>
         TContext GetContext<TContext>() where TContext : DbContext;
+
+        /// <summary>
+        /// Gets the context from the application's service locator.
+        /// </summary>
+        /// <param name="registeredNameForServiceLocation">The context's registered name with the dependency injection container.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        DbContext GetContextFromServiceLocation(String registeredNameForServiceLocation);
     }
 }
