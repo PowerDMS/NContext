@@ -77,7 +77,7 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the application's default <see cref="DbContext"/>.
+        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the specified <see cref="DbContext"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
         /// <typeparam name="TDbContext">The type of <see cref="DbContext"/>.</typeparam>
@@ -96,12 +96,13 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the specified context.
+        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the <see cref="DbContext"/> registered with the specified key.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
+        /// <param name="registeredNameForServiceLocation">The context's registered name for service location.</param>
         /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public GenericRepositoryBase<TEntity> CreateRepository<TEntity>(String dbContextNameForServiceLocation)
+        public GenericRepositoryBase<TEntity> CreateRepository<TEntity>(String registeredNameForServiceLocation)
             where TEntity : class, IEntity
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
@@ -109,7 +110,7 @@ namespace NContext.Persistence.EntityFramework
                 throw new Exception("A repository must be created within the scope of an existing IUnitOfWork instance.");
             }
 
-            return new EfGenericRepository<TEntity>(GetOrCreateContext(dbContextNameForServiceLocation));
+            return new EfGenericRepository<TEntity>(GetOrCreateContext(registeredNameForServiceLocation));
         }
 
         /// <summary>
