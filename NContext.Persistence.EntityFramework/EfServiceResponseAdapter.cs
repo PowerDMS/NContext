@@ -56,7 +56,7 @@ namespace NContext.Persistence.EntityFramework
         /// <param name="errors">The errors.</param>
         /// <remarks></remarks>
         public EfServiceResponseAdapter(IEnumerable<ErrorBase> errors)
-            : base(TranslateServiceErrorBaseToErrorCollection(errors))
+            : base(TranslateErrorBaseToErrorCollection(errors))
         {
         }
 
@@ -76,7 +76,7 @@ namespace NContext.Persistence.EntityFramework
         /// <param name="validationResults">The validation results.</param>
         /// <remarks></remarks>
         public EfServiceResponseAdapter(IEnumerable<DbEntityValidationResult> validationResults)
-            : base(TranslateDbEntityValidationResultToValidationResults(validationResults))
+            : base(TranslateDbEntityValidationResultsToValidationErrors(validationResults))
         {
         }
 
@@ -141,14 +141,14 @@ namespace NContext.Persistence.EntityFramework
                                                                                                 .InjectInto<TDto, TValueInjection>(data)));
         }
 
-        private static IEnumerable<Error> TranslateServiceErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
+        private static IEnumerable<Error> TranslateErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
         {
             return errors.ToMaybe()
                          .Bind(e => e.Select(error => new Error(error.Name, new List<String> { error.Message })).ToMaybe())
                          .FromMaybe(Enumerable.Empty<Error>());
         }
 
-        private static IEnumerable<ValidationError> TranslateDbEntityValidationResultToValidationResults(IEnumerable<DbEntityValidationResult> validationResults)
+        private static IEnumerable<ValidationError> TranslateDbEntityValidationResultsToValidationErrors(IEnumerable<DbEntityValidationResult> validationResults)
         {
             return validationResults.ToMaybe()
                                     .Bind(results => 

@@ -1,3 +1,14 @@
+//===================================================================================
+// Microsoft Developer & Platform Evangelism
+//=================================================================================== 
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//===================================================================================
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.
+// This code is released under the terms of the MS-LPL license, 
+// http://microsoftnlayerapp.codeplex.com/license
+//===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SpecificationBase.cs">
 //   This file is part of NContext.
@@ -23,7 +34,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace NContext.Application.Domain
+namespace NContext.Application.Domain.Specifications
 {
     /// <summary>
     /// Defines a base abstraction for creating specifications.
@@ -32,18 +43,7 @@ namespace NContext.Application.Domain
     /// <remarks></remarks>
     public abstract class SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Constructor
-
-        protected SpecificationBase()
-        {
-            _lazyCompiledFunction = new Lazy<Func<TEntity, bool>>(() => IsSatisfied().Compile());
-        }
-        
-        #endregion
-
         #region Operator Overrides
-
-        private readonly Lazy<Func<TEntity, Boolean>> _lazyCompiledFunction;
 
         /// <summary>
         ///  And operator
@@ -51,8 +51,7 @@ namespace NContext.Application.Domain
         /// <param name="leftSideSpecification">left operand in this AND operation</param>
         /// <param name="rightSideSpecification">right operand in this AND operation</param>
         /// <returns>New specification</returns>
-        public static SpecificationBase<TEntity> operator &(
-            SpecificationBase<TEntity> leftSideSpecification, SpecificationBase<TEntity> rightSideSpecification)
+        public static SpecificationBase<TEntity> operator &(SpecificationBase<TEntity> leftSideSpecification, SpecificationBase<TEntity> rightSideSpecification)
         {
             return new AndSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
         }
@@ -63,8 +62,7 @@ namespace NContext.Application.Domain
         /// <param name="leftSideSpecification">left operand in this OR operation</param>
         /// <param name="rightSideSpecification">right operand in this OR operation</param>
         /// <returns>New specification </returns>
-        public static SpecificationBase<TEntity> operator |(
-            SpecificationBase<TEntity> leftSideSpecification, SpecificationBase<TEntity> rightSideSpecification)
+        public static SpecificationBase<TEntity> operator |(SpecificationBase<TEntity> leftSideSpecification, SpecificationBase<TEntity> rightSideSpecification)
         {
             return new OrSpecification<TEntity>(leftSideSpecification, rightSideSpecification);
         }
@@ -107,18 +105,7 @@ namespace NContext.Application.Domain
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
         /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
-        public abstract Expression<Func<TEntity, Boolean>> IsSatisfied();
-
-        /// <summary>
-        /// Determines whether [is satisfied by] [the specified entity].
-        /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns><c>true</c> if [is satisfied by] [the specified entity]; otherwise, <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public Boolean IsSatisfiedBy(TEntity entity)
-        {
-            return _lazyCompiledFunction.Value.Invoke(entity);
-        }
+        public abstract Expression<Func<TEntity, Boolean>> IsSatisfiedBy();
 
         #endregion
     }

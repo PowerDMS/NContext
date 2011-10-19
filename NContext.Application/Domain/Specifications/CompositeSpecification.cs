@@ -1,4 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿//===================================================================================
+// Microsoft Developer & Platform Evangelism
+//=================================================================================== 
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//===================================================================================
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.
+// This code is released under the terms of the MS-LPL license, 
+// http://microsoftnlayerapp.codeplex.com/license
+//===================================================================================
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CompositeSpecification.cs">
 //   This file is part of NContext.
 //
@@ -20,7 +31,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Application.Domain
+namespace NContext.Application.Domain.Specifications
 {
     /// <summary>
     /// Defines a base abstraction for creating composite specifications.

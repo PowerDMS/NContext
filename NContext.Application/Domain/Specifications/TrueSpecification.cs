@@ -23,7 +23,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace NContext.Application.Domain
+namespace NContext.Application.Domain.Specifications
 {
     /// <summary>
     /// Defines a generic specification which can be used for composition.
@@ -38,9 +38,12 @@ namespace NContext.Application.Domain
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
         /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
-        public override Expression<Func<TEntity, Boolean>> IsSatisfied()
+        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
         {
-            return t => true;
+            Boolean result = true;
+            Expression<Func<TEntity, Boolean>> trueExpression = t => result;
+
+            return trueExpression;
         }
 
         #endregion

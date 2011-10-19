@@ -1,4 +1,15 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
+﻿//===================================================================================
+// Microsoft Developer & Platform Evangelism
+//=================================================================================== 
+// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
+// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+//===================================================================================
+// Copyright (c) Microsoft Corporation.  All Rights Reserved.
+// This code is released under the terms of the MS-LPL license, 
+// http://microsoftnlayerapp.codeplex.com/license
+//===================================================================================
+// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AdHocSpecification.cs">
 //   This file is part of NContext.
 //
@@ -23,7 +34,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace NContext.Application.Domain
+namespace NContext.Application.Domain.Specifications
 {
     /// <summary>
     /// Defines a specification which is composed AdHoc via constructor.
@@ -62,7 +73,7 @@ namespace NContext.Application.Domain
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
         /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
-        public override Expression<Func<TEntity, Boolean>> IsSatisfied()
+        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
         {
             return _MatchingCriteria;
         }

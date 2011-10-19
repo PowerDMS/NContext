@@ -36,7 +36,17 @@ namespace NContext.Persistence.EntityFramework
         #region Methods
 
         /// <summary>
-        /// Creates a new <see cref="EfUnitOfWork"/> instance unless one already exists in an ambient scope.
+        /// <para>
+        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.RequiresNew"/> or 
+        /// <see cref="TransactionScopeOption.Suppress"/>, than a new instance of <see cref="EfUnitOfWork"/> is 
+        /// created along with a fresh <see cref="ContextContainer"/>.
+        /// </para>
+        /// <para>
+        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.Required"/>, than 
+        /// we are returned the <see cref="UnitOfWorkController.AmbientUnitOfWork"/> if one exists, else we create a
+        /// new <see cref="EfUnitOfWork"/> and <see cref="ContextContainer"/> which becomes the ambient unit of work.
+        /// </para>
+        /// <para>The default transaction scope is <see cref="TransactionScopeOption.Required"/>.</para>
         /// </summary>
         /// <param name="transactionScopeOption">The transaction scope option.</param>
         /// <returns>Instance of <see cref="EfUnitOfWork"/>.</returns>
@@ -60,12 +70,12 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the application's default <see cref="DbContext"/>.
+        /// Creates an <see cref="IEfGenericRepository{TEntity}"/> instance using the application's default <see cref="DbContext"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
-        /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
+        /// <returns>Instance of <see cref="IEfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public GenericRepositoryBase<TEntity> CreateRepository<TEntity>() 
+        public IEfGenericRepository<TEntity> CreateRepository<TEntity>() 
             where TEntity : class, IEntity
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
@@ -77,13 +87,13 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the specified <see cref="DbContext"/>.
+        /// Creates an <see cref="IEfGenericRepository{TEntity}"/> instance using the specified <see cref="DbContext"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
         /// <typeparam name="TDbContext">The type of <see cref="DbContext"/>.</typeparam>
-        /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
+        /// <returns>Instance of <see cref="IEfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public GenericRepositoryBase<TEntity> CreateRepository<TEntity, TDbContext>()
+        public IEfGenericRepository<TEntity> CreateRepository<TEntity, TDbContext>()
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
@@ -96,13 +106,13 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Creates an <see cref="EfGenericRepository{TEntity}"/> instance using the <see cref="DbContext"/> registered with the specified key.
+        /// Creates an <see cref="IEfGenericRepository{TEntity}"/> instance using the <see cref="DbContext"/> registered with the specified key.
         /// </summary>
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
         /// <param name="registeredNameForServiceLocation">The context's registered name for service location.</param>
-        /// <returns>Instance of <see cref="EfGenericRepository{TEntity}"/>.</returns>
+        /// <returns>Instance of <see cref="IEfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public GenericRepositoryBase<TEntity> CreateRepository<TEntity>(String registeredNameForServiceLocation)
+        public IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredNameForServiceLocation)
             where TEntity : class, IEntity
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
@@ -114,7 +124,7 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new context via service location.
         /// </summary>
         /// <returns>Instance of <see cref="DbContext"/>.</returns>
         /// <remarks></remarks>
@@ -129,7 +139,8 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// Gets the context from the ambient <see cref="IUnitOfWork"/> if one exists, 
+        /// else it tries to create a new one via service location with the specified registered name.
         /// </summary>
         /// <param name="registeredNameForServiceLocation">The context's registered name for service location.</param>
         /// <returns>Instance of <see cref="DbContext"/>.</returns>
@@ -145,7 +156,7 @@ namespace NContext.Persistence.EntityFramework
         }
 
         /// <summary>
-        /// Gets the default context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// Gets the specified context from the ambient <see cref="IUnitOfWork"/> if one exists, else it tries to create a new one via service location.
         /// </summary>
         /// <returns>Instance of <see cref="DbContext"/>.</returns>
         /// <remarks></remarks>

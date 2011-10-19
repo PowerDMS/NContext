@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using NContext.Application.Domain;
+using NContext.Application.Domain.Specifications;
 
 using Omu.ValueInjecter;
 
@@ -36,26 +37,6 @@ namespace NContext.Application.Extensions
     /// <remarks></remarks>
     public static class IEnumerableExtensions
     {
-        // TODO: (DG) These extension methods are prototypes. Should they be moved into GenericRepositoryBase?
-
-        /// <summary>
-        /// Filters the enumerable based on the provided specification and returns results that
-        /// are only satisfied by the specification.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="enumerable">The enumerable.</param>
-        /// <param name="specification">A <see cref="SpecificationBase{TEntity}"/> instance used to filter results
-        /// that only satisfy the specification.</param>
-        /// <returns>
-        /// A <see cref="IEnumerable{TEntity}"/> that can be used to enumerate over the results
-        /// of the query.
-        /// </returns>
-        public static IEnumerable<TEntity> AllMatching<TEntity>(this IEnumerable<TEntity> enumerable, SpecificationBase<TEntity> specification)
-            where TEntity : class, IEntity
-        {
-            return enumerable.Where(specification.IsSatisfiedBy).AsEnumerable();
-        }
-
         /// <summary>
         /// Projects an <see cref="IEnumerable&lt;Object&gt;"/> into an enumerable of the specified type <typeparamref name="T"/>.
         /// </summary>
