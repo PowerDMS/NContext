@@ -52,7 +52,7 @@ namespace NContext.Persistence.EntityFramework
         /// </summary>
         /// <param name="context">The context.</param>
         /// <remarks></remarks>
-        internal EfGenericRepository(DbContext context)
+        protected internal EfGenericRepository(DbContext context)
         {
             if (context == null)
             {

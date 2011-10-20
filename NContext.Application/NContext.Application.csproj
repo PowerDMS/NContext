@@ -101,6 +101,9 @@
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="Domain\IEntity.cs" />
+    <Compile Include="ErrorHandling\ErrorAttribute.cs" />
+    <Compile Include="ErrorHandling\ErrorBase.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
     <Compile Include="Extensions\ValueInjecterExtensions.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
@@ -121,8 +124,6 @@
     <Compile Include="Domain\Specifications\ParametersRebinder.cs" />
     <Compile Include="Domain\Specifications\SpecificationBase.cs" />
     <Compile Include="Domain\Specifications\TrueSpecification.cs" />
-    <Compile Include="ErrorHandling\ErrorAttribute.cs" />
-    <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -165,6 +166,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NContext.Application.Dto\NContext.Application.Dto.csproj">
+      <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
+      <Name>NContext.Application.Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NContext.Application.Public\NContext.Application.Public.csproj">
       <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
       <Name>NContext.Application.Public</Name>

@@ -55,7 +55,7 @@ namespace NContext.Persistence.EntityFramework
         /// <param name="contextContianer">The context contianer.</param>
         /// <param name="transactionScopeOption">The transaction scope option.</param>
         /// <remarks></remarks>
-        internal EfUnitOfWork(IContextContainer contextContianer, TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
+        protected internal EfUnitOfWork(IContextContainer contextContianer, TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
             if (contextContianer == null)
             {

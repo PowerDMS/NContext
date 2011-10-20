@@ -51,7 +51,7 @@ namespace NContext.Persistence.EntityFramework
         /// <param name="transactionScopeOption">The transaction scope option.</param>
         /// <returns>Instance of <see cref="EfUnitOfWork"/>.</returns>
         /// <remarks></remarks>
-        public IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
+        public static IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
             if (transactionScopeOption == TransactionScopeOption.RequiresNew ||
                 transactionScopeOption == TransactionScopeOption.Suppress)
@@ -75,7 +75,7 @@ namespace NContext.Persistence.EntityFramework
         /// <typeparam name="TEntity">The type of entity to create.</typeparam>
         /// <returns>Instance of <see cref="IEfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public IEfGenericRepository<TEntity> CreateRepository<TEntity>() 
+        public static IEfGenericRepository<TEntity> CreateRepository<TEntity>() 
             where TEntity : class, IEntity
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
@@ -93,7 +93,7 @@ namespace NContext.Persistence.EntityFramework
         /// <typeparam name="TDbContext">The type of <see cref="DbContext"/>.</typeparam>
         /// <returns>Instance of <see cref="IEfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public IEfGenericRepository<TEntity> CreateRepository<TEntity, TDbContext>()
+        public static IEfGenericRepository<TEntity> CreateRepository<TEntity, TDbContext>()
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
@@ -112,7 +112,7 @@ namespace NContext.Persistence.EntityFramework
         /// <param name="registeredNameForServiceLocation">The context's registered name for service location.</param>
         /// <returns>Instance of <see cref="IEfGenericRepository{TEntity}"/>.</returns>
         /// <remarks></remarks>
-        public IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredNameForServiceLocation)
+        public static IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredNameForServiceLocation)
             where TEntity : class, IEntity
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
@@ -128,7 +128,7 @@ namespace NContext.Persistence.EntityFramework
         /// </summary>
         /// <returns>Instance of <see cref="DbContext"/>.</returns>
         /// <remarks></remarks>
-        public DbContext GetOrCreateDefaultContext()
+        public static DbContext GetOrCreateDefaultContext()
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
             {
@@ -145,7 +145,7 @@ namespace NContext.Persistence.EntityFramework
         /// <param name="registeredNameForServiceLocation">The context's registered name for service location.</param>
         /// <returns>Instance of <see cref="DbContext"/>.</returns>
         /// <remarks></remarks>
-        public DbContext GetOrCreateContext(String registeredNameForServiceLocation)
+        public static DbContext GetOrCreateContext(String registeredNameForServiceLocation)
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)
             {
@@ -160,7 +160,7 @@ namespace NContext.Persistence.EntityFramework
         /// </summary>
         /// <returns>Instance of <see cref="DbContext"/>.</returns>
         /// <remarks></remarks>
-        public TDbContext GetOrCreateContext<TDbContext>()
+        public static TDbContext GetOrCreateContext<TDbContext>()
             where TDbContext : DbContext
         {
             if (UnitOfWorkController.AmbientUnitOfWork == null)

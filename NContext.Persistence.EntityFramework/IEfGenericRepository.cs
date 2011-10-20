@@ -41,7 +41,7 @@ namespace NContext.Persistence.EntityFramework
         #region Methods
 
         /// <summary>
-        /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
+        /// Adds a transient instance of <typeparamref name="TEntity"/> to the unit of work
         /// to be persisted and inserted by the repository.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
@@ -50,7 +50,7 @@ namespace NContext.Persistence.EntityFramework
         void Add(TEntity entity);
 
         /// <summary>
-        /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
+        /// Adds a transient instance of <typeparamref name="TEntity"/> to the unit of work
         /// to be persisted and deleted by the repository.
         /// </summary>
         /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
@@ -71,14 +71,14 @@ namespace NContext.Persistence.EntityFramework
         void Refresh(TEntity entity);
 
         /// <summary>
-        /// Get all elements of type <see cref="TEntity"/> 
+        /// Get all elements of type <typeparamref name="TEntity"/>. 
         /// </summary>
         /// <typeparam name="TProperty">The type of the property.</typeparam>
         /// <param name="pageIndex">Page index</param>
         /// <param name="pageCount">Number of elements in each page</param>
         /// <param name="orderByExpression">Order by expression for this query</param>
         /// <param name="ascending">Specify if order is ascending</param>
-        /// <returns>List of selected elements</returns>
+        /// <returns>List of selected elements.</returns>
         /// <remarks></remarks>
         IQueryable<TEntity> GetPaged<TProperty>(Int32 pageIndex, Int32 pageCount, Expression<Func<TEntity, TProperty>> orderByExpression, Boolean ascending = true);
 

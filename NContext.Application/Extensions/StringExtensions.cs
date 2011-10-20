@@ -32,7 +32,7 @@ namespace NContext.Application.Extensions
     public static class StringExtensions
     {
         /// <summary>
-        /// Returns the number of <see cref="string.Format(string,object)"/> parameters in the specified text.
+        /// Returns the number of <see cref="String.Format(String,Object[])"/> parameters in the specified text.
         /// </summary>
         /// <param name="text">The text to scan.</param>
         /// <returns>Number of required String.Format parameters.</returns>

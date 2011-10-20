@@ -34,11 +34,23 @@ namespace NContext.Persistence.EntityFramework
     /// of a given <see cref="DbContext"/> exists within a <see cref="IUnitOfWork"/>, per thread.
     /// </summary>
     /// <remarks></remarks>
-    internal class ContextContainer : IContextContainer
+    public class ContextContainer : IContextContainer
     {
         #region Fields
 
         private readonly Dictionary<Type, DbContext> _Contexts = new Dictionary<Type, DbContext>();
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
+        /// </summary>
+        /// <remarks></remarks>
+        protected internal ContextContainer()
+        {
+        }
 
         #endregion
 

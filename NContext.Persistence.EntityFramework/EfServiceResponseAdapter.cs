@@ -29,8 +29,6 @@ using NContext.Application.Dto;
 using NContext.Application.ErrorHandling;
 using NContext.Application.Extensions;
 
-using Omu.ValueInjecter;
-
 namespace NContext.Persistence.EntityFramework
 {
     /// <summary>
@@ -103,43 +101,6 @@ namespace NContext.Persistence.EntityFramework
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Translates the data, if any, into the specified <typeparamref name="TDto"/> using <see cref="LoopValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
-        /// <remarks>
-        /// Use this to translate domain services / aggregates / entities into service responses using data transfer objects.
-        /// </remarks>
-        public virtual ServiceResponse<TDto> Translate<TDto>()
-            where TDto : class, new()
-        {
-            return Translate<TDto, LoopValueInjection>();
-        }
-
-        /// <summary>
-        /// Translates the data, if any, into the specified <typeparamref name="TDto"/> using the specified <see cref="IValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
-        /// <remarks>
-        /// Use this to translate domain services / aggregates / entities into service responses using data transfer objects.
-        /// </remarks>
-        public virtual ServiceResponse<TDto> Translate<TDto, TValueInjection>()
-            where TDto : class, new()
-            where TValueInjection : IValueInjection, new()
-        {
-            if (Errors.Any())
-            {
-                return new ServiceResponse<TDto>(Errors);
-            }
-
-            return (ServiceResponse<TDto>)Activator.CreateInstance(typeof(ServiceResponse<TDto>), 
-                                                                   Data.Select(data => Activator.CreateInstance(typeof(TDto))
-                                                                                                .InjectInto<TDto, TValueInjection>(data)));
-        }
 
         private static IEnumerable<Error> TranslateErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
         {

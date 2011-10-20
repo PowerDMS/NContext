@@ -24,9 +24,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using NContext.Application.Domain;
-using NContext.Application.Domain.Specifications;
-
 using Omu.ValueInjecter;
 
 namespace NContext.Application.Extensions
