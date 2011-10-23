@@ -20,6 +20,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
 using System.ComponentModel.Composition;
 
 using Microsoft.Practices.Unity;
@@ -32,6 +33,12 @@ namespace NContext.Unity
     [InheritedExport(typeof(IConfigureAUnityContainer))]
     public interface IConfigureAUnityContainer
     {
+        /// <summary>
+        /// Gets the priority in which to configure the container.
+        /// </summary>
+        /// <remarks></remarks>
+        Int32 Priority { get; }
+
         /// <summary>
         /// Configures the <see cref="IUnityContainer"/> dependency injection container.
         /// </summary>

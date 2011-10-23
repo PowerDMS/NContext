@@ -23,6 +23,7 @@
 using System;
 using System.ComponentModel.Composition;
 using System.ComponentModel.Composition.Hosting;
+using System.Linq;
 
 using NContext.Application.EnterpriseLibrary;
 using NContext.Application.Extensions;
@@ -113,9 +114,9 @@ namespace NContext.Unity
                 _Container.RegisterInstance<CompositionContainer>(applicationConfiguration.CompositionContainer);
 
                 applicationConfiguration.CompositionContainer
-                                        .GetExports<IConfigureAUnityContainer>()
-                                        .ForEach(configurable =>
-                                                 configurable.Value.ConfigureContainer(_Container));
+                                        .GetExportedValues<IConfigureAUnityContainer>()
+                                        .OrderBy(configurable => configurable.Priority)
+                                        .ForEach(configurable => configurable.ConfigureContainer(_Container));
 
                 applicationConfiguration.CompositionContainer
                                         .GetExportTypesThatImplement<IRegisterWithAUnityContainer>()

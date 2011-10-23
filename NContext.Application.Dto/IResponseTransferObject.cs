@@ -78,5 +78,14 @@ namespace NContext.Application.Dto
         /// <returns>Instance of <see cref="IResponseTransferObject{T}"/>.</returns>
         IResponseTransferObject<T2> Either<T2>(Func<IEnumerable<T>, IResponseTransferObject<T2>> data,
                                                Func<IEnumerable<Error>, IResponseTransferObject<T2>> errors);
+
+        /// <summary>
+        /// Invokes the specified action if there is data. 
+        /// Returns the current <see cref="IResponseTransferObject{T}"/>.
+        /// </summary>
+        /// <param name="action">The action to invoke.</param>
+        /// <returns>The current <see cref="IResponseTransferObject{T}"/> instance.</returns>
+        /// <remarks></remarks>
+        IResponseTransferObject<T> Let(Action<IEnumerable<T>> action);
     }
 }

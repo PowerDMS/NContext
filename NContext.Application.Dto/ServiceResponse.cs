@@ -200,6 +200,23 @@ namespace NContext.Application.Dto
             return ServiceResponse<T2>.Empty;
         }
 
+        /// <summary>
+        /// Invokes the specified action if there is data. 
+        /// Returns the current <see cref="IResponseTransferObject{T}"/>.
+        /// </summary>
+        /// <param name="action">The action.</param>
+        /// <returns>The current <see cref="IResponseTransferObject{T}"/> instance.</returns>
+        /// <remarks></remarks>
+        public virtual IResponseTransferObject<T> Let(Action<IEnumerable<T>> action)
+        {
+            if (Data.Any() && !Errors.Any())
+            {
+                action.Invoke(Data);
+            }
+
+            return this;
+        }
+
         #endregion
 
         #region Implementation of IDisposable
