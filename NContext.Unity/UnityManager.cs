@@ -104,8 +104,9 @@ namespace NContext.Unity
         {
             if (!_IsConfigured)
             {
-                _Container = UnityContainerFactory.Create(_UnityConfigurationConfiguration.ContainerName, 
-                                                          _UnityConfigurationConfiguration.ConfigurationFileName);
+                _Container = UnityContainerFactory.Create(_UnityConfigurationConfiguration.ConfigurationFileName,
+                                                          _UnityConfigurationConfiguration.ConfigurationSectionName,
+                                                          _UnityConfigurationConfiguration.ContainerName);
 
                 SetServiceLocator();
                 SetContainerConfigurator(applicationConfiguration);
@@ -118,6 +119,7 @@ namespace NContext.Unity
                                         .OrderBy(configurable => configurable.Priority)
                                         .ForEach(configurable => configurable.ConfigureContainer(_Container));
 
+                // TODO: (DG) Remove IRegisterWithAUnityContainer? It's oogly and limiting.
                 applicationConfiguration.CompositionContainer
                                         .GetExportTypesThatImplement<IRegisterWithAUnityContainer>()
                                         .ForEach(type => _Container.RegisterType(type));

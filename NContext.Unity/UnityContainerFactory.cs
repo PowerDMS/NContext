@@ -39,51 +39,81 @@ namespace NContext.Unity
     public static class UnityContainerFactory
     {
         /// <summary>
-        /// Creates an instance of <see cref="IUnityContainer"/> container used for dependency injection.
+        /// Creates an instance of <see cref="IUnityContainer"/> used for dependency injection.
         /// </summary>
-        /// <param name="containerName">Name of the container.</param>
-        /// <param name="configurationFileName">Name of the configuration file.</param>
-        /// <param name="configurationSectionName">Name of the configuration section.</param>
         /// <returns>Instance of <see cref="IUnityContainer"/>.</returns>
         /// <remarks></remarks>
-         public static IUnityContainer Create(String containerName, String configurationFileName, String configurationSectionName = "unity")
-         {
-             var fileMap = new ExeConfigurationFileMap
-             {
-                 ExeConfigFilename =
-                     new Uri(
-                        String.Format(
-                            @"{0}\{1}",
-                            Path.GetDirectoryName(
-                                new Uri(Assembly.GetCallingAssembly().CodeBase).LocalPath), 
-                                configurationFileName)).LocalPath
-             };
+        public static IUnityContainer Create()
+        {
+            return Create(null, null);
+        }
 
-             try
-             {
-                 var configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
-                 var unitySection = configuration.GetSection(configurationSectionName) as UnityConfigurationSection;
-                 if (unitySection == null)
-                 {
-                     throw new Exception("Unity container could not be configured.");
-                 }
+        /// <summary>
+        /// Creates an instance of <see cref="IUnityContainer"/> used for dependency injection.
+        /// </summary>
+        /// <param name="configurationFileName">Name of the configuration file.</param>
+        /// <param name="containerName">Name of the container.</param>
+        /// <returns>Instance of <see cref="IUnityContainer"/>.</returns>
+        /// <remarks></remarks>
+        public static IUnityContainer Create(String configurationFileName, String containerName)
+        {
+            return Create(configurationFileName, "unity", containerName);
+        }
 
-                 var container = new UnityContainer().LoadConfiguration(unitySection, containerName ?? String.Empty);
-                 container.AddNewExtension<EnterpriseLibraryCoreExtension>()
-                          .AddNewExtension<Interception>()
-                          .RegisterType<InterfaceInterceptor>()
-                          .RegisterType<TransparentProxyInterceptor>()
-                          .RegisterType<VirtualMethodInterceptor>()
-                          .RegisterType<IAuthorizationProviderInstrumentationProvider, NullAuthorizationProviderInstrumentationProvider>(new ContainerControlledLifetimeManager());
+        /// <summary>
+        /// Creates an instance of <see cref="IUnityContainer"/> used for dependency injection.
+        /// </summary>
+        /// <param name="configurationFileName">Name of the configuration file.</param>
+        /// <param name="configurationSectionName">Name of the configuration section.</param>
+        /// <param name="containerName">Name of the container.</param>
+        /// <returns>Instance of <see cref="IUnityContainer"/>.</returns>
+        /// <remarks></remarks>
+        public static IUnityContainer Create(String configurationFileName = null, String configurationSectionName = "unity", String containerName = "")
+        {
+            IUnityContainer container = null;
+            if (!String.IsNullOrWhiteSpace(configurationFileName))
+            {
+                var filePath = String.Format(
+                                @"{0}\{1}",
+                                Path.GetDirectoryName(new Uri(Assembly.GetCallingAssembly().CodeBase).LocalPath),
+                                configurationFileName);
+
+                var fileMap = new ExeConfigurationFileMap
+                {
+                    ExeConfigFilename = new Uri(filePath).LocalPath
+                };
+
+                try
+                {
+                    var configuration = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
+                    var unitySection = configuration.GetSection(configurationSectionName) as UnityConfigurationSection;
+                    if (unitySection == null)
+                    {
+                        throw new ConfigurationErrorsException();
+                    }
+
+                    container = new UnityContainer().LoadConfiguration(unitySection, containerName ?? String.Empty);
+                }
+                catch (ConfigurationErrorsException errorsException)
+                {
+                    throw new Exception("Unity container configuration section could not be loaded.", errorsException);
+                }
+            }
+
+            if (container == null)
+            {
+                container = new UnityContainer();
+            }
+
+            container.AddNewExtension<EnterpriseLibraryCoreExtension>()
+                     .AddNewExtension<Interception>()
+                     .RegisterType<InterfaceInterceptor>()
+                     .RegisterType<TransparentProxyInterceptor>()
+                     .RegisterType<VirtualMethodInterceptor>()
+                     .RegisterType<IAuthorizationProviderInstrumentationProvider, NullAuthorizationProviderInstrumentationProvider>(new ContainerControlledLifetimeManager());
 
 
-                 return container;
-             }
-             catch
-             {
-                 // TODO: (DG) Logging could not load unity configuration
-                 throw;
-             }
-         }
+            return container;
+        }
     }
 }

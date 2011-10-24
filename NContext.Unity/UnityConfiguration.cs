@@ -38,6 +38,8 @@ namespace NContext.Unity
 
         private String _ConfigurationFileName;
 
+        private String _ConfigurationSectionName;
+
         #endregion
 
         #region Constructors
@@ -80,6 +82,14 @@ namespace NContext.Unity
             }
         }
 
+        public String ConfigurationSectionName
+        {
+            get
+            {
+                return _ConfigurationSectionName;
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -98,16 +108,21 @@ namespace NContext.Unity
         }
 
         /// <summary>
-        /// Sets the name of the configuration file.
+        /// Sets the unity configuration file.
         /// </summary>
-        /// <param name="unityConfigurationFileName">Name of the unity configuration file.</param>
+        /// <param name="configurationFileName">Name of the unity configuration file.</param>
+        /// <param name="configurationSectionName">Name of the configuration section. Default is 'unity'.</param>
         /// <returns>This <see cref="UnityConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public UnityConfiguration SetConfigurationFileName(String unityConfigurationFileName)
+        public UnityConfiguration SetConfigurationFile(String configurationFileName, String configurationSectionName = "unity")
         {
-            _ConfigurationFileName = String.IsNullOrWhiteSpace(unityConfigurationFileName) 
-                ? "unity.config" 
-                : unityConfigurationFileName.Trim();
+            _ConfigurationFileName = String.IsNullOrWhiteSpace(configurationFileName)
+                                         ? String.Empty
+                                         : configurationFileName.Trim();
+
+            _ConfigurationSectionName = String.IsNullOrWhiteSpace(configurationSectionName)
+                                            ? "unity"
+                                            : configurationSectionName.Trim();
 
             return this;
         }

@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application.Public
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Caching.AppFabric", "NContext.Caching.AppFabric\NContext.Caching.AppFabric.csproj", "{7866C121-AA98-41E8-B691-FF568DF6B728}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Unity.Tests.Unit", "NContext.Unity.Tests.Unit\NContext.Unity.Tests.Unit.csproj", "{D9C34C0E-CBCA-4266-807D-51C50BAF125D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DLL and Web|Any CPU = Debug DLL and Web|Any CPU
@@ -72,6 +74,12 @@ Global
 		{7866C121-AA98-41E8-B691-FF568DF6B728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7866C121-AA98-41E8-B691-FF568DF6B728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7866C121-AA98-41E8-B691-FF568DF6B728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
