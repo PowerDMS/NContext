@@ -32,12 +32,16 @@ using NContext.Application.Configuration;
 
 namespace NContext.Application.Services.Routing
 {
+    // TODO: (DG) Refactor this class and split REST/SOAP configuration methods.
+
     /// <summary>
     /// Defines a component configuration class for service routing.
     /// </summary>
     public class RoutingConfiguration : ApplicationComponentConfigurationBase
     {
         #region Fields
+
+        private Boolean _EnableTestClient;
 
         private EndpointBinding _EndpointBinding;
 
@@ -70,6 +74,18 @@ namespace NContext.Application.Services.Routing
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Gets a value indicating whether WCF WebApi test client is enabled.
+        /// </summary>
+        /// <remarks></remarks>
+        public Boolean EnableTestClient
+        {
+            get
+            {
+                return _EnableTestClient;
+            }
+        }
 
         /// <summary>
         /// Gets the endpoint bindings.
@@ -158,6 +174,18 @@ namespace NContext.Application.Services.Routing
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// If set to <c>true</c>, enable WCF WebApi test client.
+        /// </summary>
+        /// <param name="enableTestClient">if set to <c>true</c> [enable test client].</param>
+        /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
+        /// <remarks></remarks>
+        public RoutingConfiguration SetEnableTestClient(Boolean enableTestClient)
+        {
+            _EnableTestClient = enableTestClient;
+            return this;
+        }
 
         /// <summary>
         /// Sets the WCF supported endpoint bindings. You 

@@ -50,14 +50,14 @@ namespace NContext.Application.Dto
         /// Gets the name.
         /// </summary>
         /// <remarks></remarks>
-        [DataMember(Order = 2)]
+        [DataMember(Order = 1)]
         public String Name { get; private set; }
 
         /// <summary>
         /// Gets the type of the error.
         /// </summary>
         /// <remarks></remarks>
-        [DataMember(Order = 1)]
+        [DataMember(Order = 2)]
         public String Type { get; private set; }
 
         /// <summary>

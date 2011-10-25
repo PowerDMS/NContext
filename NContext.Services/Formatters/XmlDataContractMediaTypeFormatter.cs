@@ -39,8 +39,8 @@ namespace NContext.Application.Services.Formatters
         /// </summary>
         public XmlDataContractMediaTypeFormatter()
         {
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml"));
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml"));
+            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/xml") { CharSet = "utf-8" });
+            SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/xml") { CharSet = "utf-8" });
         }
 
         /// <summary>

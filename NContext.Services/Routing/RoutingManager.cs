@@ -31,6 +31,7 @@ using Microsoft.ApplicationServer.Http;
 using Microsoft.ApplicationServer.Http.Activation;
 
 using NContext.Application.Configuration;
+using NContext.Application.Extensions;
 
 namespace NContext.Application.Services.Routing
 {
@@ -40,6 +41,8 @@ namespace NContext.Application.Services.Routing
     public class RoutingManager : IRoutingManager
     {
         #region Fields
+
+        protected readonly RoutingConfiguration RoutingConfiguration;
 
         private static Boolean _IsConfigured;
 
@@ -51,8 +54,6 @@ namespace NContext.Application.Services.Routing
 
         private static readonly Lazy<IList<Route>> _ServiceRoutes = 
             new Lazy<IList<Route>>(() => new List<Route>());
-
-        private readonly RoutingConfiguration _RoutingConfiguration;
 
         #endregion
 
@@ -71,7 +72,11 @@ namespace NContext.Application.Services.Routing
                 throw new ArgumentNullException("routingConfiguration");
             }
 
-            _RoutingConfiguration = routingConfiguration;
+            RoutingConfiguration = routingConfiguration;
+        }
+
+        protected RoutingManager()
+        {
         }
 
         #endregion
@@ -176,17 +181,17 @@ namespace NContext.Application.Services.Routing
         /// <remarks></remarks>
         public virtual void RegisterServiceRoute<TServiceContract, TService>(String routePrefix)
         {
-            if ((_RoutingConfiguration.EndpointBinding & EndpointBinding.Rest) == EndpointBinding.Rest)
+            if ((RoutingConfiguration.EndpointBinding & EndpointBinding.Rest) == EndpointBinding.Rest)
             {
-                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, _RoutingConfiguration.RestEndpointPostfix), 
+                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, RoutingConfiguration.RestEndpointPostfix), 
                                                           typeof(TServiceContract), 
                                                           typeof(TService), 
                                                           EndpointBinding.Rest));
             }
 
-            if ((_RoutingConfiguration.EndpointBinding & EndpointBinding.Soap) == EndpointBinding.Soap)
+            if ((RoutingConfiguration.EndpointBinding & EndpointBinding.Soap) == EndpointBinding.Soap)
             {
-                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, _RoutingConfiguration.SoapEndpointPostfix), 
+                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, RoutingConfiguration.SoapEndpointPostfix), 
                                                           typeof(TServiceContract), 
                                                           typeof(TService), 
                                                           EndpointBinding.Soap));
@@ -201,6 +206,7 @@ namespace NContext.Application.Services.Routing
             var serviceRouteCreatedActions = _CompositionContainer.GetExports<IRunWhenAServiceRouteIsCreated>().ToList();
             foreach (var route in _ServiceRoutes.Value.OrderByDescending(r => r.RoutePrefix))
             {
+                // TODO: (DG) Add support for custom route configuration! (route.RestConfiguration ?? _RestFactory.Value)
                 RouteBase serviceRoute = route.Binding == EndpointBinding.Rest
                                              ? new WebApiRoute(route.RoutePrefix, _RestFactory.Value, route.ServiceType)
                                              : new ServiceRoute(route.RoutePrefix, _SoapFactory.Value, route.ServiceType);
@@ -226,18 +232,25 @@ namespace NContext.Application.Services.Routing
                 _CompositionContainer = applicationConfiguration.CompositionContainer;
 
                 var httpConfiguration = new WebApiConfiguration();
-                if (_RoutingConfiguration.ClearDefaultFormatters)
+                if (RoutingConfiguration.ClearDefaultFormatters)
                 {
                     httpConfiguration.Formatters.Clear();
                 }
 
-                if (_RoutingConfiguration.MediaTypeFormatters.Any())
+                if (RoutingConfiguration.MediaTypeFormatters.Any())
                 {
-                    httpConfiguration.Formatters.AddRange(_RoutingConfiguration.MediaTypeFormatters.ToArray());
+                    RoutingConfiguration.MediaTypeFormatters
+                                         .Reverse()
+                                         .ForEach(formatter => httpConfiguration.Formatters.Insert(0, formatter));
                 }
 
-                httpConfiguration.CreateInstance = _RoutingConfiguration.ResourceFactory;
-                httpConfiguration.MessageHandlerFactory = _RoutingConfiguration.MessageHandlerFactory;
+                if (RoutingConfiguration.EnableTestClient)
+                {
+                    httpConfiguration.EnableTestClient = true;
+                }
+
+                httpConfiguration.CreateInstance = RoutingConfiguration.ResourceFactory;
+                httpConfiguration.MessageHandlerFactory = RoutingConfiguration.MessageHandlerFactory;
 
                 _RestFactory = new Lazy<HttpServiceHostFactory>(() => new HttpServiceHostFactory { Configuration = httpConfiguration });
                 _SoapFactory = new Lazy<ServiceHostFactory>(() => new ServiceHostFactory());

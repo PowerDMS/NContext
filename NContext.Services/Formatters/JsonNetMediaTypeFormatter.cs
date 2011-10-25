@@ -33,18 +33,18 @@ namespace NContext.Application.Services.Formatters
     /// <summary>
     /// Defines a Json <see cref="MediaTypeFormatter"/> using Json.NET serialization/deserialization.
     /// </summary>
-    public class JsonNetMediaTypeFormatter : MediaTypeFormatter
+    public class JsonNetMediaTypeFormatter : JsonMediaTypeFormatter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="JsonNetMediaTypeFormatter"/> class.
         /// </summary>
         public JsonNetMediaTypeFormatter()
         {
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/bson"));
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/json"));
+            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json") { CharSet = "utf-8" });
+            SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/json") { CharSet = "utf-8" });
+            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/bson") { CharSet = "utf-8" });
         }
-        
+
         /// <summary>
         /// Called when [read from stream].
         /// </summary>
@@ -55,8 +55,18 @@ namespace NContext.Application.Services.Formatters
         /// <remarks></remarks>
         protected override Object OnReadFromStream(Type type, Stream stream, HttpContentHeaders httpContentHeaders)
         {
-            return httpContentHeaders.ContentType.MediaType.ToLower() == "application/bson" 
-                ? stream.ReadAsBsonSerializable(type) 
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            return httpContentHeaders.ContentType.MediaType.ToLower() == "application/bson"
+                ? stream.ReadAsBsonSerializable(type)
                 : stream.ReadAsJsonSerializable(type);
         }
 
@@ -71,6 +81,16 @@ namespace NContext.Application.Services.Formatters
         /// <remarks></remarks>
         protected override void OnWriteToStream(Type type, Object value, Stream stream, HttpContentHeaders httpContentHeaders, TransportContext context)
         {
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
             if (httpContentHeaders.ContentType.MediaType.ToLower() == "application/bson")
             {
                 stream.WriteAsBsonSerializable(value);

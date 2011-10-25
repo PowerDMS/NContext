@@ -96,12 +96,14 @@ namespace NContext.Application.Dto
         /// <summary>
         /// Gets the <typeparam name="T"/> data.
         /// </summary>
+        [DataMember(Order = 1)]
         public IEnumerable<T> Data { get; private set; }
 
         /// <summary>
         /// Gets the errors.
         /// </summary>
         /// <remarks></remarks>
+        [DataMember(Order = 2)]
         public IEnumerable<Error> Errors { get; private set; }
 
         #endregion
