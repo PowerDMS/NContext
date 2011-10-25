@@ -31,7 +31,6 @@ using Microsoft.ApplicationServer.Http;
 using Microsoft.ApplicationServer.Http.Activation;
 
 using NContext.Application.Configuration;
-using NContext.Application.Services.Formatters;
 
 namespace NContext.Application.Services.Routing
 {
@@ -44,14 +43,14 @@ namespace NContext.Application.Services.Routing
 
         private static Boolean _IsConfigured;
 
-        private static readonly Lazy<IList<Route>> _ServiceRoutes = 
-            new Lazy<IList<Route>>(() => new List<Route>());
-
         private static CompositionContainer _CompositionContainer;
 
         private static Lazy<HttpServiceHostFactory> _RestFactory;
 
         private static Lazy<ServiceHostFactory> _SoapFactory;
+
+        private static readonly Lazy<IList<Route>> _ServiceRoutes = 
+            new Lazy<IList<Route>>(() => new List<Route>());
 
         private readonly RoutingConfiguration _RoutingConfiguration;
 
@@ -91,6 +90,11 @@ namespace NContext.Application.Services.Routing
             {
                 return _IsConfigured;
             }
+
+            protected set
+            {
+                _IsConfigured = value;
+            }
         }
 
         /// <summary>
@@ -102,6 +106,60 @@ namespace NContext.Application.Services.Routing
             get
             {
                 return _ServiceRoutes.Value.OrderByDescending(r => r.RoutePrefix);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the composition container.
+        /// </summary>
+        /// <value>The composition container.</value>
+        /// <remarks></remarks>
+        protected CompositionContainer CompositionContainer
+        {
+            get
+            {
+                return _CompositionContainer;
+            }
+
+            set
+            {
+                _CompositionContainer = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the REST <see cref="HttpServiceHostFactory"/>.
+        /// </summary>
+        /// <value>The rest factory.</value>
+        /// <remarks></remarks>
+        protected Lazy<HttpServiceHostFactory> RestFactory
+        {
+            get
+            {
+                return _RestFactory;
+            }
+
+            set
+            {
+                _RestFactory = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the SOAP <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <value>The SOAP factory.</value>
+        /// <remarks></remarks>
+        protected Lazy<ServiceHostFactory> SoapFactory
+        {
+            get
+            {
+                return _SoapFactory;
+            }
+
+            set
+            {
+                _SoapFactory = value;
             }
         }
 
@@ -120,7 +178,7 @@ namespace NContext.Application.Services.Routing
         {
             if ((_RoutingConfiguration.EndpointBinding & EndpointBinding.Rest) == EndpointBinding.Rest)
             {
-                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, String.Empty), 
+                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, _RoutingConfiguration.RestEndpointPostfix), 
                                                           typeof(TServiceContract), 
                                                           typeof(TService), 
                                                           EndpointBinding.Rest));
@@ -128,8 +186,7 @@ namespace NContext.Application.Services.Routing
 
             if ((_RoutingConfiguration.EndpointBinding & EndpointBinding.Soap) == EndpointBinding.Soap)
             {
-                // TODO: (DG) Add support for customizing soap endpoint postfix address. (/soap)
-                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, "/soap"), 
+                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, _RoutingConfiguration.SoapEndpointPostfix), 
                                                           typeof(TServiceContract), 
                                                           typeof(TService), 
                                                           EndpointBinding.Soap));
@@ -169,7 +226,16 @@ namespace NContext.Application.Services.Routing
                 _CompositionContainer = applicationConfiguration.CompositionContainer;
 
                 var httpConfiguration = new WebApiConfiguration();
-                httpConfiguration.Formatters.AddRange(new JsonNetMediaTypeFormatter(), new XmlDataContractMediaTypeFormatter());
+                if (_RoutingConfiguration.ClearDefaultFormatters)
+                {
+                    httpConfiguration.Formatters.Clear();
+                }
+
+                if (_RoutingConfiguration.MediaTypeFormatters.Any())
+                {
+                    httpConfiguration.Formatters.AddRange(_RoutingConfiguration.MediaTypeFormatters.ToArray());
+                }
+
                 httpConfiguration.CreateInstance = _RoutingConfiguration.ResourceFactory;
                 httpConfiguration.MessageHandlerFactory = _RoutingConfiguration.MessageHandlerFactory;
 
