@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Caching.AppFabric"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Unity.Tests.Unit", "NContext.Unity.Tests.Unit\NContext.Unity.Tests.Unit.csproj", "{D9C34C0E-CBCA-4266-807D-51C50BAF125D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Services.Tests.Unit", "NContext.Services.Tests.Unit\NContext.Services.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DLL and Web|Any CPU = Debug DLL and Web|Any CPU
@@ -80,6 +82,12 @@ Global
 		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9C34C0E-CBCA-4266-807D-51C50BAF125D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

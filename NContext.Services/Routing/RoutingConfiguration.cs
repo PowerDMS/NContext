@@ -21,41 +21,29 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Formatting;
-using System.Runtime.Serialization.Json;
-using System.ServiceModel;
-using System.Xml.Serialization;
+
+using Microsoft.ApplicationServer.Http;
 
 using NContext.Application.Configuration;
 
 namespace NContext.Application.Services.Routing
 {
-    // TODO: (DG) Refactor this class and split REST/SOAP configuration methods.
-
     /// <summary>
     /// Defines a component configuration class for service routing.
     /// </summary>
     public class RoutingConfiguration : ApplicationComponentConfigurationBase
     {
         #region Fields
-
-        private Boolean _EnableTestClient;
-
+        
         private EndpointBinding _EndpointBinding;
 
         private String _RestEndpointPostfix;
 
         private String _SoapEndpointPostfix;
 
-        private Boolean _ClearDefaultFormatters;
+        private Lazy<HttpConfiguration> _HttpConfiguration;
 
-        private IEnumerable<MediaTypeFormatter> _MediaTypeFormatters; 
-
-        private Func<IEnumerable<DelegatingHandler>> _MessageHandlerFactory;
-
-        private Func<Type, InstanceContext, HttpRequestMessage, Object> _ResourceFactory;
+        private readonly Lazy<RoutingConfigurationBuilder> _RoutingConfigurationBuilder;
 
         #endregion
 
@@ -69,23 +57,12 @@ namespace NContext.Application.Services.Routing
         public RoutingConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
+            _RoutingConfigurationBuilder = new Lazy<RoutingConfigurationBuilder>(() => new RoutingConfigurationBuilder(this));
         }
 
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets a value indicating whether WCF WebApi test client is enabled.
-        /// </summary>
-        /// <remarks></remarks>
-        public Boolean EnableTestClient
-        {
-            get
-            {
-                return _EnableTestClient;
-            }
-        }
 
         /// <summary>
         /// Gets the endpoint bindings.
@@ -107,7 +84,9 @@ namespace NContext.Application.Services.Routing
         {
             get
             {
-                return _RestEndpointPostfix;
+                return String.IsNullOrWhiteSpace(_RestEndpointPostfix)
+                           ? String.Empty
+                           : String.Format("/{0}", _RestEndpointPostfix);
             }
         }
 
@@ -119,55 +98,26 @@ namespace NContext.Application.Services.Routing
         {
             get
             {
-                return _SoapEndpointPostfix;
+                if (_SoapEndpointPostfix == null)
+                {
+                    return "/soap";
+                }
+
+                return String.IsNullOrWhiteSpace(_SoapEndpointPostfix)
+                           ? String.Empty
+                           : String.Format("/{0}", _SoapEndpointPostfix);
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether to clear the default WCF WebApi formatters.
+        /// Gets the default WCF WebApi service route <see cref="HttpConfiguration"/>.
         /// </summary>
         /// <remarks></remarks>
-        public Boolean ClearDefaultFormatters
+        public HttpConfiguration HttpConfiguration
         {
             get
             {
-                return _ClearDefaultFormatters;
-            }
-        }
-
-        /// <summary>
-        /// Gets the media type formatters.
-        /// </summary>
-        /// <remarks></remarks>
-        public IEnumerable<MediaTypeFormatter> MediaTypeFormatters
-        {
-            get
-            {
-                return _MediaTypeFormatters;
-            }
-        }
-
-        /// <summary>
-        /// Gets the resource resolver.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<Type, InstanceContext, HttpRequestMessage, Object> ResourceFactory
-        {
-            get
-            {
-                return _ResourceFactory;
-            }
-        }
-
-        /// <summary>
-        /// Gets the HTTP message handler factory func.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<IEnumerable<DelegatingHandler>> MessageHandlerFactory
-        {
-            get
-            {
-                return _MessageHandlerFactory;
+                return _HttpConfiguration.Value;
             }
         }
 
@@ -176,15 +126,23 @@ namespace NContext.Application.Services.Routing
         #region Methods
 
         /// <summary>
-        /// If set to <c>true</c>, enable WCF WebApi test client.
+        /// Configure WCF WebApi using a fluent interface.
         /// </summary>
-        /// <param name="enableTestClient">if set to <c>true</c> [enable test client].</param>
-        /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
+        /// <returns>Instance of <see cref="WcfWebApiConfiguration"/>.</returns>
         /// <remarks></remarks>
-        public RoutingConfiguration SetEnableTestClient(Boolean enableTestClient)
+        public WcfWebApiConfiguration ConfigureWebApi()
         {
-            _EnableTestClient = enableTestClient;
-            return this;
+            return new WcfWebApiConfiguration(Builder, _RoutingConfigurationBuilder.Value);
+        }
+
+        /// <summary>
+        /// Configure WCF SOAP using a fluent interface.
+        /// </summary>
+        /// <returns>Instance of <see cref="WcfSoapConfiguration"/>.</returns>
+        /// <remarks></remarks>
+        public WcfSoapConfiguration ConfigureSoap()
+        {
+            return new WcfSoapConfiguration(Builder, _RoutingConfigurationBuilder.Value);
         }
 
         /// <summary>
@@ -209,61 +167,32 @@ namespace NContext.Application.Services.Routing
         /// <remarks></remarks>
         public RoutingConfiguration SetEndpointPostfix(String restPostfix = "", String soapPostfix = "soap")
         {
-            _RestEndpointPostfix = String.IsNullOrWhiteSpace(restPostfix)
-                                       ? String.Empty
-                                       : String.Format("/{0}", restPostfix);
-
-            if (soapPostfix == null)
-            {
-                _SoapEndpointPostfix = "/soap";
-            }
-            else
-            {
-                _SoapEndpointPostfix = String.IsNullOrWhiteSpace(soapPostfix)
-                                           ? String.Empty
-                                           : String.Format("/{0}", soapPostfix);
-            }
-
+            _RestEndpointPostfix = restPostfix;
+            _SoapEndpointPostfix = soapPostfix;
+            
             return this;
         }
 
         /// <summary>
-        /// Sets the WCF WebApi <see cref="MediaTypeFormatter"/>.
+        /// Sets the <see cref="HttpConfiguration"/> factory used for default 
+        /// WCF WebApi service route registration.
         /// </summary>
-        /// <param name="clearDefault">if set to <c>true</c> clears the default formatters 
-        /// (ie. <see cref="XmlSerializer"/>, <see cref="DataContractJsonSerializer"/>).</param>
-        /// <param name="mediaTypeFormatters">The media type formatters.</param>
+        /// <param name="httpConfigurationFactory">The HTTP configuration factory.</param>
         /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public RoutingConfiguration SetFormatters(Boolean clearDefault = false, params MediaTypeFormatter[] mediaTypeFormatters)
+        public RoutingConfiguration SetHttpConfigurationFactory(Func<HttpConfiguration> httpConfigurationFactory)
         {
-            _ClearDefaultFormatters = clearDefault;
-            _MediaTypeFormatters = mediaTypeFormatters;
+            _HttpConfiguration = new Lazy<HttpConfiguration>(httpConfigurationFactory);
             return this;
         }
 
         /// <summary>
-        /// Sets the message handler factory.
+        /// Configures the <see cref="RoutingConfiguration"/> instance.
         /// </summary>
-        /// <param name="factory">The factory.</param>
-        /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public RoutingConfiguration SetMessageHandlerFactory(Func<IEnumerable<DelegatingHandler>> factory)
+        protected internal void ConfigureInstance()
         {
-            _MessageHandlerFactory = factory;
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the resource factory.
-        /// </summary>
-        /// <param name="getInstance">The get instance.</param>
-        /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
-        /// <remarks></remarks>
-        public RoutingConfiguration SetResourceFactory(Func<Type, InstanceContext, HttpRequestMessage, Object> getInstance)
-        {
-            _ResourceFactory = getInstance;
-            return this;
+            Setup();
         }
 
         /// <summary>

@@ -27,11 +27,9 @@ using System.Linq;
 using System.ServiceModel.Activation;
 using System.Web.Routing;
 
-using Microsoft.ApplicationServer.Http;
 using Microsoft.ApplicationServer.Http.Activation;
 
 using NContext.Application.Configuration;
-using NContext.Application.Extensions;
 
 namespace NContext.Application.Services.Routing
 {
@@ -230,30 +228,12 @@ namespace NContext.Application.Services.Routing
             if (!_IsConfigured)
             {
                 _CompositionContainer = applicationConfiguration.CompositionContainer;
-
-                var httpConfiguration = new WebApiConfiguration();
-                if (RoutingConfiguration.ClearDefaultFormatters)
-                {
-                    httpConfiguration.Formatters.Clear();
-                }
-
-                if (RoutingConfiguration.MediaTypeFormatters.Any())
-                {
-                    RoutingConfiguration.MediaTypeFormatters
-                                         .Reverse()
-                                         .ForEach(formatter => httpConfiguration.Formatters.Insert(0, formatter));
-                }
-
-                if (RoutingConfiguration.EnableTestClient)
-                {
-                    httpConfiguration.EnableTestClient = true;
-                }
-
-                httpConfiguration.CreateInstance = RoutingConfiguration.ResourceFactory;
-                httpConfiguration.MessageHandlerFactory = RoutingConfiguration.MessageHandlerFactory;
-
-                _RestFactory = new Lazy<HttpServiceHostFactory>(() => new HttpServiceHostFactory { Configuration = httpConfiguration });
                 _SoapFactory = new Lazy<ServiceHostFactory>(() => new ServiceHostFactory());
+                _RestFactory = new Lazy<HttpServiceHostFactory>(() => 
+                    new HttpServiceHostFactory
+                        {
+                            Configuration = RoutingConfiguration.HttpConfiguration
+                        });
 
                 var serviceConfigurables = _CompositionContainer.GetExports<IConfigureServiceRoutes>();
                 foreach (var serviceConfigurable in serviceConfigurables)

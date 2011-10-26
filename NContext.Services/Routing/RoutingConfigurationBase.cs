@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationConfigurationBuilderSectionBase.cs">
+// <copyright file="RoutingConfigurationBase.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -16,70 +16,90 @@
 // </copyright>
 //
 // <summary>
-//   Defines an abstraction for creating application component configurations.
+//   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
 
-namespace NContext.Application.Configuration
+using NContext.Application.Configuration;
+
+namespace NContext.Application.Services.Routing
 {
     /// <summary>
-    /// Defines an abstraction for creating application component configurations which 
-    /// can in turn be used with an <see cref="ApplicationConfigurationBuilder"/>.
+    /// 
     /// </summary>
-    /// <remarks></remarks>
-    public abstract class ApplicationComponentConfigurationBase
+    public abstract class RoutingConfigurationBase
     {
         #region Fields
 
         private readonly ApplicationConfigurationBuilder _ApplicationConfigurationBuilder;
 
+        private readonly RoutingConfigurationBuilder _RoutingConfigurationBuilder;
+
         #endregion
 
         #region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBase"/> class.
-        /// </summary>
-        /// <param name="applicationConfigurationBuilder">The application configuration.</param>
-        /// <remarks></remarks>
-        protected ApplicationComponentConfigurationBase(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        protected RoutingConfigurationBase(
+            ApplicationConfigurationBuilder applicationConfigurationBuilder,
+            RoutingConfigurationBuilder routingConfigurationBuilder)
         {
             _ApplicationConfigurationBuilder = applicationConfigurationBuilder;
+            _RoutingConfigurationBuilder = routingConfigurationBuilder;
         }
 
         #endregion
-
+        
         #region Operator Overloads
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="ApplicationComponentConfigurationBase"/> 
+        /// Performs an implicit conversion from <see cref="ApplicationComponentConfigurationBase"/>
         /// to <see cref="ApplicationConfiguration"/>.
         /// </summary>
-        /// <param name="componentConfiguration">The configuration builder section.</param>
+        /// <param name="routingConfigurationBase">The routing configuration base.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator ApplicationConfiguration(ApplicationComponentConfigurationBase componentConfiguration)
+        public static implicit operator ApplicationConfiguration(RoutingConfigurationBase routingConfigurationBase)
         {
-            componentConfiguration.Setup();
+            routingConfigurationBase.Setup();
+            routingConfigurationBase.RoutingConfiguration.ConfigureInstance();
 
-            return componentConfiguration.Builder;
+            return routingConfigurationBase.ApplicationConfigurationBuilder.ApplicationConfiguration;
+        }
+
+        public static implicit operator RoutingConfiguration(RoutingConfigurationBase routingConfigurationBase)
+        {
+            routingConfigurationBase.Setup();
+
+            return routingConfigurationBase.RoutingConfigurationBuilder.RoutingConfiguration;
         }
 
         #endregion
 
         #region Properties
 
-        /// <summary>
-        /// Gets the builder instance.
-        /// </summary>
-        /// <remarks></remarks>
-        protected ApplicationConfigurationBuilder Builder
+        public RoutingConfiguration RoutingConfiguration
+        {
+            get
+            {
+                return _RoutingConfigurationBuilder.RoutingConfiguration;
+            }
+        }
+
+        protected ApplicationConfigurationBuilder ApplicationConfigurationBuilder
         {
             get
             {
                 return _ApplicationConfigurationBuilder;
+            }
+        }
+
+        protected RoutingConfigurationBuilder RoutingConfigurationBuilder
+        {
+            get
+            {
+                return _RoutingConfigurationBuilder;
             }
         }
 
@@ -98,7 +118,7 @@ namespace NContext.Application.Configuration
         {
             Setup();
 
-            return _ApplicationConfigurationBuilder.RegisterComponent<TApplicationComponent>();
+            return RoutingConfigurationBuilder.RoutingConfiguration.RegisterComponent<TApplicationComponent>();
         }
 
         /// <summary>
@@ -108,20 +128,22 @@ namespace NContext.Application.Configuration
         /// <param name="componentFactory">The component factory.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public ApplicationConfigurationBuilder RegisterComponent<TApplicationComponent>(Func<TApplicationComponent> componentFactory)
-            where TApplicationComponent : class, IApplicationComponent
+        public ApplicationConfigurationBuilder RegisterComponent<TApplicationComponent>(
+            Func<TApplicationComponent> componentFactory) where TApplicationComponent : class, IApplicationComponent
         {
             Setup();
-            
-            return _ApplicationConfigurationBuilder.RegisterComponent<TApplicationComponent>(componentFactory);
+
+            return
+                RoutingConfigurationBuilder.RoutingConfiguration.RegisterComponent<TApplicationComponent>(componentFactory);
         }
 
         /// <summary>
-        /// Applies the component configuration with the <see cref="IApplicationConfiguration"/>.
+        /// Setup the instance.
         /// </summary>
         /// <remarks></remarks>
         protected abstract void Setup();
 
         #endregion
+
     }
 }
