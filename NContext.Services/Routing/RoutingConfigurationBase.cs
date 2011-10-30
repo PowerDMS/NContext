@@ -68,6 +68,12 @@ namespace NContext.Application.Services.Routing
             return routingConfigurationBase.ApplicationConfigurationBuilder.ApplicationConfiguration;
         }
 
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="NContext.Application.Services.Routing.RoutingConfigurationBase"/> to <see cref="NContext.Application.Services.Routing.RoutingConfiguration"/>.
+        /// </summary>
+        /// <param name="routingConfigurationBase">The routing configuration base.</param>
+        /// <returns>The result of the conversion.</returns>
+        /// <remarks></remarks>
         public static implicit operator RoutingConfiguration(RoutingConfigurationBase routingConfigurationBase)
         {
             routingConfigurationBase.Setup();
@@ -79,6 +85,10 @@ namespace NContext.Application.Services.Routing
 
         #region Properties
 
+        /// <summary>
+        /// Gets the routing configuration.
+        /// </summary>
+        /// <remarks></remarks>
         public RoutingConfiguration RoutingConfiguration
         {
             get
@@ -87,6 +97,10 @@ namespace NContext.Application.Services.Routing
             }
         }
 
+        /// <summary>
+        /// Gets the application configuration builder.
+        /// </summary>
+        /// <remarks></remarks>
         protected ApplicationConfigurationBuilder ApplicationConfigurationBuilder
         {
             get
@@ -95,6 +109,10 @@ namespace NContext.Application.Services.Routing
             }
         }
 
+        /// <summary>
+        /// Gets the routing configuration builder.
+        /// </summary>
+        /// <remarks></remarks>
         protected RoutingConfigurationBuilder RoutingConfigurationBuilder
         {
             get

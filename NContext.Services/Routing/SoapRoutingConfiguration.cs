@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WcfSoapConfiguration.cs">
+// <copyright file="SoapRoutingConfiguration.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -30,9 +30,9 @@ namespace NContext.Application.Services.Routing
     /// <summary>
     /// 
     /// </summary>
-    public class WcfSoapConfiguration : RoutingConfigurationBase
+    public class SoapRoutingConfiguration : RoutingConfigurationBase
     {
-        public WcfSoapConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder, RoutingConfigurationBuilder routingConfigurationBuilder)
+        public SoapRoutingConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder, RoutingConfigurationBuilder routingConfigurationBuilder)
             : base(applicationConfigurationBuilder, routingConfigurationBuilder)
         {
         }

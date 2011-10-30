@@ -126,23 +126,15 @@ namespace NContext.Application.Services.Routing
         #region Methods
 
         /// <summary>
-        /// Configure WCF WebApi using a fluent interface.
+        /// Configure WCF routing using the specified <typeparamref name="TWcfRoutingConfiguration"/>.
         /// </summary>
-        /// <returns>Instance of <see cref="WcfWebApiConfiguration"/>.</returns>
+        /// <typeparam name="TWcfRoutingConfiguration">The type of <see cref="RoutingConfigurationBase"/> to use.</typeparam>
+        /// <returns>Instance of <typeparamref name="TWcfRoutingConfiguration"/>.</returns>
         /// <remarks></remarks>
-        public WcfWebApiConfiguration ConfigureWebApi()
+        public TWcfRoutingConfiguration ConfigureRouting<TWcfRoutingConfiguration>()
+            where TWcfRoutingConfiguration : RoutingConfigurationBase
         {
-            return new WcfWebApiConfiguration(Builder, _RoutingConfigurationBuilder.Value);
-        }
-
-        /// <summary>
-        /// Configure WCF SOAP using a fluent interface.
-        /// </summary>
-        /// <returns>Instance of <see cref="WcfSoapConfiguration"/>.</returns>
-        /// <remarks></remarks>
-        public WcfSoapConfiguration ConfigureSoap()
-        {
-            return new WcfSoapConfiguration(Builder, _RoutingConfigurationBuilder.Value);
+            return (TWcfRoutingConfiguration)Activator.CreateInstance(typeof(TWcfRoutingConfiguration), Builder, _RoutingConfigurationBuilder.Value);
         }
 
         /// <summary>

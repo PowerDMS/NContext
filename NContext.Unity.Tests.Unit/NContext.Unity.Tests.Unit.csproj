@@ -60,6 +60,7 @@
     <None Include="packages.config" />
     <None Include="unity.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

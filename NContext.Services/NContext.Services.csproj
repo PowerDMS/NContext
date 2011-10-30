@@ -120,8 +120,8 @@
     <Compile Include="Routing\RoutingConfigurationBase.cs" />
     <Compile Include="Routing\RoutingConfigurationBuilder.cs" />
     <Compile Include="Routing\RoutingManager.cs" />
-    <Compile Include="Routing\WcfSoapConfiguration.cs" />
-    <Compile Include="Routing\WcfWebApiConfiguration.cs" />
+    <Compile Include="Routing\SoapRoutingConfiguration.cs" />
+    <Compile Include="Routing\WebApiRoutingConfiguration.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Channels\" />

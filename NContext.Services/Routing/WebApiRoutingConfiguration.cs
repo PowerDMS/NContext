@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WcfWebApiConfiguration.cs">
+// <copyright file="WebApiRoutingConfiguration.cs">
 //   This file is part of NContext.
 //
 //   NContext is free software: you can redistribute it and/or modify
@@ -30,6 +30,7 @@ using System.ServiceModel;
 using System.Xml.Serialization;
 
 using Microsoft.ApplicationServer.Http;
+using Microsoft.ApplicationServer.Http.Dispatcher;
 
 using NContext.Application.Configuration;
 using NContext.Application.Extensions;
@@ -39,7 +40,7 @@ namespace NContext.Application.Services.Routing
     /// <summary>
     /// Defines a fluent configuration interface for WCF WebApi.
     /// </summary>
-    public class WcfWebApiConfiguration : RoutingConfigurationBase
+    public class WebApiRoutingConfiguration : RoutingConfigurationBase
     {
         #region Fields
 
@@ -53,13 +54,25 @@ namespace NContext.Application.Services.Routing
 
         private Func<IEnumerable<DelegatingHandler>> _MessageHandlerFactory;
 
-        private Func<Type, InstanceContext, HttpRequestMessage, Object> _ResourceFactory;
+        private Func<Type, InstanceContext, HttpRequestMessage, Object> _ServiceInstanceFactory;
+
+        private HttpErrorHandler[] _HttpErrorHandlers;
+
+        private IEnumerable<Type> _MessageHandlers; 
+
+        private TrailingSlashMode? _TrailingSlashMode;
 
         #endregion
 
         #region Constructors
 
-        public WcfWebApiConfiguration(
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WebApiRoutingConfiguration"/> class.
+        /// </summary>
+        /// <param name="applicationConfigurationBuilder">The application configuration builder.</param>
+        /// <param name="routingConfigurationBuilder">The routing configuration builder.</param>
+        /// <remarks></remarks>
+        public WebApiRoutingConfiguration(
             ApplicationConfigurationBuilder applicationConfigurationBuilder,
             RoutingConfigurationBuilder routingConfigurationBuilder)
             : base(applicationConfigurationBuilder, routingConfigurationBuilder)
@@ -76,7 +89,7 @@ namespace NContext.Application.Services.Routing
         /// <param name="enableTestClient">if set to <c>true</c> [enable test client].</param>
         /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public WcfWebApiConfiguration SetEnableTestClient(Boolean enableTestClient)
+        public WebApiRoutingConfiguration SetEnableTestClient(Boolean enableTestClient)
         {
             _EnableTestClient = enableTestClient;
             return this;
@@ -88,22 +101,34 @@ namespace NContext.Application.Services.Routing
         /// <param name="enableHelpPage">if set to <c>true</c> [enable help page].</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public WcfWebApiConfiguration SetEnableHelpPage(Boolean enableHelpPage)
+        public WebApiRoutingConfiguration SetEnableHelpPage(Boolean enableHelpPage)
         {
             _EnableHelpPage = enableHelpPage;
             return this;
         }
 
         /// <summary>
-        /// Sets <see cref="HttpConfiguration.Formatters"/> to the params specified. Optionally 
-        /// clears the default <see cref="MediaTypeFormatter"/>s.
+        /// Sets the trailing slash mode.
+        /// </summary>
+        /// <param name="trailingSlashMode">The trailing slash mode.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public WebApiRoutingConfiguration SetTrailingSlashMode(TrailingSlashMode trailingSlashMode = TrailingSlashMode.Ignore)
+        {
+            _TrailingSlashMode = trailingSlashMode;
+            return this;
+        }
+
+        /// <summary>
+        /// Inserts the specified <see cref="MediaTypeFormatter"/>s to the <see cref="HttpConfiguration.Formatters"/> collection at the zeroth position. 
+        /// If <paramref name="clearDefault"/> is set to <c>true</c>, the default <see cref="MediaTypeFormatter"/>s will be removed.
         /// </summary>
         /// <param name="clearDefault">if set to <c>true</c> clears the default formatters 
         /// (ie. <see cref="XmlSerializer"/>, <see cref="DataContractJsonSerializer"/>).</param>
         /// <param name="mediaTypeFormatters">The media type formatters.</param>
         /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public WcfWebApiConfiguration SetFormatters(Boolean clearDefault = false, params MediaTypeFormatter[] mediaTypeFormatters)
+        public WebApiRoutingConfiguration SetFormatters(Boolean clearDefault = false, params MediaTypeFormatter[] mediaTypeFormatters)
         {
             _ClearDefaultFormatters = clearDefault;
             _MediaTypeFormatters = mediaTypeFormatters;
@@ -116,21 +141,46 @@ namespace NContext.Application.Services.Routing
         /// <param name="factory">The factory.</param>
         /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public WcfWebApiConfiguration SetMessageHandlerFactory(Func<IEnumerable<DelegatingHandler>> factory)
+        public WebApiRoutingConfiguration SetMessageHandlerFactory(Func<IEnumerable<DelegatingHandler>> factory)
         {
             _MessageHandlerFactory = factory;
             return this;
         }
 
         /// <summary>
-        /// Sets <see cref="HttpConfiguration.OperationHandlerFactory"/> to the value specified.
+        /// Sets <see cref="HttpConfiguration.CreateInstance"/> to the value specified which in turn 
+        /// is used to resolve a service instance for the incoming request.
         /// </summary>
-        /// <param name="getInstance">The get instance.</param>
+        /// <param name="instanceFactory">The function to resolve the appropriate service instance.</param>
         /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public WcfWebApiConfiguration SetOperationHandlerFactory(Func<Type, InstanceContext, HttpRequestMessage, Object> getInstance)
+        public WebApiRoutingConfiguration SetCreateInstanceFactory(Func<Type, InstanceContext, HttpRequestMessage, Object> instanceFactory)
         {
-            _ResourceFactory = getInstance;
+            _ServiceInstanceFactory = instanceFactory;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the <see cref="HttpConfiguration.ErrorHandlers"/> collection.
+        /// </summary>
+        /// <param name="errorHandlers">The error handlers.</param>
+        /// <returns>Current <see cref="WebApiRoutingConfiguration"/> instance.</returns>
+        /// <remarks></remarks>
+        public WebApiRoutingConfiguration SetErrorHandlers(params HttpErrorHandler[] errorHandlers)
+        {
+            _HttpErrorHandlers = errorHandlers;
+            return this;
+        }
+
+        /// <summary>
+        /// Sets the <see cref="HttpConfiguration.MessageHandlers"/> collection.
+        /// </summary>
+        /// <param name="messageHandlers">The message handler types.</param>
+        /// <returns>Current <see cref="WebApiRoutingConfiguration"/> instance.</returns>
+        /// <remarks></remarks>
+        public WebApiRoutingConfiguration SetMessageHandlers(params Type[] messageHandlers)
+        {
+            _MessageHandlers = messageHandlers;
             return this;
         }
 
@@ -149,19 +199,30 @@ namespace NContext.Application.Services.Routing
             var httpConfiguration = new WebApiConfiguration
                 {
                     EnableTestClient = _EnableTestClient,
-                    CreateInstance = _ResourceFactory,
+                    CreateInstance = _ServiceInstanceFactory,
                     MessageHandlerFactory = _MessageHandlerFactory,
-                    EnableHelpPage = _EnableHelpPage
+                    EnableHelpPage = _EnableHelpPage,
+                    TrailingSlashMode = _TrailingSlashMode ?? TrailingSlashMode.Ignore
                 };
 
-            if (_ClearDefaultFormatters)
+            if (_MediaTypeFormatters != null && _MediaTypeFormatters.Any())
             {
-                httpConfiguration.Formatters.Clear();
+                if (_ClearDefaultFormatters)
+                {
+                    httpConfiguration.Formatters.Clear();
+                }
+
+                _MediaTypeFormatters.Reverse().ForEach(formatter => httpConfiguration.Formatters.Insert(0, formatter));
             }
 
-            if (_MediaTypeFormatters.Any())
+            if (_HttpErrorHandlers != null && _HttpErrorHandlers.Any())
             {
-                _MediaTypeFormatters.Reverse().ForEach(formatter => httpConfiguration.Formatters.Insert(0, formatter));
+                httpConfiguration.ErrorHandlers = (handlers, serviceEndpoint, descriptions) => _HttpErrorHandlers.ForEach(handlers.Add);
+            }
+
+            if (_MessageHandlers != null && _MessageHandlers.Any())
+            {
+                _MessageHandlers.ForEach(handler => httpConfiguration.MessageHandlers.Add(handler));
             }
 
             return httpConfiguration;

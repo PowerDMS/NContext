@@ -20,11 +20,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-using Microsoft.ApplicationServer.Http;
-
 using NContext.Application.Configuration;
 using NContext.Application.Services;
 using NContext.Application.Services.Formatters;
@@ -48,11 +43,11 @@ namespace NContext.Services.Tests.Unit
                            .RegisterComponent<IRoutingManager>()
                                .With<RoutingConfiguration>()
                                    .SetEndpointBindings(EndpointBinding.Rest)
-                                   .SetEndpointPostfix(null, "soap")
-                                       .ConfigureWebApi()
-                                           .SetEnableTestClient(true)
-                                           .SetFormatters(true, new JsonNetMediaTypeFormatter());
+                                       .ConfigureRouting<WebApiRoutingConfiguration>()
+                                           .SetFormatters(true, new JsonNetMediaTypeFormatter(), new XmlDataContractMediaTypeFormatter());
 
+            Configure.Using(applicationConfiguration);
+            
             Assert.That(applicationConfiguration.GetComponent<IRoutingManager>(), Is.Not.Null);
             // TODO: (DG) Re-write test. This is temporary.
         }
