@@ -40,7 +40,7 @@ namespace NContext.Application.Services.Routing
         protected override void Setup()
         {
             // TODO: (DG) Add better support for SOAP.
-            throw new NotImplementedException();
+            throw new NotImplementedException("Soap routing configuration support is still in development.");
         }
     }
 }

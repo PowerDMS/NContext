@@ -159,8 +159,9 @@ namespace NContext.Application.Configuration
                                                          postConfigurationAction.Value.Run(component.Value.Value));
                     });
 
-                _CompositionContainer.GetExports<IRunWhenApplicationConfigurationIsComplete>()
-                                     .ForEach(c => c.Value.Run(this));
+                _CompositionContainer.GetExportedValues<IRunWhenApplicationConfigurationIsComplete>()
+                                     .OrderBy(c => c.Priority)
+                                     .ForEach(c => c.Run(this));
 
                 _IsConfigured = true;
             }

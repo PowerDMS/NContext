@@ -20,11 +20,6 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-
-using NContext.Application.Configuration;
-
 namespace NContext.Application.Services.Routing
 {
     /// <summary>

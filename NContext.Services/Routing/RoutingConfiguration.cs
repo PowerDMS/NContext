@@ -126,15 +126,15 @@ namespace NContext.Application.Services.Routing
         #region Methods
 
         /// <summary>
-        /// Configure WCF routing using the specified <typeparamref name="TWcfRoutingConfiguration"/>.
+        /// Configure WCF routing using the specified <typeparamref name="TRoutingConfiguration"/>.
         /// </summary>
-        /// <typeparam name="TWcfRoutingConfiguration">The type of <see cref="RoutingConfigurationBase"/> to use.</typeparam>
-        /// <returns>Instance of <typeparamref name="TWcfRoutingConfiguration"/>.</returns>
+        /// <typeparam name="TRoutingConfiguration">The type of <see cref="RoutingConfigurationBase"/> to use.</typeparam>
+        /// <returns>Instance of <typeparamref name="TRoutingConfiguration"/>.</returns>
         /// <remarks></remarks>
-        public TWcfRoutingConfiguration ConfigureRouting<TWcfRoutingConfiguration>()
-            where TWcfRoutingConfiguration : RoutingConfigurationBase
+        public TRoutingConfiguration ConfigureRouting<TRoutingConfiguration>()
+            where TRoutingConfiguration : RoutingConfigurationBase
         {
-            return (TWcfRoutingConfiguration)Activator.CreateInstance(typeof(TWcfRoutingConfiguration), Builder, _RoutingConfigurationBuilder.Value);
+            return (TRoutingConfiguration)Activator.CreateInstance(typeof(TRoutingConfiguration), Builder, _RoutingConfigurationBuilder.Value);
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace NContext.Application.Services.Routing
         /// Configures the <see cref="RoutingConfiguration"/> instance.
         /// </summary>
         /// <remarks></remarks>
-        protected internal void ConfigureInstance()
+        protected internal virtual void ConfigureInstance()
         {
             Setup();
         }

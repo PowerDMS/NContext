@@ -89,7 +89,7 @@ namespace NContext.Application.Services.Routing
         /// Gets the routing configuration.
         /// </summary>
         /// <remarks></remarks>
-        public RoutingConfiguration RoutingConfiguration
+        protected RoutingConfiguration RoutingConfiguration
         {
             get
             {
@@ -126,6 +126,20 @@ namespace NContext.Application.Services.Routing
         #region Methods
 
         /// <summary>
+        /// Configure WCF routing using the specified <typeparamref name="TRoutingConfiguration"/>.
+        /// </summary>
+        /// <typeparam name="TRoutingConfiguration">The type of <see cref="RoutingConfigurationBase"/> to use.</typeparam>
+        /// <returns>Instance of <typeparamref name="TRoutingConfiguration"/>.</returns>
+        /// <remarks></remarks>
+        public TRoutingConfiguration ConfigureRouting<TRoutingConfiguration>()
+            where TRoutingConfiguration : RoutingConfigurationBase
+        {
+            Setup();
+
+            return (TRoutingConfiguration)Activator.CreateInstance(typeof(TRoutingConfiguration), _ApplicationConfigurationBuilder, _RoutingConfigurationBuilder);
+        }
+
+        /// <summary>
         /// Registers the component with the <see cref="IApplicationConfiguration"/>.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
@@ -151,8 +165,7 @@ namespace NContext.Application.Services.Routing
         {
             Setup();
 
-            return
-                RoutingConfigurationBuilder.RoutingConfiguration.RegisterComponent<TApplicationComponent>(componentFactory);
+            return RoutingConfigurationBuilder.RoutingConfiguration.RegisterComponent<TApplicationComponent>(componentFactory);
         }
 
         /// <summary>

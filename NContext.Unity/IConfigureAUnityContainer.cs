@@ -34,7 +34,8 @@ namespace NContext.Unity
     public interface IConfigureAUnityContainer
     {
         /// <summary>
-        /// Gets the priority in which to configure the container.
+        /// Gets the priority in which to configure the container. Implementations will be run 
+        /// in ascending order based on priority, so a lower priority value will execute first.
         /// </summary>
         /// <remarks></remarks>
         Int32 Priority { get; }

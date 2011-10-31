@@ -44,7 +44,11 @@ namespace NContext.Services.Tests.Unit
                                .With<RoutingConfiguration>()
                                    .SetEndpointBindings(EndpointBinding.Rest)
                                        .ConfigureRouting<WebApiRoutingConfiguration>()
-                                           .SetFormatters(true, new JsonNetMediaTypeFormatter(), new XmlDataContractMediaTypeFormatter());
+                                           .SetFormatters(true, new JsonNetMediaTypeFormatter(), new XmlDataContractMediaTypeFormatter())
+                                           .SetEnableHelpPage(true)
+                                           .SetEnableTestClient(true)
+                                       .ConfigureRouting<SoapRoutingConfiguration>()
+                                       ;
 
             Configure.Using(applicationConfiguration);
             

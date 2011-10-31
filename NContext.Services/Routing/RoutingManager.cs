@@ -201,7 +201,6 @@ namespace NContext.Application.Services.Routing
         /// </summary>
         protected virtual void CreateRoutes()
         {
-            var x = _RestFactory.Value;
             var serviceRouteCreatedActions = _CompositionContainer.GetExports<IRunWhenAServiceRouteIsCreated>().ToList();
             foreach (var route in _ServiceRoutes.Value.OrderByDescending(r => r.RoutePrefix))
             {
