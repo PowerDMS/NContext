@@ -43,7 +43,6 @@ namespace NContext.Application.Dto
         {
             Name = name;
             Messages = messages;
-            Type = GetType().Name;
         }
 
         /// <summary>
@@ -54,17 +53,10 @@ namespace NContext.Application.Dto
         public String Name { get; private set; }
 
         /// <summary>
-        /// Gets the type of the error.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(Order = 2)]
-        public String Type { get; private set; }
-
-        /// <summary>
         /// Gets the message.
         /// </summary>
         /// <remarks></remarks>
-        [DataMember(Order = 3)]
+        [DataMember(Order = 2)]
         public IEnumerable<String> Messages { get; private set; }
     }
 }

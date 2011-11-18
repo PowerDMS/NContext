@@ -33,19 +33,8 @@ namespace NContext.Application.ErrorHandling
     public class ErrorAttribute : Attribute
     {
         /// <summary>
-        /// Gets or sets the default message.
-        /// </summary>
-        /// <value>The default message.</value>
-        public String DefaultMessage { get; set; }
-
-        /// <summary>
-        /// Gets or sets the help link url.
-        /// </summary>
-        /// <value>The help link.</value>
-        public String HelpLinkUrl { get; set; }
-
-        /// <summary>
-        /// Gets or sets the localization key.
+        /// Gets or sets the localization key. If none is set, <see cref="ErrorBase"/> will 
+        /// attempt to lookup the localized error message using the enumeration value as a key.
         /// </summary>
         /// <value>The localization key.</value>
         public String LocalizationKey { get; set; }

@@ -38,9 +38,26 @@ namespace NContext.Application.ErrorHandling
     {
         #region Constructors
 
-        protected ErrorBase(Type errorType, String localizationKey, params Object[] errorTypeParameters)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorBase"/> class.
+        /// </summary>
+        /// <param name="errorType">Type of the error.</param>
+        /// <param name="errorName">Name of the error.</param>
+        /// <param name="errorMessageMessageParameters">The error message parameters.</param>
+        /// <remarks></remarks>
+        protected ErrorBase(Type errorType, String errorName, params Object[] errorMessageMessageParameters)
         {
-            ConfigureError(errorType, localizationKey, errorTypeParameters);
+            if (errorType == null)
+            {
+                throw new ArgumentNullException("errorType");
+            }
+
+            if (errorName == null)
+            {
+                throw new ArgumentNullException("errorName");
+            }
+
+            ConfigureError(errorType, errorName, errorMessageMessageParameters);
         }
 
         #endregion
@@ -48,99 +65,77 @@ namespace NContext.Application.ErrorHandling
         #region Properties
 
         /// <summary>
-        /// Gets the name.
+        /// Gets the error name.
         /// </summary>
         /// <remarks></remarks>
         public String Name { get; private set; }
 
         /// <summary>
-        /// Gets the message.
+        /// Gets the localized error message.
         /// </summary>
         /// <remarks></remarks>
         public String Message { get; private set; }
 
         /// <summary>
-        /// Gets or sets the localization directory.
+        /// Gets the localization resource.
         /// </summary>
-        /// <value>The localization directory.</value>
         /// <remarks></remarks>
-        protected internal abstract String LocalizationDirectory { get; }
+        protected abstract Type LocalizationResource { get; }
 
         #endregion
 
         #region Methods
 
-        protected internal void ConfigureError(Type errorType, String localizationKey, params Object[] errorTypeParameters)
+        private void ConfigureError(Type errorType, String defaultLocalizationKey, params Object[] errorMessageParameters)
         {
-            ErrorAttribute errorAttribute = 
-                errorType.GetField(localizationKey)
+            ErrorAttribute errorAttribute =
+                errorType.GetField(defaultLocalizationKey)
                          .GetCustomAttributes(typeof(ErrorAttribute), false)
                          .Cast<ErrorAttribute>()
                          .SingleOrDefault();
 
-            if (errorAttribute != null)
+            String localizationKey = defaultLocalizationKey;
+            if (errorAttribute != null && !String.IsNullOrWhiteSpace(errorAttribute.LocalizationKey))
             {
-                Name = localizationKey;
-                Message = GetErrorMessage(errorType, localizationKey, errorTypeParameters);
-            }
-        }
-
-        private String GetErrorMessage(Type errorType, String localizationKey, params Object[] errorTypeParameters)
-        {
-            String errorLocalizationKey = null, errorDefaultMessage = null;
-            ErrorAttribute errorAttribute = 
-                errorType.GetField(localizationKey)
-                         .GetCustomAttributes(typeof(ErrorAttribute), false)
-                         .Cast<ErrorAttribute>()
-                         .SingleOrDefault();
-
-            if (errorAttribute != null)
-            {
-                if (!String.IsNullOrEmpty(errorAttribute.LocalizationKey))
-                {
-                    errorLocalizationKey = errorAttribute.LocalizationKey;
-                }
-
-                if (!String.IsNullOrEmpty(errorAttribute.DefaultMessage))
-                {
-                    errorDefaultMessage = errorAttribute.DefaultMessage;
-                }
+                localizationKey = errorAttribute.LocalizationKey;
             }
 
-            var tempDescription = GetLocalizedErrorMessage(errorType, errorLocalizationKey);
-            String errorMessage = (String.IsNullOrEmpty(tempDescription) && !String.IsNullOrEmpty(errorDefaultMessage))
-                                      ? errorDefaultMessage
-                                      : tempDescription;
-
-            if (!String.IsNullOrEmpty(errorMessage))
+            String errorMessage = TryGetLocalizedErrorMessage(localizationKey) ?? String.Empty;
+            if (!String.IsNullOrWhiteSpace(errorMessage))
             {
                 var formatters = errorMessage.MinimumFormatParametersRequired();
                 if (formatters > 0)
                 {
-                    if (errorTypeParameters.Count() != formatters)
+                    var specifiedParameterCount = errorMessageParameters.Length;
+                    if (specifiedParameterCount != formatters)
                     {
-                        // TODO: (DG) Logging - Incorrect parameters being used
-
+                        // TODO: (DG) Logging - Incorrect parameters being used.
+                        if (specifiedParameterCount > formatters)
+                        {
+                            // We can still format the string, though some parameters will not be used.
+                            errorMessage = String.Format(errorMessage, errorMessageParameters);
+                        }
                     }
                     else
                     {
-                        errorMessage = String.Format(errorMessage, errorTypeParameters);
+                        errorMessage = String.Format(errorMessage, errorMessageParameters);
                     }
                 }
             }
 
-            return errorMessage;
+            Name = localizationKey;
+            Message = errorMessage;
         }
 
-        private String GetLocalizedErrorMessage(Type errorType, String localizationKey)
+        private String TryGetLocalizedErrorMessage(String localizationKey)
         {
-            if (String.IsNullOrEmpty(localizationKey))
+            if (String.IsNullOrWhiteSpace(localizationKey))
             {
-                return String.Empty;
+                return null;
             }
 
             var message = String.Empty;
-            var resourceManager = new ResourceManager(String.Format("{0}.{1}", LocalizationDirectory, errorType.Name), Assembly.GetExecutingAssembly());
+            var resourceManager = new ResourceManager(String.Format("{0}.{1}", LocalizationResource.Namespace, LocalizationResource.Name), Assembly.GetAssembly(LocalizationResource));
             try
             {
                 if (resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true) != null)

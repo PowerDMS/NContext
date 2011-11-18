@@ -132,11 +132,6 @@ namespace NContext.Application.Extensions
             }
         }
 
-        /// <summary>
-        /// Gets the json serializer which supports references and circular referencing.
-        /// </summary>
-        /// <returns>The <see cref="JsonSerializer"/>.</returns>
-        /// <remarks></remarks>
         private static JsonSerializer GetJsonSerializer()
         {
             return new JsonSerializer
@@ -152,13 +147,13 @@ namespace NContext.Application.Extensions
         private static JsonSerializer GetBsonSerializer()
         {
             return new JsonSerializer
-                {
-                    MissingMemberHandling = MissingMemberHandling.Ignore,
-                    ObjectCreationHandling = ObjectCreationHandling.Replace,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    TypeNameHandling = TypeNameHandling.Objects
-                };
+            {
+                MissingMemberHandling = MissingMemberHandling.Ignore,
+                NullValueHandling = NullValueHandling.Ignore,
+                ObjectCreationHandling = ObjectCreationHandling.Replace,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            };
         }
 
         /// <summary>
