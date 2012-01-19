@@ -1,1 +1,0 @@
-C:\Projects\NContext\NContext.Services.Tests.Unit\obj\Release\ResolveAssemblyReference.cache
