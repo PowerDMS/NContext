@@ -54,7 +54,7 @@
       <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
       <Name>NContext.Application</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NContext.Services\NContext.Service.csproj">
+    <ProjectReference Include="..\NContext.Service\NContext.Service.csproj">
       <Project>{B59D121B-CEFE-41EA-9B29-5922C0B996D2}</Project>
       <Name>NContext.Service</Name>
     </ProjectReference>
