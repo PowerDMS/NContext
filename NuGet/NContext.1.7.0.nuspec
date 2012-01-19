@@ -1,11 +1,14 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.7.0</version>
+    <version>1.7.1</version>
     <authors>Daniel Gioulakis</authors>
     <owners>Waking Venture Inc.</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://ncontext.codeplex.com/</projectUrl>
+    <dependencies>
+      <dependency id="NContext.Common" version="1.7.0" />
+    </dependencies>
     <id>NContext</id>
     <title />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -23,8 +26,6 @@
   </metadata>
   <files>
     <file src="..\NContext.Application\bin\Release\NContext.Application.dll" target="lib\net40\NContext.Application.dll" />
-    <file src="..\NContext.Application\bin\Release\NContext.Application.Public.dll" target="lib\net40\NContext.Application.Public.dll" />
-    <file src="..\NContext.Application\bin\Release\NContext.Application.Public.xml" target="lib\net40\NContext.Application.Public.xml" />
     <file src="..\NContext.Application\bin\Release\NContext.Application.xml" target="lib\net40\NContext.Application.xml" />
   </files>
 </package>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.7.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <dependencies>
+      <dependency id="NContext.Common" version="1.7.0" />
+      <dependency id="ValueInjecter" version="2.3" />
+    </dependencies>
+    <id>NContext.Extensions.ValueInjecter</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>ValueInjecter extensions for NContext. Gives extended support for IResponseTransferObject.  Mapping/Translating DTOs.</description>
+    <copyright>Waking Venture Inc.</copyright>
+    <tags>NContext</tags>
+  </metadata>
+  <files>
+    <file src="..\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.dll" target="lib\net40\NContext.Extensions.ValueInjecter.dll" />
+    <file src="..\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.xml" target="lib\net40\NContext.Extensions.ValueInjecter.xml" />
+  </files>
+</package>

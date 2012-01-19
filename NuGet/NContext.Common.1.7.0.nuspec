@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.7.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <id>NContext.Common</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Common dependency for NContext libraries. Includes NContext.Application.Public.dll and NContext.Application.Dto.dll.
+
+This is built upon Microsoft Portable Class Libraries in efforts to support Silverlight, Windows Phone, Xbox 360, etc.</description>
+    <copyright>Waking Venture Inc.</copyright>
+    <tags>NContext</tags>
+  </metadata>
+  <files>
+    <file src="..\NContext.Application.Dto\bin\Release\NContext.Application.Dto.dll" target="lib\net40\NContext.Application.Dto.dll" />
+    <file src="..\NContext.Application.Dto\bin\Release\NContext.Application.Dto.XML" target="lib\net40\NContext.Application.Dto.XML" />
+    <file src="..\NContext.Application.Public\bin\Release\NContext.Application.Public.dll" target="lib\net40\NContext.Application.Public.dll" />
+    <file src="..\NContext.Application.Public\bin\Release\NContext.Application.Public.XML" target="lib\net40\NContext.Application.Public.XML" />
+  </files>
+</package>

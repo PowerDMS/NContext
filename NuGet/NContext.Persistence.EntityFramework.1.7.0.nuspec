@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.7.0</version>
+    <version>1.7.2</version>
     <authors>Daniel Gioulakis</authors>
     <owners>Waking Venture Inc.</owners>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <dependencies>
       <dependency id="CommonServiceLocator" version="1.0" />
       <dependency id="EntityFramework" version="4.2.0.0" />
-      <dependency id="NContext" version="1.7.0" />
+      <dependency id="NContext" version="1.7.1" />
     </dependencies>
     <id>NContext.Persistence.EntityFramework</id>
     <title />

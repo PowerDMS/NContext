@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.7.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <dependencies>
+      <dependency id="CommonServiceLocator" version="1.0" />
+      <dependency id="NContext" version="1.7.1" />
+      <dependency id="WebApi.All" version="0.6.0" />
+      <dependency id="Newtonsoft.Json" version="4.0.5" />
+    </dependencies>
+    <id>NContext.Services</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Distributed services addons for NContext via WCF WebApi (REST) &amp; WCF 4 SOAP.</description>
+    <summary />
+    <releaseNotes>Now supports WCF WebApi Preview 6.
+Refactored namespaces.</releaseNotes>
+    <copyright>Waking Venture Inc.</copyright>
+  </metadata>
+  <files>
+    <file src="..\NContext.Service\bin\Release\NContext.Extensions.JsonNet.dll" target="lib\net40\NContext.Extensions.JsonNet.dll" />
+    <file src="..\NContext.Service\bin\Release\NContext.Service.dll" target="lib\net40\NContext.Service.dll" />
+    <file src="..\NContext.Service\bin\Release\NContext.Service.xml" target="lib\net40\NContext.Service.xml" />
+  </files>
+</package>
