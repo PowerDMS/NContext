@@ -31,11 +31,8 @@ using NContext.Application.Extensions;
 using NContext.Application.Configuration;
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel.Unity;
 using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
-
-using NContext.EnterpriseLibrary;
 
 namespace NContext.Unity
 {
@@ -140,11 +137,12 @@ namespace NContext.Unity
 
         protected virtual void SetContainerConfigurator(IApplicationConfiguration applicationConfiguration)
         {
-            var elManager = applicationConfiguration.GetComponent<IEnterpriseLibraryManager>();
-            if (elManager != null)
-            {
-                elManager.SetContainerConfigurator(new UnityContainerConfigurator(_Container));
-            }
+            // TODO: (DG) Rethink below. [Commented out to remove dependency on NContext.EnterpriseLibrary]
+            //var elManager = applicationConfiguration.GetComponent<IEnterpriseLibraryManager>();
+            //if (elManager != null)
+            //{
+            //    elManager.SetContainerConfigurator(new UnityContainerConfigurator(_Container));
+            //}
         }
 
         #endregion

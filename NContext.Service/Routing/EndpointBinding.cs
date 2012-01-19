@@ -24,7 +24,7 @@
 
 using System;
 
-namespace NContext.Service
+namespace NContext.Service.Routing
 {
     /// <summary>
     /// Defines an enumeration of service architecture types.

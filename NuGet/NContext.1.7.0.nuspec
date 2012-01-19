@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.7.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://ncontext.codeplex.com/</projectUrl>
+    <id>NContext</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NContext is an extensible, composable application framework for .NET 4.0.</description>
+    <summary />
+    <releaseNotes>BREAKING CHANGES!
+&gt; License is now under MIT Open Source.
+&gt; Removed dependencies on JsonNet and ValueInjecter from NContext.Application.dll. Support for these libraries now comes from external extension packages.
+&gt; Refactored application configuration.
+&gt; Refactored error handling.
+&gt; Refactored namespaces across all projects.
+&gt; NContext.Service is now updated to WebApi Preview 6.
+&gt; Unit tests are being actively developed using NUnit and JustMock. Code coverage is analyzed using dotCover.</releaseNotes>
+    <copyright>Waking Venture Inc.</copyright>
+  </metadata>
+  <files>
+    <file src="..\NContext.Application\bin\Release\NContext.Application.dll" target="lib\net40\NContext.Application.dll" />
+    <file src="..\NContext.Application\bin\Release\NContext.Application.Public.dll" target="lib\net40\NContext.Application.Public.dll" />
+    <file src="..\NContext.Application\bin\Release\NContext.Application.Public.xml" target="lib\net40\NContext.Application.Public.xml" />
+    <file src="..\NContext.Application\bin\Release\NContext.Application.xml" target="lib\net40\NContext.Application.xml" />
+  </files>
+</package>

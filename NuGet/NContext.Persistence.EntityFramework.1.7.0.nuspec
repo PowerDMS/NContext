@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>1.7.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <dependencies>
+      <dependency id="CommonServiceLocator" version="1.0" />
+      <dependency id="EntityFramework" version="4.2.0.0" />
+      <dependency id="NContext" version="1.7.0" />
+    </dependencies>
+    <id>NContext.Persistence.EntityFramework</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Entity Framework 4.2+ persistence support for NContext.</description>
+    <releaseNotes>Refactored namespaces to reflect n-layer/tier association.</releaseNotes>
+    <copyright>Waking Venture Inc.</copyright>
+  </metadata>
+  <files>
+    <file src="..\NContext.Infrastructure.Persistence.EntityFramework\bin\Release\NContext.Infrastructure.Persistence.EntityFramework.dll" target="lib\net40\NContext.Infrastructure.Persistence.EntityFramework.dll" />
+    <file src="..\NContext.Infrastructure.Persistence.EntityFramework\bin\Release\NContext.Infrastructure.Persistence.EntityFramework.xml" target="lib\net40\NContext.Infrastructure.Persistence.EntityFramework.xml" />
+  </files>
+</package>

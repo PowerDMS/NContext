@@ -63,9 +63,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
     </Reference>
-    <Reference Include="Omu.ValueInjecter, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\valueinjecter.2.3\lib\Omu.ValueInjecter.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
@@ -88,10 +85,6 @@
     <ProjectReference Include="..\NContext.Application\NContext.Application.csproj">
       <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
       <Name>NContext.Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NContext.EnterpriseLibrary\NContext.EnterpriseLibrary.csproj">
-      <Project>{14AFB8B4-55E9-4127-B477-65B0549D5C79}</Project>
-      <Name>NContext.EnterpriseLibrary</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

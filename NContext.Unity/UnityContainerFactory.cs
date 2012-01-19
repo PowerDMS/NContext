@@ -54,23 +54,11 @@ namespace NContext.Unity
         /// Creates an instance of <see cref="IUnityContainer"/> used for dependency injection.
         /// </summary>
         /// <param name="configurationFileName">Name of the configuration file.</param>
-        /// <param name="containerName">Name of the container.</param>
-        /// <returns>Instance of <see cref="IUnityContainer"/>.</returns>
-        /// <remarks></remarks>
-        public static IUnityContainer Create(String configurationFileName, String containerName)
-        {
-            return Create(configurationFileName, "unity", containerName);
-        }
-
-        /// <summary>
-        /// Creates an instance of <see cref="IUnityContainer"/> used for dependency injection.
-        /// </summary>
-        /// <param name="configurationFileName">Name of the configuration file.</param>
         /// <param name="configurationSectionName">Name of the configuration section.</param>
         /// <param name="containerName">Name of the container.</param>
         /// <returns>Instance of <see cref="IUnityContainer"/>.</returns>
         /// <remarks></remarks>
-        public static IUnityContainer Create(String configurationFileName = null, String configurationSectionName = "unity", String containerName = "")
+        public static IUnityContainer Create(String configurationFileName, String containerName = "", String configurationSectionName = "unity")
         {
             IUnityContainer container = null;
             if (!String.IsNullOrWhiteSpace(configurationFileName))

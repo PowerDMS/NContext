@@ -27,14 +27,13 @@ using System.Reflection;
 
 using Microsoft.Practices.Unity.InterceptionExtension;
 
-using NContext.Application.Utilities;
-
 namespace NContext.Unity
 {
     /// <summary>
     /// Defines a simple factory class for creating a strongly-typed <see cref="MethodSignatureMatchingRule"/>.
     /// </summary>
     /// <remarks></remarks>
+    // TODO: (DG) Still needed?
     public static class MethodSignatureMatchingRuleFactory
     {
         /// <summary>

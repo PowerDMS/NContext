@@ -84,6 +84,10 @@ namespace NContext.Unity
             }
         }
 
+        /// <summary>
+        /// Gets the name of the configuration section.
+        /// </summary>
+        /// <remarks></remarks>
         public String ConfigurationSectionName
         {
             get

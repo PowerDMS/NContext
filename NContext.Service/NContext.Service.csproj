@@ -69,7 +69,7 @@
     <Compile Include="WebApi\Formatters\JsonNetMediaTypeFormatter.cs" />
     <Compile Include="WebApi\Formatters\XmlDataContractMediaTypeFormatter.cs" />
     <Compile Include="WebApi\Authorization\ResourceAuthorizationError.cs" />
-    <Compile Include="EndpointBinding.cs" />
+    <Compile Include="Routing\EndpointBinding.cs" />
     <Compile Include="Routing\IConfigureServiceRoutes.cs" />
     <Compile Include="Routing\IRoutingManager.cs" />
     <Compile Include="Routing\IRunWhenAServiceRouteIsCreated.cs" />
