@@ -5,23 +5,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application", "NCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Unity", "NContext.Unity\NContext.Unity.csproj", "{C6F06E82-728B-4CFD-86BE-CC5DFA815086}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Persistence.EntityFramework", "NContext.Persistence.EntityFramework\NContext.Persistence.EntityFramework.csproj", "{C9F7B439-599F-404C-8203-A67AD5A3FEA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Infrastructure.Persistence.EntityFramework", "NContext.Infrastructure.Persistence.EntityFramework\NContext.Infrastructure.Persistence.EntityFramework.csproj", "{C9F7B439-599F-404C-8203-A67AD5A3FEA9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.EnterpriseLibrary", "NContext.EnterpriseLibrary\NContext.EnterpriseLibrary.csproj", "{14AFB8B4-55E9-4127-B477-65B0549D5C79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Services", "NContext.Services\NContext.Services.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Service", "NContext.Service\NContext.Service.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application.Dto", "NContext.Application.Dto\NContext.Application.Dto.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application.Public", "NContext.Application.Public\NContext.Application.Public.csproj", "{A1E2F769-1887-4300-9AC4-5005F22457E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Caching.AppFabric", "NContext.Caching.AppFabric\NContext.Caching.AppFabric.csproj", "{7866C121-AA98-41E8-B691-FF568DF6B728}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application.Caching.AppFabric", "NContext.Application.Caching.AppFabric\NContext.Application.Caching.AppFabric.csproj", "{7866C121-AA98-41E8-B691-FF568DF6B728}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Unity.Tests.Unit", "NContext.Unity.Tests.Unit\NContext.Unity.Tests.Unit.csproj", "{D9C34C0E-CBCA-4266-807D-51C50BAF125D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Services.Tests.Unit", "NContext.Services.Tests.Unit\NContext.Services.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Service.Tests.Unit", "NContext.Service.Tests.Unit\NContext.Service.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Application.Tests.Unit", "NContext.Application.Tests.Unit\NContext.Application.Tests.Unit.csproj", "{E69D30E5-089E-47AB-AE68-F25F5852DF01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.ValueInjecter", "NContext.Extensions.ValueInjecter\NContext.Extensions.ValueInjecter.csproj", "{0EAFD594-5631-4C33-A5F2-BDA64E103421}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.JsonNet", "NContext.Extensions.JsonNet\NContext.Extensions.JsonNet.csproj", "{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -96,9 +102,25 @@ Global
 		{E69D30E5-089E-47AB-AE68-F25F5852DF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E69D30E5-089E-47AB-AE68-F25F5852DF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E69D30E5-089E-47AB-AE68-F25F5852DF01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0EAFD594-5631-4C33-A5F2-BDA64E103421} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35

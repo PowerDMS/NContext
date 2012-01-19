@@ -1,18 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ApplicationConfiguration.cs">
-//   This file is part of NContext.
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
-//   NContext is free software: you can redistribute it and/or modify
-//   it under the terms of the GNU General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or any later version.
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-//   NContext is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
 //
-//   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
 // </copyright>
 //
 // <summary>
@@ -43,23 +45,11 @@ namespace NContext.Application.Configuration
 
         private static CompositionContainer _CompositionContainer;
 
-        private static readonly Dictionary<Type, Lazy<IApplicationComponent>> _Components;
+        private static readonly IDictionary<Type, Lazy<IApplicationComponent>> _Components =
+            new Dictionary<Type, Lazy<IApplicationComponent>>();
 
         #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        /// <remarks></remarks>
-        static ApplicationConfiguration()
-        {
-            _Components = new Dictionary<Type, Lazy<IApplicationComponent>>();
-        }
-
-        #endregion
-
+        
         #region Properties
 
         /// <summary>
@@ -134,7 +124,7 @@ namespace NContext.Application.Configuration
         /// Creates all application components and configures them.
         /// </summary>
         /// <remarks>Should only be called once from application startup.</remarks>
-        public void Setup()
+        public virtual void Setup()
         {
             if (_IsConfigured)
             {
@@ -153,17 +143,15 @@ namespace NContext.Application.Configuration
                 var postConfigurationActions = _CompositionContainer.GetExports<IRunWhenComponentConfigurationIsComplete>();
 
                 _Components.ForEach(component =>
-                    {
-                        component.Value.Value.Configure(this);
-                        postConfigurationActions.ForEach(postConfigurationAction => 
-                                                         postConfigurationAction.Value.Run(component.Value.Value));
-                    });
+                {
+                    component.Value.Value.Configure(this);
+                    postConfigurationActions.ForEach(postConfigurationAction => postConfigurationAction.Value.Run(component.Value.Value));
+                });
 
+                _IsConfigured = true;
                 _CompositionContainer.GetExportedValues<IRunWhenApplicationConfigurationIsComplete>()
                                      .OrderBy(c => c.Priority)
                                      .ForEach(c => c.Run(this));
-
-                _IsConfigured = true;
             }
         }
 
@@ -183,12 +171,33 @@ namespace NContext.Application.Configuration
             var directoryPath = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             if (String.IsNullOrWhiteSpace(directoryPath))
             {
-                return null;
+                throw new Exception("Could not create composition container. Invalid directory path.");
             }
 
             var directoryCatalog = new SafeDirectoryCatalog(directoryPath);
+            var compositionContainer = new CompositionContainer(directoryCatalog);
+            if (compositionContainer == null)
+            {
+                throw new Exception("Could not create composition container. Container cannot be null.");
+            }
 
-            return new CompositionContainer(directoryCatalog);
+            return compositionContainer;
+        }
+
+        #endregion
+
+        #region Unit Testing
+
+        internal void Reset()
+        {
+            _IsConfigured = false;
+            _CompositionContainer = null;
+
+            if (_Components != null)
+            {
+                GetType().GetField("_Components", BindingFlags.Static | BindingFlags.Instance | BindingFlags.NonPublic)
+                         .SetValue(this, new Dictionary<Type, Lazy<IApplicationComponent>>());
+            }
         }
 
         #endregion

@@ -72,22 +72,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="Omu.ValueInjecter">
-      <HintPath>..\packages\valueinjecter.2.3\lib\Omu.ValueInjecter.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Caching" />
-    <Reference Include="System.Runtime.Serialization">
-      <RequiredTargetFramework>3.0</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Security" />
   </ItemGroup>
   <ItemGroup>
@@ -100,11 +88,7 @@
     <Compile Include="Configuration\Configure.cs" />
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
-    <Compile Include="Domain\IEntity.cs" />
-    <Compile Include="ErrorHandling\ErrorAttribute.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
-    <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
-    <Compile Include="Extensions\ValueInjecterExtensions.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
     <Compile Include="Security\GuidToken.cs" />
@@ -115,21 +99,10 @@
     <Compile Include="Configuration\SecureDirectoryCatalog.cs" />
     <Compile Include="Security\SecurityConfiguration.cs" />
     <Compile Include="Security\SecurityManager.cs" />
-    <Compile Include="Domain\Specifications\AndSpecification.cs" />
-    <Compile Include="Domain\Specifications\CompositeSpecification.cs" />
-    <Compile Include="Domain\Specifications\AdHocSpecification.cs" />
-    <Compile Include="Domain\Specifications\ExpressionExtensions.cs" />
-    <Compile Include="Domain\Specifications\NotSpecification.cs" />
-    <Compile Include="Domain\Specifications\OrSpecification.cs" />
-    <Compile Include="Domain\Specifications\ParametersRebinder.cs" />
-    <Compile Include="Domain\Specifications\SpecificationBase.cs" />
-    <Compile Include="Domain\Specifications\TrueSpecification.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ICacheManagerExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
-    <Compile Include="Extensions\JsonNetExtensions.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectCacheExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -158,18 +131,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Validation\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NContext.Application.Dto\NContext.Application.Dto.csproj">
-      <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
-      <Name>NContext.Application.Dto</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NContext.Application.Public\NContext.Application.Public.csproj">
       <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
       <Name>NContext.Application.Public</Name>

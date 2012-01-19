@@ -1,0 +1,486 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NContext.Service</name>
+    </assembly>
+    <members>
+        <member name="T:NContext.Service.EndpointBinding">
+            <summary>
+            Defines an enumeration of service architecture types.
+            </summary>
+        </member>
+        <member name="F:NContext.Service.EndpointBinding.Rest">
+            <summary>
+            Represents a REST service binding.
+            </summary>
+        </member>
+        <member name="F:NContext.Service.EndpointBinding.Soap">
+            <summary>
+            Represents a SOAP service binding.
+            </summary>
+        </member>
+        <member name="T:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration">
+            <summary>
+            Defines a fluent configuration interface for WCF WebApi.
+            </summary>
+        </member>
+        <member name="T:NContext.Service.Routing.RoutingConfigurationBase">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfigurationBase.op_Implicit(NContext.Service.Routing.RoutingConfigurationBase)~NContext.Application.Configuration.ApplicationConfiguration">
+            <summary>
+            Performs an implicit conversion from <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBase"/>
+            to <see cref="T:NContext.Application.Configuration.ApplicationConfiguration"/>.
+            </summary>
+            <param name="routingConfigurationBase">The routing configuration base.</param>
+            <returns>The result of the conversion.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfigurationBase.op_Implicit(NContext.Service.Routing.RoutingConfigurationBase)~NContext.Service.Routing.RoutingConfiguration">
+            <summary>
+            Performs an implicit conversion from <see cref="T:NContext.Service.Routing.RoutingConfigurationBase"/> to <see cref="T:NContext.Service.Routing.RoutingConfiguration"/>.
+            </summary>
+            <param name="routingConfigurationBase">The routing configuration base.</param>
+            <returns>The result of the conversion.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfigurationBase.ConfigureRouting``1">
+            <summary>
+            Configure WCF routing using the specified <typeparamref name="TRoutingConfiguration"/>.
+            </summary>
+            <typeparam name="TRoutingConfiguration">The type of <see cref="T:NContext.Service.Routing.RoutingConfigurationBase"/> to use.</typeparam>
+            <returns>Instance of <typeparamref name="TRoutingConfiguration"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfigurationBase.RegisterComponent``1">
+            <summary>
+            Registers the component with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfigurationBase.RegisterComponent``1(System.Func{``0})">
+            <summary>
+            Registers the component with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+            <param name="componentFactory">The component factory.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfigurationBase.Setup">
+            <summary>
+            Setup the instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfigurationBase.RoutingConfiguration">
+            <summary>
+            Gets the routing configuration.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfigurationBase.ApplicationConfigurationBuilder">
+            <summary>
+            Gets the application configuration builder.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfigurationBase.RoutingConfigurationBuilder">
+            <summary>
+            Gets the routing configuration builder.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder,NContext.Service.Routing.RoutingConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration builder.</param>
+            <param name="routingConfigurationBuilder">The routing configuration builder.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetEnableTestClient(System.Boolean)">
+            <summary>
+            Sets <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.EnableTestClient"/> to the value specified.
+            </summary>
+            <param name="enableTestClient">if set to <c>true</c> [enable test client].</param>
+            <returns>Current <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetEnableHelpPage(System.Boolean)">
+            <summary>
+            Sets <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.EnableHelpPage"/> to the value specified.
+            </summary>
+            <param name="enableHelpPage">if set to <c>true</c> [enable help page].</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetTrailingSlashMode(Microsoft.ApplicationServer.Http.TrailingSlashMode)">
+            <summary>
+            Sets the trailing slash mode.
+            </summary>
+            <param name="trailingSlashMode">The trailing slash mode.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetFormatters(System.Boolean,System.Net.Http.Formatting.MediaTypeFormatter[])">
+            <summary>
+            Inserts the specified <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter"/>s to the <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.Formatters"/> collection at the zeroth position. 
+            If <paramref name="clearDefault"/> is set to <c>true</c>, the default <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter"/>s will be removed.
+            </summary>
+            <param name="clearDefault">if set to <c>true</c> clears the default formatters 
+            (ie. <see cref="T:System.Xml.Serialization.XmlSerializer"/>, <see cref="T:System.Runtime.Serialization.Json.DataContractJsonSerializer"/>).</param>
+            <param name="mediaTypeFormatters">The media type formatters.</param>
+            <returns>Current <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetMessageHandlerFactory(System.Func{System.Collections.Generic.IEnumerable{System.Net.Http.DelegatingHandler}})">
+            <summary>
+            Sets <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.MessageHandlerFactory"/> to the value specified.
+            </summary>
+            <param name="factory">The factory.</param>
+            <returns>Current <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetCreateInstanceFactory(System.Func{System.Type,System.ServiceModel.InstanceContext,System.Net.Http.HttpRequestMessage,System.Object})">
+            <summary>
+            Sets <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.CreateInstance"/> to the value specified which in turn 
+            is used to resolve a service instance for the incoming request.
+            </summary>
+            <param name="instanceFactory">The function to resolve the appropriate service instance.</param>
+            <returns>Current <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetErrorHandlers(Microsoft.ApplicationServer.Http.Dispatcher.HttpErrorHandler[])">
+            <summary>
+            Sets the <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.ErrorHandlers"/> collection.
+            </summary>
+            <param name="errorHandlers">The error handlers.</param>
+            <returns>Current <see cref="T:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.SetMessageHandlers(System.Type[])">
+            <summary>
+            Sets the <see cref="P:Microsoft.ApplicationServer.Http.HttpConfiguration.MessageHandlers"/> collection.
+            </summary>
+            <param name="messageHandlers">The message handler types.</param>
+            <returns>Current <see cref="T:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Routing.WebApiRoutingConfiguration.Setup">
+            <summary>
+            Setup the instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.WebApi.Formatters.JsonNetMediaTypeFormatter">
+            <summary>
+            Defines a Json <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter"/> using Json.NET serialization/deserialization.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.WebApi.Formatters.JsonNetMediaTypeFormatter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Service.WebApi.Formatters.JsonNetMediaTypeFormatter"/> class.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.WebApi.Formatters.JsonNetMediaTypeFormatter.OnReadFromStream(System.Type,System.IO.Stream,System.Net.Http.Headers.HttpContentHeaders)">
+            <summary>
+            Called when [read from stream].
+            </summary>
+            <param name="type">The type of object to deserialize.</param>
+            <param name="stream">The stream.</param>
+            <param name="httpContentHeaders">The HTTP content headers.</param>
+            <returns>The de-serialized object.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Formatters.JsonNetMediaTypeFormatter.OnWriteToStream(System.Type,System.Object,System.IO.Stream,System.Net.Http.Headers.HttpContentHeaders,System.Net.TransportContext)">
+            <summary>
+            Called to write an object to the <paramref name="stream"/>.
+            </summary>
+            <param name="type">The type of object to write.</param>
+            <param name="value">The object instance to write.</param>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to which to write.</param>
+            <param name="httpContentHeaders">The HTTP content headers.</param>
+            <param name="context">The <see cref="T:System.Net.TransportContext"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.WebApi.Formatters.XmlDataContractMediaTypeFormatter">
+            <summary>
+            Defines an Xml implementation of <see cref="T:System.Net.Http.Formatting.MediaTypeFormatter"/> using <see cref="T:System.Runtime.Serialization.DataContractSerializer"/>.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.WebApi.Formatters.XmlDataContractMediaTypeFormatter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Service.WebApi.Formatters.XmlDataContractMediaTypeFormatter"/> class.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.WebApi.Formatters.XmlDataContractMediaTypeFormatter.OnReadFromStream(System.Type,System.IO.Stream,System.Net.Http.Headers.HttpContentHeaders)">
+            <summary>
+            Called when [read from stream].
+            </summary>
+            <param name="type">The type of object to deserialize.</param>
+            <param name="stream">The stream.</param>
+            <param name="httpContentHeaders">The HTTP content headers.</param>
+            <returns>The de-serialized object.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.WebApi.Formatters.XmlDataContractMediaTypeFormatter.OnWriteToStream(System.Type,System.Object,System.IO.Stream,System.Net.Http.Headers.HttpContentHeaders,System.Net.TransportContext)">
+            <summary>
+            Called to write an object to the <paramref name="stream"/>.
+            </summary>
+            <param name="type">The type of object to write.</param>
+            <param name="value">The object instance to write.</param>
+            <param name="stream">The <see cref="T:System.IO.Stream"/> to which to write.</param>
+            <param name="httpContentHeaders">The HTTP content headers.</param>
+            <param name="context">The <see cref="T:System.Net.TransportContext"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.Routing.IRunWhenAServiceRouteIsCreated">
+            <summary>
+            Defines a role-interface which allows implementors to run when a service route is created.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.IRunWhenAServiceRouteIsCreated.Run(NContext.Service.Routing.Route)">
+            <summary>
+            Runs  specified route.
+            </summary>
+            <param name="route">The route.</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.Routing.IConfigureServiceRoutes">
+            <summary>
+            Defines a role-interface used by the <see cref="T:NContext.Service.Routing.IRoutingManager"/> to register service routes.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.Routing.IConfigureServiceRoutes.RegisterServiceRoutes(NContext.Service.Routing.IRoutingManager)">
+            <summary>
+            Creates the WCF service routes.
+            </summary>
+            <param name="routingManager">The routing manager.</param>
+        </member>
+        <member name="T:NContext.Service.Routing.Route">
+            <summary>
+            Defines a class which represents a WCF service route.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.Routing.Route.#ctor(System.String,System.Type,System.Type,NContext.Service.EndpointBinding)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Service.Routing.Route"/> class.
+            </summary>
+            <param name="routePrefix">The route prefix.</param>
+            <param name="serviceContractType">Type of the service contract.</param>
+            <param name="serviceType">Type of the service.</param>
+            <param name="binding">The binding.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.Route.Binding">
+            <summary>
+            Gets the binding.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.Route.RoutePrefix">
+            <summary>
+            Gets the route prefix.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.Route.ServiceContractType">
+            <summary>
+            Gets the type of the service contract.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.Route.ServiceType">
+            <summary>
+            Gets the type of the service.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.Routing.RoutingConfigurationBuilder">
+            <summary>
+            Defines a fluent WCF configuration builder interface.
+            </summary>
+        </member>
+        <member name="T:NContext.Service.Routing.RoutingConfiguration">
+            <summary>
+            Defines a component configuration class for service routing.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Application.Configuration.ApplicationComponentConfigurationBase"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfiguration.ConfigureRouting``1">
+            <summary>
+            Configure WCF routing using the specified <typeparamref name="TRoutingConfiguration"/>.
+            </summary>
+            <typeparam name="TRoutingConfiguration">The type of <see cref="T:NContext.Service.Routing.RoutingConfigurationBase"/> to use.</typeparam>
+            <returns>Instance of <typeparamref name="TRoutingConfiguration"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfiguration.SetEndpointBindings(NContext.Service.EndpointBinding)">
+            <summary>
+            Sets the WCF supported endpoint bindings. You 
+            may use the | operator to allow multiple bindings.
+            </summary>
+            <param name="endpointBindings">The endpoint bindings.</param>
+            <returns>Current <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:NContext.Service.Routing.RoutingConfiguration.SetEndpointPostfix(System.String,System.String)" -->
+        <member name="M:NContext.Service.Routing.RoutingConfiguration.SetHttpConfigurationFactory(System.Func{Microsoft.ApplicationServer.Http.HttpConfiguration})">
+            <summary>
+            Sets the <see cref="P:NContext.Service.Routing.RoutingConfiguration.HttpConfiguration"/> factory used for default 
+            WCF WebApi service route registration.
+            </summary>
+            <param name="httpConfigurationFactory">The HTTP configuration factory.</param>
+            <returns>Current <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfiguration.ConfigureInstance">
+            <summary>
+            Configures the <see cref="T:NContext.Service.Routing.RoutingConfiguration"/> instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingConfiguration.Setup">
+            <summary>
+            Applies the component configuration with the <see cref="T:NContext.Application.Configuration.IApplicationConfiguration"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfiguration.EndpointBinding">
+            <summary>
+            Gets the endpoint bindings.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfiguration.RestEndpointPostfix">
+            <summary>
+            Gets the rest endpoint postfix.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfiguration.SoapEndpointPostfix">
+            <summary>
+            Gets the SOAP endpoint postfix.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingConfiguration.HttpConfiguration">
+            <summary>
+            Gets the default WCF WebApi service route <see cref="P:NContext.Service.Routing.RoutingConfiguration.HttpConfiguration"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.Routing.RoutingManager">
+            <summary>
+            Defines an application-level manager for configuring WCF service routes.
+            </summary>
+        </member>
+        <member name="T:NContext.Service.Routing.IRoutingManager">
+            <summary>
+            Defines interface contract which encapsulates logic for creating WCF service routes.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.Routing.IRoutingManager.RegisterServiceRoute``2(System.String)">
+            <summary>
+            Registers a service route.
+            </summary>
+            <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+            <typeparam name="TService">The type of the service.</typeparam>
+            <param name="routePrefix">The route prefix.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingManager.#ctor(NContext.Service.Routing.RoutingConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.Service.Routing.RoutingManager"/> class.
+            Prevents a default instance of the <see cref="T:NContext.Service.Routing.RoutingManager"/> class from being created.
+            </summary>
+            <param name="routingConfiguration">The routing configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingManager.RegisterServiceRoute``2(System.String)">
+            <summary>
+            Registers the service route.
+            </summary>
+            <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+            <typeparam name="TService">The type of the service.</typeparam>
+            <param name="routePrefix">The route prefix.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingManager.CreateRoutes">
+            <summary>
+            Registers the routes in the routing table.
+            </summary>
+        </member>
+        <member name="M:NContext.Service.Routing.RoutingManager.Configure(NContext.Application.Configuration.IApplicationConfiguration)">
+            <summary>
+            Configures the component instance.
+            </summary>
+            <param name="applicationConfiguration">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingManager.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <value>
+                <c>true</c> if this instance is configured; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingManager.ServiceRoutes">
+            <summary>
+            Gets the routes.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingManager.CompositionContainer">
+            <summary>
+            Gets or sets the composition container.
+            </summary>
+            <value>The composition container.</value>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingManager.RestFactory">
+            <summary>
+            Gets or sets the REST <see cref="T:Microsoft.ApplicationServer.Http.Activation.HttpServiceHostFactory"/>.
+            </summary>
+            <value>The rest factory.</value>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.Routing.RoutingManager.SoapFactory">
+            <summary>
+            Gets or sets the SOAP <see cref="T:System.ServiceModel.Activation.ServiceHostFactory"/>.
+            </summary>
+            <value>The SOAP factory.</value>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.Service.Soap.Routing.SoapRoutingConfiguration">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:NContext.Service.WebApi.Authorization.ResourceAuthorizationError">
+            <summary>
+            
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.Service.WebApi.Authorization.ResourceAuthorizationError.Message">
+            <summary>
+            Gets the authorization error message.
+            </summary>
+            <remarks></remarks>
+        </member>
+    </members>
+</doc>

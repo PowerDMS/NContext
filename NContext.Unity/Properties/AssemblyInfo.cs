@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Reverb.Unity")]
+[assembly: AssemblyTitle("NContext.Unity")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Waking Venture, Inc.")]
+[assembly: AssemblyCompany("Waking Venture Inc.")]
 [assembly: AssemblyProduct("NContext")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © Waking Venture Inc. 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

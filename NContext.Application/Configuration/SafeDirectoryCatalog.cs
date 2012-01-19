@@ -1,18 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="SafeDirectoryCatalog.cs">
-//   This file is part of NContext.
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
-//   NContext is free software: you can redistribute it and/or modify
-//   it under the terms of the GNU General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or any later version.
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-//   NContext is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
 //
-//   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
 // </copyright>
 //
 // <summary>
@@ -36,32 +38,50 @@ namespace NContext.Application.Configuration
     {
         private readonly AggregateCatalog _Catalog;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.
+        /// </summary>
+        /// <param name="directory">The directory.</param>
+        /// <remarks></remarks>
         public SafeDirectoryCatalog(String directory)
         {
-            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
+            if (!Directory.Exists(directory))
+            {
+                throw new DirectoryNotFoundException("Invalid directory path specified. Could not create AggregateCatalog.");
+            }
+
             _Catalog = new AggregateCatalog();
+            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
             foreach (var file in files)
             {
                 try
                 {
                     var assemblyCatalog = new AssemblyCatalog(file);
-
-                    // Force MEF to load the plugin and figure out if there are any exports
-                    // good assemblies will not throw the RTLE exception and can be added to the catalog
-                    if (assemblyCatalog.Parts.ToList().Count > 0)
+                    if (assemblyCatalog.Parts.Any())
                     {
                         _Catalog.Catalogs.Add(assemblyCatalog);
                     }
                 }
                 catch (ReflectionTypeLoadException)
                 {
+                    // Ignore exception
                 }
             }
         }
 
+        /// <summary>
+        /// Gets the part definitions that are contained in the catalog.
+        /// </summary>
+        /// <returns>The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition"/> contained in the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/>.</returns>
+        ///   
+        /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/> object has been disposed of.</exception>
+        /// <remarks></remarks>
         public override IQueryable<ComposablePartDefinition> Parts
         {
-            get { return _Catalog.Parts; }
+            get
+            {
+                return _Catalog.Parts;
+            }
         }
     }
 }

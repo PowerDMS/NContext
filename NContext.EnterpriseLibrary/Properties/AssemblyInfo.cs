@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Waking Venture Inc.")]
 [assembly: AssemblyProduct("NContext")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © Waking Venture Inc. 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

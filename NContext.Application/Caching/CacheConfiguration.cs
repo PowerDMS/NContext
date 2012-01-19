@@ -33,7 +33,7 @@ namespace NContext.Application.Caching
     {
         #region Fields
 
-        private Func<ObjectCache> _Provider;
+        private Lazy<ObjectCache> _Provider;
 
         private String _RegionName;
 
@@ -53,6 +53,9 @@ namespace NContext.Application.Caching
         public CacheConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
+            _Provider = new Lazy<ObjectCache>(() => MemoryCache.Default);
+            _AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration;
+            _SlidingExpiration = ObjectCache.NoSlidingExpiration;
         }
 
         #endregion
@@ -63,7 +66,7 @@ namespace NContext.Application.Caching
         /// Gets the provider.
         /// </summary>
         /// <remarks></remarks>
-        public Func<ObjectCache> Provider
+        public Lazy<ObjectCache> Provider
         {
             get
             {
@@ -119,7 +122,7 @@ namespace NContext.Application.Caching
         /// <returns>This <see cref="CacheConfiguration"/> instance.</returns>
         public CacheConfiguration SetProvider<TCacheProvider>(Func<TCacheProvider> cacheProvider) where TCacheProvider : ObjectCache
         {
-            _Provider = cacheProvider;
+            _Provider = new Lazy<ObjectCache>(cacheProvider);
 
             return this;
         }

@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NContext.Application")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Waking Venture")]
+[assembly: AssemblyCompany("Waking Venture Inc.")]
 [assembly: AssemblyProduct("NContext")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright © Waking Venture Inc. 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -34,3 +34,6 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: InternalsVisibleTo("NContext.Application.Tests.Unit")]
+[assembly: InternalsVisibleTo("NContext.Application1.Tests.Unit")]
+[assembly: InternalsVisibleTo("NContext.Application.Explorables")]

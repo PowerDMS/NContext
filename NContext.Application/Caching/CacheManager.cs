@@ -1,18 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="CacheManager.cs">
-//   This file is part of NContext.
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
-//   NContext is free software: you can redistribute it and/or modify
-//   it under the terms of the GNU General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or any later version.
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-//   NContext is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
 //
-//   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
 // </copyright>
 //
 // <summary>
@@ -35,13 +37,7 @@ namespace NContext.Application.Caching
     {
         #region Fields
 
-        private static DateTimeOffset _DefaultCachItemAbsoluteExpiration;
-
-        private static TimeSpan _DefaultCacheItemSlidingExpiration = ObjectCache.NoSlidingExpiration;
-
-        private static Lazy<ObjectCache> _CacheProvider;
-
-        private static Boolean _IsConfigured;
+        private Boolean _IsConfigured;
 
         private readonly CacheConfiguration _CacheConfiguration;
 
@@ -72,11 +68,11 @@ namespace NContext.Application.Caching
         /// Gets the cache provider.
         /// </summary>
         /// <remarks></remarks>
-        public ObjectCache CacheProvider
+        public ObjectCache Provider
         {
             get
             {
-                return _CacheProvider.Value;
+                return _CacheConfiguration.Provider.Value;
             }
         }
 
@@ -126,16 +122,13 @@ namespace NContext.Application.Caching
         {
             if (!_IsConfigured)
             {
-                _CacheProvider = new Lazy<ObjectCache>(_CacheConfiguration.Provider);
-                _DefaultCachItemAbsoluteExpiration = _CacheConfiguration.AbsoluteExpiration;
-                _DefaultCacheItemSlidingExpiration = _CacheConfiguration.SlidingExpiration;
                 _IsConfigured = true;
             }
         }
 
         #endregion
 
-        #region Methods
+        #region Implementation of ICacheManager
 
         /// <summary>
         /// Adds or updates the specified instance to the cache.
@@ -163,23 +156,18 @@ namespace NContext.Application.Caching
         /// <remarks></remarks>
         public Boolean AddOrUpdateItem<TObject>(String cacheEntryKey, TObject instance, CacheItemPolicy cacheItemPolicy, String regionName = null)
         {
-            Remove(cacheEntryKey);
-            return _CacheProvider.Value.Add(cacheEntryKey, instance, cacheItemPolicy ?? GetDefaultCacheItemPolicy(), regionName);
-        }
+            if (String.IsNullOrWhiteSpace(cacheEntryKey))
+            {
+                throw new ArgumentNullException("cacheEntryKey");
+            }
 
-        /// <summary>
-        /// Adds or updates the specified instance to the cache.
-        /// </summary>
-        /// <param name="cacheEntryKey">The cache enty key.</param>
-        /// <param name="instance">The object instance.</param>
-        /// <param name="cacheItemPolicy">The cache item policy.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
-        /// <remarks></remarks>
-        public Boolean AddOrUpdateItem(String cacheEntryKey, Object instance, CacheItemPolicy cacheItemPolicy, String regionName = null)
-        {
+            if (instance == null)
+            {
+                throw new ArgumentNullException("instance");
+            }
+
             Remove(cacheEntryKey);
-            return _CacheProvider.Value.Add(cacheEntryKey, instance, cacheItemPolicy ?? GetDefaultCacheItemPolicy(), regionName);
+            return Provider.Add(cacheEntryKey, instance, cacheItemPolicy ?? GetDefaultCacheItemPolicy(), regionName);
         }
 
         /// <summary>
@@ -191,7 +179,7 @@ namespace NContext.Application.Caching
         /// <remarks></remarks>
         public Boolean Contains(String cacheEntryKey, String regionName = null)
         {
-            return _CacheProvider.Value.Contains(cacheEntryKey, regionName);
+            return Provider.Contains(cacheEntryKey, regionName);
         }
 
         /// <summary>
@@ -215,7 +203,7 @@ namespace NContext.Application.Caching
         /// <remarks></remarks>
         public TObject Get<TObject>(String cacheEntryKey, String regionName) where TObject : class
         {
-            return _CacheProvider.Value.Get<TObject>(cacheEntryKey, regionName);
+            return Provider.Get<TObject>(cacheEntryKey, regionName);
         }
 
         /// <summary>
@@ -227,7 +215,7 @@ namespace NContext.Application.Caching
         /// <remarks></remarks>
         public Object Get(String cacheEntryKey, String regionName)
         {
-            return _CacheProvider.Value.Get(cacheEntryKey, regionName);
+            return Provider.Get(cacheEntryKey, regionName);
         }
 
         /// <summary>
@@ -238,7 +226,7 @@ namespace NContext.Application.Caching
         /// <remarks></remarks>
         public Int64 GetCount(String regionName = null)
         {
-            return _CacheProvider.Value.GetCount(regionName);
+            return Provider.GetCount(regionName);
         }
 
         /// <summary>
@@ -249,9 +237,9 @@ namespace NContext.Application.Caching
         /// <remarks></remarks>
         public void Remove(String cacheEntryKey, String regionName = null)
         {
-            if (_CacheProvider.Value.Contains(cacheEntryKey, regionName))
+            if (Provider.Contains(cacheEntryKey, regionName))
             {
-                _CacheProvider.Value.Remove(cacheEntryKey, regionName);
+                Provider.Remove(cacheEntryKey, regionName);
             }
         }
 
@@ -259,8 +247,8 @@ namespace NContext.Application.Caching
         {
             return new CacheItemPolicy
                 {
-                    AbsoluteExpiration = _DefaultCachItemAbsoluteExpiration,
-                    SlidingExpiration = _DefaultCacheItemSlidingExpiration
+                    AbsoluteExpiration = _CacheConfiguration.AbsoluteExpiration,
+                    SlidingExpiration = _CacheConfiguration.SlidingExpiration
                 };
         }
 

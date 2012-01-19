@@ -1,0 +1,818 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>NContext.EnterpriseLibrary</name>
+    </assembly>
+    <members>
+        <member name="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider">
+            <summary>
+            Defines a crytographic provider using Enterprise Library.
+            </summary>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:System.Object"/> class using 
+            a default set of recommended cryptography algorithms.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.#ctor(System.Type,System.Type,System.Type)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider"/> class.
+            </summary>
+            <param name="defaultHashAlgorithm">The default hash algorithm.</param>
+            <param name="defaultKeyedHashAlgorithm">The default keyed hash algorithm.</param>
+            <param name="defaultSymmetricAlgorithm">The default symmetric algorithm.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash(System.Byte[],System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash(System.String,System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash``1(System.Byte[],System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash``1(System.String,System.Boolean)">
+            <summary>
+            Creates the hash using the specified <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns>The created hash.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash(System.Byte[],System.Byte[],System.Boolean)">
+            <summary>
+            Compares the hashes.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash(System.String,System.String,System.Boolean)">
+            <summary>
+            Compares the hash.
+            </summary>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash``1(System.Byte[],System.Byte[],System.Boolean)">
+            <summary>
+            Compares the hash.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash``1(System.String,System.String,System.Boolean)">
+            <summary>
+            Compares the hash.
+            </summary>
+            <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash(System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash``1(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash``1(System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash(System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            using the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash``1(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHash``1(System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Creates the <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHmac(System.String,System.String)">
+            <summary>
+            Creates a URL-safe Base64-encoded <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CreateHmac``1(System.String,System.String)">
+            <summary>
+            Creates a URL-safe Base64-encoded <see cref="T:System.Security.Cryptography.HMAC"/> hash with the specified symmetric key 
+            and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <returns>The hashed message authentication code. (<see cref="T:System.Security.Cryptography.HMAC"/>)</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash(System.Byte[],System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash(System.Byte[],System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash(System.String,System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash(System.String,System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash``1(System.Byte[],System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash``1(System.Byte[],System.Byte[],System.Byte[],System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash``1(System.String,System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHash``1(System.String,System.String,System.String,System.Boolean,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="hashedText">The hashed text.</param>
+            <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHmac(System.String,System.String,System.String)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="base64EncodedHashedText">The base64-encoded and hashed text.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.CompareHmac``1(System.String,System.String,System.String)">
+            <summary>
+            Compares the hashes using the specified symmetric key and <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <typeparam name="TKeyedHashAlgorithm">The type of the keyed hash algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="base64EncodedHashedText">The base64-encoded and hashed text.</param>
+            <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text using the application's
+            default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt``1(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the text with the specified <typeparamref name="TSymmetricAlgorithm"/>.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt``1(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the text with the specified <typeparamref name="TSymmetricAlgorithm"/>.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt``1(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt``1(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the text with the specified <typeparamref name="TSymmetricAlgorithm"/>.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="plainText">The plain text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The encrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.Type,System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified symmetric algorithm.
+            </summary>
+            <param name="symmetricAlgorithm">The symmetric algorithm.</param>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="plaintext">The plaintext.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.Type,System.String,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Encrypts the specified symmetric algorithm.
+            </summary>
+            <param name="symmetricAlgorithm">The symmetric algorithm.</param>
+            <param name="protectedKeyFileName">Name of the protected key file.</param>
+            <param name="plaintext">The plaintext.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Encrypt(System.Type,Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.ProtectedKey,System.Byte[])">
+            <summary>
+            Encrypts the specified symmetric algorithm.
+            </summary>
+            <param name="symmetricAlgorithm">The symmetric algorithm.</param>
+            <param name="protectedKey">The protected key.</param>
+            <param name="plaintext">The plaintext.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified symmetric key.
+            </summary>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt``1(System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt``1(System.String,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt``1(System.IO.FileInfo,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted byte array.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt``1(System.IO.FileInfo,System.String,System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified cipher text.
+            </summary>
+            <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+            <param name="protectedKeyFile">The protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns>The decrypted text.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.Type,System.Byte[],System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified symmetric algorithm.
+            </summary>
+            <param name="symmetricAlgorithm">The symmetric algorithm.</param>
+            <param name="symmetricKey">The symmetric key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.Type,System.String,System.Byte[],System.Security.Cryptography.DataProtectionScope)">
+            <summary>
+            Decrypts the specified symmetric algorithm.
+            </summary>
+            <param name="symmetricAlgorithm">The symmetric algorithm.</param>
+            <param name="protectedKeyFileName">Name of the protected key file.</param>
+            <param name="cipherText">The cipher text.</param>
+            <param name="dataProtectionScope">The data protection scope.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyProvider.Decrypt(System.Type,Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.ProtectedKey,System.Byte[])">
+            <summary>
+            Decrypts the specified symmetric algorithm.
+            </summary>
+            <param name="symmetricAlgorithm">The symmetric algorithm.</param>
+            <param name="protectedKey">The protected key.</param>
+            <param name="cipherText">The cipher text.</param>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Extensions.IValidatableExtensions">
+            <summary>
+            Defines a static class for providing IValidatable type extension methods.
+            </summary>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Extensions.IValidatableExtensions.Validate``1(``0)">
+            <summary>
+            Validates the specified <see cref="T:NContext.EnterpriseLibrary.Validation.IValidatable"/> validation object.
+            </summary>
+            <typeparam name="TValidatable">The type of the validatable object.</typeparam>
+            <param name="validationObject">The validation object.</param>
+            <returns>The <see cref="T:Microsoft.Practices.EnterpriseLibrary.Validation.ValidationResults"/>.</returns>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Extensions.IValidatableExtensions.Validate``1(``0,Microsoft.Practices.EnterpriseLibrary.Validation.ValidationResults@)">
+            <summary>
+            Validates the specified <see cref="T:NContext.EnterpriseLibrary.Validation.IValidatable"/> validation object.
+            </summary>
+            <typeparam name="TValidatable">The type of the validatable object.</typeparam>
+            <param name="validationObject">The validation object.</param>
+            <param name="validationResults">The validation results.</param>
+            <returns><c>True</c> if <paramref name="validationObject"/> is valid, else <c>false</c>.</returns>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Extensions.IValidatableExtensions.Validate``1(System.Collections.Generic.List{``0},Microsoft.Practices.EnterpriseLibrary.Validation.ValidationResults@)">
+            <summary>
+            Validates the specified <see cref="T:NContext.EnterpriseLibrary.Validation.IValidatable"/> validation objects.
+            </summary>
+            <typeparam name="TValidatable">The type of the validatable object.</typeparam>
+            <param name="validationObjects">The validation objects.</param>
+            <param name="validationResults">The validation results.</param>
+            <returns><c>True</c> if <paramref name="validationObjects"/> is valid, else <c>false</c>.</returns>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Extensions.IValidatableExtensions.Validate``1(System.Collections.Generic.IEnumerable{``0},Microsoft.Practices.EnterpriseLibrary.Validation.ValidationResults@)">
+            <summary>
+            Validates the specified <see cref="T:NContext.EnterpriseLibrary.Validation.IValidatable"/> validation objects.
+            </summary>
+            <typeparam name="TValidatable">The type of the validatable object.</typeparam>
+            <param name="validationObjects">The validation objects.</param>
+            <param name="validationResults">The validation results.</param>
+            <returns><c>True</c> if <paramref name="validationObjects"/> is valid, else <c>false</c>.</returns>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Services.Authorization.IServiceToken">
+            <summary>
+            Defines a generic contract for web service token used in authentication.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Services.Authorization.IServiceToken.Created">
+            <summary>
+            Gets the token creation date.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Services.Authorization.IServiceToken.Expires">
+            <summary>
+            Gets the token expiration date.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Services.Authorization.GenericToken">
+            <summary>
+            Defines a generic implementation of <see cref="T:Microsoft.Practices.EnterpriseLibrary.Security.IToken"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Services.Authorization.GenericToken.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.EnterpriseLibrary.Services.Authorization.GenericToken"/> class.
+            </summary>
+            <param name="value">The value.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Services.Authorization.GenericToken.Value">
+            <summary>
+            Gets the token contents as a string.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.EnterpriseLibraryManager">
+            <summary>
+            Defines an implementation of IEnterpriseLibraryManager
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.IEnterpriseLibraryManager">
+            <summary>
+            Defines an application component for Microsoft Enterprise Library support.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.IEnterpriseLibraryManager.SetContainerConfigurator``1(``0)">
+            <summary>
+            Sets the application's container configurator.
+            </summary>
+            <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
+            <param name="containerConfigurator">The container configurator.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.IEnterpriseLibraryManager.ContainerConfigurator">
+            <summary>
+            Gets the application's container configurator.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.EnterpriseLibraryManager.SetContainerConfigurator``1(``0)">
+            <summary>
+            Sets the application's container configurator.
+            </summary>
+            <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
+            <param name="containerConfigurator">The container configurator.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.EnterpriseLibraryManager.ContainerConfigurator">
+            <summary>
+            Gets the application's container configurator.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.EnterpriseLibraryManager.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration">
+            <summary>
+            Defines a configuration class to build the application's <see cref="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager"/>.
+            </summary>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration.#ctor(NContext.Application.Configuration.ApplicationConfigurationBuilder)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration"/> class.
+            </summary>
+            <param name="applicationConfigurationBuilder">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration.SetDefaults(System.Type,System.Type,System.Type)">
+            <summary>
+            Sets the application's default cryptographic algorithms. (<see cref="T:System.Security.Cryptography.HashAlgorithm"/>, <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>, <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>)
+            </summary>
+            <param name="defaultHashAlgorithm">The default <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.</param>
+            <param name="defaultKeyedHashAlgorithm">The default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.</param>
+            <param name="defaultSymmetricAlgorithm">The default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration.Setup">
+            <summary>
+            Sets the application's cryptography manager using 
+            the configuration created from this instance.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration.DefaultHashAlgorithm">
+            <summary>
+            Gets the default <see cref="T:System.Security.Cryptography.HashAlgorithm"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration.DefaultKeyedHashAlgorithm">
+            <summary>
+            Gets the default <see cref="T:System.Security.Cryptography.KeyedHashAlgorithm"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration.DefaultSymmetricAlgorithm">
+            <summary>
+            Gets the default <see cref="T:System.Security.Cryptography.SymmetricAlgorithm"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Validation.ValidationBlock">
+            <summary>
+            Defines a cross-cutting validation block for validating any objects which implement <see cref="T:NContext.EnterpriseLibrary.Validation.IValidatable"/>.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Validation.ValidationBlock.Validate``1(``0)">
+            <summary>
+            Validates the specified validation object.
+            </summary>
+            <typeparam name="TValidatable">The type of the validatable.</typeparam>
+            <param name="validationObject">The validation object.</param>
+            <returns>The <see cref="T:Microsoft.Practices.EnterpriseLibrary.Validation.ValidationResults"/>.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Validation.ValidationBlock.Finalize">
+            <summary>
+            Releases unmanaged resources and performs other cleanup operations before the <see cref="T:NContext.EnterpriseLibrary.Validation.ValidationBlock"/> is reclaimed by garbage collection.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Validation.ValidationBlock.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Validation.ValidationBlock.Dispose(System.Boolean)">
+            <summary>
+            Releases unmanaged and - optionally - managed resources
+            </summary>
+            <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Validation.IValidatable">
+            <summary>
+            Marker interface for any objects which support validation.
+            </summary>
+        </member>
+        <member name="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager">
+            <summary>
+            Defines manager class for application cryptography-related operations.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager"/> class.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager.#ctor(NContext.EnterpriseLibrary.Security.Cryptography.CryptographyConfiguration)">
+            <summary>
+            Initializes a new instance of the <see cref="T:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager"/> class.
+            </summary>
+            <param name="cryptographyConfiguration">The cryptography configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager.Configure(NContext.Application.Configuration.IApplicationConfiguration)">
+            <summary>
+            Configures the component instance.
+            </summary>
+            <param name="applicationConfiguration">The application configuration.</param>
+            <remarks></remarks>
+        </member>
+        <member name="P:NContext.EnterpriseLibrary.Security.Cryptography.CryptographyManager.IsConfigured">
+            <summary>
+            Gets a value indicating whether this instance is configured.
+            </summary>
+            <remarks></remarks>
+        </member>
+    </members>
+</doc>

@@ -1,18 +1,20 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ErrorBase.cs">
-//   This file is part of NContext.
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
-//   NContext is free software: you can redistribute it and/or modify
-//   it under the terms of the GNU General Public License as published by
-//   the Free Software Foundation, either version 3 of the License, or any later version.
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 //
-//   NContext is distributed in the hope that it will be useful,
-//   but WITHOUT ANY WARRANTY; without even the implied warranty of
-//   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//   GNU General Public License for more details.
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
 //
-//   You should have received a copy of the GNU General Public License
-//   along with NContext.  If not, see <http://www.gnu.org/licenses/>.
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
 // </copyright>
 //
 // <summary>
@@ -23,8 +25,10 @@
 using System;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Resources;
+using System.Text.RegularExpressions;
 
 using NContext.Application.Extensions;
 
@@ -41,23 +45,26 @@ namespace NContext.Application.ErrorHandling
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorBase"/> class.
         /// </summary>
-        /// <param name="errorType">Type of the error.</param>
-        /// <param name="errorName">Name of the error.</param>
-        /// <param name="errorMessageMessageParameters">The error message parameters.</param>
+        /// <param name="localizationKey">The localization key.</param>
+        /// <param name="errorMessageParameters">The error message parameters.</param>
         /// <remarks></remarks>
-        protected ErrorBase(Type errorType, String errorName, params Object[] errorMessageMessageParameters)
+        protected ErrorBase(String localizationKey, params Object[] errorMessageParameters)
+            : this(localizationKey, HttpStatusCode.InternalServerError, errorMessageParameters)
         {
-            if (errorType == null)
-            {
-                throw new ArgumentNullException("errorType");
-            }
+        }
 
-            if (errorName == null)
-            {
-                throw new ArgumentNullException("errorName");
-            }
-
-            ConfigureError(errorType, errorName, errorMessageMessageParameters);
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ErrorBase"/> class.
+        /// </summary>
+        /// <param name="localizationKey">The localization key.</param>
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <param name="errorMessageParameters">The error message parameters.</param>
+        /// <remarks></remarks>
+        protected ErrorBase(String localizationKey, HttpStatusCode httpStatusCode, params Object[] errorMessageParameters)
+        {
+            ErrorType = GetType();
+            HttpStatusCode = httpStatusCode;
+            SetErrorMessage(localizationKey, errorMessageParameters);
         }
 
         #endregion
@@ -68,7 +75,7 @@ namespace NContext.Application.ErrorHandling
         /// Gets the error name.
         /// </summary>
         /// <remarks></remarks>
-        public String Name { get; private set; }
+        public Type ErrorType { get; private set; }
 
         /// <summary>
         /// Gets the localized error message.
@@ -77,57 +84,31 @@ namespace NContext.Application.ErrorHandling
         public String Message { get; private set; }
 
         /// <summary>
-        /// Gets the localization resource.
+        /// Gets the status code.
         /// </summary>
         /// <remarks></remarks>
-        protected abstract Type LocalizationResource { get; }
+        public HttpStatusCode HttpStatusCode { get; private set; }
 
         #endregion
 
         #region Methods
 
-        private void ConfigureError(Type errorType, String defaultLocalizationKey, params Object[] errorMessageParameters)
+        private void SetErrorMessage(String localizationKey, params Object[] errorMessageParameters)
         {
-            ErrorAttribute errorAttribute =
-                errorType.GetField(defaultLocalizationKey)
-                         .GetCustomAttributes(typeof(ErrorAttribute), false)
-                         .Cast<ErrorAttribute>()
-                         .SingleOrDefault();
-
-            String localizationKey = defaultLocalizationKey;
-            if (errorAttribute != null && !String.IsNullOrWhiteSpace(errorAttribute.LocalizationKey))
-            {
-                localizationKey = errorAttribute.LocalizationKey;
-            }
-
-            String errorMessage = TryGetLocalizedErrorMessage(localizationKey) ?? String.Empty;
+            String errorMessage = GetLocalizedErrorMessage(localizationKey) ?? String.Empty;
             if (!String.IsNullOrWhiteSpace(errorMessage))
             {
                 var formatters = errorMessage.MinimumFormatParametersRequired();
                 if (formatters > 0)
                 {
-                    var specifiedParameterCount = errorMessageParameters.Length;
-                    if (specifiedParameterCount != formatters)
-                    {
-                        // TODO: (DG) Logging - Incorrect parameters being used.
-                        if (specifiedParameterCount > formatters)
-                        {
-                            // We can still format the string, though some parameters will not be used.
-                            errorMessage = String.Format(errorMessage, errorMessageParameters);
-                        }
-                    }
-                    else
-                    {
-                        errorMessage = String.Format(errorMessage, errorMessageParameters);
-                    }
+                    errorMessage = String.Format(errorMessage, errorMessageParameters);
                 }
             }
 
-            Name = localizationKey;
             Message = errorMessage;
         }
 
-        private String TryGetLocalizedErrorMessage(String localizationKey)
+        private String GetLocalizedErrorMessage(String localizationKey)
         {
             if (String.IsNullOrWhiteSpace(localizationKey))
             {
@@ -135,15 +116,29 @@ namespace NContext.Application.ErrorHandling
             }
 
             var message = String.Empty;
-            var resourceManager = new ResourceManager(String.Format("{0}.{1}", LocalizationResource.Namespace, LocalizationResource.Name), Assembly.GetAssembly(LocalizationResource));
+            var errorType = GetType();
+
+            /* Reflect this instance type's assembly for the associated resource file.
+             * The Type.Name of this instance is used as a naming convention for localizing errors.
+             * If found, try to get the localized string for the error message.
+             * */
+            var assembly = Assembly.GetAssembly(errorType);
+            var resourceBaseName = assembly
+                    .GetManifestResourceNames()
+                    .FirstOrDefault(res => res.IndexOf(errorType.Name, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .ToMaybe()
+                    .Bind(resName => Regex.Replace(resName, String.Format("(?<=.*{0})(?:\\..*)?\\.resources", errorType.Name), String.Empty).ToMaybe())
+                    .FromMaybe(String.Empty);
+
             try
             {
+                var resourceManager = new ResourceManager(resourceBaseName, assembly);
                 if (resourceManager.GetResourceSet(CultureInfo.CurrentUICulture, true, true) != null)
                 {
                     message = resourceManager.GetString(localizationKey, CultureInfo.CurrentUICulture);
                 }
             }
-            catch (MissingManifestResourceException)
+            catch
             {
                 // No culture-specific or neutral resource exists so let's just return message below.
             }
