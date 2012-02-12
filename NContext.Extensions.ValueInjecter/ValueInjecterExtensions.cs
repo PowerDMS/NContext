@@ -41,10 +41,10 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="source">The source object.</param>
         /// <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
         /// <remarks></remarks>
-        public static T InjectInto<T>(this T target, Object source)
+        public static T InjectFrom<T>(this T target, Object source)
             where T : class
         {
-            return target.InjectInto<T, LoopValueInjection>(source);
+            return target.InjectFrom<T, LoopValueInjection>(source);
         }
 
         /// <summary>
@@ -55,10 +55,10 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="source">The source object.</param>
         /// <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
         /// <remarks></remarks>
-        public static T InjectInto<T>(this Object target, Object source)
+        public static T InjectFrom<T>(this Object target, Object source)
             where T : class
         {
-            return target.InjectInto<T, LoopValueInjection>(source);
+            return target.InjectFrom<T, LoopValueInjection>(source);
         }
 
         /// <summary>
@@ -70,11 +70,11 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="source">The source object.</param>
         /// <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
         /// <remarks></remarks>
-        public static T InjectInto<T, TValueInjection>(this Object target, Object source)
+        public static T InjectFrom<T, TValueInjection>(this Object target, Object source)
             where T : class
             where TValueInjection : IValueInjection, new()
         {
-            return target.InjectFrom<TValueInjection>(source) as T;
+            return StaticValueInjecter.InjectFrom<TValueInjection>(target, source) as T;
         }
     }
 }

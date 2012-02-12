@@ -49,13 +49,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NContext.Application.Dto\NContext.Application.Dto.csproj">
+    <ProjectReference Include="..\NContext.Dto\NContext.Dto.csproj">
       <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
-      <Name>NContext.Application.Dto</Name>
+      <Name>NContext.Dto</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NContext.Application.Public\NContext.Application.Public.csproj">
+    <ProjectReference Include="..\NContext.Public\NContext.Public.csproj">
       <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
-      <Name>NContext.Application.Public</Name>
+      <Name>NContext.Public</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -45,10 +45,10 @@ namespace NContext.Extensions.ValueInjecter
         /// <remarks>
         /// This extension method is useful when executing query projections of anonymous types into custom DTOs.
         /// </remarks>
-        public static IEnumerable<T> Into<T>(this IEnumerable<Object> projections)
+        public static IEnumerable<T> InjectInto<T>(this IEnumerable<Object> projections)
             where T : class, new()
         {
-            return projections.Into<T, LoopValueInjection>();
+            return projections.InjectInto<T, LoopValueInjection>();
         }
 
         /// <summary>
@@ -60,11 +60,11 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="projections">The projections.</param>
         /// <returns><see cref="IEnumerable&lt;T&gt;"/> instance.</returns>
         /// <remarks>This extension method is useful when executing query projections of anonymous types into custom DTOs.</remarks>
-        public static IEnumerable<T> Into<T, TValueInjection>(this IEnumerable<Object> projections) 
+        public static IEnumerable<T> InjectInto<T, TValueInjection>(this IEnumerable<Object> projections) 
             where T : class, new()
             where TValueInjection : IValueInjection, new()
         {
-            return projections.ToList().Select(o => Activator.CreateInstance<T>().InjectFrom<TValueInjection>(o)).Cast<T>();
+            return projections.ToList().Select(o => StaticValueInjecter.InjectFrom<TValueInjection>(Activator.CreateInstance<T>(), o)).Cast<T>();
         }
     }
 }

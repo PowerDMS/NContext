@@ -41,9 +41,9 @@ namespace NContext.Extensions.JsonNet
         /// <typeparam name="T">The type of object to deserialize.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <returns>The deserialized object as type <typeparamref name="T"/></returns>
-        public static T ReadAsJsonSerializable<T>(this Stream stream) where T : class
+        public static T ReadAsJson<T>(this Stream stream) where T : class
         {
-            return ReadAsJsonSerializable(stream, typeof(T)) as T;
+            return ReadAsJson(stream, typeof(T)) as T;
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace NContext.Extensions.JsonNet
         /// <typeparam name="T">The type of object to deserialize.</typeparam>
         /// <param name="stream">The stream.</param>
         /// <returns>The deserialized object as type <typeparamref name="T"/></returns>
-        public static T ReadAsBsonSerializable<T>(this Stream stream) where T : class
+        public static T ReadAsBson<T>(this Stream stream) where T : class
         {
-            return ReadAsBsonSerializable(stream, typeof(T)) as T;
+            return ReadAsBson(stream, typeof(T)) as T;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace NContext.Extensions.JsonNet
         /// <param name="instanceType">Type of the instance.</param>
         /// <returns>The deserialized object.</returns>
         /// <remarks></remarks>
-        public static Object ReadAsJsonSerializable(this Stream stream, Type instanceType)
+        public static Object ReadAsJson(this Stream stream, Type instanceType)
         {
             if (stream == null)
             {
@@ -83,7 +83,7 @@ namespace NContext.Extensions.JsonNet
         /// <param name="stream">The stream.</param>
         /// <param name="instanceType">Type of the instance.</param>
         /// <returns>The deserialized object.</returns>
-        public static Object ReadAsBsonSerializable(this Stream stream, Type instanceType)
+        public static Object ReadAsBson(this Stream stream, Type instanceType)
         {
             if (stream == null)
             {
@@ -103,7 +103,7 @@ namespace NContext.Extensions.JsonNet
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="instance">The object instance to serialize.</param>
-        public static void WriteAsJsonSerializable(this Stream stream, Object instance)
+        public static void WriteAsJson(this Stream stream, Object instance)
         {
             if (instance == null)
             {
@@ -121,7 +121,7 @@ namespace NContext.Extensions.JsonNet
         /// </summary>
         /// <param name="stream">The stream.</param>
         /// <param name="instance">The object instance to serialize.</param>
-        public static void WriteAsBsonSerializable(this Stream stream, Object instance)
+        public static void WriteAsBson(this Stream stream, Object instance)
         {
             if (instance == null)
             {
@@ -173,13 +173,13 @@ namespace NContext.Extensions.JsonNet
             }
             catch (JsonReaderException)
             {
-                // TODO: (DG) Internal logging...
+                // TODO: (DG) Internal logging?...
                 jsonReader.Close();
                 throw;
             }
             catch (JsonSerializationException)
             {
-                // TODO: (DG) Internal logging...
+                // TODO: (DG) Internal logging?...
                 jsonReader.Close();
                 throw;
             }
@@ -198,13 +198,13 @@ namespace NContext.Extensions.JsonNet
             }
             catch (JsonWriterException)
             {
-                // TODO: (DG) Internal logging...
+                // TODO: (DG) Internal logging?...
                 jsonWriter.Close();
                 throw;
             }
             catch (JsonSerializationException)
             {
-                // TODO: (DG) Internal logging...
+                // TODO: (DG) Internal logging?...
                 jsonWriter.Close();
                 throw;
             }

@@ -26,8 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using NContext.Application.Dto;
-using NContext.Application.Extensions;
+using NContext.Dto;
 
 using Omu.ValueInjecter;
 
@@ -45,10 +44,10 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="source">The source.</param>
         /// <returns>Instance of <see cref="IResponseTransferObject{TDto}"/>.</returns>
         /// <remarks></remarks>
-        public static IResponseTransferObject<TDto> Translate<TDto>(this IEnumerable<Object> source)
+        public static IResponseTransferObject<TDto> InjectTo<TDto>(this IEnumerable<Object> source)
            where TDto : class, new()
         {
-            return Translate<TDto, LoopValueInjection>(source);
+            return InjectTo<TDto, LoopValueInjection>(source);
         }
 
         /// <summary>
@@ -59,7 +58,7 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="source">The source.</param>
         /// <returns>Instance of <see cref="IResponseTransferObject{TDto}"/>.</returns>
         /// <remarks></remarks>
-        public static IResponseTransferObject<TDto> Translate<TDto, TValueInjection>(this IEnumerable<Object> source)
+        public static IResponseTransferObject<TDto> InjectTo<TDto, TValueInjection>(this IEnumerable<Object> source)
             where TDto : class, new()
             where TValueInjection : IValueInjection, new()
         {
@@ -71,7 +70,7 @@ namespace NContext.Extensions.ValueInjecter
                                                                       obj.ToMaybe()
                                                                          .Bind(objInstance =>
                                                                                Activator.CreateInstance(typeof(TDto))
-                                                                                        .InjectInto<TDto, TValueInjection>(objInstance)
+                                                                                        .InjectFrom<TDto, TValueInjection>(objInstance)
                                                                                         .ToMaybe())
                                                                          .FromMaybe(default(TDto))).ToMaybe())
                                                .FromMaybe(Enumerable.Empty<TDto>()));
