@@ -15,11 +15,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Distributed services addons for NContext via ASP.NET WebApi &amp; WCF 4 SOAP.</description>
     <summary />
-    <releaseNotes></releaseNotes>
+    <releaseNotes />
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.JsonNet\bin\Release\NContext.Extensions.JsonNet.dll" target="lib\net40\NContext.Extensions.JsonNet.dll" />
     <file src="..\NContext.Extensions.WCF\bin\Release\NContext.Extensions.WCF.dll" target="lib\net40\NContext.Extensions.WCF.dll" />
     <file src="..\NContext.Extensions.WCF\bin\Release\NContext.Extensions.WCF.xml" target="lib\net40\NContext.Extensions.WCF.xml" />
   </files>

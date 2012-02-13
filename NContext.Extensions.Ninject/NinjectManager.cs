@@ -117,7 +117,7 @@ namespace NContext.Extensions.Ninject
             _Kernel = _Configuration.Kernel;
             SetServiceLocator();
 
-            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageNinject>(this);
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IKernel>(_Kernel);
             _Kernel.Bind<CompositionContainer>().ToConstant(applicationConfiguration.CompositionContainer);
 
             applicationConfiguration.CompositionContainer
