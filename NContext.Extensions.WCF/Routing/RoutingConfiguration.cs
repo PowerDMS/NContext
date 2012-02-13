@@ -174,7 +174,7 @@ namespace NContext.Extensions.WCF.Routing
         /// <param name="httpConfigurationFactory">The HTTP configuration factory.</param>
         /// <returns>Current <see cref="RoutingConfiguration"/> instance.</returns>
         /// <remarks></remarks>
-        public RoutingConfiguration SetHttpConfigurationFactory(Func<HttpConfiguration> httpConfigurationFactory)
+        protected internal RoutingConfiguration SetHttpConfigurationFactory(Func<HttpConfiguration> httpConfigurationFactory)
         {
             _HttpConfiguration = new Lazy<HttpConfiguration>(httpConfigurationFactory);
             return this;

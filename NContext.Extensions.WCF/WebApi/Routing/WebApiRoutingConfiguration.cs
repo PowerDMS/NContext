@@ -189,6 +189,12 @@ namespace NContext.Extensions.WCF.WebApi.Routing
             return this;
         }
 
+        /// <summary>
+        /// Sets the request operation handlers.
+        /// </summary>
+        /// <param name="requestHandlers">The request handlers.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
         public WebApiRoutingConfiguration SetRequestHandlers(Action<Collection<HttpOperationHandler>, ServiceEndpoint, HttpOperationDescription> requestHandlers)
         {
             _RequestHandlers = requestHandlers;
@@ -196,6 +202,12 @@ namespace NContext.Extensions.WCF.WebApi.Routing
             return this;
         }
 
+        /// <summary>
+        /// Sets the response operation handlers.
+        /// </summary>
+        /// <param name="responseHandlers">The response handlers.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
         public WebApiRoutingConfiguration SetResponseHandlers(Action<Collection<HttpOperationHandler>, ServiceEndpoint, HttpOperationDescription> responseHandlers)
         {
             _ResponseHandlers = responseHandlers;
@@ -203,6 +215,12 @@ namespace NContext.Extensions.WCF.WebApi.Routing
             return this;
         }
 
+        /// <summary>
+        /// Sets the WCF binding security.
+        /// </summary>
+        /// <param name="security">The security.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
         public WebApiRoutingConfiguration SetSecurity(Action<Uri, HttpBindingSecurity> security)
         {
             _Security = security;
@@ -229,11 +247,10 @@ namespace NContext.Extensions.WCF.WebApi.Routing
         /// <remarks></remarks>
         protected override void Setup()
         {
-            Func<HttpConfiguration> httpConfigurationFactory = (CreateHttpConfiguration);
-            RoutingConfigurationBuilder.RoutingConfiguration.SetHttpConfigurationFactory(httpConfigurationFactory);
+            RoutingConfigurationBuilder.RoutingConfiguration.SetHttpConfigurationFactory(CreateHttpConfiguration);
         }
 
-        private HttpConfiguration CreateHttpConfiguration()
+        protected virtual HttpConfiguration CreateHttpConfiguration()
         {
             var httpConfiguration = new WebApiConfiguration
                 {

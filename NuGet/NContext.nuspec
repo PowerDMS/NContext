@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>2.0.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://ncontext.codeplex.com/</projectUrl>
+    <dependencies>
+      <dependency id="NContext.Common" version="2.0.0" />
+    </dependencies>
+    <id>NContext</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>NContext is an extensible, composable application framework for .NET 4.0.</description>
+    <summary />
+    <releaseNotes></releaseNotes>
+    <copyright>Waking Venture Inc.</copyright>
+  </metadata>
+  <files>
+    <file src="..\NContext\bin\Release\NContext.dll" target="lib\net40\NContext.dll" />
+    <file src="..\NContext\bin\Release\NContext.xml" target="lib\net40\NContext.xml" />
+  </files>
+</package>

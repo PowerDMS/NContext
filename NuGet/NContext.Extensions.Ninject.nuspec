@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>2.0.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <dependencies>
+      <dependency id="NContext" version="2.0.0" />
+      <dependency id="CommonServiceLocator" version="1.0" />
+      <dependency id="Ninject" version="2.2.1.4" />
+      <dependency id="CommonServiceLocator.NinjectAdapter" version="1.0.0.0" />
+    </dependencies>
+    <frameworkAssemblies>
+      <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="" />
+    </frameworkAssemblies>
+    <id>NContext.Extensions.Ninject</id>
+    <title />
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Ninject dependency injection add-on for NContext.</description>
+    <releaseNotes />
+    <copyright>Waking Venture Inc.</copyright>
+  </metadata>
+  <files>
+    <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.dll" target="lib\net40\NContext.Extensions.Ninject.dll" />
+    <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.xml" target="lib\net40\NContext.Extensions.Ninject.xml" />
+  </files>
+</package>

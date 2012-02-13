@@ -1,20 +1,18 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>1.7.0</version>
+    <version>2.0.0</version>
     <authors>Daniel Gioulakis</authors>
     <owners>Waking Venture Inc.</owners>
     <dependencies>
+      <dependency id="NContext" version="2.0.0" />
       <dependency id="EnterpriseLibrary.Common" version="5.0.505.0" />
       <dependency id="EnterpriseLibrary.Security" version="5.0.505.0" />
       <dependency id="EnterpriseLibrary.Security.Cryptography" version="5.0.505.0" />
       <dependency id="EnterpriseLibrary.Validation" version="5.0.505.0" />
       <dependency id="CommonServiceLocator" version="1.0" />
-      <dependency id="Unity" version="2.1.505.0" />
-      <dependency id="Unity.Interception" version="2.1.505.0" />
-      <dependency id="NContext" version="1.7.1" />
     </dependencies>
-    <id>NContext.EnterpriseLibrary</id>
+    <id>NContext.Extensions.EnterpriseLibrary</id>
     <title />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Enterprise Library add-on for NContext.</description>
@@ -22,7 +20,7 @@
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src="..\NContext.EnterpriseLibrary\bin\Release\NContext.EnterpriseLibrary.dll" target="lib\net40\NContext.EnterpriseLibrary.dll" />
-    <file src="..\NContext.EnterpriseLibrary\bin\Release\NContext.EnterpriseLibrary.xml" target="lib\net40\NContext.EnterpriseLibrary.xml" />
+    <file src="..\NContext.Extensions.EnterpriseLibrary\bin\Release\NContext.Extensions.EnterpriseLibrary.dll" target="lib\net40\NContext.Extensions.EnterpriseLibrary.dll" />
+    <file src="..\NContext.Extensions.EnterpriseLibrary\bin\Release\NContext.Extensions.EnterpriseLibrary.xml" target="lib\net40\NContext.Extensions.EnterpriseLibrary.xml" />
   </files>
 </package>
