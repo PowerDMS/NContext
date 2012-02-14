@@ -42,7 +42,7 @@ namespace NContext.Extensions.WCF.Routing
     {
         #region Fields
 
-        protected readonly RoutingConfiguration RoutingConfiguration;
+        private readonly RoutingConfiguration _RoutingConfiguration;
 
         private static Boolean _IsConfigured;
 
@@ -72,7 +72,7 @@ namespace NContext.Extensions.WCF.Routing
                 throw new ArgumentNullException("routingConfiguration");
             }
 
-            RoutingConfiguration = routingConfiguration;
+            _RoutingConfiguration = routingConfiguration;
         }
 
         protected RoutingManager()
@@ -168,9 +168,52 @@ namespace NContext.Extensions.WCF.Routing
             }
         }
 
+        protected RoutingConfiguration RoutingConfiguration
+        {
+            get
+            {
+                return _RoutingConfiguration;
+            }
+        }
+
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Registers the service route.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <remarks></remarks>
+        public virtual void RegisterServiceRoute<TService>(String routePrefix)
+        {
+            RegisterServiceRoute<TService, TService>(routePrefix, null, null);
+        }
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="HttpServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        public virtual void RegisterServiceRoute<TService>(String routePrefix, Func<HttpServiceHostFactory> httpServiceHostFactory)
+        {
+            RegisterServiceRoute<TService, TService>(routePrefix, httpServiceHostFactory, null);
+        }
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="serviceHostFactory">The <see cref="ServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        public virtual void RegisterServiceRoute<TService>(String routePrefix, Func<ServiceHostFactory> serviceHostFactory)
+        {
+            RegisterServiceRoute<TService, TService>(routePrefix, null, serviceHostFactory);
+        }
 
         /// <summary>
         /// Registers the service route.
@@ -181,21 +224,83 @@ namespace NContext.Extensions.WCF.Routing
         /// <remarks></remarks>
         public virtual void RegisterServiceRoute<TServiceContract, TService>(String routePrefix)
         {
+            RegisterServiceRoute<TServiceContract, TService>(routePrefix, null, null);
+        }
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="HttpServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        public virtual void RegisterServiceRoute<TServiceContract, TService>(String routePrefix, Func<HttpServiceHostFactory> httpServiceHostFactory)
+        {
+            RegisterServiceRoute<TServiceContract, TService>(routePrefix, httpServiceHostFactory, null);
+        }
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="serviceHostFactory">The service host factory.</param>
+        /// <remarks></remarks>
+        public virtual void RegisterServiceRoute<TServiceContract, TService>(String routePrefix, Func<ServiceHostFactory> serviceHostFactory)
+        {
+            RegisterServiceRoute<TServiceContract, TService>(routePrefix, null, serviceHostFactory);
+        }
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="HttpServiceHostFactory"/> and <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use with the service.</param>
+        /// <param name="serviceHostFactory">The <see cref="ServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        public virtual void RegisterServiceRoute<TServiceContract, TService>(String routePrefix, Func<HttpServiceHostFactory> httpServiceHostFactory, Func<ServiceHostFactory> serviceHostFactory)
+        {
             if ((RoutingConfiguration.EndpointBinding & EndpointBinding.Rest) == EndpointBinding.Rest)
             {
-                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, RoutingConfiguration.RestEndpointPostfix), 
-                                                          typeof(TServiceContract), 
-                                                          typeof(TService), 
-                                                          EndpointBinding.Rest));
+                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, RoutingConfiguration.RestEndpointPostfix),
+                                                          typeof(TServiceContract),
+                                                          typeof(TService),
+                                                          EndpointBinding.Rest,
+                                                          httpServiceHostFactory));
             }
 
             if ((RoutingConfiguration.EndpointBinding & EndpointBinding.Soap) == EndpointBinding.Soap)
             {
-                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, RoutingConfiguration.SoapEndpointPostfix), 
-                                                          typeof(TServiceContract), 
-                                                          typeof(TService), 
-                                                          EndpointBinding.Soap));
+                _ServiceRoutes.Value.Add(new Route(String.Format("{0}{1}", routePrefix, RoutingConfiguration.SoapEndpointPostfix),
+                                                          typeof(TServiceContract),
+                                                          typeof(TService),
+                                                          EndpointBinding.Soap,
+                                                          serviceHostFactory));
             }
+        }
+
+        protected Lazy<HttpServiceHostFactory> GetServiceHostFactory(Func<HttpServiceHostFactory> httpServiceHostFactory)
+        {
+            if (httpServiceHostFactory == null)
+            {
+                return _RestFactory;
+            }
+
+            return new Lazy<HttpServiceHostFactory>(httpServiceHostFactory);
+        }
+
+        protected Lazy<ServiceHostFactory> GetServiceHostFactory(Func<ServiceHostFactory> serviceHostFactory)
+        {
+            if (serviceHostFactory == null)
+            {
+                return _SoapFactory;
+            }
+
+            return new Lazy<ServiceHostFactory>(serviceHostFactory);
         }
 
         /// <summary>
@@ -206,10 +311,9 @@ namespace NContext.Extensions.WCF.Routing
             var serviceRouteCreatedActions = _CompositionContainer.GetExports<IRunWhenAServiceRouteIsCreated>().ToList();
             foreach (var route in _ServiceRoutes.Value.OrderByDescending(r => r.RoutePrefix))
             {
-                // TODO: (DG) Add support for custom route configuration! (route.RestConfiguration ?? _RestFactory.Value)
                 RouteBase serviceRoute = route.Binding == EndpointBinding.Rest
-                                             ? new WebApiRoute(route.RoutePrefix, _RestFactory.Value, route.ServiceType)
-                                             : new ServiceRoute(route.RoutePrefix, _SoapFactory.Value, route.ServiceType);
+                                             ? new WebApiRoute(route.RoutePrefix, GetServiceHostFactory(route.HttpServiceHostFactory).Value, route.ServiceType)
+                                             : new ServiceRoute(route.RoutePrefix, GetServiceHostFactory(route.ServiceHostFactory).Value, route.ServiceType);
 
                 RouteTable.Routes.Add(serviceRoute);
                 serviceRouteCreatedActions.ForEach(createdAction => createdAction.Value.Run(route));

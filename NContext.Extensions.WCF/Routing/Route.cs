@@ -23,6 +23,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.ServiceModel.Activation;
+
+using Microsoft.ApplicationServer.Http.Activation;
 
 namespace NContext.Extensions.WCF.Routing
 {
@@ -47,6 +50,42 @@ namespace NContext.Extensions.WCF.Routing
             ServiceContractType = serviceContractType;
             ServiceType = serviceType;
             Binding = binding;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// </summary>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="serviceContractType">Type of the service contract.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="binding">The binding.</param>
+        /// <param name="serviceHostFactory">The <see cref="ServiceHostFactory"/> to use for this route.</param>
+        /// <remarks></remarks>
+        public Route(String routePrefix, Type serviceContractType, Type serviceType, EndpointBinding binding, Func<ServiceHostFactory> serviceHostFactory)
+        {
+            RoutePrefix = routePrefix;
+            ServiceContractType = serviceContractType;
+            ServiceType = serviceType;
+            Binding = binding;
+            ServiceHostFactory = serviceHostFactory;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// </summary>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="serviceContractType">Type of the service contract.</param>
+        /// <param name="serviceType">Type of the service.</param>
+        /// <param name="binding">The binding.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use for this route.</param>
+        /// <remarks></remarks>
+        public Route(String routePrefix, Type serviceContractType, Type serviceType, EndpointBinding binding, Func<HttpServiceHostFactory> httpServiceHostFactory)
+        {
+            RoutePrefix = routePrefix;
+            ServiceContractType = serviceContractType;
+            ServiceType = serviceType;
+            Binding = binding;
+            HttpServiceHostFactory = httpServiceHostFactory;
         }
 
         #endregion
@@ -76,6 +115,18 @@ namespace NContext.Extensions.WCF.Routing
         /// </summary>
         /// <remarks></remarks>
         public Type ServiceType { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="HttpServiceHostFactory"/>.
+        /// </summary>
+        /// <remarks></remarks>
+        public Func<HttpServiceHostFactory> HttpServiceHostFactory { get; private set; }
+
+        /// <summary>
+        /// Gets the <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <remarks></remarks>
+        public Func<ServiceHostFactory> ServiceHostFactory { get; private set; } 
 
         #endregion
     }

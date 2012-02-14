@@ -5,6 +5,7 @@
     <authors>Daniel Gioulakis</authors>
     <owners>Waking Venture Inc.</owners>
     <dependencies>
+      <dependency id="Newtonsoft.Json" version="4.0.8" />
     </dependencies>
     <id>NContext.Extensions.JsonNet</id>
     <title />

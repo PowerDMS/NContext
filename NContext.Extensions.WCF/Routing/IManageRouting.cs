@@ -23,6 +23,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.ServiceModel.Activation;
+
+using Microsoft.ApplicationServer.Http.Activation;
 
 using NContext.Configuration;
 
@@ -34,12 +37,69 @@ namespace NContext.Extensions.WCF.Routing
     public interface IManageRouting : IApplicationComponent
     {
         /// <summary>
-        /// Registers a service route.
+        /// Registers the service route.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <remarks></remarks>
+        void RegisterServiceRoute<TService>(String routePrefix);
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="HttpServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        void RegisterServiceRoute<TService>(String routePrefix, Func<HttpServiceHostFactory> httpServiceHostFactory);
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="serviceHostFactory">The <see cref="ServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        void RegisterServiceRoute<TService>(String routePrefix, Func<ServiceHostFactory> serviceHostFactory);
+
+        /// <summary>
+        /// Registers the service route.
         /// </summary>
         /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
         /// <typeparam name="TService">The type of the service.</typeparam>
         /// <param name="routePrefix">The route prefix.</param>
         /// <remarks></remarks>
         void RegisterServiceRoute<TServiceContract, TService>(String routePrefix);
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="HttpServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        void RegisterServiceRoute<TServiceContract, TService>(String routePrefix, Func<HttpServiceHostFactory> httpServiceHostFactory);
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="serviceHostFactory">The service host factory.</param>
+        /// <remarks></remarks>
+        void RegisterServiceRoute<TServiceContract, TService>(String routePrefix, Func<ServiceHostFactory> serviceHostFactory);
+
+        /// <summary>
+        /// Registers the service route with the specified <see cref="HttpServiceHostFactory"/> and <see cref="ServiceHostFactory"/>.
+        /// </summary>
+        /// <typeparam name="TServiceContract">The type of the service contract.</typeparam>
+        /// <typeparam name="TService">The type of the service.</typeparam>
+        /// <param name="routePrefix">The route prefix.</param>
+        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use with the service.</param>
+        /// <param name="serviceHostFactory">The <see cref="ServiceHostFactory"/> to use with the service.</param>
+        /// <remarks></remarks>
+        void RegisterServiceRoute<TServiceContract, TService>(String routePrefix, Func<HttpServiceHostFactory> httpServiceHostFactory, Func<ServiceHostFactory> serviceHostFactory);
     }
 }

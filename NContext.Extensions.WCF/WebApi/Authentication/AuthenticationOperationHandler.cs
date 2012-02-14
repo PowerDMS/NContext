@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -36,11 +37,14 @@ namespace NContext.Extensions.WCF.WebApi.Authentication
     /// </summary>
     public class AuthenticationOperationHandler : HttpOperationHandler<HttpRequestMessage, HttpRequestMessage>
     {
+        private readonly IEnumerable<IProvideResourceAuthentication> _AuthenticationProviders;
+
         #region Constructors
 
-        public AuthenticationOperationHandler(String outputParameterName = "requestMessage")
+        public AuthenticationOperationHandler(IEnumerable<IProvideResourceAuthentication> authenticationProviders, String outputParameterName = "requestMessage")
             : base(outputParameterName)
         {
+            _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideResourceAuthentication>();
         }
 
         #endregion
@@ -57,13 +61,13 @@ namespace NContext.Extensions.WCF.WebApi.Authentication
         /// </returns>
         protected override HttpRequestMessage OnHandle(HttpRequestMessage input)
         {
-            Enumerable.Empty<IProvideResourceAuthentication>()
-                          .FirstOrDefault(p => p.CanAuthenticate(input)).ToMaybe()
-                          .Bind(provider => provider.Authenticate(input).ToMaybe())
-                          .Let(principal =>
-                              {
-                                  Thread.CurrentPrincipal = principal;
-                              });
+            _AuthenticationProviders
+                .FirstOrDefault(p => p.CanAuthenticate(input)).ToMaybe()
+                .Bind(provider => provider.Authenticate(input).ToMaybe())
+                .Let(principal =>
+                    {
+                        Thread.CurrentPrincipal = principal;
+                    });
 
             return input;
         }
