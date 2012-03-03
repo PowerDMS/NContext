@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Specialized;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NContext.Extensions
@@ -91,6 +92,86 @@ namespace NContext.Extensions
             }
 
             return nvText;
+        }
+
+        /// <summary>
+        /// Gets the bytes from the string using <see cref="UTF8Encoding"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The </returns>
+        /// <remarks></remarks>
+        public static Byte[] ToBytes(this String value)
+        {
+            if (value == null) return null;
+
+            try
+            {
+                var encoding = new UTF8Encoding(false, true);
+                return encoding.GetBytes(value);
+            }
+            catch (EncoderFallbackException ex)
+            {
+                throw new ArgumentException("Invalid UTF8 characters encountered.", ex);
+            }
+        }
+
+        /// <summary>
+        /// Gets the bytes from a hexadecimal string.
+        /// </summary>
+        /// <param name="hexadecimal">The hexadecimal value.</param>
+        /// <returns>Converted byte array.</returns>
+        /// <remarks></remarks>
+        public static Byte[] ToBytesFromHexadecimal(this String hexadecimal)
+        {
+            if (hexadecimal == null)
+            {
+                throw new ArgumentNullException("hexadecimal");
+            }
+
+            var stringBuilder = new StringBuilder(hexadecimal.ToUpperInvariant());
+            if (stringBuilder[0].Equals('0') && stringBuilder[1].Equals('X'))
+            {
+                stringBuilder.Remove(0, 2);
+            }
+
+            if (stringBuilder.Length % 2 != 0)
+            {
+                throw new ArgumentException("Invalid hexadecimal string.");
+            }
+
+            var numArray = new Byte[stringBuilder.Length / 2];
+            try
+            {
+                for (var index = 0; index < numArray.Length; ++index)
+                {
+                    Int32 startIndex = index * 2;
+                    numArray[index] = Convert.ToByte(stringBuilder.ToString(startIndex, 2), 16);
+                }
+            }
+            catch (FormatException ex)
+            {
+                throw new ArgumentException("Invalid hexadecimal string.", ex);
+            }
+
+            return numArray;
+        }
+
+        /// <summary>
+        /// Gets the bytes from a base64 encoded string.
+        /// </summary>
+        /// <param name="base64EncodedString">The base64 encoded string.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public static Byte[] ToBytesFromBase64(this String base64EncodedString)
+        {
+            try
+            {
+                return Convert.FromBase64String(base64EncodedString);
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException("Invalid base64 string.", ex);
+            }
         }
     }
 }

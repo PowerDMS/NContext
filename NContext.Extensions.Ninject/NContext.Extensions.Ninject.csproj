@@ -47,7 +47,7 @@
   <ItemGroup>
     <Compile Include="IConfigureANinjectKernel.cs" />
     <Compile Include="IManageNinject.cs" />
-    <Compile Include="NinjectConfiguration.cs" />
+    <Compile Include="NinjectConfigurationBuilder.cs" />
     <Compile Include="NinjectManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

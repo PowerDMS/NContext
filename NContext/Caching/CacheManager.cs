@@ -39,7 +39,7 @@ namespace NContext.Caching
 
         private Boolean _IsConfigured;
 
-        private readonly CacheConfiguration _CacheConfiguration;
+        private readonly CacheConfigurationBuilder _CacheConfiguration;
 
         #endregion
 
@@ -50,7 +50,7 @@ namespace NContext.Caching
         /// </summary>
         /// <param name="cacheConfiguration">The caching configuration.</param>
         /// <remarks></remarks>
-        public CacheManager(CacheConfiguration cacheConfiguration)
+        public CacheManager(CacheConfigurationBuilder cacheConfiguration)
         {
             if (cacheConfiguration == null)
             {

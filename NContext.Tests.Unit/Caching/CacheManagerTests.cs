@@ -44,7 +44,7 @@ namespace NContext.Tests.Unit.Caching
         [Test]
         public void Ctor_NullCacheConfiguration_ThrowsException()
         {
-            CacheConfiguration cacheConfiguration = null;
+            CacheConfigurationBuilder cacheConfiguration = null;
 
             var cacheManagerDelegate = new TestDelegate(() => new CacheManager(cacheConfiguration));
 
@@ -57,7 +57,7 @@ namespace NContext.Tests.Unit.Caching
         {
             var stubCacheProvider = Mock.Create<ObjectCache>();
             var stubConfigurationBuilder = Mock.Create<ApplicationConfigurationBuilder>();
-            var stubCacheConfiguration = Mock.Create<CacheConfiguration>(stubConfigurationBuilder);
+            var stubCacheConfiguration = Mock.Create<CacheConfigurationBuilder>(stubConfigurationBuilder);
             var mockCacheManager = Mock.Create<CacheManager>(stubCacheConfiguration);
 
             stubCacheProvider.Arrange(p => p.Add(Arg.IsAny<String>(), Arg.IsAny<Object>(), Arg.IsAny<CacheItemPolicy>(), Arg.AnyString)).IgnoreArguments().DoNothing();

@@ -24,7 +24,7 @@
 
 using System.ComponentModel.Composition;
 
-namespace NContext.Extensions.WCF.Routing
+namespace NContext.Extensions.WebApi.Routing
 {
     /// <summary>
     /// Defines a role-interface which allows implementors to run when a service route is created.

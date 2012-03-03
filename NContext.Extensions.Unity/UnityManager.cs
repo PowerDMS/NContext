@@ -41,7 +41,7 @@ namespace NContext.Extensions.Unity
     {
         #region Fields
 
-        private readonly UnityConfiguration _UnityConfiguration;
+        private readonly UnityConfigurationBuilder _UnityConfiguration;
 
         private Boolean _IsConfigured;
 
@@ -56,7 +56,7 @@ namespace NContext.Extensions.Unity
         /// </summary>
         /// <param name="unityConfiguration">The dependency injection configuration.</param>
         /// <remarks></remarks>
-        public UnityManager(UnityConfiguration unityConfiguration)
+        public UnityManager(UnityConfigurationBuilder unityConfiguration)
         {
             if (unityConfiguration == null)
             {

@@ -16,7 +16,7 @@ namespace NContext.Extensions.Ninject.Tests.Unit
         [Test]
         public void Modules_NoModulesConfigured_ReturnsEmptyEnumerableByDefault()
         {
-            var ninjectConfiguration = Mock.Create<NinjectConfiguration>(Constructor.NotMocked);
+            var ninjectConfiguration = Mock.Create<NinjectConfigurationBuilder>(Constructor.NotMocked);
             ninjectConfiguration.Arrange(c => c.Modules).CallOriginal();
 
             var modules = ninjectConfiguration.Modules;
@@ -27,7 +27,7 @@ namespace NContext.Extensions.Ninject.Tests.Unit
         [Test]
         public void Kernel_DefaultConfiguration_ReturnsInstanceOfStandardKernel()
         {
-            var ninjectConfiguration = Mock.Create<NinjectConfiguration>(Constructor.NotMocked);
+            var ninjectConfiguration = Mock.Create<NinjectConfigurationBuilder>(Constructor.NotMocked);
             ninjectConfiguration.Arrange(c => c.NinjectSettings).CallOriginal().MustBeCalled();
             ninjectConfiguration.Arrange(c => c.Modules).CallOriginal().MustBeCalled();
             ninjectConfiguration.Arrange(c => c.Kernel).CallOriginal();
@@ -42,7 +42,7 @@ namespace NContext.Extensions.Ninject.Tests.Unit
         public void Kernel_CustomKernelConfigured_ReturnsCustomKernel()
         {
             var mockKernel = Mock.Create<IKernel>();
-            var ninjectConfiguration = Mock.Create<NinjectConfiguration>(Constructor.NotMocked);
+            var ninjectConfiguration = Mock.Create<NinjectConfigurationBuilder>(Constructor.NotMocked);
             ninjectConfiguration.Arrange(c => c.SetKernel(Arg.IsAny<Func<IKernel>>())).CallOriginal();
             ninjectConfiguration.Arrange(c => c.NinjectSettings).CallOriginal().MustBeCalled();
             ninjectConfiguration.Arrange(c => c.Modules).CallOriginal().MustBeCalled();

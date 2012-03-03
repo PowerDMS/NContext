@@ -23,69 +23,65 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.ServiceModel.Activation;
 
-using Microsoft.ApplicationServer.Http.Activation;
-
-namespace NContext.Extensions.WCF.Routing
+namespace NContext.Extensions.WebApi.Routing
 {
     /// <summary>
-    /// Defines a class which represents a WCF service route.
+    /// Defines a class which represents an HTTP service route.
     /// </summary>
     public class Route
     {
+        #region Fields
+
+        private readonly String _RouteName;
+
+        private readonly String _RouteTemplate;
+
+        private readonly Object _Defaults;
+
+        private readonly Object _Constraints;
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// Initializes a new instance of the <see cref="Route"/> class for hosting within an ASP.NET application.
         /// </summary>
-        /// <param name="routePrefix">The route prefix.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="binding">The binding.</param>
+        /// <param name="routeName">Name of the route.</param>
+        /// <param name="routeTemplate">The route template.</param>
         /// <remarks></remarks>
-        public Route(String routePrefix, Type serviceContractType, Type serviceType, EndpointBinding binding)
+        public Route(String routeName, String routeTemplate)
+            : this(routeName, routeTemplate, null, null)
         {
-            RoutePrefix = routePrefix;
-            ServiceContractType = serviceContractType;
-            ServiceType = serviceType;
-            Binding = binding;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// Initializes a new instance of the <see cref="Route"/> class for hosting within an ASP.NET application.
         /// </summary>
-        /// <param name="routePrefix">The route prefix.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="binding">The binding.</param>
-        /// <param name="serviceHostFactory">The <see cref="ServiceHostFactory"/> to use for this route.</param>
+        /// <param name="routeName">Name of the route.</param>
+        /// <param name="routeTemplate">The route template.</param>
+        /// <param name="defaults">The defaults.</param>
         /// <remarks></remarks>
-        public Route(String routePrefix, Type serviceContractType, Type serviceType, EndpointBinding binding, Func<ServiceHostFactory> serviceHostFactory)
+        public Route(String routeName, String routeTemplate, Object defaults)
+            : this(routeName, routeTemplate, defaults, null)
         {
-            RoutePrefix = routePrefix;
-            ServiceContractType = serviceContractType;
-            ServiceType = serviceType;
-            Binding = binding;
-            ServiceHostFactory = serviceHostFactory;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Route"/> class.
+        /// Initializes a new instance of the <see cref="Route"/> class for hosting within an ASP.NET application.
         /// </summary>
-        /// <param name="routePrefix">The route prefix.</param>
-        /// <param name="serviceContractType">Type of the service contract.</param>
-        /// <param name="serviceType">Type of the service.</param>
-        /// <param name="binding">The binding.</param>
-        /// <param name="httpServiceHostFactory">The <see cref="HttpServiceHostFactory"/> to use for this route.</param>
+        /// <param name="routeName">Name of the route.</param>
+        /// <param name="routeTemplate">The route template.</param>
+        /// <param name="defaults">The defaults.</param>
+        /// <param name="constraints">The constraints.</param>
         /// <remarks></remarks>
-        public Route(String routePrefix, Type serviceContractType, Type serviceType, EndpointBinding binding, Func<HttpServiceHostFactory> httpServiceHostFactory)
+        public Route(String routeName, String routeTemplate, Object defaults, Object constraints)
         {
-            RoutePrefix = routePrefix;
-            ServiceContractType = serviceContractType;
-            ServiceType = serviceType;
-            Binding = binding;
-            HttpServiceHostFactory = httpServiceHostFactory;
+            _RouteName = routeName;
+            _RouteTemplate = routeTemplate;
+            _Defaults = defaults;
+            _Constraints = constraints;
         }
 
         #endregion
@@ -93,40 +89,52 @@ namespace NContext.Extensions.WCF.Routing
         #region Properties
 
         /// <summary>
-        /// Gets the binding.
+        /// Gets the name of the route.
         /// </summary>
         /// <remarks></remarks>
-        public EndpointBinding Binding { get; private set; }
+        public String RouteName
+        {
+            get
+            {
+                return _RouteName;
+            }
+        }
 
         /// <summary>
-        /// Gets the route prefix.
+        /// Gets the route template.
         /// </summary>
         /// <remarks></remarks>
-        public String RoutePrefix { get; private set; }
+        public String RouteTemplate
+        {
+            get
+            {
+                return _RouteTemplate;
+            }
+        }
 
         /// <summary>
-        /// Gets the type of the service contract.
+        /// Gets the defaults.
         /// </summary>
         /// <remarks></remarks>
-        public Type ServiceContractType { get; private set; }
+        public Object Defaults
+        {
+            get
+            {
+                return _Defaults;
+            }
+        }
 
         /// <summary>
-        /// Gets the type of the service.
+        /// Gets the constraints.
         /// </summary>
         /// <remarks></remarks>
-        public Type ServiceType { get; private set; }
-
-        /// <summary>
-        /// Gets the <see cref="HttpServiceHostFactory"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<HttpServiceHostFactory> HttpServiceHostFactory { get; private set; }
-
-        /// <summary>
-        /// Gets the <see cref="ServiceHostFactory"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<ServiceHostFactory> ServiceHostFactory { get; private set; } 
+        public Object Constraints
+        {
+            get
+            {
+                return _Constraints;
+            }
+        }
 
         #endregion
     }

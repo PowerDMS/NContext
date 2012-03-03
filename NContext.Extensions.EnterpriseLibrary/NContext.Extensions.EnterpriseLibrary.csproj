@@ -67,9 +67,11 @@
     <Compile Include="Extensions\IValidatableExtensions.cs" />
     <Compile Include="IEnterpriseLibraryManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
+    <Compile Include="Security\Cryptography\CryptographyConfigurationBuilder.cs" />
     <Compile Include="Security\Cryptography\CryptographyManager.cs" />
-    <Compile Include="Security\Cryptography\CryptographyProvider.cs" />
+    <Compile Include="Security\Cryptography\HashProvider.cs" />
+    <Compile Include="Security\Cryptography\KeyedHashProvider.cs" />
+    <Compile Include="Security\Cryptography\SymmetricEncryptionProvider.cs" />
     <Compile Include="Services\Authorization\GenericToken.cs" />
     <Compile Include="Services\Authorization\IServiceToken.cs" />
     <Compile Include="Validation\IValidatable.cs" />

@@ -66,6 +66,19 @@ namespace NContext.Extensions.JsonNet
         /// <remarks></remarks>
         public static Object ReadAsJson(this Stream stream, Type instanceType)
         {
+            return ReadAsJson(stream, instanceType, null);
+        }
+
+        /// <summary>
+        /// Reads the JSON-serialized stream and deserializes it into a CLR object.
+        /// </summary>
+        /// <param name="stream">The stream to deserialize.</param>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <returns>The deserialized object.</returns>
+        /// <remarks></remarks>
+        public static Object ReadAsJson(this Stream stream, Type instanceType, JsonSerializerSettings serializerSettings)
+        {
             if (stream == null)
             {
                 return null;
@@ -73,7 +86,7 @@ namespace NContext.Extensions.JsonNet
 
             using (var jsonTextReader = new JsonTextReader(new StreamReader(stream)))
             {
-                return Deserialize(jsonTextReader, instanceType);
+                return Deserialize(jsonTextReader, instanceType, serializerSettings);
             }
         }
 
@@ -85,6 +98,19 @@ namespace NContext.Extensions.JsonNet
         /// <returns>The deserialized object.</returns>
         public static Object ReadAsBson(this Stream stream, Type instanceType)
         {
+            return ReadAsBson(stream, instanceType, null);
+        }
+
+        /// <summary>
+        /// Reads the BSON-serialized stream and deserializes it into a CLR object.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="instanceType">Type of the instance.</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <returns>The deserialized object.</returns>
+        /// <remarks></remarks>
+        public static Object ReadAsBson(this Stream stream, Type instanceType, JsonSerializerSettings serializerSettings)
+        {
             if (stream == null)
             {
                 return null;
@@ -94,7 +120,7 @@ namespace NContext.Extensions.JsonNet
             {
                 bsonReader.DateTimeKindHandling = DateTimeKind.Utc;
 
-                return Deserialize(bsonReader, instanceType);
+                return Deserialize(bsonReader, instanceType, serializerSettings);
             }
         }
 
@@ -105,6 +131,18 @@ namespace NContext.Extensions.JsonNet
         /// <param name="instance">The object instance to serialize.</param>
         public static void WriteAsJson(this Stream stream, Object instance)
         {
+            WriteAsJson(stream, instance, null);
+        }
+
+        /// <summary>
+        /// Serializes the object into JSON and writes the data into the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="instance">The instance.</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <remarks></remarks>
+        public static void WriteAsJson(this Stream stream, Object instance, JsonSerializerSettings serializerSettings)
+        {
             if (instance == null)
             {
                 return;
@@ -112,7 +150,7 @@ namespace NContext.Extensions.JsonNet
 
             using (var jsonTextWriter = new JsonTextWriter(new StreamWriter(stream)) { CloseOutput = false })
             {
-                Serialize(jsonTextWriter, instance);
+                Serialize(jsonTextWriter, instance, serializerSettings);
             }
         }
 
@@ -130,45 +168,53 @@ namespace NContext.Extensions.JsonNet
 
             using (var bsonWriter = new BsonWriter(stream) { CloseOutput = false, DateTimeKindHandling = DateTimeKind.Utc })
             {
-                Serialize(bsonWriter, instance);
+                Serialize(bsonWriter, instance, null);
             }
         }
 
-        private static JsonSerializer GetJsonSerializer()
+        /// <summary>
+        /// Serializes the object instance into BSON and writes the data into the specified stream.
+        /// </summary>
+        /// <param name="stream">The stream.</param>
+        /// <param name="instance">The object instance to serialize.</param>
+        /// <param name="serializerSettings">The serializer settings.</param>
+        /// <remarks></remarks>
+        public static void WriteAsBson(this Stream stream, Object instance, JsonSerializerSettings serializerSettings)
         {
-            return new JsonSerializer
-                {
-                    MissingMemberHandling = MissingMemberHandling.Ignore,
-                    NullValueHandling = NullValueHandling.Ignore,
-                    ObjectCreationHandling = ObjectCreationHandling.Replace,
-                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                };
-        }
-
-        private static JsonSerializer GetBsonSerializer()
-        {
-            return new JsonSerializer
+            if (instance == null)
             {
-                MissingMemberHandling = MissingMemberHandling.Ignore,
-                NullValueHandling = NullValueHandling.Ignore,
-                ObjectCreationHandling = ObjectCreationHandling.Replace,
-                PreserveReferencesHandling = PreserveReferencesHandling.Objects,
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            };
+                return;
+            }
+
+            using (var bsonWriter = new BsonWriter(stream) { CloseOutput = false, DateTimeKindHandling = DateTimeKind.Utc })
+            {
+                Serialize(bsonWriter, instance, serializerSettings);
+            }
         }
 
-        private static Object Deserialize(JsonReader jsonReader, Type instanceType)
+        private static JsonSerializer GetJsonSerializer(JsonSerializerSettings serializerSettings)
+        {
+            var jsonSerializerSettings = serializerSettings ??
+                new JsonSerializerSettings
+                    {
+                        MissingMemberHandling = MissingMemberHandling.Ignore,
+                        NullValueHandling = NullValueHandling.Ignore,
+                        ObjectCreationHandling = ObjectCreationHandling.Replace,
+                        PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                        TypeNameHandling = TypeNameHandling.Auto
+                    };
+
+            return JsonSerializer.Create(jsonSerializerSettings);
+        }
+
+        private static Object Deserialize(JsonReader jsonReader, Type instanceType, JsonSerializerSettings serializerSettings)
         {
             try
             {
                 using (jsonReader)
                 {
-                    var jsonSerializer = jsonReader is BsonReader 
-                        ? GetBsonSerializer()
-                        : GetJsonSerializer();
-                    
-                    return jsonSerializer.Deserialize(jsonReader, instanceType);
+                    return GetJsonSerializer(serializerSettings).Deserialize(jsonReader, instanceType);
                 }
             }
             catch (JsonReaderException)
@@ -185,14 +231,11 @@ namespace NContext.Extensions.JsonNet
             }
         }
 
-        private static void Serialize(JsonWriter jsonWriter, Object instance)
+        private static void Serialize(JsonWriter jsonWriter, Object instance, JsonSerializerSettings serializerSettings)
         {
             try
             {
-                var jsonSerializer = jsonWriter is BsonWriter
-                        ? GetBsonSerializer()
-                        : GetJsonSerializer();
-
+                var jsonSerializer = GetJsonSerializer(serializerSettings);
                 jsonSerializer.Serialize(jsonWriter, instance);
                 jsonWriter.Flush();
             }

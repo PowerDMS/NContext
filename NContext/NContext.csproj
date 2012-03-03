@@ -84,7 +84,7 @@
     <Compile Include="Configuration\ApplicationComponentConfigurationBuilder.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBuilder.cs" />
-    <Compile Include="Caching\CacheConfiguration.cs" />
+    <Compile Include="Caching\CacheConfigurationBuilder.cs" />
     <Compile Include="Caching\CacheManager.cs" />
     <Compile Include="Configuration\Configure.cs" />
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
@@ -92,14 +92,17 @@
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
-    <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
+    <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Security\Cryptography\IProvideHashing.cs" />
+    <Compile Include="Security\Cryptography\IProvideKeyedHashing.cs" />
+    <Compile Include="Security\Cryptography\IProvideSymmetricEncryption.cs" />
     <Compile Include="Security\GuidToken.cs" />
     <Compile Include="Security\IManageSecurity.cs" />
     <Compile Include="Caching\IManageCaching.cs" />
     <Compile Include="Security\Cryptography\IManageCryptography.cs" />
     <Compile Include="Configuration\SafeDirectoryCatalog.cs" />
     <Compile Include="Configuration\SecureDirectoryCatalog.cs" />
-    <Compile Include="Security\SecurityConfiguration.cs" />
+    <Compile Include="Security\SecurityConfigurationBuilder.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
@@ -109,7 +112,6 @@
     <Compile Include="Extensions\ObjectCacheExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Security\Cryptography\IProvideCryptographicOperations.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

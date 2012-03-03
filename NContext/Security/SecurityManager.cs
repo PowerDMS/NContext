@@ -57,7 +57,7 @@ namespace NContext.Security
         /// <param name="cachingManager">The caching manager.</param>
         /// <param name="securityConfiguration">The security configuration.</param>
         /// <remarks></remarks>
-        public SecurityManager(IManageCaching cachingManager, SecurityConfiguration securityConfiguration)
+        public SecurityManager(IManageCaching cachingManager, SecurityConfigurationBuilder securityConfiguration)
         {
             if (cachingManager == null)
             {

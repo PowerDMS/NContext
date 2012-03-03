@@ -23,12 +23,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Net.Http;
+using System.Web.Http.SelfHost;
 
 using NContext.Configuration;
-using NContext.Extensions.WCF.Routing;
-using NContext.Extensions.WCF.Soap.Routing;
-using NContext.Extensions.WCF.WebApi.Formatters;
-using NContext.Extensions.WCF.WebApi.Routing;
+using NContext.Extensions.WebApi.Formatters;
+using NContext.Extensions.WebApi.Routing;
 
 using NUnit.Framework;
 
@@ -41,23 +40,16 @@ namespace NContext.Extensions.WCF.Tests.Unit
     public class RoutingConfigurationTests
     {
         [Ignore]
-        public void ApplicationConfigurationBuilder_RoutingConfigurationWithWebApiConfiguration_ShouldCreateHttpConfiguration()
+        public void ApplicationConfigurationBuilder_State_ShouldCreateHttpConfiguration()
         {
             ApplicationConfiguration applicationConfiguration =
-                    new ApplicationConfigurationBuilder()
-                           .RegisterComponent<IManageRouting>()
-                               .With<RoutingConfiguration>()
-                                   .SetEndpointBindings(EndpointBinding.Rest)
-                                       .ConfigureRouting<WebApiRoutingConfiguration>()
-                                           .SetFormatters(true, new JsonNetMediaTypeFormatter(), new XmlDataContractMediaTypeFormatter())
-                                           .SetEnableHelpPage(true)
-                                           .SetEnableTestClient(true)
-                                       .ConfigureRouting<SoapRoutingConfiguration>()
-                                       ;
-
+                new ApplicationConfigurationBuilder()
+                    .RegisterComponent<IManageWebApiRouting>()
+                        .With<WebApiConfigurationBuilder>();
+            
             Configure.Using(applicationConfiguration);
             
-            Assert.That(applicationConfiguration.GetComponent<IManageRouting>(), Is.Not.Null);
+            Assert.That(applicationConfiguration.GetComponent<IManageWebApiRouting>(), Is.Not.Null);
             // TODO: (DG) Re-write test. This is temporary.
         }
     }

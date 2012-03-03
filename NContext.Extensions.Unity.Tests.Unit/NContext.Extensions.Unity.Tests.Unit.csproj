@@ -35,14 +35,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework, Version=2.6.0.12051, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\NUnit.2.6.0.12054\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="Telerik.JustMock, Version=2011.3.1323.1, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
+    <Reference Include="Telerik.JustMock, Version=2012.1.229.0, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JustMock.2011.3.1323.0\lib\Net35\Telerik.JustMock.dll</HintPath>
+      <HintPath>..\packages\JustMock.2012.1.229.0\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -61,6 +62,9 @@
       <Project>{C6F06E82-728B-4CFD-86BE-CC5DFA815086}</Project>
       <Name>NContext.Extensions.Unity</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="JustMock.Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -44,7 +44,7 @@ namespace NContext.Extensions.Ninject
     {
         #region Fields
 
-        private readonly NinjectConfiguration _Configuration;
+        private readonly NinjectConfigurationBuilder _Configuration;
 
         private Boolean _IsConfigured;
 
@@ -59,7 +59,7 @@ namespace NContext.Extensions.Ninject
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <remarks></remarks>
-        public NinjectManager(NinjectConfiguration configuration)
+        public NinjectManager(NinjectConfigurationBuilder configuration)
         {
             if (configuration == null)
             {

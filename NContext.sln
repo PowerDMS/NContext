@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EnterpriseLibrary", "NContext.Extensions.EnterpriseLibrary\NContext.Extensions.EnterpriseLibrary.csproj", "{14AFB8B4-55E9-4127-B477-65B0549D5C79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.WCF", "NContext.Extensions.WCF\NContext.Extensions.WCF.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.WebApi", "NContext.Extensions.WCF\NContext.Extensions.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Dto", "NContext.Dto\NContext.Dto.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AppFabr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Unity.Tests.Unit", "NContext.Extensions.Unity.Tests.Unit\NContext.Extensions.Unity.Tests.Unit.csproj", "{D9C34C0E-CBCA-4266-807D-51C50BAF125D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.WCF.Tests.Unit", "NContext.Extensions.WCF.Tests.Unit\NContext.Extensions.WCF.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.WebApi.Tests.Unit", "NContext.Extensions.WCF.Tests.Unit\NContext.Extensions.WebApi.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Tests.Unit", "NContext.Tests.Unit\NContext.Tests.Unit.csproj", "{E69D30E5-089E-47AB-AE68-F25F5852DF01}"
 EndProject
@@ -34,6 +34,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject", "NContext.Extensions.Ninject\NContext.Extensions.Ninject.csproj", "{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject.Tests.Unit", "NContext.Extensions.Ninject.Tests.Unit\NContext.Extensions.Ninject.Tests.Unit.csproj", "{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Async", "NContext.Async\NContext.Async.csproj", "{F69FB87A-3460-4DC4-B652-60E2FB61AB48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EnterpriseLibrary.Tests.Unit", "NContext.Extensions.EnterpriseLibrary.Tests.Unit\NContext.Extensions.EnterpriseLibrary.Tests.Unit.csproj", "{1215A865-3388-40FE-9C72-F341E92FA072}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,6 +142,18 @@ Global
 		{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F69FB87A-3460-4DC4-B652-60E2FB61AB48}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69FB87A-3460-4DC4-B652-60E2FB61AB48}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{F69FB87A-3460-4DC4-B652-60E2FB61AB48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F69FB87A-3460-4DC4-B652-60E2FB61AB48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F69FB87A-3460-4DC4-B652-60E2FB61AB48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F69FB87A-3460-4DC4-B652-60E2FB61AB48}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1215A865-3388-40FE-9C72-F341E92FA072}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{1215A865-3388-40FE-9C72-F341E92FA072}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{1215A865-3388-40FE-9C72-F341E92FA072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1215A865-3388-40FE-9C72-F341E92FA072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1215A865-3388-40FE-9C72-F341E92FA072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1215A865-3388-40FE-9C72-F341E92FA072}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -154,6 +170,7 @@ Global
 		{7332FAF4-B39B-4DF7-B12C-5C7345D4E6DF} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{1215A865-3388-40FE-9C72-F341E92FA072} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35
