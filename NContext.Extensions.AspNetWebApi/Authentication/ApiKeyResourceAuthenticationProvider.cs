@@ -27,7 +27,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Web;
 
-namespace NContext.Extensions.WebApi.Authentication
+namespace NContext.Extensions.AspNetWebApi.Authentication
 {
     /// <summary>
     /// Defines a skeleton abstraction for API key authentication.

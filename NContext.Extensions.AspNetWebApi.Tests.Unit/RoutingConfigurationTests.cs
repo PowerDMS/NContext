@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProvideResourceAuthorization.cs">
+// <copyright file="RoutingConfigurationTests.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,29 +18,35 @@
 // </copyright>
 //
 // <summary>
-//   Defines a provider role for resource authorization.
+//   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Security.Principal;
-using System.Web.Http.Controllers;
+using NContext.Configuration;
+using NContext.Extensions.AspNetWebApi.Routing;
 
-namespace NContext.Extensions.WebApi.Authorization
+using NUnit.Framework;
+
+namespace NContext.Extensions.AspNetWebApi.Tests.Unit
 {
     /// <summary>
-    /// Defines a provider role for resource authorization.
+    /// 
     /// </summary>
-    /// <remarks></remarks>
-    public interface IProvideResourceAuthorization
+    [TestFixture]
+    public class RoutingConfigurationTests
     {
-        /// <summary>
-        /// Authorizes the specified <see cref="IPrincipal"/> against the specified <see cref="HttpActionDescriptor"/>.
-        /// </summary>
-        /// <param name="principal">The principal.</param>
-        /// <param name="actionDescriptor">The action descriptor to authorize.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        Boolean Authorize(IPrincipal principal, HttpActionDescriptor actionDescriptor);
+        [Ignore]
+        public void ApplicationConfigurationBuilder_State_ShouldCreateHttpConfiguration()
+        {
+            ApplicationConfiguration applicationConfiguration =
+                new ApplicationConfigurationBuilder()
+                    .RegisterComponent<IManageWebApiRouting>()
+                        .With<WebApiConfigurationBuilder>();
+            
+            Configure.Using(applicationConfiguration);
+            
+            Assert.That(applicationConfiguration.GetComponent<IManageWebApiRouting>(), Is.Not.Null);
+            // TODO: (DG) Re-write test. This is temporary.
+        }
     }
 }

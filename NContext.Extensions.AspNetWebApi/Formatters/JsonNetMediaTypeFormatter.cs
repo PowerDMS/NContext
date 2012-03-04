@@ -32,7 +32,7 @@ using System.Threading.Tasks;
 
 using NContext.Extensions.JsonNet;
 
-namespace NContext.Extensions.WebApi.Formatters
+namespace NContext.Extensions.AspNetWebApi.Formatters
 {
     /// <summary>
     /// Defines a Json <see cref="MediaTypeFormatter"/> using Json.NET serialization/deserialization.

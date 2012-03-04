@@ -26,7 +26,7 @@ using System;
 
 using NContext.Configuration;
 
-namespace NContext.Extensions.WebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
     /// Defines interface contract which encapsulates logic for creating ASP.NET Web API service routes.

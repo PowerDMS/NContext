@@ -26,7 +26,7 @@ using System;
 using System.Web.Http;
 using System.Web.Http.SelfHost;
 
-namespace NContext.Extensions.WebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
     /// Defines configuration support for ASP.NET Web API.

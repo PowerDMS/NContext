@@ -30,7 +30,7 @@ using System.Threading;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-namespace NContext.Extensions.WebApi.Authorization
+namespace NContext.Extensions.AspNetWebApi.Authorization
 {
     /// <summary>
     /// Defines an <see cref="ActionFilterAttribute"/> for resource operation authorization.

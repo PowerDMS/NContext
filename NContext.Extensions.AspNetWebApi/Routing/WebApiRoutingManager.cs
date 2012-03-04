@@ -30,7 +30,7 @@ using System.Web.Http.SelfHost;
 
 using NContext.Configuration;
 
-namespace NContext.Extensions.WebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
     /// Defines an application-level manager for configuring WCF service routes.

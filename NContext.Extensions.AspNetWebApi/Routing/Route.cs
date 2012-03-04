@@ -24,7 +24,7 @@
 
 using System;
 
-namespace NContext.Extensions.WebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
     /// Defines a class which represents an HTTP service route.

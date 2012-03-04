@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EnterpriseLibrary", "NContext.Extensions.EnterpriseLibrary\NContext.Extensions.EnterpriseLibrary.csproj", "{14AFB8B4-55E9-4127-B477-65B0549D5C79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.WebApi", "NContext.Extensions.WCF\NContext.Extensions.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi", "NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNetWebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Dto", "NContext.Dto\NContext.Dto.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject
@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AppFabr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Unity.Tests.Unit", "NContext.Extensions.Unity.Tests.Unit\NContext.Extensions.Unity.Tests.Unit.csproj", "{D9C34C0E-CBCA-4266-807D-51C50BAF125D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.WebApi.Tests.Unit", "NContext.Extensions.WCF.Tests.Unit\NContext.Extensions.WebApi.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi.Tests.Unit", "NContext.Extensions.AspNetWebApi.Tests.Unit\NContext.Extensions.AspNetWebApi.Tests.Unit.csproj", "{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Tests.Unit", "NContext.Tests.Unit\NContext.Tests.Unit.csproj", "{E69D30E5-089E-47AB-AE68-F25F5852DF01}"
 EndProject

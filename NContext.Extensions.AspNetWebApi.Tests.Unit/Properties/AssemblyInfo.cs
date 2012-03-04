@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NContext.Extensions.WCF.Tests.Unit")]
+[assembly: AssemblyTitle("NContext.Extensions.AspNetWebApi.Tests.Unit")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Waking Venture Inc.")]

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AcceptLanguageActionFilter.cs">
+// <copyright file="IRunWhenAServiceRouteIsCreated.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,56 +18,26 @@
 // </copyright>
 //
 // <summary>
-//   Defines an operation handler for supporting the HTTP AcceptLanguage header.
+//   Defines a role-interface which allows implementors to run when ... has completed.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Globalization;
-using System.Linq;
-using System.Threading;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
+using System.ComponentModel.Composition;
 
-namespace NContext.Extensions.WebApi
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
-    /// Defines an <see cref="ActionFilterAttribute"/> for supporting the HTTP Accept-language header.
+    /// Defines a role-interface which allows implementors to run when a service route is created.
     /// </summary>
-    public class AcceptLanguageActionFilter : ActionFilterAttribute
+    /// <remarks></remarks>
+    [InheritedExport]
+    public interface IRunWhenAServiceRouteIsCreated
     {
-        #region Overrides of ActionFilterAttribute
-
         /// <summary>
-        /// Called when [action executing].
+        /// Runs  specified route.
         /// </summary>
-        /// <param name="actionContext">The action context.</param>
+        /// <param name="route">The route.</param>
         /// <remarks></remarks>
-        public override void OnActionExecuting(HttpActionContext actionContext)
-        {
-            var request = actionContext.Request;
-            if (request.Headers.AcceptLanguage == null)
-            {
-                return;
-            }
-
-            var languages = request.Headers.AcceptLanguage.OrderByDescending(language => language.Quality ?? 1);
-            foreach (var language in languages)
-            {
-                try
-                {
-                    var culture = CultureInfo.GetCultureInfo(language.Value);
-                    Thread.CurrentThread.CurrentCulture = culture;
-                    Thread.CurrentThread.CurrentUICulture = culture;
-                    break;
-                }
-                catch (CultureNotFoundException)
-                {
-                }
-            }
-
-            base.OnActionExecuting(actionContext);
-        }
-
-        #endregion
+        void Run(Route route);
     }
 }

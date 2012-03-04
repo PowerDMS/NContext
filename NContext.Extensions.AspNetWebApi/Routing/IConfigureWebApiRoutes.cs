@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RoutingConfigurationTests.cs">
+// <copyright file="IConfigureWebApiRoutes.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,39 +18,24 @@
 // </copyright>
 //
 // <summary>
-//   
+//   Defines a role-interface used by the routing manger to register service routes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Net.Http;
-using System.Web.Http.SelfHost;
+using System.ComponentModel.Composition;
 
-using NContext.Configuration;
-using NContext.Extensions.WebApi.Formatters;
-using NContext.Extensions.WebApi.Routing;
-
-using NUnit.Framework;
-
-namespace NContext.Extensions.WCF.Tests.Unit
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
-    /// 
+    /// Defines a role-interface used by the <see cref="IManageWebApiRouting"/> to register service routes.
     /// </summary>
-    [TestFixture]
-    public class RoutingConfigurationTests
+    [InheritedExport(typeof(IConfigureWebApiRoutes))]
+    public interface IConfigureWebApiRoutes
     {
-        [Ignore]
-        public void ApplicationConfigurationBuilder_State_ShouldCreateHttpConfiguration()
-        {
-            ApplicationConfiguration applicationConfiguration =
-                new ApplicationConfigurationBuilder()
-                    .RegisterComponent<IManageWebApiRouting>()
-                        .With<WebApiConfigurationBuilder>();
-            
-            Configure.Using(applicationConfiguration);
-            
-            Assert.That(applicationConfiguration.GetComponent<IManageWebApiRouting>(), Is.Not.Null);
-            // TODO: (DG) Re-write test. This is temporary.
-        }
+        /// <summary>
+        /// Creates the WCF service routes.
+        /// </summary>
+        /// <param name="webApiRoutingManager">The routing manager.</param>
+        void RegisterServiceRoutes(IManageWebApiRouting webApiRoutingManager);
     }
 }

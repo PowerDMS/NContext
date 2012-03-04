@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ResponseTransferObjectActionFilter.cs">
+// <copyright file="AuthenticationActionFilter.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,49 +18,59 @@
 // </copyright>
 //
 // <summary>
-//   Defines and operation handler for translating response instances of IResponseTransferObject<T> to HttpResponseMessage.
+//   Defines an HttpOperationHandler for authentication.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
+using System.Threading;
+using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-using NContext.Dto;
-
-namespace NContext.Extensions.WebApi
+namespace NContext.Extensions.AspNetWebApi.Authentication
 {
     /// <summary>
-    /// Defines and operation handler for translating response instances 
-    /// of <see cref="IResponseTransferObject{T}"/> to <see cref="HttpResponseMessage"/>.
+    /// Defines an <see cref="ActionFilterAttribute"/> for authentication.
     /// </summary>
-    public class ResponseTransferObjectActionFilter : ActionFilterAttribute
+    public class AuthenticationActionFilter : ActionFilterAttribute
     {
+        private readonly IEnumerable<IProvideResourceAuthentication> _AuthenticationProviders;
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AuthenticationActionFilter"/> class.
+        /// </summary>
+        /// <param name="authenticationProviders">The authentication providers.</param>
+        /// <remarks></remarks>
+        public AuthenticationActionFilter(IEnumerable<IProvideResourceAuthentication> authenticationProviders)
+        {
+            _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideResourceAuthentication>();
+        }
+
+        #endregion
+
         #region Overrides of ActionFilterAttribute
 
         /// <summary>
-        /// Called when [action executed].
+        /// Called when [action executing].
         /// </summary>
-        /// <param name="actionExecutedContext">The action executed context.</param>
+        /// <param name="actionContext">The action context.</param>
         /// <remarks></remarks>
-        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        public override void OnActionExecuting(HttpActionContext actionContext)
         {
-            var httpResponseMessage = actionExecutedContext.Result;
-            dynamic response = httpResponseMessage.Content.ReadAsOrDefaultAsync(typeof(IResponseTransferObject<>)).Result;
-            if (response != null)
-            {
-                HttpStatusCode statusCode;
-                var errors = (IEnumerable<Error>)response.Errors;
-                if (errors.Any() && Enum.TryParse<HttpStatusCode>(errors.First().ErrorCode, false, out statusCode))
-                {
-                    httpResponseMessage.StatusCode = statusCode;
-                }
-            }
+            var input = actionContext.Request;
 
-            base.OnActionExecuted(actionExecutedContext);
+            _AuthenticationProviders
+                .FirstOrDefault(p => p.CanAuthenticate(input)).ToMaybe()
+                .Bind(provider => provider.Authenticate(input).ToMaybe())
+                .Let(principal =>
+                    {
+                        Thread.CurrentPrincipal = principal;
+                    });
+
+            base.OnActionExecuting(actionContext);
         }
 
         #endregion

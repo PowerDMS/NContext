@@ -38,11 +38,6 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="Telerik.JustMock, Version=2012.1.229.0, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\JustMock.2012.1.229.0\lib\Net35\Telerik.JustMock.dll</HintPath>

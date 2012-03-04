@@ -38,7 +38,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
     {
         #region Fields
 
-        // TODO: (DG) Add support for default symmetric key and hash key.
+        // TODO: (DG) Add support for default symmetric keys.
 
         private readonly CryptographyConfigurationBuilder _CryptographyConfiguration;
 

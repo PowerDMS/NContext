@@ -28,7 +28,7 @@ using System.Web.Http.SelfHost;
 
 using NContext.Configuration;
 
-namespace NContext.Extensions.WebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
     /// Defines a component configuration class for service routing.
@@ -40,6 +40,8 @@ namespace NContext.Extensions.WebApi.Routing
         private Action<HttpConfiguration> _AspNetHttpConfigurationDelegate;
 
         private Lazy<HttpSelfHostConfiguration> _HttpSelfHostConfigurationFactory;
+
+        private Boolean _IsConfigured;
 
         #endregion
 
@@ -86,11 +88,16 @@ namespace NContext.Extensions.WebApi.Routing
         /// <remarks></remarks>
         protected override void Setup()
         {
-            Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageWebApiRouting>(
-                       () => 
-                           new WebApiRoutingManager(
-                               new WebApiConfiguration(_AspNetHttpConfigurationDelegate, _HttpSelfHostConfigurationFactory)));
+            if (!_IsConfigured)
+            {
+                Builder.ApplicationConfiguration
+                    .RegisterComponent<IManageWebApiRouting>(
+                        () => 
+                            new WebApiRoutingManager(
+                                new WebApiConfiguration(_AspNetHttpConfigurationDelegate, _HttpSelfHostConfigurationFactory)));
+
+                _IsConfigured = true;
+            }
         }
 
         #endregion

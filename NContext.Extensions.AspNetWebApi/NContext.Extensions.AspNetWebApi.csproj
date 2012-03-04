@@ -8,8 +8,8 @@
     <ProjectGuid>{B59D121B-CEFE-41EA-9B29-5922C0B996D2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NContext.Extensions.WebApi</RootNamespace>
-    <AssemblyName>NContext.Extensions.WebApi</AssemblyName>
+    <RootNamespace>NContext.Extensions.AspNetWebApi</RootNamespace>
+    <AssemblyName>NContext.Extensions.AspNetWebApi</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>
@@ -39,7 +39,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\NContext.Extensions.WebApi.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\NContext.Extensions.AspNetWebApi.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -53,20 +53,10 @@
     <Reference Include="System.Net.Http.Formatting">
       <HintPath>..\packages\System.Net.Http.Formatting.4.0.20126.16343\lib\net40\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
-    <Reference Include="System.Net.Http.WebRequest, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\System.Net.Http.2.0.20126.16343\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
-    <Reference Include="System.ServiceModel.Activation" />
     <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Http">
       <HintPath>..\packages\AspNetWebApi.Core.4.0.20126.16343\lib\net40\System.Web.Http.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Web.Http.Common">
-      <HintPath>..\packages\System.Web.Http.Common.4.0.20126.16343\lib\net40\System.Web.Http.Common.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http.SelfHost">
       <HintPath>..\packages\AspNetWebApi.SelfHost.4.0.20126.16343\lib\net40\System.Web.Http.SelfHost.dll</HintPath>
@@ -74,7 +64,6 @@
     <Reference Include="System.Web.Http.WebHost">
       <HintPath>..\packages\AspNetWebApi.4.0.20126.16343\lib\net40\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

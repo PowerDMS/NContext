@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProvideResourceAuthentication.cs">
+// <copyright file="ResponseTransferObjectActionFilter.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,35 +18,51 @@
 // </copyright>
 //
 // <summary>
-//   Defines a provider role for resource authentication.
+//   Defines and operation handler for translating response instances of IResponseTransferObject<T> to HttpResponseMessage.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using System.Net.Http;
-using System.Security.Principal;
+using System.Web.Http.Filters;
 
-namespace NContext.Extensions.WebApi.Authentication
+using NContext.Dto;
+
+namespace NContext.Extensions.AspNetWebApi
 {
     /// <summary>
-    /// Defines a provider role for resource authentication.
+    /// Defines and operation handler for translating response instances 
+    /// of <see cref="IResponseTransferObject{T}"/> to <see cref="HttpResponseMessage"/>.
     /// </summary>
-    public interface IProvideResourceAuthentication
+    public class ResponseTransferObjectActionFilter : ActionFilterAttribute
     {
-        /// <summary>
-        /// Determines whether this instance can authenticate the specified request message.
-        /// </summary>
-        /// <param name="requestMessage">The request message.</param>
-        /// <returns><c>true</c> if this instance can authenticate the specified request message; otherwise, <c>false</c>.</returns>
-        /// <remarks></remarks>
-        Boolean CanAuthenticate(HttpRequestMessage requestMessage);
+        #region Overrides of ActionFilterAttribute
 
         /// <summary>
-        /// Authenticates the specified request message.
+        /// Called when [action executed].
         /// </summary>
-        /// <param name="requestMessage">The request message.</param>
-        /// <returns>Instance of <see cref="IPrincipal"/>.</returns>
+        /// <param name="actionExecutedContext">The action executed context.</param>
         /// <remarks></remarks>
-        IPrincipal Authenticate(HttpRequestMessage requestMessage);
+        public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
+        {
+            var httpResponseMessage = actionExecutedContext.Result;
+            dynamic response = httpResponseMessage.Content.ReadAsOrDefaultAsync(typeof(IResponseTransferObject<>)).Result;
+            if (response != null)
+            {
+                HttpStatusCode statusCode;
+                var errors = (IEnumerable<Error>)response.Errors;
+                if (errors.Any() && Enum.TryParse<HttpStatusCode>(errors.First().ErrorCode, false, out statusCode))
+                {
+                    httpResponseMessage.StatusCode = statusCode;
+                }
+            }
+
+            base.OnActionExecuted(actionExecutedContext);
+        }
+
+        #endregion
     }
 }

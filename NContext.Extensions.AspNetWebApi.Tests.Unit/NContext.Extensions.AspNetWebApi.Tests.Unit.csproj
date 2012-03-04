@@ -8,8 +8,8 @@
     <ProjectGuid>{39C5BD28-4CBF-43EC-84D9-7EE6EDDD1A68}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NContext.Extensions.WCF.Tests.Unit</RootNamespace>
-    <AssemblyName>NContext.Extensions.WCF.Tests.Unit</AssemblyName>
+    <RootNamespace>NContext.Extensions.AspNetWebApi.Tests.Unit</RootNamespace>
+    <AssemblyName>NContext.Extensions.AspNetWebApi.Tests.Unit</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -75,9 +75,9 @@
       <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
       <Name>NContext</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NContext.Extensions.WCF\NContext.Extensions.WebApi.csproj">
+    <ProjectReference Include="..\NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNetWebApi.csproj">
       <Project>{B59D121B-CEFE-41EA-9B29-5922C0B996D2}</Project>
-      <Name>NContext.Extensions.WebApi</Name>
+      <Name>NContext.Extensions.AspNetWebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

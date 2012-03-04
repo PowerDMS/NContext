@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigureWebApiRoutes.cs">
+// <copyright file="IProvideResourceAuthorization.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,24 +18,29 @@
 // </copyright>
 //
 // <summary>
-//   Defines a role-interface used by the routing manger to register service routes.
+//   Defines a provider role for resource authorization.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.ComponentModel.Composition;
+using System;
+using System.Security.Principal;
+using System.Web.Http.Controllers;
 
-namespace NContext.Extensions.WebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Authorization
 {
     /// <summary>
-    /// Defines a role-interface used by the <see cref="IManageWebApiRouting"/> to register service routes.
+    /// Defines a provider role for resource authorization.
     /// </summary>
-    [InheritedExport(typeof(IConfigureWebApiRoutes))]
-    public interface IConfigureWebApiRoutes
+    /// <remarks></remarks>
+    public interface IProvideResourceAuthorization
     {
         /// <summary>
-        /// Creates the WCF service routes.
+        /// Authorizes the specified <see cref="IPrincipal"/> against the specified <see cref="HttpActionDescriptor"/>.
         /// </summary>
-        /// <param name="webApiRoutingManager">The routing manager.</param>
-        void RegisterServiceRoutes(IManageWebApiRouting webApiRoutingManager);
+        /// <param name="principal">The principal.</param>
+        /// <param name="actionDescriptor">The action descriptor to authorize.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        Boolean Authorize(IPrincipal principal, HttpActionDescriptor actionDescriptor);
     }
 }
