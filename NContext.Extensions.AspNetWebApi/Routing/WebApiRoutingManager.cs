@@ -227,7 +227,10 @@ namespace NContext.Extensions.AspNetWebApi.Routing
                 }
                 else
                 {
-                    _WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(GlobalConfiguration.Configuration);
+                    if (_WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
+                    {
+                        _WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(GlobalConfiguration.Configuration);
+                    }
                 }
 
                 var serviceConfigurables = _CompositionContainer.GetExports<IConfigureWebApiRoutes>();

@@ -77,7 +77,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
         /// <returns>The created hash.</returns>
         /// <remarks></remarks>
-        public String CreateHashAsBase64(String plainText, Boolean saltEnabled = true)
+        public String CreateHashToBase64(String plainText, Boolean saltEnabled = true)
         {
             return CreateHash(_DefaultHashAlgorithm, plainText.ToBytes(), saltEnabled).ToBase64();
         }
@@ -118,7 +118,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
         /// <returns>The created hash.</returns>
         /// <remarks></remarks>
-        public String CreateHashAsBase64<THashAlgorithm>(String plainText, Boolean saltEnabled = true)
+        public String CreateHashToBase64<THashAlgorithm>(String plainText, Boolean saltEnabled = true)
             where THashAlgorithm : HashAlgorithm
         {
             return CreateHash(typeof(THashAlgorithm), plainText.ToBytes(), saltEnabled).ToBase64();

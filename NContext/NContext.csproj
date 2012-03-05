@@ -78,6 +78,7 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ApplicationComponentConfigurationBase.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\IApplicationConfiguration.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Security\Cryptography\IProvideHashing.cs" />
     <Compile Include="Security\Cryptography\IProvideKeyedHashing.cs" />
     <Compile Include="Security\Cryptography\IProvideSymmetricEncryption.cs" />

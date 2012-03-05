@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.Composition.Hosting;
 using System.ComponentModel.Composition.Primitives;
 using System.IO;
@@ -41,17 +42,26 @@ namespace NContext.Configuration
         /// <summary>
         /// Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.
         /// </summary>
-        /// <param name="directory">The directory.</param>
+        /// <param name="directories">The directories.</param>
+        /// <param name="fileNameConstraints">The file name constraints.</param>
         /// <remarks></remarks>
-        public SafeDirectoryCatalog(String directory)
+        public SafeDirectoryCatalog(IEnumerable<String> directories, IEnumerable<Predicate<String>> fileNameConstraints)
         {
-            if (!Directory.Exists(directory))
+            var assemblyDirectories = directories.ToList();
+            if (!assemblyDirectories.All(Directory.Exists))
             {
                 throw new DirectoryNotFoundException("Invalid directory path specified. Could not create AggregateCatalog.");
             }
 
             _Catalog = new AggregateCatalog();
-            var files = Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories);
+            var files = assemblyDirectories.SelectMany(
+                directory =>
+                {
+                    return 
+                        Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories)
+                                 .Where(filePath => fileNameConstraints.Any(predicate => predicate(Path.GetFileName(filePath))));
+                }).Distinct();
+
             foreach (var file in files)
             {
                 try

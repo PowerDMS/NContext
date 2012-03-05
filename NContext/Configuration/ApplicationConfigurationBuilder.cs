@@ -24,6 +24,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Web;
+
+using NContext.Extensions;
 
 namespace NContext.Configuration
 {
@@ -59,8 +64,8 @@ namespace NContext.Configuration
 
         #endregion
 
-        #region Methods
-
+        #region Operator Overloads
+        
         /// <summary>
         /// Performs an implicit conversion from <see cref="ApplicationConfigurationBuilder"/> 
         /// to <see cref="Configuration.ApplicationConfiguration"/>.
@@ -73,11 +78,66 @@ namespace NContext.Configuration
             return _ApplicationConfiguration;
         }
 
+        #endregion
+        
+        #region Methods
+
+        /// <summary>
+        /// Composes the application for web environments. This will use the <see cref="HttpRuntime.BinDirectory"/> for runtime composition.
+        /// </summary>
+        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <remarks></remarks>
+        public ApplicationConfigurationBuilder ComposeForWeb(params Predicate<String>[] fileNameConstraints)
+        {
+            if (HttpContext.Current == null)
+            {
+                throw new InvalidOperationException("HttpContext is null. This method can only me used within a web application.");
+            }
+
+            ComposeWith(new[] { HttpRuntime.BinDirectory }, fileNameConstraints);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Composes the application using either the entry assembly location 
+        /// or <see cref="AppDomain.CurrentDomain"/> BaseDirectory for runtime composition.
+        /// </summary>
+        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <remarks></remarks>
+        public ApplicationConfigurationBuilder ComposeWith(params Predicate<String>[] fileNameConstraints)
+        {
+            var applicationLocation = Assembly.GetEntryAssembly() == null
+                                          ? AppDomain.CurrentDomain.BaseDirectory
+                                          : Assembly.GetEntryAssembly().Location;
+
+            ComposeWith(new[] { applicationLocation }, fileNameConstraints);
+
+            return this;
+        }
+
+        /// <summary>
+        /// Composes the application using the specified directories only, for runtime composition. This can 
+        /// be used in conjunction with its overload and <seealso cref="ComposeForWeb"/>.
+        /// </summary>
+        /// <param name="directories">The directories.</param>
+        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <remarks></remarks>
+        public ApplicationConfigurationBuilder ComposeWith(IEnumerable<String> directories, params Predicate<String>[] fileNameConstraints)
+        {
+            _ApplicationConfiguration.AddCompositionConditions(directories, fileNameConstraints);
+
+            return this;
+        }
+
         /// <summary>
         /// Registers the component with the <see cref="ApplicationConfigurationBuilder"/> components collection.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
-        /// <returns>Instance of <see cref="ApplicationComponentConfigurationBuilder"/>.</returns>
+        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationComponentConfigurationBuilder RegisterComponent<TApplicationComponent>()
             where TApplicationComponent : class, IApplicationComponent
@@ -99,7 +159,7 @@ namespace NContext.Configuration
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <param name="componentFactory">The component factory.</param>
-        /// <returns>Current <see cref="IApplicationConfiguration"/> instance.</returns>
+        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder RegisterComponent<TApplicationComponent>(Func<TApplicationComponent> componentFactory)
             where TApplicationComponent : class, IApplicationComponent

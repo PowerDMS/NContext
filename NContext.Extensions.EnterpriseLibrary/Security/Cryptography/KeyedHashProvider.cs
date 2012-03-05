@@ -109,7 +109,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         /// <param name="dataProtectionScope">The data protection scope.</param>
         /// <returns>The hashed message authentication code. (<see cref="HMAC"/>)</returns>
         /// <remarks></remarks>
-        public String CreateHashAsBase64(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+        public String CreateHashToBase64(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
             return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes(), plainText.ToBytes(), saltEnabled, dataProtectionScope).ToBase64();
         }
@@ -158,7 +158,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         /// <param name="dataProtectionScope">The data protection scope.</param>
         /// <returns>The hashed message authentication code. (<see cref="HMAC"/>)</returns>
         /// <remarks></remarks>
-        public String CreateHashAsBase64<TKeyedHashAlgorithm>(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+        public String CreateHashToBase64<TKeyedHashAlgorithm>(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TKeyedHashAlgorithm : KeyedHashAlgorithm
         {
             return CreateHash(typeof(TKeyedHashAlgorithm), symmetricKey.ToBytes(), plainText.ToBytes(), saltEnabled, dataProtectionScope).ToBase64();

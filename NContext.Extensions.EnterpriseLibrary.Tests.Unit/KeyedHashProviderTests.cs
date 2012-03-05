@@ -79,9 +79,9 @@ namespace NContext.Extensions.EnterpriseLibrary.Tests.Unit
         {
             Type defaultKeyedHashAlgorithm = typeof(HMACSHA256);
             var mockHashProvider = Mock.Create<KeyedHashProvider>(defaultKeyedHashAlgorithm);
-            mockHashProvider.Arrange(p => p.CreateHashAsBase64(Arg.AnyString, Arg.AnyString, false, DataProtectionScope.LocalMachine)).CallOriginal();
+            mockHashProvider.Arrange(p => p.CreateHashToBase64(Arg.AnyString, Arg.AnyString, false, DataProtectionScope.LocalMachine)).CallOriginal();
 
-            var actual = mockHashProvider.CreateHashAsBase64(_SymmetricKey, _PlainText, false);
+            var actual = mockHashProvider.CreateHashToBase64(_SymmetricKey, _PlainText, false);
             var expected = Convert.ToBase64String(new HMACSHA256(_SymmetricKeyBytes).ComputeHash(_PlainTextBytes));
 
             Assert.AreEqual(expected, actual);
@@ -92,9 +92,9 @@ namespace NContext.Extensions.EnterpriseLibrary.Tests.Unit
         {
             Type defaultKeyedHashAlgorithm = typeof(HMACSHA256);
             var mockHashProvider = Mock.Create<KeyedHashProvider>(defaultKeyedHashAlgorithm);
-            mockHashProvider.Arrange(p => p.CreateHashAsBase64<HMACSHA1>(Arg.AnyString, Arg.AnyString, false, DataProtectionScope.LocalMachine)).CallOriginal();
+            mockHashProvider.Arrange(p => p.CreateHashToBase64<HMACSHA1>(Arg.AnyString, Arg.AnyString, false, DataProtectionScope.LocalMachine)).CallOriginal();
 
-            var actual = mockHashProvider.CreateHashAsBase64<HMACSHA1>(_SymmetricKey, _PlainText, false);
+            var actual = mockHashProvider.CreateHashToBase64<HMACSHA1>(_SymmetricKey, _PlainText, false);
             var expected = Convert.ToBase64String(new HMACSHA1(_SymmetricKeyBytes).ComputeHash(_PlainTextBytes));
 
             Assert.AreEqual(expected, actual);
@@ -178,7 +178,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Tests.Unit
             DataProtectionScope dataProtectionScope = new DataProtectionScope();
             string expected = string.Empty;
             string actual;
-            //actual = target.CreateHashAsBase64<TKeyedHashAlgorithm>(symmetricKey, plainText, dataProtectionScope);
+            //actual = target.CreateHashToBase64<TKeyedHashAlgorithm>(symmetricKey, plainText, dataProtectionScope);
             //Assert.AreEqual(expected, actual);
         }
 
@@ -193,7 +193,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Tests.Unit
             DataProtectionScope dataProtectionScope = new DataProtectionScope();
             string expected = string.Empty;
             string actual;
-            //actual = target.CreateHashAsBase64<TKeyedHashAlgorithm>(symmetricKey, plainText, saltEnabled, dataProtectionScope);
+            //actual = target.CreateHashToBase64<TKeyedHashAlgorithm>(symmetricKey, plainText, saltEnabled, dataProtectionScope);
             //Assert.AreEqual(expected, actual);
         }
 
@@ -207,7 +207,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Tests.Unit
             DataProtectionScope dataProtectionScope = new DataProtectionScope();
             string expected = string.Empty;
             string actual;
-            //actual = target.CreateHashAsBase64(symmetricKey, plainText, dataProtectionScope);
+            //actual = target.CreateHashToBase64(symmetricKey, plainText, dataProtectionScope);
             //Assert.AreEqual(expected, actual);
         }
 
@@ -222,7 +222,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Tests.Unit
             DataProtectionScope dataProtectionScope = new DataProtectionScope();
             string expected = string.Empty;
             string actual;
-            //actual = target.CreateHashAsBase64(symmetricKey, plainText, saltEnabled, dataProtectionScope);
+            //actual = target.CreateHashToBase64(symmetricKey, plainText, saltEnabled, dataProtectionScope);
             //Assert.AreEqual(expected, actual);
         }
 

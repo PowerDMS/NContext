@@ -29,6 +29,7 @@ using System.ComponentModel.Composition.Hosting;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 
 using NContext.Extensions;
 
@@ -41,12 +42,29 @@ namespace NContext.Configuration
     {
         #region Fields
 
-        private static Boolean _IsConfigured;
-
-        private static CompositionContainer _CompositionContainer;
-
-        private static readonly IDictionary<Type, Lazy<IApplicationComponent>> _Components =
+        private readonly IDictionary<Type, Lazy<IApplicationComponent>> _Components =
             new Dictionary<Type, Lazy<IApplicationComponent>>();
+
+        private readonly HashSet<String> _CompositionDirectories;
+
+        private readonly HashSet<Predicate<String>> _CompositionFileNameConstraints; 
+
+        private CompositionContainer _CompositionContainer;
+
+        private Boolean _IsConfigured;
+
+        #endregion
+
+        #region Constructors
+
+        public ApplicationConfiguration()
+        {
+            _CompositionDirectories = new HashSet<String>();
+            _CompositionFileNameConstraints = new HashSet<Predicate<String>>
+                {
+                    new Predicate<String>(fileName => fileName.StartsWith("NContext", StringComparison.OrdinalIgnoreCase))
+                };
+        }
 
         #endregion
         
@@ -92,6 +110,18 @@ namespace NContext.Configuration
         #endregion
 
         #region Methods
+
+        /// <summary>
+        /// Adds the specified conditions for application composition.
+        /// </summary>
+        /// <param name="directories">The directories.</param>
+        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <remarks></remarks>
+        public void AddCompositionConditions(IEnumerable<String> directories, IEnumerable<Predicate<String>> fileNameConstraints)
+        {
+            _CompositionDirectories.AddRange(directories);
+            _CompositionFileNameConstraints.AddRange(fileNameConstraints);
+        }
 
         /// <summary>
         /// Gets the application component by type registered.
@@ -168,13 +198,14 @@ namespace NContext.Configuration
                 return _CompositionContainer;
             }
 
+
             var directoryPath = Path.GetDirectoryName(new Uri(Assembly.GetExecutingAssembly().CodeBase).LocalPath);
             if (String.IsNullOrWhiteSpace(directoryPath))
             {
                 throw new Exception("Could not create composition container. Invalid directory path.");
             }
 
-            var directoryCatalog = new SafeDirectoryCatalog(directoryPath);
+            var directoryCatalog = new SafeDirectoryCatalog(_CompositionDirectories, _CompositionFileNameConstraints);
             var compositionContainer = new CompositionContainer(directoryCatalog);
             if (compositionContainer == null)
             {

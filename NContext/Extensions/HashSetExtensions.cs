@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RoutingConfigurationTests.cs">
+// <copyright file="HashSetExtensions.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,34 +18,32 @@
 // </copyright>
 //
 // <summary>
-//   
+//   Defines extension methods for IList.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using NContext.Configuration;
-using NContext.Extensions.AspNetWebApi.Routing;
+using System.Collections.Generic;
 
-using NUnit.Framework;
-
-namespace NContext.Extensions.AspNetWebApi.Tests.Unit
+namespace NContext.Extensions
 {
     /// <summary>
-    /// 
+    /// Defines extension methods for <see cref="IList{T}"/>.
     /// </summary>
-    [TestFixture]
-    public class RoutingConfigurationTests
+    public static class HashSetExtensions
     {
-        [Test]
-        public void ApplicationConfigurationBuilder_State_ShouldCreateHttpConfiguration()
+        /// <summary>
+        /// Adds the items to the hash set and return the set.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="set">The set.</param>
+        /// <param name="itemsToAdd">The items to add.</param>
+        /// <returns>The hash set.</returns>
+        /// <remarks></remarks>
+        public static HashSet<T> AddRange<T>(this HashSet<T> set, IEnumerable<T> itemsToAdd)
         {
-            ApplicationConfiguration applicationConfiguration =
-                new ApplicationConfigurationBuilder()
-                    .ComposeWith(new[] { "" }, fileName => fileName.StartsWith("Ids"));
+            itemsToAdd.ForEach(item => set.Add(item));
 
-            Configure.Using(applicationConfiguration);
-            
-            //Assert.That(applicationConfiguration.GetComponent<IManageWebApiRouting>(), Is.Not.Null);
-            // TODO: (DG) Re-write test. This is temporary.
+            return set;
         }
     }
 }

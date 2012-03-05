@@ -36,7 +36,7 @@ namespace NContext.Security.Cryptography
         /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
         /// <returns>The created hash.</returns>
         /// <remarks></remarks>
-        String CreateHashAsBase64(String plainText, Boolean saltEnabled = true);
+        String CreateHashToBase64(String plainText, Boolean saltEnabled = true);
 
         /// <summary>
         /// Creates the hash using the specified <see cref="HashAlgorithm"/>.
@@ -68,7 +68,7 @@ namespace NContext.Security.Cryptography
         /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
         /// <returns>The created hash.</returns>
         /// <remarks></remarks>
-        String CreateHashAsBase64<THashAlgorithm>(String plainText, Boolean saltEnabled = true)
+        String CreateHashToBase64<THashAlgorithm>(String plainText, Boolean saltEnabled = true)
             where THashAlgorithm : HashAlgorithm;
 
         #endregion

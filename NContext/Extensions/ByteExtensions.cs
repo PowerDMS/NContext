@@ -70,5 +70,19 @@ namespace NContext.Extensions
         {
             return Convert.ToBase64String(bytes);
         }
+
+        /// <summary>
+        /// Gets the UTF8 encoded string from the specified bytes.
+        /// </summary>
+        /// <param name="bytes">The bytes.</param>
+        /// <returns>UTF8 encoded string.</returns>
+        /// <exception cref=""></exception>
+        /// <remarks></remarks>
+        public static String ToUTF8(this Byte[] bytes)
+        {
+            var encoding = new UTF8Encoding(false, true);
+
+            return encoding.GetString(bytes);
+        }
     }
 }
