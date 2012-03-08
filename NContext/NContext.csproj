@@ -81,6 +81,7 @@
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheConfiguration.cs" />
     <Compile Include="Configuration\ApplicationComponentConfigurationBase.cs" />
     <Compile Include="Configuration\ApplicationComponentConfigurationBuilder.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
@@ -92,7 +93,7 @@
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
-    <Compile Include="Configuration\IApplicationConfiguration.cs" />
+    <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Security\Cryptography\IProvideHashing.cs" />

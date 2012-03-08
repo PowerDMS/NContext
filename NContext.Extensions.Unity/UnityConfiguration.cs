@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnterpriseLibraryManager.cs">
+// <copyright file="UnityConfiguration.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,71 +18,85 @@
 // </copyright>
 //
 // <summary>
-//   Defines an application component for Microsoft Enterprise Library support.
+//   Defines configuration settings for Unity.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
 
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel;
-
-using NContext.Configuration;
-
-namespace NContext.Extensions.EnterpriseLibrary
+namespace NContext.Extensions.Unity
 {
     /// <summary>
-    /// Defines an implementation of IEnterpriseLibraryManager
+    /// Defines configuration settings for Unity.
     /// </summary>
-    /// <remarks></remarks>
-    public class EnterpriseLibraryManager : IEnterpriseLibraryManager
+    public class UnityConfiguration
     {
-        private Boolean _IsConfigured;
+        #region Fields
 
-        private IContainerConfigurator _ContainerConfigurator;
+        private readonly String _ContainerName;
 
-        /// <summary>
-        /// Gets the application's container configurator.
-        /// </summary>
-        /// <remarks></remarks>
-        public IContainerConfigurator ContainerConfigurator
-        {
-            get
-            {
-                return _ContainerConfigurator;
-            }
-        }
+        private readonly String _ConfigurationFileName;
+
+        private readonly String _ConfigurationSectionName;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Gets a value indicating whether this instance is configured.
+        /// Initializes a new instance of the <see cref="UnityConfiguration"/> class.
         /// </summary>
+        /// <param name="containerName">Name of the container.</param>
+        /// <param name="configurationFileName">Name of the configuration file.</param>
+        /// <param name="configurationSectionName">Name of the configuration section.</param>
         /// <remarks></remarks>
-        public Boolean IsConfigured
+        public UnityConfiguration(String containerName, String configurationFileName, String configurationSectionName)
         {
-            get
-            {
-                return _IsConfigured;
-            }
-        }
-
-        /// <summary>
-        /// Sets the application's container configurator.
-        /// </summary>
-        /// <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
-        /// <param name="containerConfigurator">The container configurator.</param>
-        /// <remarks></remarks>
-        public void SetContainerConfigurator<TContainerConfigurator>(TContainerConfigurator containerConfigurator)
-            where TContainerConfigurator : IContainerConfigurator
-        {
-            _ContainerConfigurator = containerConfigurator;
-        }
-
-        #region Implementation of IApplicationComponent
-
-        public void Configure(ApplicationConfigurationBase applicationConfiguration)
-        {
-            _IsConfigured = true;
+            _ContainerName = containerName;
+            _ConfigurationFileName = configurationFileName;
+            _ConfigurationSectionName = configurationSectionName;
         }
 
         #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Gets the dependency injection container adapter.
+        /// </summary>
+        /// <remarks></remarks>
+        public String ContainerName
+        {
+            get
+            {
+                return _ContainerName;
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the configuration file.
+        /// </summary>
+        /// <remarks></remarks>
+        public String ConfigurationFileName
+        {
+            get
+            {
+                return _ConfigurationFileName;
+            }
+        }
+
+        /// <summary>
+        /// Gets the name of the configuration section.
+        /// </summary>
+        /// <remarks></remarks>
+        public String ConfigurationSectionName
+        {
+            get
+            {
+                return _ConfigurationSectionName;
+            }
+        }
+
+        #endregion 
     }
 }

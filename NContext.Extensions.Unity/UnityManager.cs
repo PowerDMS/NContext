@@ -41,7 +41,7 @@ namespace NContext.Extensions.Unity
     {
         #region Fields
 
-        private readonly UnityConfigurationBuilder _UnityConfiguration;
+        private readonly UnityConfiguration _UnityConfiguration;
 
         private Boolean _IsConfigured;
 
@@ -56,7 +56,7 @@ namespace NContext.Extensions.Unity
         /// </summary>
         /// <param name="unityConfiguration">The dependency injection configuration.</param>
         /// <remarks></remarks>
-        public UnityManager(UnityConfigurationBuilder unityConfiguration)
+        public UnityManager(UnityConfiguration unityConfiguration)
         {
             if (unityConfiguration == null)
             {
@@ -98,19 +98,19 @@ namespace NContext.Extensions.Unity
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks></remarks>
-        public virtual void Configure(IApplicationConfiguration applicationConfiguration)
+        public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (_IsConfigured)
             {
                 return;
             }
 
-            _Container = UnityContainerFactory.Create(_UnityConfiguration.ConfigurationFileName,
+            _Container = UnityContainerFactory.Create(
+                _UnityConfiguration.ConfigurationFileName,
                 _UnityConfiguration.ConfigurationSectionName,
                 _UnityConfiguration.ContainerName);
 
             SetServiceLocator();
-            SetContainerConfigurator(applicationConfiguration);
                 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IUnityContainer>(_Container);
             _Container.RegisterInstance<CompositionContainer>(applicationConfiguration.CompositionContainer);
@@ -119,11 +119,6 @@ namespace NContext.Extensions.Unity
                 .GetExportedValues<IConfigureAUnityContainer>()
                 .OrderBy(configurable => configurable.Priority)
                 .ForEach(configurable => configurable.ConfigureContainer(_Container));
-
-            // TODO: (DG) Remove IRegisterWithAUnityContainer? It's oogly and limiting.
-            applicationConfiguration.CompositionContainer
-                .GetExportTypesThatImplement<IRegisterWithAUnityContainer>()
-                .ForEach(type => _Container.RegisterType(type));
                 
             _IsConfigured = true;
         }
@@ -132,16 +127,6 @@ namespace NContext.Extensions.Unity
         {
             var serviceLocator = new UnityServiceLocator(_Container);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
-        }
-
-        protected virtual void SetContainerConfigurator(IApplicationConfiguration applicationConfiguration)
-        {
-            // TODO: (DG) Rethink below. [Commented out to remove dependency on NContext.EnterpriseLibrary]
-            //var elManager = applicationConfiguration.GetComponent<IEnterpriseLibraryManager>();
-            //if (elManager != null)
-            //{
-            //    elManager.SetContainerConfigurator(new UnityContainerConfigurator(_Container));
-            //}
         }
 
         #endregion

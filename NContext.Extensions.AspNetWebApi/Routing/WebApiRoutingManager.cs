@@ -216,7 +216,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks></remarks>
-        public virtual void Configure(IApplicationConfiguration applicationConfiguration)
+        public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (!_IsConfigured)
             {

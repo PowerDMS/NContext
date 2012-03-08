@@ -40,7 +40,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
 
         // TODO: (DG) Add support for default symmetric keys.
 
-        private readonly CryptographyConfigurationBuilder _CryptographyConfiguration;
+        private readonly CryptographyConfiguration _CryptographyConfiguration;
 
         private Type _DefaultHashAlgorithm;
 
@@ -65,7 +65,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         /// </summary>
         /// <param name="cryptographyConfiguration">The cryptography configuration.</param>
         /// <remarks></remarks>
-        public CryptographyManager(CryptographyConfigurationBuilder cryptographyConfiguration)
+        public CryptographyManager(CryptographyConfiguration cryptographyConfiguration)
         {
             if (cryptographyConfiguration == null)
             {
@@ -186,7 +186,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks></remarks>
-        public void Configure(IApplicationConfiguration applicationConfiguration)
+        public void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (!_IsConfigured)
             {

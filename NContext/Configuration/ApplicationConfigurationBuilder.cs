@@ -24,11 +24,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Web;
-
-using NContext.Extensions;
 
 namespace NContext.Configuration
 {
@@ -155,7 +152,7 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        /// Registers the component with the <see cref="IApplicationConfiguration"/> instance.
+        /// Registers the component with the <see cref="ApplicationConfigurationBase"/> instance.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <param name="componentFactory">The component factory.</param>

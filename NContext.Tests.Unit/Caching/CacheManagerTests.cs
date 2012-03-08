@@ -44,7 +44,7 @@ namespace NContext.Tests.Unit.Caching
         [Test]
         public void Ctor_NullCacheConfiguration_ThrowsException()
         {
-            CacheConfigurationBuilder cacheConfiguration = null;
+            CacheConfiguration cacheConfiguration = null;
 
             var cacheManagerDelegate = new TestDelegate(() => new CacheManager(cacheConfiguration));
 

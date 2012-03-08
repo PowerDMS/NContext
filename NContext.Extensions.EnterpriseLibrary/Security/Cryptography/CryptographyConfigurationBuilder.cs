@@ -64,83 +64,7 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         }
 
         #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the symmetric encryption provider factory.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<IProvideSymmetricEncryption> SymmetricEncryptionProviderFactory
-        {
-            get
-            {
-                return _SymmetricEncryptionProviderFactory;
-            }
-        }
-
-        /// <summary>
-        /// Gets the keyed hash provider factory.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<IProvideKeyedHashing> KeyedHashProviderFactory
-        {
-            get
-            {
-                return _KeyedHashProviderFactory;
-            }
-        }
-
-        /// <summary>
-        /// Gets the hash provider factory.
-        /// </summary>
-        /// <remarks></remarks>
-        public Func<IProvideHashing> HashProviderFactory
-        {
-            get
-            {
-                return _HashProviderFactory;
-            }
-        }
-
-        /// <summary>
-        /// Gets the default <see cref="HashAlgorithm"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public Type DefaultHashAlgorithm
-        {
-            get
-            {
-                return _DefaultHashAlgorithm;
-            }
-        }
-
-        /// <summary>
-        /// Gets the default <see cref="KeyedHashAlgorithm"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public Type DefaultKeyedHashAlgorithm
-        {
-            get
-            {
-                return _DefaultKeyedHashAlgorithm;
-            }
-        }
-
-        /// <summary>
-        /// Gets the default <see cref="SymmetricAlgorithm"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public Type DefaultSymmetricAlgorithm
-        {
-            get
-            {
-                return _DefaultSymmetricAlgorithm;
-            }
-        }
-
-        #endregion
-
+        
         #region Methods
 
         /// <summary>
@@ -225,7 +149,17 @@ namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
         protected override void Setup()
         {
             Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageCryptography>(() => new CryptographyManager(this));
+                   .RegisterComponent<IManageCryptography>(
+                   () => 
+                       new CryptographyManager(
+                           new CryptographyConfiguration(
+                               _DefaultHashAlgorithm,
+                               _DefaultKeyedHashAlgorithm,
+                               _DefaultSymmetricAlgorithm,
+                               _HashProviderFactory,
+                               _KeyedHashProviderFactory,
+                               _SymmetricEncryptionProviderFactory
+                               )));
         }
 
         #endregion

@@ -42,7 +42,7 @@ namespace NContext.Tests.Unit.Configuration
         [Test]
         public void Using_NullConfiguration_ThrowsException()
         {
-            IApplicationConfiguration configuration = null;
+            ApplicationConfigurationBase configuration = null;
 
             var configureUsing = new TestDelegate(() => Configure.Using(configuration));
 
@@ -52,10 +52,10 @@ namespace NContext.Tests.Unit.Configuration
         [Test]
         public void Using_ConfigurationInstance_CallsSetupOnlyOnce()
         {
-            var configuration = Mock.Create<IApplicationConfiguration>();
+            var configuration = Mock.Create<ApplicationConfigurationBase>();
             configuration.Arrange(c => c.Setup()).DoNothing();
 
-            Configure.Using<IApplicationConfiguration>(configuration);
+            Configure.Using(configuration);
 
             Mock.Assert(() => configuration.Setup(), Occurs.Once());
         }

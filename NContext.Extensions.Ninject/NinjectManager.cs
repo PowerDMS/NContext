@@ -44,7 +44,7 @@ namespace NContext.Extensions.Ninject
     {
         #region Fields
 
-        private readonly NinjectConfigurationBuilder _Configuration;
+        private readonly NinjectConfiguration _Configuration;
 
         private Boolean _IsConfigured;
 
@@ -59,7 +59,7 @@ namespace NContext.Extensions.Ninject
         /// </summary>
         /// <param name="configuration">The configuration.</param>
         /// <remarks></remarks>
-        public NinjectManager(NinjectConfigurationBuilder configuration)
+        public NinjectManager(NinjectConfiguration configuration)
         {
             if (configuration == null)
             {
@@ -107,15 +107,17 @@ namespace NContext.Extensions.Ninject
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks>
         /// </remarks>
-        public virtual void Configure(IApplicationConfiguration applicationConfiguration)
+        public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (_IsConfigured)
             {
                 return;
             }
 
-            _Kernel = _Configuration.Kernel;
-            SetServiceLocator();
+            _Kernel = _Configuration.CreateKernel();
+
+            var serviceLocator = new NinjectServiceLocator(_Kernel);
+            ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IKernel>(_Kernel);
             _Kernel.Bind<CompositionContainer>().ToConstant(applicationConfiguration.CompositionContainer);
@@ -126,16 +128,6 @@ namespace NContext.Extensions.Ninject
                                     .ForEach(configurable => configurable.ConfigureKernel(_Kernel));
 
             _IsConfigured = true;
-        }
-
-        /// <summary>
-        /// Sets the service locator provider.
-        /// </summary>
-        /// <remarks></remarks>
-        protected virtual void SetServiceLocator()
-        {
-            var serviceLocator = new NinjectServiceLocator(_Kernel);
-            ServiceLocator.SetLocatorProvider(() => serviceLocator);
         }
 
         #endregion

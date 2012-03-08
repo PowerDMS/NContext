@@ -43,6 +43,6 @@ namespace NContext.Configuration
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks>
         /// </remarks>
-        void Configure(IApplicationConfiguration applicationConfiguration);
+        void Configure(ApplicationConfigurationBase applicationConfiguration);
     }
 }

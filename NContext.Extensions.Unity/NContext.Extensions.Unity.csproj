@@ -62,10 +62,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IConfigureAUnityContainer.cs" />
-    <Compile Include="IRegisterWithAUnityContainer.cs" />
     <Compile Include="IManageUnity.cs" />
     <Compile Include="MethodSignatureMatchingRuleFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnityConfiguration.cs" />
     <Compile Include="UnityConfigurationBuilder.cs" />
     <Compile Include="UnityContainerFactory.cs" />
     <Compile Include="UnityManager.cs" />

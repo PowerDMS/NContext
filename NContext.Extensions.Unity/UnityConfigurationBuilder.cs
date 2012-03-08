@@ -58,46 +58,6 @@ namespace NContext.Extensions.Unity
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets the dependency injection container adapter.
-        /// </summary>
-        /// <remarks></remarks>
-        public String ContainerName
-        {
-            get
-            {
-                return _ContainerName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the configuration file.
-        /// </summary>
-        /// <remarks></remarks>
-        public String ConfigurationFileName
-        {
-            get
-            {
-                return _ConfigurationFileName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the configuration section.
-        /// </summary>
-        /// <remarks></remarks>
-        public String ConfigurationSectionName
-        {
-            get
-            {
-                return _ConfigurationSectionName;
-            }
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -141,7 +101,10 @@ namespace NContext.Extensions.Unity
         protected override void Setup()
         {
             Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageUnity>(() => new UnityManager(this));
+                   .RegisterComponent<IManageUnity>(
+                   () => 
+                       new UnityManager(
+                           new UnityConfiguration(_ContainerName, _ConfigurationFileName, _ConfigurationSectionName)));
         }
 
         #endregion

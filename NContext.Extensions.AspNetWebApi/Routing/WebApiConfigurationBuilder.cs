@@ -61,6 +61,12 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         
         #region Methods
 
+        /// <summary>
+        /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
+        /// </summary>
+        /// <param name="configurationDelegate">The configuration delegate.</param>
+        /// <returns>Current <see cref="WebApiConfigurationBuilder"/> instance.</returns>
+        /// <remarks></remarks>
         public ApplicationConfigurationBuilder ConfigureForAspNet(Action<HttpConfiguration> configurationDelegate)
         {
             _AspNetHttpConfigurationDelegate = configurationDelegate;
@@ -83,7 +89,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         }
 
         /// <summary>
-        /// Applies the component configuration with the <see cref="IApplicationConfiguration"/>.
+        /// Applies the component configuration with the <see cref="ApplicationConfigurationBase"/>.
         /// </summary>
         /// <remarks></remarks>
         protected override void Setup()

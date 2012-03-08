@@ -95,7 +95,7 @@ namespace NContext.Configuration
         #region Methods
 
         /// <summary>
-        /// Registers the component with the <see cref="IApplicationConfiguration"/>.
+        /// Registers the component with the <see cref="ApplicationConfigurationBase"/>.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <returns></returns>
@@ -109,7 +109,7 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        /// Registers the component with the <see cref="IApplicationConfiguration"/>.
+        /// Registers the component with the <see cref="ApplicationConfigurationBase"/>.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <param name="componentFactory">The component factory.</param>
@@ -124,7 +124,7 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        /// Applies the component configuration with the <see cref="IApplicationConfiguration"/>.
+        /// Applies the component configuration with the <see cref="ApplicationConfigurationBase"/>.
         /// </summary>
         /// <remarks></remarks>
         protected abstract void Setup();

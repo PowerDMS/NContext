@@ -33,13 +33,13 @@ namespace NContext.Configuration
     public static class Configure
     {
         /// <summary>
-        /// Configures the application using the specified <see cref="IApplicationConfiguration"/> instance.
+        /// Configures the application using the specified <see cref="ApplicationConfigurationBase"/> instance.
         /// </summary>
         /// <typeparam name="TApplicationConfiguration">The type of the application configuration.</typeparam>
         /// <param name="applicationConfiguration">The application configuration instance.</param>
         /// <remarks></remarks>
         public static void Using<TApplicationConfiguration>(TApplicationConfiguration applicationConfiguration) 
-            where TApplicationConfiguration : IApplicationConfiguration
+            where TApplicationConfiguration : ApplicationConfigurationBase
         {
             if (applicationConfiguration == null)
             {

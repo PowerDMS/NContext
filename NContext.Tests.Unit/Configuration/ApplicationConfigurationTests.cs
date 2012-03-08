@@ -23,6 +23,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Composition.Hosting;
 
 using NContext.Configuration;
 
@@ -39,18 +41,13 @@ namespace NContext.Tests.Unit.Configuration
     [TestFixture]
     public class ApplicationConfigurationTests
     {
-        private readonly ApplicationConfiguration _Configuration = new ApplicationConfiguration();
-
-        [TearDown]
-        protected void ResetApplicationConfiguration()
-        {
-            _Configuration.Reset();
-        }
-
         [Test]
         public void GetComponent_ComponentIsNotRegistered_ReturnsNull()
         {
-            var component = _Configuration.GetComponent<FakeApplicationComponent>();
+            var configuration = Mock.Create<ApplicationConfiguration>();
+            configuration.Arrange(c => c.GetComponent<FakeApplicationComponent>()).CallOriginal();
+
+            var component = configuration.GetComponent<FakeApplicationComponent>();
 
             Assert.That(component, Is.Null);
         }
@@ -58,8 +55,12 @@ namespace NContext.Tests.Unit.Configuration
         [Test]
         public void GetComponent_ComponentIsRegistered_ReturnsComponentInstance()
         {
-            _Configuration.RegisterComponent<FakeApplicationComponent>(() => new FakeApplicationComponent());
-            var component = _Configuration.GetComponent<FakeApplicationComponent>();
+            var configuration = Mock.Create<ApplicationConfiguration>();
+            configuration.Arrange(c => c.RegisterComponent<FakeApplicationComponent>(Arg.IsAny<Func<FakeApplicationComponent>>())).CallOriginal();
+            configuration.Arrange(c => c.GetComponent<FakeApplicationComponent>()).CallOriginal();
+
+            configuration.RegisterComponent<FakeApplicationComponent>(() => new FakeApplicationComponent());
+            var component = configuration.GetComponent<FakeApplicationComponent>();
 
             Assert.That(component, Is.Not.Null);
         }
@@ -67,25 +68,45 @@ namespace NContext.Tests.Unit.Configuration
         [Test]
         public void RegisterComponent_NewComponentInstance_RegistersComponentInCollection()
         {
-            _Configuration.RegisterComponent<FakeApplicationComponent>(() => new FakeApplicationComponent());
+            var configuration = Mock.Create<ApplicationConfiguration>();
+            configuration.Arrange(c => c.RegisterComponent<FakeApplicationComponent>(Arg.IsAny<Func<FakeApplicationComponent>>())).CallOriginal();
+            configuration.Arrange(c => c.Components).CallOriginal();
 
-            Assert.That(_Configuration.Components, Is.Not.Empty);
+            configuration.RegisterComponent<FakeApplicationComponent>(() => new FakeApplicationComponent());
+
+            Assert.That(configuration.Components, Is.Not.Empty);
         }
 
         [Test]
         public void Setup_MultipleComponentsRegistered_ConfiguresEachComponent()
         {
+            var configuration = Mock.Create<ApplicationConfiguration>();
             var stubComponent = Mock.Create<FakeApplicationComponent>();
             var stubComponent2 = Mock.Create<FakeApplicationComponent2>();
-            stubComponent.Arrange(c => c.Configure(Arg.IsAny<IApplicationConfiguration>())).IgnoreArguments().DoNothing().OccursOnce();
-            stubComponent2.Arrange(c => c.Configure(Arg.IsAny<IApplicationConfiguration>())).IgnoreArguments().DoNothing().OccursOnce();
 
-            _Configuration.RegisterComponent<FakeApplicationComponent>(() => stubComponent);
-            _Configuration.RegisterComponent<FakeApplicationComponent2>(() => stubComponent2);
-            _Configuration.Setup();
+            Mock.NonPublic
+                .Arrange<CompositionContainer>(configuration, "CreateCompositionContainer", ArgExpr.IsAny<HashSet<String>>(), ArgExpr.IsAny<HashSet<Predicate<String>>>())
+                .Returns(new CompositionContainer());
+
+            configuration.Arrange(c => c.Components).CallOriginal();
+            configuration.Arrange(c => c.RegisterComponent<FakeApplicationComponent>(Arg.IsAny<Func<FakeApplicationComponent>>())).CallOriginal();
+            configuration.Arrange(c => c.RegisterComponent<FakeApplicationComponent2>(Arg.IsAny<Func<FakeApplicationComponent2>>())).CallOriginal();
+            configuration.Arrange(c => c.Setup()).CallOriginal();
+            
+            stubComponent.Arrange(c => c.Configure(Arg.IsAny<ApplicationConfigurationBase>())).IgnoreArguments().DoNothing().OccursOnce();
+            stubComponent2.Arrange(c => c.Configure(Arg.IsAny<ApplicationConfigurationBase>())).IgnoreArguments().DoNothing().OccursOnce();
+
+            configuration.RegisterComponent<FakeApplicationComponent>(() => stubComponent);
+            configuration.RegisterComponent<FakeApplicationComponent2>(() => stubComponent2);
+            configuration.Setup();
 
             Mock.Assert(stubComponent);
             Mock.Assert(stubComponent2);
+        }
+
+        public class FCC : CompositionContainer
+        {
+            
         }
         
         public class FakeApplicationComponent : IApplicationComponent
@@ -100,7 +121,7 @@ namespace NContext.Tests.Unit.Configuration
                 }
             }
 
-            public virtual void Configure(IApplicationConfiguration applicationConfiguration)
+            public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
             {
                 _IsConfigured = true;
             }
@@ -118,7 +139,7 @@ namespace NContext.Tests.Unit.Configuration
                 }
             }
 
-            public virtual void Configure(IApplicationConfiguration applicationConfiguration)
+            public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
             {
                 _IsConfigured = true;
             }

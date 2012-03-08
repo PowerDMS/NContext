@@ -18,7 +18,7 @@
 // </copyright>
 //
 // <summary>
-//   Defines a role-interface which allows implementors to run when IApplicationConfiguration.Setup() has completed.
+//   Defines a role-interface which allows implementors to run when ApplicationConfigurationBase.Setup() has completed.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -29,7 +29,7 @@ namespace NContext.Configuration
 {
     /// <summary>
     /// Defines a role-interface which allows implementors to run 
-    /// when <see cref="IApplicationConfiguration.Setup"/> has completed.
+    /// when <see cref="ApplicationConfigurationBase.Setup"/> has completed.
     /// </summary>
     /// <remarks></remarks>
     [InheritedExport]
@@ -43,10 +43,10 @@ namespace NContext.Configuration
         Int32 Priority { get; }
 
         /// <summary>
-        /// Runs when the <see cref="IApplicationConfiguration.Setup"/> has completed.
+        /// Runs when the <see cref="ApplicationConfigurationBase.Setup"/> has completed.
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks></remarks>
-        void Run(IApplicationConfiguration applicationConfiguration);
+        void Run(ApplicationConfigurationBase applicationConfiguration);
     }
 }

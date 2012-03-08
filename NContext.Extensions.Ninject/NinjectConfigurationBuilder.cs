@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 using NContext.Configuration;
 
@@ -58,52 +57,7 @@ namespace NContext.Extensions.Ninject
         public NinjectConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the <see cref="IKernel"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public virtual IKernel Kernel
-        {
-            get
-            {
-                return _KernelFactory == null
-                           ? new StandardKernel(NinjectSettings, Modules.ToArray())
-                           : _KernelFactory.Invoke();
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="INinjectModule"/> collection.
-        /// </summary>
-        /// <remarks></remarks>
-        public virtual IEnumerable<INinjectModule> Modules
-        {
-            get
-            {
-                return _ModuleFactory == null 
-                           ? Enumerable.Empty<INinjectModule>() 
-                           : _ModuleFactory.Invoke();
-            }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="INinjectSettings"/> instance.
-        /// </summary>
-        /// <remarks></remarks>
-        public virtual INinjectSettings NinjectSettings
-        {
-            get
-            {
-                return _NinjectSettings == null
-                    ? new NinjectSettings()
-                    : _NinjectSettings.Invoke();
-            }
+            _KernelFactory = () => new StandardKernel();
         }
 
         #endregion
@@ -113,9 +67,9 @@ namespace NContext.Extensions.Ninject
         /// <summary>
         /// Sets the <see cref="IKernel"/> instance to use.  By default, NContext will use <see cref="StandardKernel"/>.  
         /// You may use this method to supply a custom <see cref="IKernel"/>, however, you cannot 
-        /// use <see cref="SetModules"/> or <see cref="SetSettings"/> in conjunction.  Therefore, the 
-        /// specified <param name="kernelFactory"></param> should supply the kernel instance with any 
-        /// required <see cref="INinjectSettings"/> and/or <see cref="INinjectModule"/>s.
+        /// use <seealso cref="SetModules"/> or <seealso cref="SetSettings"/> in conjunction.  Therefore, the 
+        /// specified <paramref name="kernelFactory"/> should supply the kernel instance with any 
+        /// required <seealso cref="INinjectSettings"/> and/or <seealso cref="INinjectModule"/>s.
         /// </summary>
         /// <param name="kernelFactory">The <see cref="IKernel"/> factory.</param>
         /// <returns>This <see cref="NinjectConfigurationBuilder"/> instance.</returns>
@@ -164,7 +118,10 @@ namespace NContext.Extensions.Ninject
         protected override void Setup()
         {
             Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageNinject>(() => new NinjectManager(this));
+                   .RegisterComponent<IManageNinject>(
+                   () => 
+                       new NinjectManager(
+                           new NinjectConfiguration(_KernelFactory, _ModuleFactory, _NinjectSettings)));
         }
 
         #endregion

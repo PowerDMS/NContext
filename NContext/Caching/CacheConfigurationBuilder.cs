@@ -60,58 +60,6 @@ namespace NContext.Caching
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets the provider.
-        /// </summary>
-        /// <remarks></remarks>
-        public Lazy<ObjectCache> Provider
-        {
-            get
-            {
-                return _Provider;
-            }
-        }
-
-        /// <summary>
-        /// Gets the name of the region.
-        /// </summary>
-        /// <remarks></remarks>
-        public String RegionName
-        {
-            get
-            {
-                return _RegionName;
-            }
-        }
-
-        /// <summary>
-        /// Gets the absolute expiration.
-        /// </summary>
-        /// <remarks></remarks>
-        public DateTimeOffset AbsoluteExpiration
-        {
-            get
-            {
-                return _AbsoluteExpiration;
-            }
-        }
-
-        /// <summary>
-        /// Gets the sliding expiration.
-        /// </summary>
-        /// <remarks></remarks>
-        public TimeSpan SlidingExpiration
-        {
-            get
-            {
-                return _SlidingExpiration;
-            }
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -163,7 +111,10 @@ namespace NContext.Caching
         protected override void Setup()
         {
             Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageCaching>(() => new CacheManager(this));
+                   .RegisterComponent<IManageCaching>(
+                   () => 
+                       new CacheManager(
+                           new CacheConfiguration(_Provider, _RegionName, _AbsoluteExpiration, _SlidingExpiration)));
         }
 
         #endregion

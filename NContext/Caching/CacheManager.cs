@@ -39,7 +39,7 @@ namespace NContext.Caching
 
         private Boolean _IsConfigured;
 
-        private readonly CacheConfigurationBuilder _CacheConfiguration;
+        private readonly CacheConfiguration _CacheConfiguration;
 
         #endregion
 
@@ -48,9 +48,9 @@ namespace NContext.Caching
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheManager"/> class.
         /// </summary>
-        /// <param name="cacheConfiguration">The caching configuration.</param>
+        /// <param name="cacheConfiguration">The cache configuration settings.</param>
         /// <remarks></remarks>
-        public CacheManager(CacheConfigurationBuilder cacheConfiguration)
+        public CacheManager(CacheConfiguration cacheConfiguration)
         {
             if (cacheConfiguration == null)
             {
@@ -118,7 +118,7 @@ namespace NContext.Caching
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
         /// <remarks></remarks>
-        public virtual void Configure(IApplicationConfiguration applicationConfiguration)
+        public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (!_IsConfigured)
             {
