@@ -64,7 +64,13 @@ namespace NContext.Dto
         /// <remarks></remarks>
         IResponseTransferObject<T> Catch(Action<IEnumerable<Error>> action);
 
-        IResponseTransferObject<T> Catch(Func<IEnumerable<Error>, IResponseTransferObject<T>> func);
+        /// <summary>
+        /// Invokes the specified function if there are any errors - allows you to re-direct control flow with a new <typeparamref name="T"/> value.
+        /// </summary>
+        /// <param name="continueWithFunction">The continue with function.</param>
+        /// <returns>If errors exist, returns the instance of IResponseTransferObject&lt;T&gt; returned by <paramref name="continueWithFunction"/>, else returns current instance.</returns>
+        /// <remarks></remarks>
+        IResponseTransferObject<T> CatchAndContinue(Func<IEnumerable<Error>, IResponseTransferObject<T>> continueWithFunction);
         
         /// <summary>
         /// Invokes the specified <param name="defaultFunction"></param> function if both <see cref="Errors"/> and <see cref="Data"/> are empty.

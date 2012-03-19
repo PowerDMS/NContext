@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -44,124 +45,45 @@ namespace NContext.Tests.Unit.Extensions
     [TestFixture]
     public class IResponseTransferObjectExtensionsTests
     {
-        #region BindAsync Tests
-
-        [Test]
-        public void BindAsync_ResponseTransferObjectHasData_BindsAsynchronously()
-        {
-            var fakeData = Mock.Create<FakeObject>();
-            var fakeData2 = Mock.Create<FakeObject2>();
-            var mockResponse = Mock.Create<IResponseTransferObject<FakeObject>>();
-            mockResponse.Arrange(response => response.Data).Returns(new[] { fakeData });
-
-            var asyncTask = 
-                mockResponse.BindAsync(
-                                fakes =>
-                                {
-                                    Thread.Sleep(TimeSpan.FromSeconds(5));
-                                    Console.WriteLine(Thread.CurrentThread.ManagedThreadId);
-                                    return new ServiceResponse<FakeObject2>(fakeData2);
-                                })
-                            .Let(fakes => 
-                                Console.WriteLine(Thread.CurrentThread.ManagedThreadId));
-        }
-
-        [Test]
-        public void BindAsync_ResponseTransferObjectHasErrors_ExecutesTheTaskSynchronously()
-        {
-            Int32 activeThreadId = Thread.CurrentThread.ManagedThreadId;
-            Int32 bindingThreadId = activeThreadId;
-
-            var fakeData = Mock.Create<FakeError>(Constructor.Mocked);
-            var fakeData2 = Mock.Create<FakeObject2>();
-            var mockResponse = Mock.Create<IResponseTransferObject<FakeObject>>();
-            mockResponse.Arrange(response => response.Errors).Returns(new[] { fakeData });
-
-            var bindTask = 
-                mockResponse.BindAsync(
-                    fakes =>
-                        {
-                            // Should never get here when errors exist.
-                            bindingThreadId = Thread.CurrentThread.ManagedThreadId;
-                            return new ServiceResponse<FakeObject2>(fakeData2);
-                        });
-
-            Assert.That(activeThreadId == bindingThreadId);
-            //Assert.That(bindTask.Status == TaskStatus.RanToCompletion);
-        }
-
-        [Test]
-        public void BindAsync_BindingFunctionThrowsException_SetsTheTaskStatusAsFaulted()
-        {
-            var bindTaskStatus = TaskStatus.Created;
-            var fakeData = Mock.Create<FakeObject>();
-            var mockResponse = Mock.Create<IResponseTransferObject<FakeObject>>();
-            mockResponse.Arrange(response => response.Data).Returns(new[] { fakeData });
-
-            //mockResponse.BindAsync<FakeObject, FakeObject2>(
-            //                fakes =>
-            //                    {
-            //                        throw new Exception("Test exception.");
-            //                    })
-            //            .ContinueWith(
-            //                task =>
-            //                    {
-            //                        bindTaskStatus = task.Status;
-            //                    }, TaskContinuationOptions.OnlyOnFaulted)
-            //            .Wait();
-
-            Assert.That(bindTaskStatus == TaskStatus.Faulted);
-        }
-
-        [Test]
-        public void BindAsync_ResponseTransferObjectHasNoErrorsOrData_SetsTheTaskStatusAsFaulted()
-        {
-            var bindTaskStatus = TaskStatus.Created;
-            var fakeData = Mock.Create<FakeObject>();
-            var mockResponse = Mock.Create<IResponseTransferObject<FakeObject>>();
-
-            var asyncTask = mockResponse.BindAsync<FakeObject, FakeObject2>(
-                            fakes =>
-                            {
-                                // Should never get here. IResponseTransferObject is in an invalid state for binding.
-                                return null;
-                            });
-
-            //bindTaskStatus = asyncTask;
-
-            Assert.That(bindTaskStatus == TaskStatus.Faulted);
-        }
-
-        #endregion
-
         #region LetAsync Tests
 
-        //[Test]
-        //public void LetAsync_ResponseTransferObjectHasData_ExecutesTheTaskOnASeparateThread()
-        //{
-        //    Int32 activeThreadId = Thread.CurrentThread.ManagedThreadId;
-        //    Int32 actionThreadId = activeThreadId;
+        [Test]
+        public void LetAsync_ResponseTransferObjectHasData_ExecutesTheTaskOnASeparateThread()
+        {
+            Int32 activeThreadId = Thread.CurrentThread.ManagedThreadId;
+            Int32 actionThreadId = activeThreadId;
 
-        //    var taskStatus = TaskStatus.Created;
-        //    var stubData = Mock.Create<FakeObject>();
-        //    var mockResponse = Mock.Create<IResponseTransferObject<FakeObject>>();
-        //    mockResponse.Arrange(response => response.Data).Returns(new[] { stubData });
+            var taskStatus = TaskStatus.Created;
+            var stubData = Mock.Create<FakeObject>();
+            var mockResponse = new ServiceResponse<FakeObject>(stubData);
+            mockResponse.Arrange(response => response.Data).Returns(new[] { stubData });
+            mockResponse.Arrange(response => response.Let(Arg.IsAny<Action<IEnumerable<FakeObject>>>())).IgnoreArguments().CallOriginal();
 
-        //    mockResponse.LetAsync(
-        //                    data =>
-        //                    {
-        //                        actionThreadId = Thread.CurrentThread.ManagedThreadId;
-        //                    })
-        //                .ContinueWith(
-        //                    task =>
-        //                    {
-        //                        taskStatus = task.Status;
-        //                    }, TaskContinuationOptions.OnlyOnRanToCompletion)
-        //                .Wait();
+            mockResponse.LetParallel(2,
+                            data => { Console.WriteLine("I'm first action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Thread.Sleep(20); Console.WriteLine("I'm second action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Thread.Sleep(TimeSpan.FromSeconds(2)); Console.WriteLine("I'm third action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Console.WriteLine("I'm fourth action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Console.WriteLine("I'm fifth action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Thread.Sleep(TimeSpan.FromSeconds(2)); Console.WriteLine("I'm sixth action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Console.WriteLine("I'm seventh action. " + Thread.CurrentThread.ManagedThreadId); },
+                            data => { Console.WriteLine("I'm eigth action. " + Thread.CurrentThread.ManagedThreadId); })
+                        .Bind((data, task, cancellationSource) =>
+                            {
+                                Console.WriteLine("I'm the non-parallel action. " + Thread.CurrentThread.ManagedThreadId);
+                                Console.WriteLine(task.IsCanceled);
+                                Thread.Sleep(50);
+                                cancellationSource.Cancel();
+                                Console.WriteLine(cancellationSource.IsCancellationRequested);
+                                Thread.Sleep(TimeSpan.FromSeconds(5));
+                                Console.WriteLine(task.IsCanceled);
 
-        //    Assert.That(activeThreadId, Is.Not.EqualTo(actionThreadId));
-        //    Assert.That(taskStatus == TaskStatus.RanToCompletion);
-        //}
+                                return new ServiceResponse<FakeObject2>(Enumerable.Empty<FakeObject2>());
+                            });
+
+            //Assert.That(activeThreadId, Is.Not.EqualTo(actionThreadId));
+            //Assert.That(taskStatus == TaskStatus.RanToCompletion);
+        }
 
         #endregion
 

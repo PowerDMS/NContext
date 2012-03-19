@@ -107,7 +107,6 @@
     <Compile Include="Configuration\SecureDirectoryCatalog.cs" />
     <Compile Include="Security\SecurityConfigurationBuilder.cs" />
     <Compile Include="Security\SecurityManager.cs" />
-    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ICacheManagerExtensions.cs" />

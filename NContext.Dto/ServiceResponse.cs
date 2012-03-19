@@ -169,11 +169,17 @@ namespace NContext.Dto
             return this;
         }
 
-        public virtual IResponseTransferObject<T> Catch(Func<IEnumerable<Error>, IResponseTransferObject<T>> func)
+        /// <summary>
+        /// Invokes the specified function if there are any errors - allows you to re-direct control flow with a new <typeparamref name="T"/> value.
+        /// </summary>
+        /// <param name="continueWithFunction">The continue with function.</param>
+        /// <returns>If errors exist, returns the instance of IResponseTransferObject&lt;T&gt; returned by <paramref name="continueWithFunction"/>, else returns current instance.</returns>
+        /// <remarks></remarks>
+        public virtual IResponseTransferObject<T> CatchAndContinue(Func<IEnumerable<Error>, IResponseTransferObject<T>> continueWithFunction)
         {
             if (Errors.Any())
             {
-                return func(Errors);
+                return continueWithFunction.Invoke(Errors);
             }
 
             return this;

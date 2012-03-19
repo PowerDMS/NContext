@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CollectionExtensions.cs">
+// <copyright file="IEnumerableExtensions.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,7 +30,7 @@ namespace NContext.Extensions
     /// <summary>
     /// Defines a static class for providing Collection type extension methods.
     /// </summary>
-    public static class CollectionExtensions
+    public static class IEnumerableExtensions
     {
         /// <summary>
         /// ForEach extension that enumerates over all items in an <see cref="IEnumerable{T}"/> and executes 
