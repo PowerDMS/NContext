@@ -1,3 +1,27 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AutoMapperManager.cs">
+//   Copyright (c) 2012 Waking Venture, Inc.
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
+// </copyright>
+//
+// <summary>
+//   Defines an AutoMapper application component.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
 using System;
 
 using AutoMapper;
@@ -7,6 +31,10 @@ using NContext.Configuration;
 
 namespace NContext.Extensions.AutoMapper
 {
+    /// <summary>
+    /// Defines an AutoMapper application component.
+    /// </summary>
+    /// <remarks></remarks>
     public class AutoMapperManager : IManageAutoMapper
     {
         #region Fields
@@ -20,6 +48,8 @@ namespace NContext.Extensions.AutoMapper
         private Boolean _IsConfigured;
 
         #endregion
+
+        #region Properties
 
         public IConfigurationProvider ConfigurationProvider
         {
@@ -45,6 +75,8 @@ namespace NContext.Extensions.AutoMapper
             }
         }
 
+        #endregion
+
         #region Implementation of IApplicationComponent
 
         /// <summary>
@@ -56,6 +88,10 @@ namespace NContext.Extensions.AutoMapper
             get
             {
                 return _IsConfigured;
+            }
+            protected set
+            {
+                _IsConfigured = value;
             }
         }
 
@@ -74,9 +110,7 @@ namespace NContext.Extensions.AutoMapper
 
             var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExports<IConfigureAutoMapper>();
             mappingConfigurations.ForEach(mappingConfiguration => mappingConfiguration.Value.Configure(Configuration));
-
             
-
 #if DEBUG
             ConfigurationProvider.AssertConfigurationIsValid();
 #endif

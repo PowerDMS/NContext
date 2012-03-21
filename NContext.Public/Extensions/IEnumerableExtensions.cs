@@ -18,7 +18,7 @@
 // </copyright>
 //
 // <summary>
-//   Defines a static class for providing Collection type extension methods.
+//   Defines extension methods for IEnumerable<T>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 namespace NContext.Extensions
 {
     /// <summary>
-    /// Defines a static class for providing Collection type extension methods.
+    /// Defines extension methods for IEnumerable{T}.
     /// </summary>
     public static class IEnumerableExtensions
     {

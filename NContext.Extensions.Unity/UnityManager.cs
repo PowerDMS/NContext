@@ -75,7 +75,10 @@ namespace NContext.Extensions.Unity
         /// </summary>
         public IUnityContainer Container
         {
-            get { return _Container; }
+            get
+            {
+                return _Container;
+            }
         }
 
         /// <summary>
@@ -86,7 +89,14 @@ namespace NContext.Extensions.Unity
         /// </value>
         public Boolean IsConfigured
         {
-            get { return _IsConfigured; }
+            get
+            {
+                return _IsConfigured;
+            }
+            protected set
+            {
+                _IsConfigured = value;
+            }
         }
 
         #endregion
@@ -123,7 +133,7 @@ namespace NContext.Extensions.Unity
             _IsConfigured = true;
         }
 
-        protected virtual void SetServiceLocator()
+        protected void SetServiceLocator()
         {
             var serviceLocator = new UnityServiceLocator(_Container);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);

@@ -60,47 +60,6 @@ namespace NContext.Security
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// Gets the token absolute expiration.
-        /// </summary>
-        /// <remarks></remarks>
-        public DateTimeOffset TokenAbsoluteExpiration
-        {
-            get
-            {
-                return _TokenAbsoluteExpiration;
-            }
-        }
-
-        /// <summary>
-        /// Gets the token sliding expiration.
-        /// </summary>
-        /// <remarks></remarks>
-        public TimeSpan TokenSlidingExpiration
-        {
-            get
-            {
-                return _TokenSlidingExpiration;
-            }
-        }
-
-        /// <summary>
-        /// Gets the token initial lifetime.
-        /// </summary>
-        /// <remarks></remarks>
-        public TimeSpan TokenInitialLifespan
-        {
-            get
-            {
-                return _TokenInitialLifespan;
-            }
-        }
-
-
-        #endregion
-
         #region Methods
 
         /// <summary>
@@ -130,7 +89,11 @@ namespace NContext.Security
             var cachingManager = Builder.ApplicationConfiguration.GetComponent<IManageCaching>();
 
             Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageSecurity>(() => new SecurityManager(cachingManager, this));
+                   .RegisterComponent<IManageSecurity>(
+                    () =>
+                    new SecurityManager(
+                        cachingManager,
+                        new SecurityConfiguration(_TokenAbsoluteExpiration, _TokenSlidingExpiration, _TokenInitialLifespan)));
         }
 
         #endregion

@@ -27,9 +27,9 @@ using System;
 namespace NContext
 {
     /// <summary>
-    /// Defines a Maybe monad interface.
+    /// Defines a Maybe monad contract.
     /// </summary>
-    /// <typeparam name="T">The type to wrap.</typeparam>
+    /// <typeparam name="T">Type of object.</typeparam>
     public interface IMaybe<T>
     {
         /// <summary>
@@ -45,11 +45,14 @@ namespace NContext
         Boolean IsNothing { get; }
 
         /// <summary>
-        /// Returns the specified default value if the <see cref="IMaybe{T}"/> is <see cref="Nothing{T}"/>; 
-        /// otherwise, it returns the value contained in the <see cref="IMaybe{T}"/>.
+        /// Returns the specified default value if the instance is <see cref="Nothing{T}"/>. 
+        /// Otherwise, it returns the value contained in <typeparamref name="T"/>.
         /// </summary>
         /// <param name="defaultValue">The default value.</param>
-        /// <returns>Instance of <typeparamref name="T"/>.</returns>
+        /// <returns>
+        /// The specified default value if the instance is <see cref="Nothing{T}"/>. 
+        /// Otherwise, it returns the value contained in <typeparamref name="T"/>.
+        /// </returns>
         /// <remarks></remarks>
         T FromMaybe(T defaultValue);
 
@@ -61,16 +64,17 @@ namespace NContext
         IMaybe<T> Empty();
 
         /// <summary>
-        /// Returns a new <see cref="Nothing{T}"/>.
+        /// Binds <typeparamref name="T"/> into an instance of <see cref="IMaybe{T2}"/> if the current 
+        /// instance <seealso cref="IMaybe{T}.IsJust"/>. Else, it returns a new instance of <see cref="Nothing{T2}"/>.
         /// </summary>
-        /// <typeparam name="TResult">The type of the result.</typeparam>
-        /// <param name="bindFunc">The function used to map.</param>
+        /// <typeparam name="T2">The type of the result.</typeparam>
+        /// <param name="bindingFunction">The function used to bind.</param>
         /// <returns>Instance of <see cref="IMaybe{TResult}"/>.</returns>
         /// <remarks></remarks>
-        IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc);
+        IMaybe<T2> Bind<T2>(Func<T, IMaybe<T2>> bindingFunction);
 
         /// <summary>
-        /// Invokes the specified action.
+        /// Invokes the specified action if the current instance <seealso cref="IsJust"/>.
         /// </summary>
         /// <param name="action">The action to invoke.</param>
         /// <returns>Current instance.</returns>

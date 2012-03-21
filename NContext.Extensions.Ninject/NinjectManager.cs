@@ -83,6 +83,10 @@ namespace NContext.Extensions.Ninject
             {
                 return _IsConfigured;
             }
+            protected set
+            {
+                _IsConfigured = value;
+            }
         }
 
         /// <summary>

@@ -37,9 +37,9 @@ namespace NContext.Caching
     {
         #region Fields
 
-        private Boolean _IsConfigured;
-
         private readonly CacheConfiguration _CacheConfiguration;
+
+        private Boolean _IsConfigured;
 
         #endregion
 
@@ -85,6 +85,10 @@ namespace NContext.Caching
             get
             {
                 return _IsConfigured;
+            }
+            protected set
+            {
+                _IsConfigured = value;
             }
         }
 

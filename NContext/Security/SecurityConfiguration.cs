@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnterpriseLibraryManager.cs">
+// <copyright file="SecurityConfiguration.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,73 +18,76 @@
 // </copyright>
 //
 // <summary>
-//   Defines an application component for Microsoft Enterprise Library support.
+//   Defines application security configuration settings.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
 
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel;
-
-using NContext.Configuration;
-
-namespace NContext.Extensions.EnterpriseLibrary
+namespace NContext.Security
 {
     /// <summary>
-    /// Defines an implementation of IManageEnterpriseLibrary
+    /// Defines application security configuration settings.
     /// </summary>
-    /// <remarks></remarks>
-    public class EnterpriseLibraryManager : IManageEnterpriseLibrary
+    public class SecurityConfiguration
     {
-        private Boolean _IsConfigured;
+        #region Fields
 
-        private IContainerConfigurator _ContainerConfigurator;
+        private readonly DateTimeOffset _TokenAbsoluteExpiration;
+
+        private readonly TimeSpan _TokenSlidingExpiration;
+
+        private readonly TimeSpan _TokenInitialLifespan;
+
+        #endregion
+
+        #region Constructors
+
+        public SecurityConfiguration(DateTimeOffset tokenAbsoluteExpiration, TimeSpan tokenSlidingExpiration, TimeSpan tokenInitialLifespan)
+        {
+            _TokenAbsoluteExpiration = tokenAbsoluteExpiration;
+            _TokenSlidingExpiration = tokenSlidingExpiration;
+            _TokenInitialLifespan = tokenInitialLifespan;
+        }
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
-        /// Gets the application's container configurator.
+        /// Gets the token absolute expiration.
         /// </summary>
         /// <remarks></remarks>
-        public IContainerConfigurator ContainerConfigurator
+        public DateTimeOffset TokenAbsoluteExpiration
         {
             get
             {
-                return _ContainerConfigurator;
+                return _TokenAbsoluteExpiration;
             }
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance is configured.
+        /// Gets the token sliding expiration.
         /// </summary>
         /// <remarks></remarks>
-        public Boolean IsConfigured
+        public TimeSpan TokenSlidingExpiration
         {
             get
             {
-                return _IsConfigured;
-            }
-            protected set
-            {
-                _IsConfigured = value;
+                return _TokenSlidingExpiration;
             }
         }
 
         /// <summary>
-        /// Sets the application's container configurator.
+        /// Gets the token initial lifetime.
         /// </summary>
-        /// <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
-        /// <param name="containerConfigurator">The container configurator.</param>
         /// <remarks></remarks>
-        public void SetContainerConfigurator<TContainerConfigurator>(TContainerConfigurator containerConfigurator)
-            where TContainerConfigurator : IContainerConfigurator
+        public TimeSpan TokenInitialLifespan
         {
-            _ContainerConfigurator = containerConfigurator;
-        }
-
-        #region Implementation of IApplicationComponent
-
-        public void Configure(ApplicationConfigurationBase applicationConfiguration)
-        {
-            _IsConfigured = true;
+            get
+            {
+                return _TokenInitialLifespan;
+            }
         }
 
         #endregion

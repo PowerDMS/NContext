@@ -105,6 +105,7 @@
     <Compile Include="Security\Cryptography\IManageCryptography.cs" />
     <Compile Include="Configuration\SafeDirectoryCatalog.cs" />
     <Compile Include="Configuration\SecureDirectoryCatalog.cs" />
+    <Compile Include="Security\SecurityConfiguration.cs" />
     <Compile Include="Security\SecurityConfigurationBuilder.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />

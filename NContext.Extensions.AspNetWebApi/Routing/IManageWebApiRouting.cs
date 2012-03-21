@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 
 using NContext.Configuration;
 
@@ -33,6 +34,12 @@ namespace NContext.Extensions.AspNetWebApi.Routing
     /// </summary>
     public interface IManageWebApiRouting : IApplicationComponent
     {
+        /// <summary>
+        /// Gets the service routes registered.
+        /// </summary>
+        /// <remarks></remarks>
+        ICollection<Route> ServiceRoutes { get; }
+
         /// <summary>
         /// Registers the service route.
         /// </summary>

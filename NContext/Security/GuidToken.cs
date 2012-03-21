@@ -18,7 +18,7 @@
 // </copyright>
 //
 // <summary>
-//   DESCRIPTION
+//   Defines a generic SecurityToken using a Guid as a token identifier.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace NContext.Security
 {
     /// <summary>
     /// Defines a generic <see cref="SecurityToken"/> using a <see cref="Guid"/>
-    /// as token identifier.
+    /// as a token identifier.
     /// </summary>
     public class GuidToken : SecurityToken, IToken
     {
@@ -51,10 +51,20 @@ namespace NContext.Security
 
         #region Constructors
 
-        public GuidToken() : this(Guid.NewGuid())
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.IdentityModel.Tokens.SecurityToken"/> class.
+        /// </summary>
+        /// <remarks></remarks>
+        public GuidToken()
+            : this(Guid.NewGuid())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GuidToken"/> class.
+        /// </summary>
+        /// <param name="id">The id.</param>
+        /// <remarks></remarks>
         public GuidToken(Guid id)
         {
             _Id = id;

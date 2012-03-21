@@ -29,7 +29,7 @@ namespace NContext
     /// <summary>
     /// Defines a Nothing implementation of <see cref="IMaybe{T}"/>.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">Type of object.</typeparam>
     public sealed class Nothing<T> : IMaybe<T>
     {
         /// <summary>
@@ -78,21 +78,21 @@ namespace NContext
         }
 
         /// <summary>
-        /// Returns a new <see cref="Nothing{T}"/>.
+        /// Returns a new <see cref="Nothing{T2}"/>.
         /// </summary>
-        /// <typeparam name="TResult">The type of the result.</typeparam>
-        /// <param name="bindFunc">The function used to map.</param>
+        /// <typeparam name="T2">The type of the result.</typeparam>
+        /// <param name="bindingFunction">The function used to bind.</param>
         /// <returns>Instance of <see cref="IMaybe{TResult}"/>.</returns>
         /// <remarks></remarks>
-        public IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc)
+        public IMaybe<T2> Bind<T2>(Func<T, IMaybe<T2>> bindingFunction)
         {
-            return new Nothing<TResult>();
+            return new Nothing<T2>();
         }
 
         /// <summary>
-        /// Invokes the specified action.
+        /// Returns the current instance.
         /// </summary>
-        /// <param name="action">The action.</param>
+        /// <param name="action">The action to invoke.</param>
         /// <returns>Current instance.</returns>
         /// <remarks></remarks>
         public IMaybe<T> Let(Action<T> action)

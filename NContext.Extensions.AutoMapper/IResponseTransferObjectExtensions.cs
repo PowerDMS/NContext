@@ -58,6 +58,11 @@ namespace NContext.Extensions.AutoMapper
             return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data));
         }
 
+        public static IResponseTransferObject<T2> Map<T, T2>(this IResponseTransferObject<T> responseTransferObject, Action<IMappingOperationOptions> mappingOperationOptions)
+        {
+            return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data, mappingOperationOptions));
+        }
+
         private static IMappingEngine GetMapper()
         {
             return _MappingEngine.Value;

@@ -44,28 +44,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Security, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Security.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Security.Cryptography, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Security.Cryptography.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Validation, Version=5.0.505.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Validation.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnterpriseLibraryManager.cs" />
-    <Compile Include="Extensions\IValidatableExtensions.cs" />
-    <Compile Include="IEnterpriseLibraryManager.cs" />
+    <Compile Include="IManageEnterpriseLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfigurationBuilder.cs" />
@@ -73,10 +61,6 @@
     <Compile Include="Security\Cryptography\HashProvider.cs" />
     <Compile Include="Security\Cryptography\KeyedHashProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryptionProvider.cs" />
-    <Compile Include="Services\Authorization\GenericToken.cs" />
-    <Compile Include="Services\Authorization\IServiceToken.cs" />
-    <Compile Include="Validation\IValidatable.cs" />
-    <Compile Include="Validation\ValidationBlock.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

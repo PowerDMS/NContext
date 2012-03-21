@@ -27,8 +27,6 @@ using System.Configuration;
 using System.IO;
 using System.Reflection;
 
-//using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.Unity;
-//using Microsoft.Practices.EnterpriseLibrary.Security.Instrumentation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 using Microsoft.Practices.Unity.InterceptionExtension;

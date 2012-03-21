@@ -57,7 +57,7 @@ namespace NContext.Security
         /// <param name="cachingManager">The caching manager.</param>
         /// <param name="securityConfiguration">The security configuration.</param>
         /// <remarks></remarks>
-        public SecurityManager(IManageCaching cachingManager, SecurityConfigurationBuilder securityConfiguration)
+        public SecurityManager(IManageCaching cachingManager, SecurityConfiguration securityConfiguration)
         {
             if (cachingManager == null)
             {
@@ -94,6 +94,18 @@ namespace NContext.Security
             {
                 return _IsConfigured;
             }
+            protected set
+            {
+                _IsConfigured = value;
+            }
+        }
+
+        protected IManageCaching CacheManager
+        {
+            get
+            {
+                return _CacheManager;
+            }
         }
 
         #endregion
@@ -126,7 +138,7 @@ namespace NContext.Security
         /// <param name="principal">The principal.</param>
         /// <returns>A <typeparamref name="TToken"/> token used to retrieve the <see cref="IPrincipal"/> from cache.</returns>
         /// <remarks></remarks>
-        public virtual TToken SavePrincipal<TToken>(IPrincipal principal) where TToken : class, IToken, new()
+        public TToken SavePrincipal<TToken>(IPrincipal principal) where TToken : class, IToken, new()
         {
             if (principal == null)
             {
@@ -147,7 +159,12 @@ namespace NContext.Security
         /// <remarks></remarks>
         public virtual void SavePrincipal(IPrincipal principal, IToken token)
         {
-            if (!_CacheManager.AddOrUpdateItem(token.Value, principal, _AuthenticationCachePolicy))
+            if (principal == null)
+            {
+                throw new ArgumentNullException("principal");
+            }
+
+            if (!CacheManager.AddOrUpdateItem(token.Value, principal, _AuthenticationCachePolicy))
             {
                 // TODO: (DG) Log internal? Could not update cache entry.
             }
@@ -160,7 +177,7 @@ namespace NContext.Security
         /// <remarks></remarks>
         public virtual void ExpirePrincipal(IToken token)
         {
-            _CacheManager.Remove(token.Value);
+            CacheManager.Remove(token.Value);
         }
 
         /// <summary>
@@ -169,9 +186,9 @@ namespace NContext.Security
         /// <param name="token">The token.</param>
         /// <returns>Instance of <see cref="IPrincipal"/> if found in cache, else null.</returns>
         /// <remarks></remarks>
-        public virtual IPrincipal GetPrincipal(IToken token)
+        public IPrincipal GetPrincipal(IToken token)
         {
-            return _CacheManager.Get<IPrincipal>(token.Value);
+            return GetPrincipal<IPrincipal>(token);
         }
 
         /// <summary>
@@ -183,7 +200,7 @@ namespace NContext.Security
         /// <remarks></remarks>
         public virtual TPrincipal GetPrincipal<TPrincipal>(IToken token) where TPrincipal : class, IPrincipal
         {
-            return _CacheManager.Get<TPrincipal>(token.Value);
+            return CacheManager.Get<TPrincipal>(token.Value);
         }
 
         #endregion

@@ -29,7 +29,7 @@ namespace NContext
     /// <summary>
     /// Defines a Just implementation of <see cref="IMaybe{T}"/>.
     /// </summary>
-    /// <typeparam name="T">The type to wrap.</typeparam>
+    /// <typeparam name="T">Type of object.</typeparam>
     public sealed class Just<T> : IMaybe<T>
     {
         private readonly T _Value;
@@ -90,21 +90,21 @@ namespace NContext
         }
 
         /// <summary>
-        /// Returns a new <see cref="Nothing{T}"/>.
+        /// Binds <typeparamref name="T"/> into an instance of <see cref="IMaybe{T2}"/>.
         /// </summary>
-        /// <typeparam name="TResult">The type of the result.</typeparam>
-        /// <param name="bindFunc">The function used to map.</param>
+        /// <typeparam name="T2">The type of the result.</typeparam>
+        /// <param name="bindingFunction">The function used to bind.</param>
         /// <returns>Instance of <see cref="IMaybe{TResult}"/>.</returns>
         /// <remarks></remarks>
-        public IMaybe<TResult> Bind<TResult>(Func<T, IMaybe<TResult>> bindFunc)
+        public IMaybe<T2> Bind<T2>(Func<T, IMaybe<T2>> bindingFunction)
         {
-            return bindFunc.Invoke(_Value);
+            return bindingFunction.Invoke(_Value);
         }
 
         /// <summary>
-        /// Invokes the specified action.
+        /// Invokes the specified action if the current instance <seealso cref="IMaybe{T}.IsJust"/>.
         /// </summary>
-        /// <param name="action">The action.</param>
+        /// <param name="action">The action to invoke.</param>
         /// <returns>Current instance.</returns>
         /// <remarks></remarks>
         public IMaybe<T> Let(Action<T> action)

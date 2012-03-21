@@ -33,10 +33,19 @@ namespace NContext.Extensions.AutoMapper
     /// </summary>
     public interface IManageAutoMapper : IApplicationComponent
     {
+        // TODO: (DG) Is this needed?
         IConfigurationProvider ConfigurationProvider { get; }
 
+        /// <summary>
+        /// Gets the AutoMapper configuration.
+        /// </summary>
+        /// <remarks></remarks>
         IConfiguration Configuration { get; }
 
+        /// <summary>
+        /// Gets the AutoMapper mapping engine.
+        /// </summary>
+        /// <remarks></remarks>
         IMappingEngine MappingEngine { get; }
     }
 }

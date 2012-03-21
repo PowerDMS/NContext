@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigureAutoMapper.cs">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IManageEnterpriseLibrary.cs">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,29 +18,35 @@
 // </copyright>
 //
 // <summary>
-//   Defines a role-interface for application composition and configuration of AutoMapper.
+//   Defines an application component for Microsoft Enterprise Library support.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
+using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel;
 
-using AutoMapper;
+using NContext.Configuration;
 
-namespace NContext.Extensions.AutoMapper
+namespace NContext.Extensions.EnterpriseLibrary
 {
     /// <summary>
-    /// Defines a role-interface for application composition and configuration of AutoMapper.
+    /// Defines an application component for Microsoft Enterprise Library support.
     /// </summary>
-    [InheritedExport]
-    public interface IConfigureAutoMapper
+    /// <remarks></remarks>
+    public interface IManageEnterpriseLibrary : IApplicationComponent
     {
         /// <summary>
-        /// Configures the specified AutoMapper <see cref="IConfiguration"/>.
+        /// Gets the application's container configurator.
         /// </summary>
-        /// <param name="mapperConfiguration">The mapper configuration.</param>
         /// <remarks></remarks>
-        void Configure(IConfiguration mapperConfiguration);
+        IContainerConfigurator ContainerConfigurator { get; }
+
+        /// <summary>
+        /// Sets the application's container configurator.
+        /// </summary>
+        /// <typeparam name="TContainerConfigurator">The type of the container configurator.</typeparam>
+        /// <param name="containerConfigurator">The container configurator.</param>
+        /// <remarks></remarks>
+        void SetContainerConfigurator<TContainerConfigurator>(TContainerConfigurator containerConfigurator)
+            where TContainerConfigurator : IContainerConfigurator;
     }
 }

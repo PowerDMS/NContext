@@ -23,7 +23,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NContext.Extensions
 {
@@ -36,29 +38,16 @@ namespace NContext.Extensions
         /// Selects the specified maybe.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TU">The type of the U.</typeparam>
+        /// <typeparam name="TResult">The type of the U.</typeparam>
         /// <param name="maybe">The maybe.</param>
-        /// <param name="func">The func.</param>
+        /// <param name="selectFunction">The selectManyFunction function.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        public static IMaybe<TU> Select<T, TU>(this IMaybe<T> maybe, Func<T, IMaybe<TU>> func)
+        public static IMaybe<TResult> Select<T, TResult>(this IMaybe<T> maybe, Func<T, IMaybe<TResult>> selectFunction)
+            where T : IEnumerable
+            where TResult : IEnumerable
         {
-            return maybe.Bind(func);
-        }
-
-        /// <summary>
-        /// Selects the many.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TU">The type of the U.</typeparam>
-        /// <param name="maybe">The maybe.</param>
-        /// <param name="func">The func.</param>
-        /// <param name="select">The select.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static IMaybe<TU> SelectMany<T, TU>(this IMaybe<T> maybe, Func<T, IMaybe<TU>> func, Func<T, TU, IMaybe<TU>> select)
-        {
-            return maybe.Bind(x => func.Invoke(x).Bind(y => select(x, y)));
+            return maybe.Bind(selectFunction);
         }
 
         /// <summary>

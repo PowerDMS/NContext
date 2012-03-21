@@ -85,13 +85,17 @@ namespace NContext.Extensions.AspNetWebApi.Routing
             {
                 return _IsConfigured;
             }
+            protected set
+            {
+                _IsConfigured = value;
+            }
         }
 
         /// <summary>
-        /// Gets the routes.
+        /// Gets the service routes registered.
         /// </summary>
         /// <remarks></remarks>
-        public IEnumerable<Route> ServiceRoutes
+        public ICollection<Route> ServiceRoutes
         {
             get
             {
@@ -143,7 +147,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// <param name="routeName">Name of the route.</param>
         /// <param name="routeTemplate">The route template.</param>
         /// <remarks></remarks>
-        public virtual void RegisterServiceRoute(String routeName, String routeTemplate)
+        public void RegisterServiceRoute(String routeName, String routeTemplate)
         {
             RegisterServiceRoute(routeName, routeTemplate, null, null);
         }
@@ -155,7 +159,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// <param name="routeTemplate">The route template.</param>
         /// <param name="defaults">The defaults.</param>
         /// <remarks></remarks>
-        public virtual void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults)
+        public void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults)
         {
             RegisterServiceRoute(routeName, routeTemplate, defaults, null);
         }
@@ -170,7 +174,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// <remarks></remarks>
         public virtual void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults, Object constraints)
         {
-            _ServiceRoutes.Value.Add(new Route(routeName, routeTemplate, defaults, constraints));
+            ServiceRoutes.Add(new Route(routeName, routeTemplate, defaults, constraints));
         }
 
         /// <summary>
