@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="NinjectManager.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -124,7 +124,7 @@ namespace NContext.Extensions.Ninject
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IKernel>(_Kernel);
-            _Kernel.Bind<CompositionContainer>().ToConstant(applicationConfiguration.CompositionContainer);
+            _Kernel.Bind<CompositionContainer>().ToConstant(applicationConfiguration.CompositionContainer).InSingletonScope();
 
             applicationConfiguration.CompositionContainer
                                     .GetExportedValues<IConfigureANinjectKernel>()

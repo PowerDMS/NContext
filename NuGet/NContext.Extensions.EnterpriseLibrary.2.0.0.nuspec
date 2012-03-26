@@ -7,9 +7,7 @@
     <dependencies>
       <dependency id="NContext" version="2.0.0" />
       <dependency id="EnterpriseLibrary.Common" version="5.0.505.0" />
-      <dependency id="EnterpriseLibrary.Security" version="5.0.505.0" />
       <dependency id="EnterpriseLibrary.Security.Cryptography" version="5.0.505.0" />
-      <dependency id="EnterpriseLibrary.Validation" version="5.0.505.0" />
       <dependency id="CommonServiceLocator" version="1.0" />
     </dependencies>
     <id>NContext.Extensions.EnterpriseLibrary</id>

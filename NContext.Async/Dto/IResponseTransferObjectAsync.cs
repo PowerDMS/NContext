@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IResponseTransferObject.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -26,6 +26,8 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
+using System.Threading.Tasks.Dataflow;
 
 using NContext.Dto;
 
@@ -75,5 +77,7 @@ namespace NContext
         /// <returns>Instance of <see cref="IResponseTransferObjectAsync{T}"/>.</returns>
         /// <remarks></remarks>
         IResponseTransferObjectAsync<T> LetParallel(Int32 maxDegreeOfParallelism = 1, params Action<IEnumerable<T>>[] actions);
+
+        IResponseTransferObject<T> Post<TTargetBlock>(TTargetBlock targetBlock, ParallelOptions parallelOptions = null) where TTargetBlock : ITargetBlock<T>;
     }
 }

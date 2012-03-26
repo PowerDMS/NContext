@@ -91,6 +91,7 @@
     <Compile Include="Configuration\Configure.cs" />
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
+    <Compile Include="Configuration\RegisteredApplicationComponent.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />

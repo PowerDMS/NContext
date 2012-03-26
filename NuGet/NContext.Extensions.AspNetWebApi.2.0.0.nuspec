@@ -8,18 +8,19 @@
       <dependency id="NContext" version="2.0.0" />
       <dependency id="NContext.Extensions.JsonNet" version="2.0.0" />
       <dependency id="CommonServiceLocator" version="1.0" />
-      <dependency id="WebApi.All" version="0.6.0" />
+      <dependency id="AspNetWebApi" version="4.0.20126.16343" />
+      <dependency id="AspNetWebApi.SelfHost" version="4.0.20126.16343" />
     </dependencies>
-    <id>NContext.Extensions.WCF</id>
+    <id>NContext.Extensions.AspNetWebApi</id>
     <title />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Distributed services addons for NContext via ASP.NET WebApi &amp; WCF 4 SOAP.</description>
+    <description>Distributed services addons for NContext via ASP.NET Web API &amp; WCF 4 SOAP.</description>
     <summary />
     <releaseNotes />
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.WCF\bin\Release\NContext.Extensions.WCF.dll" target="lib\net40\NContext.Extensions.WCF.dll" />
-    <file src="..\NContext.Extensions.WCF\bin\Release\NContext.Extensions.WCF.xml" target="lib\net40\NContext.Extensions.WCF.xml" />
+    <file src="..\NContext.Extensions.AspNetWebApi\bin\Release\NContext.Extensions.AspNetWebApi.dll" target="lib\net40\NContext.Extensions.AspNetWebApi.dll" />
+    <file src="..\NContext.Extensions.AspNetWebApi\bin\Release\NContext.Extensions.AspNetWebApi.xml" target="lib\net40\NContext.Extensions.AspNetWebApi.xml" />
   </files>
 </package>

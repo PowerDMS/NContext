@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="IResponseTransferObjectExtensions.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -24,6 +24,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using AutoMapper;
 
@@ -53,14 +54,49 @@ namespace NContext.Extensions.AutoMapper
                     });
         }
 
+        /// <summary>
+        /// Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
+        /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;() 
+        /// and return a new <see cref="ServiceResponse{T2}"/> with errors.
+        /// </summary>
+        /// <typeparam name="T">The type of data.</typeparam>
+        /// <typeparam name="T2">The type of data to map to.</typeparam>
+        /// <param name="responseTransferObject">The current response transfer object instance.</param>
+        /// <returns>Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
+        /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;() 
+        /// and return a new <see cref="ServiceResponse{T2}"/> with errors.</returns>
+        /// <remarks></remarks>
         public static IResponseTransferObject<T2> Map<T, T2>(this IResponseTransferObject<T> responseTransferObject)
         {
-            return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data));
+            return responseTransferObject.Map<T, T2>(null);
         }
 
+        /// <summary>
+        /// Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
+        /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;()
+        /// and return a new <see cref="ServiceResponse{T2}"/> with errors.
+        /// </summary>
+        /// <typeparam name="T">The type of data.</typeparam>
+        /// <typeparam name="T2">The type of data to map to.</typeparam>
+        /// <param name="responseTransferObject">The current response transfer object instance.</param>
+        /// <param name="mappingOperationOptions">The mapping operation options.</param>
+        /// <returns>Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
+        /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;()
+        /// and return a new <see cref="ServiceResponse{T2}"/> with errors.</returns>
+        /// <remarks></remarks>
         public static IResponseTransferObject<T2> Map<T, T2>(this IResponseTransferObject<T> responseTransferObject, Action<IMappingOperationOptions> mappingOperationOptions)
         {
-            return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data, mappingOperationOptions));
+            if (responseTransferObject.Errors.Any())
+            {
+                return new ServiceResponse<T2>(responseTransferObject.Errors);
+            }
+
+            if (responseTransferObject.Data.Any())
+            {
+                return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data, mappingOperationOptions ?? (o => {})));
+            }
+
+            throw new InvalidOperationException("Instance of IResponseTransferObject cannot be mapped since it has no data or errors.");
         }
 
         private static IMappingEngine GetMapper()

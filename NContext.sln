@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Enterpr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Snap", "NContext.Extensions.Snap\NContext.Extensions.Snap.csproj", "{46178863-6D79-497A-91C0-96126208E904}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug DLL and Web|Any CPU = Debug DLL and Web|Any CPU
@@ -162,6 +164,12 @@ Global
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46178863-6D79-497A-91C0-96126208E904}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{46178863-6D79-497A-91C0-96126208E904}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{46178863-6D79-497A-91C0-96126208E904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46178863-6D79-497A-91C0-96126208E904}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46178863-6D79-497A-91C0-96126208E904}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46178863-6D79-497A-91C0-96126208E904}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -180,6 +188,7 @@ Global
 		{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{1215A865-3388-40FE-9C72-F341E92FA072} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{97682107-3B66-4615-9350-F75FFE9510C8} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{46178863-6D79-497A-91C0-96126208E904} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35

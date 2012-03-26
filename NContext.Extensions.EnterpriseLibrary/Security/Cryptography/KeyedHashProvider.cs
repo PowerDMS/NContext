@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 // <copyright file="KeyedHashProvider.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,7 +18,7 @@
 // </copyright>
 //
 // <summary>
-//   Defines an EnterpriseLibrary implementation of IProvideKeyedHashing.
+//   Defines a provider for keyed hash cryptographic operations.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,7 +32,7 @@ using NContext.Security.Cryptography;
 namespace NContext.Extensions.EnterpriseLibrary.Security.Cryptography
 {
     /// <summary>
-    /// Defines an EnterpriseLibrary implementation of <see cref="IProvideKeyedHashing"/>.
+    /// Defines a provider for keyed hash cryptographic operations.
     /// </summary>
     /// <remarks></remarks>
     public class KeyedHashProvider : IProvideKeyedHashing

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ApplicationConfigurationBase.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -40,8 +40,8 @@ namespace NContext.Configuration
     {
         #region Fields
 
-        private readonly IDictionary<Type, Lazy<IApplicationComponent>> _Components =
-            new Dictionary<Type, Lazy<IApplicationComponent>>();
+        private readonly HashSet<RegisteredApplicationComponent> _Components =
+            new HashSet<RegisteredApplicationComponent>();
 
         private readonly HashSet<String> _CompositionDirectories;
 
@@ -72,11 +72,11 @@ namespace NContext.Configuration
         /// Gets the application components.
         /// </summary>
         /// <remarks></remarks>
-        public IEnumerable<IApplicationComponent> Components
+        public IEnumerable<RegisteredApplicationComponent> Components
         {
             get
             {
-                return _Components.Select(c => c.Value.Value);
+                return _Components;
             }
         }
 
@@ -101,6 +101,10 @@ namespace NContext.Configuration
             {
                 return _IsConfigured;
             }
+            protected set
+            {
+                _IsConfigured = value;
+            }
         }
 
         #endregion
@@ -123,9 +127,9 @@ namespace NContext.Configuration
         public TApplicationComponent GetComponent<TApplicationComponent>()
             where TApplicationComponent : IApplicationComponent
         {
-            return _Components.Where(pair => pair.Key == typeof(TApplicationComponent))
+            return _Components.Where(pair => pair.RegisteredComponentType == typeof(TApplicationComponent))
                               .MaybeFirst()
-                              .Bind<TApplicationComponent>(pair => ((TApplicationComponent)pair.Value.Value).ToMaybe())
+                              .Bind<TApplicationComponent>(pair => ((TApplicationComponent)pair.ApplicationComponent).ToMaybe())
                               .FromMaybe(default(TApplicationComponent));
         }
 
@@ -135,7 +139,7 @@ namespace NContext.Configuration
         public void RegisterComponent<TApplicationComponent>(Func<IApplicationComponent> componentFactory)
             where TApplicationComponent : IApplicationComponent
         {
-            _Components[typeof(TApplicationComponent)] = new Lazy<IApplicationComponent>(componentFactory);
+            _Components.Add(new RegisteredApplicationComponent(typeof(TApplicationComponent), new Lazy<IApplicationComponent>(componentFactory)));
         }
 
         /// <summary>
@@ -167,8 +171,8 @@ namespace NContext.Configuration
                 var postComponentConfigurationActions = _CompositionContainer.GetExports<IRunWhenComponentConfigurationIsComplete>();
                 Components.ForEach(component =>
                 {
-                    component.Configure(this);
-                    postComponentConfigurationActions.ForEach(pcca => pcca.Value.Run(component));
+                    component.ApplicationComponent.Configure(this);
+                    postComponentConfigurationActions.ForEach(pcca => pcca.Value.Run(component.ApplicationComponent));
                 });
 
                 _IsConfigured = true;

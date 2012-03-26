@@ -14,7 +14,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NContext is an extensible, composable application framework for .NET 4.0.</description>
     <summary />
-    <releaseNotes></releaseNotes>
+    <releaseNotes />
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>

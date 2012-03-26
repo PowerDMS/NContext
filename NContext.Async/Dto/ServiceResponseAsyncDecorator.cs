@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="ServiceResponseAsyncDecorator.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 using NContext.Dto;
 using NContext.Extensions;
@@ -207,6 +208,21 @@ namespace NContext
             }
 
             return this;
+        }
+
+        public IResponseTransferObject<T> Post<TTargetBlock>(TTargetBlock targetBlock, ParallelOptions parallelOptions = null) where TTargetBlock : ITargetBlock<T>
+        {
+            if (targetBlock == null)
+            {
+                throw new ArgumentNullException("targetBlock");
+            }
+
+            if (!Errors.Any() && Data.Any())
+            {
+                Parallel.ForEach(Data, parallelOptions ?? new ParallelOptions(), data => targetBlock.Post(data));
+            }
+
+            return _ResponseTransferObject;
         }
 
         #endregion

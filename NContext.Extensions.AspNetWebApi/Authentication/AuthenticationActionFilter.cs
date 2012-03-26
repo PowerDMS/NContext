@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AuthenticationActionFilter.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Web.Http.Controllers;
@@ -44,7 +45,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// </summary>
         /// <param name="authenticationProviders">The authentication providers.</param>
         /// <remarks></remarks>
-        public AuthenticationActionFilter(IEnumerable<IProvideResourceAuthentication> authenticationProviders)
+        public AuthenticationActionFilter([ImportMany]IEnumerable<IProvideResourceAuthentication> authenticationProviders)
         {
             _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideResourceAuthentication>();
         }

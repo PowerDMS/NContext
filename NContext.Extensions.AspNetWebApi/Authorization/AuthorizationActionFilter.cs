@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
 // <copyright file="AuthorizationActionFilter.cs">
-//   Copyright (c) 2012 Waking Venture, Inc.
+//   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -50,7 +51,7 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
         /// </summary>
         /// <param name="authorizationProviders">The authorization providers.</param>
         /// <remarks></remarks>
-        public AuthorizationActionFilter(IEnumerable<IProvideResourceAuthorization> authorizationProviders)
+        public AuthorizationActionFilter([ImportMany]IEnumerable<IProvideResourceAuthorization> authorizationProviders)
         {
             _AuthorizationProviders = authorizationProviders ?? Enumerable.Empty<IProvideResourceAuthorization>();
         }
