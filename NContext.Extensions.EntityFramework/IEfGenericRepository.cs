@@ -27,7 +27,8 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 
-using NContext.Extensions.EntityFramework.Specifications;
+using NContext.Data;
+using NContext.Data.Specifications;
 
 namespace NContext.Extensions.EntityFramework
 {

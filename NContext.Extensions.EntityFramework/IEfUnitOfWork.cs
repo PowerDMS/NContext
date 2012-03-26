@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEntity.cs">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IEfUnitOfWork.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,16 +18,42 @@
 // </copyright>
 //
 // <summary>
-//   Defines a marker interface for domain model entities.
+//   Defines an interface contract for the UnitOfWork pattern.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Validation;
 
 namespace NContext.Extensions.EntityFramework
 {
     /// <summary>
-    /// Defines a marker interface for domain model entities.
+    /// Defines an interface contract for the UnitOfWork pattern.
     /// </summary>
-    public interface IEntity
+    public interface IEfUnitOfWork : IDisposable
     {
+        /// <summary>
+        /// Gets the context container.
+        /// </summary>
+        /// <remarks></remarks>
+        IContextContainer ContextContainer { get; }
+
+        /// <summary>
+        /// Commits the changes in each context to the database.
+        /// </summary>
+        void Commit();
+
+        /// <summary>
+        /// Rolls back each context within the unit of work.
+        /// </summary>
+        void Rollback();
+
+        /// <summary>
+        /// Validates the contexts.
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        IEnumerable<DbEntityValidationResult> Validate();
     }
 }

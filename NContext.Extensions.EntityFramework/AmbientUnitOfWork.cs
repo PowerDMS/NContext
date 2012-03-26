@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IUnitOfWork.cs">
+// <copyright file="AmbientUnitOfWork.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,42 +18,76 @@
 // </copyright>
 //
 // <summary>
-//   Defines an interface contract for the UnitOfWork pattern.
+//   Defines a unit of work in active use and keeps track of the number of sessions associated with it.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
 
 namespace NContext.Extensions.EntityFramework
 {
     /// <summary>
-    /// Defines an interface contract for the UnitOfWork pattern.
+    /// Defines a unit of work in active use and keeps track of the number of sessions associated with it.
     /// </summary>
-    public interface IUnitOfWork : IDisposable
+    /// <remarks></remarks>
+    internal struct AmbientUnitOfWork
     {
+        private readonly IEfUnitOfWork _UnitOfWork;
+
+        private Int32 _ActiveSessions;
+
         /// <summary>
-        /// Gets the context container.
+        /// Initializes a new instance of the <see cref="AmbientUnitOfWork"/> struct.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
+        /// <remarks></remarks>
+        public AmbientUnitOfWork(IEfUnitOfWork unitOfWork)
+            : this()
+        {
+            _ActiveSessions = 1;
+            _UnitOfWork = unitOfWork;
+        }
+
+        /// <summary>
+        /// Gets the number of active sessions for the <seealso cref="UnitOfWork"/> instance.
         /// </summary>
         /// <remarks></remarks>
-        IContextContainer ContextContainer { get; }
+        public Int32 ActiveSessions
+        {
+            get
+            {
+                return _ActiveSessions;
+            }
+        }
 
         /// <summary>
-        /// Commits the changes in each context to the database.
+        /// Gets the unit of work.
         /// </summary>
-        void Commit();
-
-        /// <summary>
-        /// Rolls back each context within the unit of work.
-        /// </summary>
-        void Rollback();
-
-        /// <summary>
-        /// Validates the contexts.
-        /// </summary>
-        /// <returns></returns>
         /// <remarks></remarks>
-        IEnumerable<DbEntityValidationResult> Validate();
+        public IEfUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return _UnitOfWork;
+            }
+        }
+
+        /// <summary>
+        /// Decrements the active sessions for this <seealso cref="UnitOfWork"/> instance.
+        /// </summary>
+        /// <remarks></remarks>
+        public void Decrement()
+        {
+            _ActiveSessions -= 1;
+        }
+
+        /// <summary>
+        /// Increments the active sessions for this <seealso cref="UnitOfWork"/> instance.
+        /// </summary>
+        /// <remarks></remarks>
+        public void Increment()
+        {
+            _ActiveSessions += 1;
+        }
     }
 }

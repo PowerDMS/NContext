@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ExpressionExtensions.cs">
+// <copyright file="OrSpecification.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,63 +29,89 @@
 // </copyright>
 //
 // <summary>
-//   Defines extensions methods for adding AND and OR operations with ParametersRebinder.
+//   Defines a composite specification for OR-logic.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data.Specifications
 {
     /// <summary>
-    /// Defines extensions methods for adding AND and OR operations with ParametersRebinder.
+    /// Defines a composite specification for OR-logic.
     /// </summary>
-    internal static class ExpressionExtensions
+    /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
+    public sealed class OrSpecification<TEntity> : CompositeSpecification<TEntity> where TEntity : class, IEntity
     {
+        #region Members
+
+        private readonly SpecificationBase<TEntity> _LeftSideSpecification;
+
+        private readonly SpecificationBase<TEntity> _RightSideSpecification;
+
+        #endregion
+
+        #region Constructors
+
         /// <summary>
-        /// And operator
+        /// Initializes a new instance of the <see cref="OrSpecification&lt;TEntity&gt;"/> class.
         /// </summary>
-        /// <typeparam name="T">Type of params in expression</typeparam>
-        /// <param name="first">Right Expression in AND operation</param>
-        /// <param name="second">Left Expression in And operation</param>
-        /// <returns>New AND expression</returns>
-        public static Expression<Func<T, Boolean>> And<T>(this Expression<Func<T, Boolean>> first, Expression<Func<T, Boolean>> second)
+        /// <param name="leftSide">The left side.</param>
+        /// <param name="rightSide">The right side.</param>
+        /// <remarks></remarks>
+        public OrSpecification(SpecificationBase<TEntity> leftSide, SpecificationBase<TEntity> rightSide)
         {
-            return first.Compose(second, Expression.And);
+            if (leftSide == null)
+            {
+                throw new ArgumentNullException("leftSide");
+            }
+
+            if (rightSide == null)
+            {
+                throw new ArgumentNullException("rightSide");
+            }
+
+            _LeftSideSpecification = leftSide;
+            _RightSideSpecification = rightSide;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Left side specification
+        /// </summary>
+        public override SpecificationBase<TEntity> LeftSideSpecification
+        {
+            get { return _LeftSideSpecification; }
         }
 
         /// <summary>
-        /// Or operator
+        /// Righ side specification
         /// </summary>
-        /// <typeparam name="T">Type of param in expression</typeparam>
-        /// <param name="first">Right expression in OR operation</param>
-        /// <param name="second">Left expression in OR operation</param>
-        /// <returns>New Or expressions</returns>
-        public static Expression<Func<T, Boolean>> Or<T>(this Expression<Func<T, Boolean>> first, Expression<Func<T, Boolean>> second)
+        public override SpecificationBase<TEntity> RightSideSpecification
         {
-            return first.Compose(second, Expression.Or);
+            get { return _RightSideSpecification; }
         }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
-        /// Compose two expressions and merge all in a new expression
+        /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
-        /// <typeparam name="T">Type of params in expression</typeparam>
-        /// <param name="first">Expression instance</param>
-        /// <param name="second">Expression to merge</param>
-        /// <param name="merge">Function to merge</param>
-        /// <returns>New merged expression</returns>
-        private static Expression<T> Compose<T>(this Expression<T> first, Expression<T> second, Func<Expression, Expression, Expression> merge)
+        /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
         {
-            // build parameter map (from parameters of second to parameters of first)
-            var map = first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
+            Expression<Func<TEntity, Boolean>> left = _LeftSideSpecification.IsSatisfiedBy();
+            Expression<Func<TEntity, Boolean>> right = _RightSideSpecification.IsSatisfiedBy();
 
-            // replace parameters in the second lambda expression with parameters from the first
-            var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
-
-            // apply composition of lambda expression bodies to parameters from the first expression
-            return Expression.Lambda<T>(merge(first.Body, secondBody), first.Parameters);
+            return (left.Or(right));
         }
+
+        #endregion
     }
 }

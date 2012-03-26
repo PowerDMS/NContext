@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TrueSpecification.cs">
+// <copyright file="IEntity.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,36 +18,16 @@
 // </copyright>
 //
 // <summary>
-//   Defines a generic specification which can be used for composition.
+//   Defines a marker interface for domain model entities.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq.Expressions;
-
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data
 {
     /// <summary>
-    /// Defines a generic specification which can be used for composition.
+    /// Defines a marker interface for domain model entities.
     /// </summary>
-    /// <typeparam name="TEntity">Type of entity in this specification.</typeparam>
-    /// <remarks></remarks>
-    public sealed class TrueSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
+    public interface IEntity
     {
-        #region Methods
-
-        /// <summary>
-        /// Returns a boolean expression which determines whether the specification is satisfied.
-        /// </summary>
-        /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
-        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
-        {
-            Boolean result = true;
-            Expression<Func<TEntity, Boolean>> trueExpression = t => result;
-
-            return trueExpression;
-        }
-
-        #endregion
     }
 }

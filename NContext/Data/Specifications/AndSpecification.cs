@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotSpecification.cs">
+// <copyright file="AndSpecification.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,58 +29,71 @@
 // </copyright>
 //
 // <summary>
-//   Defines a specification which converts an original specification with inverse logic.
+//   Defines a composite specification for AND-logic.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Linq;
 using System.Linq.Expressions;
 
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data.Specifications
 {
     /// <summary>
-    /// Defines a specification which converts an original specification with inverse logic.
+    /// Defines a composite specification for AND-logic.
     /// </summary>
-    /// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
-    public sealed class NotSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
+    /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
+    public sealed class AndSpecification<TEntity> : CompositeSpecification<TEntity> where TEntity : class, IEntity
     {
         #region Fields
 
-        private readonly Expression<Func<TEntity, Boolean>> _OriginalCriteria;
+        private readonly SpecificationBase<TEntity> _LeftSideSpecification;
+
+        private readonly SpecificationBase<TEntity> _RightSideSpecification;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotSpecification&lt;TEntity&gt;"/> class.
+        /// Initializes a new instance of the <see cref="AndSpecification&lt;TEntity&gt;"/> class.
         /// </summary>
-        /// <param name="originalSpecification">The original specification.</param>
+        /// <param name="leftSide">The left side.</param>
+        /// <param name="rightSide">The right side.</param>
         /// <remarks></remarks>
-        public NotSpecification(SpecificationBase<TEntity> originalSpecification)
+        public AndSpecification(SpecificationBase<TEntity> leftSide, SpecificationBase<TEntity> rightSide)
         {
-            if (originalSpecification == null)
+            if (leftSide == null)
             {
-                throw new ArgumentNullException("originalSpecification");
+                throw new ArgumentNullException("leftSide");
             }
 
-            _OriginalCriteria = originalSpecification.IsSatisfiedBy();
+            if (rightSide == null)
+            {
+                throw new ArgumentNullException("rightSide");
+            }
+
+            _LeftSideSpecification = leftSide;
+            _RightSideSpecification = rightSide;
+        }
+
+        #endregion
+
+        #region Properties
+        
+        /// <summary>
+        /// Left side specification
+        /// </summary>
+        public override SpecificationBase<TEntity> LeftSideSpecification
+        {
+            get { return _LeftSideSpecification; }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NotSpecification&lt;TEntity&gt;"/> class.
+        /// Right side specification
         /// </summary>
-        /// <param name="originalSpecification">The original specification.</param>
-        /// <remarks></remarks>
-        public NotSpecification(Expression<Func<TEntity, Boolean>> originalSpecification)
+        public override SpecificationBase<TEntity> RightSideSpecification
         {
-            if (originalSpecification == null)
-            {
-                throw new ArgumentNullException("originalSpecification");
-            }
-
-            _OriginalCriteria = originalSpecification;
+            get { return _RightSideSpecification; }
         }
 
         #endregion
@@ -93,7 +106,10 @@ namespace NContext.Extensions.EntityFramework.Specifications
         /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
         public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
         {
-            return Expression.Lambda<Func<TEntity, Boolean>>(Expression.Not(_OriginalCriteria.Body), _OriginalCriteria.Parameters.Single());
+            Expression<Func<TEntity, Boolean>> left = _LeftSideSpecification.IsSatisfiedBy();
+            Expression<Func<TEntity, Boolean>> right = _RightSideSpecification.IsSatisfiedBy();
+
+            return (left.And(right));
         }
 
         #endregion

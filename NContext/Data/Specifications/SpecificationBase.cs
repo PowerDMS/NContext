@@ -36,7 +36,7 @@
 using System;
 using System.Linq.Expressions;
 
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data.Specifications
 {
     /// <summary>
     /// Defines a base abstraction for creating specifications.

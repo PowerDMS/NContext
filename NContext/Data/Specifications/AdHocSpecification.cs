@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ParametersRebinder.cs">
+// <copyright file="AdHocSpecification.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,58 +29,57 @@
 // </copyright>
 //
 // <summary>
-//   Defines 
+//   Defines a specification which is composed AdHoc via constructor.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
+using System;
 using System.Linq.Expressions;
 
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data.Specifications
 {
     /// <summary>
-    /// Defines methods for rebinding for expression parameters without the 
-    /// use of Invoke as it is not supported in all LINQ query providers.
+    /// Defines a specification which is composed AdHoc via constructor.
     /// </summary>
-    internal sealed class ParameterRebinder : ExpressionVisitor
+    /// <typeparam name = "TEntity">Type of entity that check this specification</typeparam>
+    public sealed class AdHocSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        private readonly Dictionary<ParameterExpression, ParameterExpression> _ParameterMap;
+        #region Fields
+
+        private readonly Expression<Func<TEntity, Boolean>> _MatchingCriteria;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParameterRebinder"/> class.
+        /// Initializes a new instance of the <see cref="AdHocSpecification{TEntity}"/> class.
         /// </summary>
-        /// <param name="map">The map.</param>
+        /// <param name="matchingCriteria">The matching criteria.</param>
         /// <remarks></remarks>
-        public ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
+        public AdHocSpecification(Expression<Func<TEntity, Boolean>> matchingCriteria)
         {
-            _ParameterMap = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
-        }
-
-        /// <summary>
-        /// Replate parameters in expression with a Map information
-        /// </summary>
-        /// <param name="map">Map information</param>
-        /// <param name="exp">Expression to replace parameters</param>
-        /// <returns>Expression with parameters replaced</returns>
-        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
-        {
-            return new ParameterRebinder(map).Visit(exp);
-        }
-
-        /// <summary>
-        /// Visit pattern method
-        /// </summary>
-        /// <param name="p">A Parameter expression</param>
-        /// <returns>New visited expression</returns>
-        protected override Expression VisitParameter(ParameterExpression p)
-        {
-            ParameterExpression replacement;
-            if (_ParameterMap.TryGetValue(p, out replacement))
+            if (matchingCriteria == null)
             {
-                p = replacement;
+                throw new ArgumentNullException("matchingCriteria");
             }
 
-            return base.VisitParameter(p);
+            _MatchingCriteria = matchingCriteria;
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Returns a boolean expression which determines whether the specification is satisfied.
+        /// </summary>
+        /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
+        {
+            return _MatchingCriteria;
+        }
+
+        #endregion
     }
 }

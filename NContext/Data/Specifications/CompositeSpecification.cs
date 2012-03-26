@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AdHocSpecification.cs">
+// <copyright file="CompositeSpecification.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,56 +29,30 @@
 // </copyright>
 //
 // <summary>
-//   Defines a specification which is composed AdHoc via constructor.
+//   Defines a base abstraction for creating composite specifications.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Linq.Expressions;
-
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data.Specifications
 {
     /// <summary>
-    /// Defines a specification which is composed AdHoc via constructor.
+    /// Defines a base abstraction for creating composite specifications.
     /// </summary>
-    /// <typeparam name = "TEntity">Type of entity that check this specification</typeparam>
-    public sealed class AdHocSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
+    /// <typeparam name="TEntity">Type of entity.</typeparam>
+    public abstract class CompositeSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Fields
-
-        private readonly Expression<Func<TEntity, Boolean>> _MatchingCriteria;
-
-        #endregion
-
-        #region Constructors
+        #region Properties
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AdHocSpecification{TEntity}"/> class.
+        /// Gets the left side specification for this composite element.
         /// </summary>
-        /// <param name="matchingCriteria">The matching criteria.</param>
         /// <remarks></remarks>
-        public AdHocSpecification(Expression<Func<TEntity, Boolean>> matchingCriteria)
-        {
-            if (matchingCriteria == null)
-            {
-                throw new ArgumentNullException("matchingCriteria");
-            }
-
-            _MatchingCriteria = matchingCriteria;
-        }
-
-        #endregion
-
-        #region Methods
+        public abstract SpecificationBase<TEntity> LeftSideSpecification { get; }
 
         /// <summary>
-        /// Returns a boolean expression which determines whether the specification is satisfied.
+        /// Gets the right side specification for this composite element.
         /// </summary>
-        /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
-        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
-        {
-            return _MatchingCriteria;
-        }
+        public abstract SpecificationBase<TEntity> RightSideSpecification { get; }
 
         #endregion
     }

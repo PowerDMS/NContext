@@ -92,6 +92,16 @@
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="Configuration\RegisteredApplicationComponent.cs" />
+    <Compile Include="Data\IEntity.cs" />
+    <Compile Include="Data\Specifications\AdHocSpecification.cs" />
+    <Compile Include="Data\Specifications\AndSpecification.cs" />
+    <Compile Include="Data\Specifications\CompositeSpecification.cs" />
+    <Compile Include="Data\Specifications\ExpressionExtensions.cs" />
+    <Compile Include="Data\Specifications\NotSpecification.cs" />
+    <Compile Include="Data\Specifications\OrSpecification.cs" />
+    <Compile Include="Data\Specifications\ParametersRebinder.cs" />
+    <Compile Include="Data\Specifications\SpecificationBase.cs" />
+    <Compile Include="Data\Specifications\TrueSpecification.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />

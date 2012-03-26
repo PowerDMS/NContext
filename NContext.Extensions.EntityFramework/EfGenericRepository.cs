@@ -30,7 +30,8 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Linq.Expressions;
 
-using NContext.Extensions.EntityFramework.Specifications;
+using NContext.Data;
+using NContext.Data.Specifications;
 
 namespace NContext.Extensions.EntityFramework
 {
@@ -62,7 +63,7 @@ namespace NContext.Extensions.EntityFramework
 
             if (UnitOfWorkController.AmbientUnitOfWork == null)
             {
-                throw new Exception("A repository must be created within the scope of an existing IUnitOfWork instance.");
+                throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
 
             _Context = context;
@@ -71,22 +72,6 @@ namespace NContext.Extensions.EntityFramework
         #endregion
 
         #region Implementation of IEfGenericRepository<TEntity>
-
-        /// <summary>
-        /// Gets the <see cref="IQueryable{T}"/> used by <see cref="IEfGenericRepository{TEntity}"/> 
-        /// to execute Linq queries.
-        /// </summary>
-        /// <value>A <see cref="IQueryable{TEntity}"/> instance.</value>
-        /// <remarks>
-        /// Inheritors of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
-        /// </remarks>
-        protected IQueryable<TEntity> RepositoryQuery
-        {
-            get
-            {
-                return _Context.Set<TEntity>();
-            }
-        }
 
         /// <summary>
         /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
@@ -130,6 +115,12 @@ namespace NContext.Extensions.EntityFramework
             _Context.Entry<TEntity>(entity).Reload();
         }
 
+        /// <summary>
+        /// Includes the specified path for eager loading.
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="path">The path.</param>
+        /// <remarks></remarks>
         public void Include<TProperty>(Expression<Func<TEntity, TProperty>> path)
         {
             _Context.Set<TEntity>().Include(path);
@@ -199,6 +190,22 @@ namespace NContext.Extensions.EntityFramework
         public IQueryable<TEntity> SqlQuery(String sql, params Object[] parameters)
         {
             return _Context.Set<TEntity>().SqlQuery(sql, parameters).AsQueryable();
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IQueryable{T}"/> used by <see cref="IEfGenericRepository{TEntity}"/> 
+        /// to execute Linq queries.
+        /// </summary>
+        /// <value>A <see cref="IQueryable{TEntity}"/> instance.</value>
+        /// <remarks>
+        /// Inheritors of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
+        /// </remarks>
+        protected IQueryable<TEntity> RepositoryQuery
+        {
+            get
+            {
+                return _Context.Set<TEntity>();
+            }
         }
 
         #endregion

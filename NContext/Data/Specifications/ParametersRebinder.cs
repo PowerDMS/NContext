@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AndSpecification.cs">
+// <copyright file="ParametersRebinder.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,89 +29,58 @@
 // </copyright>
 //
 // <summary>
-//   Defines a composite specification for AND-logic.
+//   Defines 
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace NContext.Extensions.EntityFramework.Specifications
+namespace NContext.Data.Specifications
 {
     /// <summary>
-    /// Defines a composite specification for AND-logic.
+    /// Defines methods for rebinding for expression parameters without the 
+    /// use of Invoke as it is not supported in all LINQ query providers.
     /// </summary>
-    /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
-    public sealed class AndSpecification<TEntity> : CompositeSpecification<TEntity> where TEntity : class, IEntity
+    internal sealed class ParameterRebinder : ExpressionVisitor
     {
-        #region Fields
-
-        private readonly SpecificationBase<TEntity> _LeftSideSpecification;
-
-        private readonly SpecificationBase<TEntity> _RightSideSpecification;
-
-        #endregion
-
-        #region Constructors
+        private readonly Dictionary<ParameterExpression, ParameterExpression> _ParameterMap;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AndSpecification&lt;TEntity&gt;"/> class.
+        /// Initializes a new instance of the <see cref="ParameterRebinder"/> class.
         /// </summary>
-        /// <param name="leftSide">The left side.</param>
-        /// <param name="rightSide">The right side.</param>
+        /// <param name="map">The map.</param>
         /// <remarks></remarks>
-        public AndSpecification(SpecificationBase<TEntity> leftSide, SpecificationBase<TEntity> rightSide)
+        public ParameterRebinder(Dictionary<ParameterExpression, ParameterExpression> map)
         {
-            if (leftSide == null)
+            _ParameterMap = map ?? new Dictionary<ParameterExpression, ParameterExpression>();
+        }
+
+        /// <summary>
+        /// Replate parameters in expression with a Map information
+        /// </summary>
+        /// <param name="map">Map information</param>
+        /// <param name="exp">Expression to replace parameters</param>
+        /// <returns>Expression with parameters replaced</returns>
+        public static Expression ReplaceParameters(Dictionary<ParameterExpression, ParameterExpression> map, Expression exp)
+        {
+            return new ParameterRebinder(map).Visit(exp);
+        }
+
+        /// <summary>
+        /// Visit pattern method
+        /// </summary>
+        /// <param name="p">A Parameter expression</param>
+        /// <returns>New visited expression</returns>
+        protected override Expression VisitParameter(ParameterExpression p)
+        {
+            ParameterExpression replacement;
+            if (_ParameterMap.TryGetValue(p, out replacement))
             {
-                throw new ArgumentNullException("leftSide");
+                p = replacement;
             }
 
-            if (rightSide == null)
-            {
-                throw new ArgumentNullException("rightSide");
-            }
-
-            _LeftSideSpecification = leftSide;
-            _RightSideSpecification = rightSide;
+            return base.VisitParameter(p);
         }
-
-        #endregion
-
-        #region Properties
-        
-        /// <summary>
-        /// Left side specification
-        /// </summary>
-        public override SpecificationBase<TEntity> LeftSideSpecification
-        {
-            get { return _LeftSideSpecification; }
-        }
-
-        /// <summary>
-        /// Right side specification
-        /// </summary>
-        public override SpecificationBase<TEntity> RightSideSpecification
-        {
-            get { return _RightSideSpecification; }
-        }
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Returns a boolean expression which determines whether the specification is satisfied.
-        /// </summary>
-        /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
-        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
-        {
-            Expression<Func<TEntity, Boolean>> left = _LeftSideSpecification.IsSatisfiedBy();
-            Expression<Func<TEntity, Boolean>> right = _RightSideSpecification.IsSatisfiedBy();
-
-            return (left.And(right));
-        }
-
-        #endregion
     }
 }

@@ -18,7 +18,7 @@
 // </copyright>
 //
 // <summary>
-//   Defines an Entity Framework 4 implementation of IUnitOfWork pattern.
+//   Defines an Entity Framework 4 implementation of IEfUnitOfWork pattern.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -32,9 +32,9 @@ using System.Transactions;
 namespace NContext.Extensions.EntityFramework
 {
     /// <summary>
-    /// Defines an Entity Framework 4 implementation of IUnitOfWork pattern.
+    /// Defines an Entity Framework 4 implementation of IEfUnitOfWork pattern.
     /// </summary>
-    public class EfUnitOfWork : IUnitOfWork
+    public class EfUnitOfWork : IEfUnitOfWork
     {
         #region Fields
 
@@ -63,13 +63,11 @@ namespace NContext.Extensions.EntityFramework
 
             _ContextContianer = contextContianer;
             _TransactionScopeOption = transactionScopeOption;
-
-            UnitOfWorkController.AddUnitOfWork(this);
         }
 
         #endregion
 
-        #region Implementation of IUnitOfWork
+        #region Implementation of IEfUnitOfWork
 
         /// <summary>
         /// Gets the context container.

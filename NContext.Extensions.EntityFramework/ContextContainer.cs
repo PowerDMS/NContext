@@ -19,7 +19,7 @@
 //
 // <summary>
 //   Defines an implementation of IContextContainer which is responsible for ensuring that only one instance 
-//   of a given <see cref="DbContext"/> exists within a <see cref="IUnitOfWork"/>, per thread.
+//   of a given <see cref="DbContext"/> exists within a <see cref="IEfUnitOfWork"/>, per thread.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -33,7 +33,7 @@ namespace NContext.Extensions.EntityFramework
 {
     /// <summary>
     /// Defines an implementation of IContextContainer which is responsible for ensuring that only one instance 
-    /// of a given <see cref="DbContext"/> exists within a <see cref="IUnitOfWork"/>, per thread.
+    /// of a given <see cref="DbContext"/> exists within a <see cref="IEfUnitOfWork"/>, per thread.
     /// </summary>
     /// <remarks></remarks>
     public class ContextContainer : IContextContainer
@@ -45,11 +45,7 @@ namespace NContext.Extensions.EntityFramework
         #endregion
 
         #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
-        /// <remarks></remarks>
+        
         protected internal ContextContainer()
         {
         }

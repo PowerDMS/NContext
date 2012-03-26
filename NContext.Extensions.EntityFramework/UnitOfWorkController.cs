@@ -34,20 +34,20 @@ namespace NContext.Extensions.EntityFramework
     /// <remarks></remarks>
     internal static class UnitOfWorkController
     {
-        private static readonly ThreadLocal<Stack<Tuple<Int32, IUnitOfWork>>> _AmbientUnitsOfWork = 
-            new ThreadLocal<Stack<Tuple<Int32, IUnitOfWork>>>(() => new Stack<Tuple<Int32, IUnitOfWork>>());
+        private static readonly ThreadLocal<Stack<AmbientUnitOfWork>> _AmbientUnitsOfWork =
+            new ThreadLocal<Stack<AmbientUnitOfWork>>(() => new Stack<AmbientUnitOfWork>());
 
         /// <summary>
-        /// Gets the ambient <see cref="IUnitOfWork"/>.
+        /// Gets the ambient <see cref="IEfUnitOfWork"/>.
         /// </summary>
         /// <value>The ambient unit of work.</value>
         /// <remarks></remarks>
-        public static IUnitOfWork AmbientUnitOfWork
+        public static IEfUnitOfWork AmbientUnitOfWork
         {
             get
             {
                 return _AmbientUnitsOfWork.Value.Count > 0
-                    ? _AmbientUnitsOfWork.Value.Peek().Item2
+                    ? _AmbientUnitsOfWork.Value.Peek().UnitOfWork
                     : null;
             }
         }
@@ -57,9 +57,9 @@ namespace NContext.Extensions.EntityFramework
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <remarks></remarks>
-        public static void AddUnitOfWork(IUnitOfWork unitOfWork)
+        public static void AddUnitOfWork(IEfUnitOfWork unitOfWork)
         {
-            _AmbientUnitsOfWork.Value.Push(new Tuple<Int32, IUnitOfWork>(_AmbientUnitsOfWork.Value.Count + 1, unitOfWork));
+            _AmbientUnitsOfWork.Value.Push(new AmbientUnitOfWork(unitOfWork));
         }
 
         /// <summary>
@@ -68,11 +68,8 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public static void Retain()
         {
-            var tuple = _AmbientUnitsOfWork.Value.Pop();
-            var retainCount = tuple.Item1;
-            var uow = tuple.Item2;
-
-            _AmbientUnitsOfWork.Value.Push(new Tuple<Int32, IUnitOfWork>(retainCount + 1, uow));
+            var ambientUnitOfWork = _AmbientUnitsOfWork.Value.Peek();
+            ambientUnitOfWork.Increment();
         }
 
         /// <summary>
@@ -82,13 +79,15 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public static Boolean DisposeUnitOfWork()
         {
-            var uow = _AmbientUnitsOfWork.Value.Pop();
-            if (uow.Item1 > 1)
+            var ambientUnitOfWork = _AmbientUnitsOfWork.Value.Peek();
+            if (ambientUnitOfWork.ActiveSessions > 1)
             {
-                _AmbientUnitsOfWork.Value.Push(new Tuple<Int32, IUnitOfWork>(uow.Item1 - 1, uow.Item2));
+                ambientUnitOfWork.Decrement();
 
                 return false;
             }
+
+            _AmbientUnitsOfWork.Value.Pop();
 
             return true;
         }

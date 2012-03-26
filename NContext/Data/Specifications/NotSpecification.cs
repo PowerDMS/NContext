@@ -10,7 +10,7 @@
 // http://microsoftnlayerapp.codeplex.com/license
 //===================================================================================
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositeSpecification.cs">
+// <copyright file="NotSpecification.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,30 +29,72 @@
 // </copyright>
 //
 // <summary>
-//   Defines a base abstraction for creating composite specifications.
+//   Defines a specification which converts an original specification with inverse logic.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.EntityFramework.Specifications
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+
+namespace NContext.Data.Specifications
 {
     /// <summary>
-    /// Defines a base abstraction for creating composite specifications.
+    /// Defines a specification which converts an original specification with inverse logic.
     /// </summary>
-    /// <typeparam name="TEntity">Type of entity.</typeparam>
-    public abstract class CompositeSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
+    /// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
+    public sealed class NotSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Properties
+        #region Fields
+
+        private readonly Expression<Func<TEntity, Boolean>> _OriginalCriteria;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
-        /// Gets the left side specification for this composite element.
+        /// Initializes a new instance of the <see cref="NotSpecification&lt;TEntity&gt;"/> class.
         /// </summary>
+        /// <param name="originalSpecification">The original specification.</param>
         /// <remarks></remarks>
-        public abstract SpecificationBase<TEntity> LeftSideSpecification { get; }
+        public NotSpecification(SpecificationBase<TEntity> originalSpecification)
+        {
+            if (originalSpecification == null)
+            {
+                throw new ArgumentNullException("originalSpecification");
+            }
+
+            _OriginalCriteria = originalSpecification.IsSatisfiedBy();
+        }
 
         /// <summary>
-        /// Gets the right side specification for this composite element.
+        /// Initializes a new instance of the <see cref="NotSpecification&lt;TEntity&gt;"/> class.
         /// </summary>
-        public abstract SpecificationBase<TEntity> RightSideSpecification { get; }
+        /// <param name="originalSpecification">The original specification.</param>
+        /// <remarks></remarks>
+        public NotSpecification(Expression<Func<TEntity, Boolean>> originalSpecification)
+        {
+            if (originalSpecification == null)
+            {
+                throw new ArgumentNullException("originalSpecification");
+            }
+
+            _OriginalCriteria = originalSpecification;
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Returns a boolean expression which determines whether the specification is satisfied.
+        /// </summary>
+        /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
+        public override Expression<Func<TEntity, Boolean>> IsSatisfiedBy()
+        {
+            return Expression.Lambda<Func<TEntity, Boolean>>(Expression.Not(_OriginalCriteria.Body), _OriginalCriteria.Parameters.Single());
+        }
 
         #endregion
     }
