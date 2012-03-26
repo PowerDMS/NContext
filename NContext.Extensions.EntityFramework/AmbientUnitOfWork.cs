@@ -30,7 +30,7 @@ namespace NContext.Extensions.EntityFramework
     /// Defines a unit of work in active use and keeps track of the number of sessions associated with it.
     /// </summary>
     /// <remarks></remarks>
-    internal struct AmbientUnitOfWork
+    internal class AmbientUnitOfWork
     {
         private readonly IEfUnitOfWork _UnitOfWork;
 
@@ -42,7 +42,6 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="unitOfWork">The unit of work.</param>
         /// <remarks></remarks>
         public AmbientUnitOfWork(IEfUnitOfWork unitOfWork)
-            : this()
         {
             _ActiveSessions = 1;
             _UnitOfWork = unitOfWork;
@@ -78,7 +77,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public void Decrement()
         {
-            _ActiveSessions -= 1;
+            _ActiveSessions--;
         }
 
         /// <summary>
@@ -87,7 +86,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public void Increment()
         {
-            _ActiveSessions += 1;
+            _ActiveSessions++;
         }
     }
 }
