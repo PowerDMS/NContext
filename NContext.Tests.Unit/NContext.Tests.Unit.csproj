@@ -46,9 +46,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Users\Daniel.DGDEV\Documents\Microsoft Visual Studio Async CTP\Samples\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.JustMock, Version=2012.1.229.0, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
+    <Reference Include="Telerik.JustMock, Version=2012.1.321.1, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JustMock.2012.1.229.0\lib\Net35\Telerik.JustMock.dll</HintPath>
+      <HintPath>..\packages\JustMock.2012.1.321.0\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

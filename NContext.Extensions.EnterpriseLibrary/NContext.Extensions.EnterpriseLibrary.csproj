@@ -55,9 +55,6 @@
     <Compile Include="EnterpriseLibraryManager.cs" />
     <Compile Include="IManageEnterpriseLibrary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
-    <Compile Include="Security\Cryptography\CryptographyConfigurationBuilder.cs" />
-    <Compile Include="Security\Cryptography\CryptographyManager.cs" />
     <Compile Include="Security\Cryptography\HashProvider.cs" />
     <Compile Include="Security\Cryptography\KeyedHashProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryptionProvider.cs" />
