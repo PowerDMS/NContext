@@ -30,7 +30,7 @@ namespace NContext.Configuration
     /// Defines an application component that has been registered with an ApplicationConfigurationBase.
     /// </summary>
     /// <remarks></remarks>
-    public struct RegisteredApplicationComponent
+    public class RegisteredApplicationComponent
     {
         private readonly Type _RegisteredComponentType;
 

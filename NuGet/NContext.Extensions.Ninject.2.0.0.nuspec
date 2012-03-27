@@ -7,8 +7,8 @@
     <dependencies>
       <dependency id="NContext" version="2.0.0" />
       <dependency id="CommonServiceLocator" version="1.0" />
-      <dependency id="Ninject" version="2.2.1.4" />
       <dependency id="CommonServiceLocator.NinjectAdapter" version="1.0.0.0" />
+      <dependency id="Ninject" version="3.0.0.15" />
     </dependencies>
     <frameworkAssemblies>
       <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="" />
