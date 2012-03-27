@@ -23,7 +23,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel.Composition;
 using System.Net.Http;
 using System.Security.Principal;
 
@@ -32,7 +31,6 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     /// <summary>
     /// Defines a provider role for resource authentication.
     /// </summary>
-    [InheritedExport]
     public interface IProvideResourceAuthentication
     {
         /// <summary>

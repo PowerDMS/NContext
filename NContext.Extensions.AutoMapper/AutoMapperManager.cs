@@ -51,6 +51,10 @@ namespace NContext.Extensions.AutoMapper
 
         #region Properties
 
+        /// <summary>
+        /// Gets the configuration provider.
+        /// </summary>
+        /// <remarks></remarks>
         public IConfigurationProvider ConfigurationProvider
         {
             get
@@ -59,6 +63,10 @@ namespace NContext.Extensions.AutoMapper
             }
         }
 
+        /// <summary>
+        /// Gets the AutoMapper configuration.
+        /// </summary>
+        /// <remarks></remarks>
         public IConfiguration Configuration
         {
             get
@@ -67,6 +75,10 @@ namespace NContext.Extensions.AutoMapper
             }
         }
 
+        /// <summary>
+        /// Gets the AutoMapper mapping engine.
+        /// </summary>
+        /// <remarks></remarks>
         public IMappingEngine MappingEngine
         {
             get
@@ -110,10 +122,6 @@ namespace NContext.Extensions.AutoMapper
 
             var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExports<IConfigureAutoMapper>();
             mappingConfigurations.ForEach(mappingConfiguration => mappingConfiguration.Value.Configure(Configuration));
-            
-#if DEBUG
-            ConfigurationProvider.AssertConfigurationIsValid();
-#endif
 
             _IsConfigured = true;
         }

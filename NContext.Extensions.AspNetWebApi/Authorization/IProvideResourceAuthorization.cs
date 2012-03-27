@@ -23,7 +23,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.ComponentModel.Composition;
 using System.Security.Principal;
 using System.Web.Http.Controllers;
 
@@ -33,7 +32,6 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
     /// Defines a provider role for resource authorization.
     /// </summary>
     /// <remarks></remarks>
-    [InheritedExport]
     public interface IProvideResourceAuthorization
     {
         /// <summary>

@@ -23,7 +23,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Threading;
 using System.Web.Http.Controllers;
@@ -45,7 +44,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// </summary>
         /// <param name="authenticationProviders">The authentication providers.</param>
         /// <remarks></remarks>
-        public AuthenticationActionFilter([ImportMany]IEnumerable<IProvideResourceAuthentication> authenticationProviders)
+        public AuthenticationActionFilter(IEnumerable<IProvideResourceAuthentication> authenticationProviders)
         {
             _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideResourceAuthentication>();
         }

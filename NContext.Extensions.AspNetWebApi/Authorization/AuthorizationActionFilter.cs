@@ -23,7 +23,6 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.ComponentModel.Composition;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -51,7 +50,7 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
         /// </summary>
         /// <param name="authorizationProviders">The authorization providers.</param>
         /// <remarks></remarks>
-        public AuthorizationActionFilter([ImportMany]IEnumerable<IProvideResourceAuthorization> authorizationProviders)
+        public AuthorizationActionFilter(IEnumerable<IProvideResourceAuthorization> authorizationProviders)
         {
             _AuthorizationProviders = authorizationProviders ?? Enumerable.Empty<IProvideResourceAuthorization>();
         }
