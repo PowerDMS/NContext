@@ -46,8 +46,8 @@ namespace NContext.Dto
         IEnumerable<Error> Errors { get; }
 
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current <see cref="Errors"/> passed if <see cref="Errors"/> exist.
-        /// Binds the <see cref="Data"/> into the specified <param name="bindingFunction"></param> if <see cref="Data"/> exists - returning a <see cref="IResponseTransferObject{T2}"/>.
+        /// If <seealso cref="Errors"/> exist, returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current 
+        /// <seealso cref="Errors"/>. Else, binds the <seealso cref="Data"/> into the specified <paramref name="bindingFunction"/>.
         /// </summary>
         /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
         /// <param name="bindingFunction">The binding function.</param>
@@ -71,15 +71,6 @@ namespace NContext.Dto
         /// <returns>If errors exist, returns the instance of IResponseTransferObject&lt;T&gt; returned by <paramref name="continueWithFunction"/>, else returns current instance.</returns>
         /// <remarks></remarks>
         IResponseTransferObject<T> CatchAndContinue(Func<IEnumerable<Error>, IResponseTransferObject<T>> continueWithFunction);
-        
-        /// <summary>
-        /// Invokes the specified <param name="defaultFunction"></param> function if both <see cref="Errors"/> and <see cref="Data"/> are empty.
-        /// </summary>
-        /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
-        /// <param name="defaultFunction">The default response.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObject{T2}"/>.</returns>
-        /// <remarks></remarks>
-        IResponseTransferObject<T2> Default<T2>(Func<IResponseTransferObject<T2>> defaultFunction);
 
         /// <summary>
         /// Invokes the specified action if <see cref="Data"/> exists with no <see cref="Errors"/> present.

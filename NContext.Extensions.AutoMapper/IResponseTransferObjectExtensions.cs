@@ -91,12 +91,7 @@ namespace NContext.Extensions.AutoMapper
                 return new ServiceResponse<T2>(responseTransferObject.Errors);
             }
 
-            if (responseTransferObject.Data.Any())
-            {
-                return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data, mappingOperationOptions ?? (o => {})));
-            }
-
-            throw new InvalidOperationException("Instance of IResponseTransferObject cannot be mapped since it has no data or errors.");
+            return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data, mappingOperationOptions ?? (o => { })));
         }
 
         private static IMappingEngine GetMapper()

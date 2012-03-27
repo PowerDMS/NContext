@@ -253,13 +253,13 @@ namespace NContext
         }
 
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current <see cref="IResponseTransferObject{T}.Errors"/> passed if <see cref="IResponseTransferObject{T}.Errors"/> exist.
-        /// Binds the <see cref="IResponseTransferObject{T}.Data"/> into the specified <param name="bindingFunction"></param> if <see cref="IResponseTransferObject{T}.Data"/> exists - returning a <see cref="IResponseTransferObject{T2}"/>.
+        /// If <seealso cref="Errors"/> exist, returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current 
+        /// <seealso cref="Errors"/>. Else, binds the <seealso cref="Data"/> into the specified <paramref name="bindingFunction"/>.
         /// </summary>
         /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
         /// <param name="bindingFunction">The binding function.</param>
         /// <returns>Instance of <see cref="IResponseTransferObject{T2}"/>.</returns>
-        /// <exception cref="System.InvalidOperationException">Thrown when no errors or data exist.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when no errors or data exist.</exception>
         /// <remarks></remarks>
         public IResponseTransferObject<T2> Bind<T2>(Func<IEnumerable<T>, IResponseTransferObject<T2>> bindingFunction)
         {
@@ -286,18 +286,6 @@ namespace NContext
         public IResponseTransferObject<T> CatchAndContinue(Func<IEnumerable<Error>, IResponseTransferObject<T>> continueWithFunction)
         {
             return _ResponseTransferObject.CatchAndContinue(continueWithFunction);
-        }
-
-        /// <summary>
-        /// Invokes the specified <param name="defaultFunction"></param> function if both <see cref="IResponseTransferObject{T}.Errors"/> and <see cref="IResponseTransferObject{T}.Data"/> are empty.
-        /// </summary>
-        /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
-        /// <param name="defaultFunction">The default response.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObject{T2}"/>.</returns>
-        /// <remarks></remarks>
-        public IResponseTransferObject<T2> Default<T2>(Func<IResponseTransferObject<T2>> defaultFunction)
-        {
-            return _ResponseTransferObject.Default(defaultFunction);
         }
 
         /// <summary>

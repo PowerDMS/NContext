@@ -129,8 +129,8 @@ namespace NContext.Dto
         #region Implementation of IResponseTransferObject<T>
 
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current <see cref="Errors"/> passed if <see cref="Errors"/> exist.
-        /// Binds the <see cref="Data"/> into the specified <param name="bindingFunction"></param> if <see cref="Data"/> exists - returning a <see cref="IResponseTransferObject{T2}"/>.
+        /// If <seealso cref="Errors"/> exist, returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current 
+        /// <seealso cref="Errors"/>. Else, binds the <seealso cref="Data"/> into the specified <paramref name="bindingFunction"/>.
         /// </summary>
         /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
         /// <param name="bindingFunction">The binding function.</param>
@@ -144,13 +144,7 @@ namespace NContext.Dto
                 return new ServiceResponse<T2>(Errors);
             }
 
-            if (Data.Any())
-            {
-                return bindingFunction.Invoke(Data);
-            }
-
-            throw new InvalidOperationException("Invalid use of Bind(). ServiceResponse must contain either data or errors. " +
-                                                "Use Default() to handle situations where both data and errors are empty.");
+            return bindingFunction.Invoke(Data);
         }
 
         /// <summary>
@@ -186,23 +180,6 @@ namespace NContext.Dto
         }
 
         /// <summary>
-        /// Invokes the specified <param name="defaultFunction"></param> function if both <see cref="Errors"/> and <see cref="Data"/> are empty.
-        /// </summary>
-        /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
-        /// <param name="defaultFunction">The default response.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObject{T2}"/>.</returns>
-        /// <remarks></remarks>
-        public virtual IResponseTransferObject<T2> Default<T2>(Func<IResponseTransferObject<T2>> defaultFunction)
-        {
-            if (!Errors.Any() && !Data.Any())
-            {
-                return defaultFunction.Invoke();
-            }
-
-            throw new InvalidOperationException("Invalid use of Default(). Use Bind() when data or errors exist.");
-        }
-
-        /// <summary>
         /// Invokes the specified action if <see cref="Data"/> exists with no <see cref="Errors"/> present.
         /// Returns the current <see cref="IResponseTransferObject{T}"/> instance.
         /// </summary>
@@ -223,7 +200,7 @@ namespace NContext.Dto
 
         #region Implementation of IDisposable
 
-        protected Boolean _IsDisposed;
+        protected Boolean IsDisposed { get; set; }
 
         /// <summary>
         /// Releases unmanaged resources and performs other cleanup operations before the <see cref="ServiceResponse&lt;T&gt;"/> is reclaimed by garbage collection.
@@ -250,7 +227,7 @@ namespace NContext.Dto
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposeManagedResources)
         {
-            if (_IsDisposed)
+            if (IsDisposed)
             {
                 return;
             }
@@ -259,7 +236,7 @@ namespace NContext.Dto
             {
             }
 
-            _IsDisposed = true;
+            IsDisposed = true;
         }
 
         #endregion
