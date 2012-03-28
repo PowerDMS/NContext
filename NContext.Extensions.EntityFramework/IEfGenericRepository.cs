@@ -52,33 +52,23 @@ namespace NContext.Extensions.EntityFramework
         void Add(TEntity entity);
 
         /// <summary>
-        /// Removes an instance of <typeparamref name="TEntity"/> to the unit of work
-        /// to be persisted and deleted by the repository.
+        /// Queries the context based on the provided specification and returns results that
+        /// are only satisfied by the specification.
         /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
-        /// deleted from the database.</param>
-        /// <remarks>Implementors of this method must handle the PersistDelete scneario.</remarks>
-        void Remove(TEntity entity);
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="specification">A <see cref="SpecificationBase{TEntity}"/> instance used to filter results
+        /// that only satisfy the specification.</param>
+        /// <returns>
+        /// A <see cref="IQueryable{TEntity}"/> that can be used to enumerate over the results
+        /// of the query.
+        /// </returns>
+        IQueryable<TEntity> AllMatching(SpecificationBase<TEntity> specification);
 
         /// <summary>
         /// Attaches a detached entity.
         /// </summary>
         /// <param name="entity">The entity instance to attach to the repository.</param>
         void Attach(TEntity entity);
-
-        /// <summary>
-        /// Includes the specified path for eager loading.
-        /// </summary>
-        /// <typeparam name="TProperty">The type of the property.</typeparam>
-        /// <param name="path">The path.</param>
-        /// <remarks></remarks>
-        void Include<TProperty>(Expression<Func<TEntity, TProperty>> path);
-
-        /// <summary>
-        /// Refreshes a entity instance.
-        /// </summary>
-        /// <param name="entity">The entity to refresh.</param>
-        void Refresh(TEntity entity);
 
         /// <summary>
         /// Get all elements of type <typeparamref name="TEntity"/>. 
@@ -93,6 +83,29 @@ namespace NContext.Extensions.EntityFramework
         IQueryable<TEntity> GetPaged<TProperty>(Int32 pageIndex, Int32 pageCount, Expression<Func<TEntity, TProperty>> orderByExpression, Boolean ascending = true);
 
         /// <summary>
+        /// Includes the specified path for eager loading.
+        /// </summary>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="path">The path.</param>
+        /// <remarks></remarks>
+        IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> path);
+
+        /// <summary>
+        /// Refreshes a entity instance.
+        /// </summary>
+        /// <param name="entity">The entity to refresh.</param>
+        void Refresh(TEntity entity);
+
+        /// <summary>
+        /// Removes an instance of <typeparamref name="TEntity"/> to the unit of work
+        /// to be persisted and deleted by the repository.
+        /// </summary>
+        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
+        /// deleted from the database.</param>
+        /// <remarks>Implementors of this method must handle the PersistDelete scneario.</remarks>
+        void Remove(TEntity entity);
+
+        /// <summary>
         /// Queries the context using the database providers native SQL query language and returns
         /// a strongly-typed collection of <typeparamref name="TEntity"/>.
         /// </summary>
@@ -101,19 +114,6 @@ namespace NContext.Extensions.EntityFramework
         /// <returns>IQueryable&lt;TEntity&gt; instance.</returns>
         /// <remarks></remarks>
         IQueryable<TEntity> SqlQuery(String sql, params Object[] parameters);
-
-        /// <summary>
-        /// Queries the context based on the provided specification and returns results that
-        /// are only satisfied by the specification.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="specification">A <see cref="SpecificationBase{TEntity}"/> instance used to filter results
-        /// that only satisfy the specification.</param>
-        /// <returns>
-        /// A <see cref="IQueryable{TEntity}"/> that can be used to enumerate over the results
-        /// of the query.
-        /// </returns>
-        IQueryable<TEntity> AllMatching(SpecificationBase<TEntity> specification);
 
         /// <summary>
         /// Validates the specified entity.

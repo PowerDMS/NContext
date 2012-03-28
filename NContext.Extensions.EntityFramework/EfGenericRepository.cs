@@ -86,47 +86,6 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
-        /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
-        /// to be persisted and deleted by the repository.
-        /// </summary>
-        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
-        /// deleted from the database.</param>
-        /// <remarks>Implementors of this method must handle the PersistDelete scneario.</remarks>
-        public void Remove(TEntity entity)
-        {
-            _Context.Set<TEntity>().Remove(entity);
-        }
-
-        /// <summary>
-        /// Attaches a detached entity.
-        /// </summary>
-        /// <param name="entity">The entity instance to attach back to the repository.</param>
-        public void Attach(TEntity entity)
-        {
-            _Context.Set<TEntity>().Attach(entity);
-        }
-
-        /// <summary>
-        /// Refreshes a entity instance.
-        /// </summary>
-        /// <param name="entity">The entity to refresh.</param>
-        public void Refresh(TEntity entity)
-        {
-            _Context.Entry<TEntity>(entity).Reload();
-        }
-
-        /// <summary>
-        /// Includes the specified path for eager loading.
-        /// </summary>
-        /// <typeparam name="TProperty">The type of the property.</typeparam>
-        /// <param name="path">The path.</param>
-        /// <remarks></remarks>
-        public void Include<TProperty>(Expression<Func<TEntity, TProperty>> path)
-        {
-            _Context.Set<TEntity>().Include(path);
-        }
-
-        /// <summary>
         /// Queries the context based on the provided specification and returns results that
         /// are only satisfied by the specification.
         /// </summary>
@@ -139,7 +98,16 @@ namespace NContext.Extensions.EntityFramework
         /// </returns>
         public IQueryable<TEntity> AllMatching(SpecificationBase<TEntity> specification)
         {
-            return _Context.Set<TEntity>().Where(specification.IsSatisfiedBy()).AsQueryable();
+            return _Context.Set<TEntity>().Where(specification.IsSatisfiedBy());
+        }
+
+        /// <summary>
+        /// Attaches a detached entity.
+        /// </summary>
+        /// <param name="entity">The entity instance to attach back to the repository.</param>
+        public void Attach(TEntity entity)
+        {
+            _Context.Set<TEntity>().Attach(entity);
         }
 
         /// <summary>
@@ -155,29 +123,48 @@ namespace NContext.Extensions.EntityFramework
         public IQueryable<TEntity> GetPaged<TProperty>(Int32 pageIndex, Int32 pageCount, Expression<Func<TEntity, TProperty>> orderByExpression, Boolean ascending = true)
         {
             var set = _Context.Set<TEntity>();
-            if (ascending)
+            if (@ascending)
             {
                 return set.OrderBy(orderByExpression)
                     .Skip(pageCount * pageIndex)
-                    .Take(pageCount)
-                    .AsQueryable();
+                    .Take(pageCount);
             }
 
             return set.OrderByDescending(orderByExpression)
                 .Skip(pageCount * pageIndex)
-                .Take(pageCount)
-                .AsQueryable();
+                .Take(pageCount);
         }
 
         /// <summary>
-        /// Validates the specified entity.
+        /// Includes the specified path for eager loading.
         /// </summary>
-        /// <param name="entity">The entity.</param>
-        /// <returns></returns>
+        /// <typeparam name="TProperty">The type of the property.</typeparam>
+        /// <param name="path">The path.</param>
         /// <remarks></remarks>
-        public DbEntityValidationResult Validate(TEntity entity)
+        public IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> path)
         {
-            return _Context.Entry<TEntity>(entity).GetValidationResult();
+            return _Context.Set<TEntity>().Include(path);
+        }
+
+        /// <summary>
+        /// Refreshes a entity instance.
+        /// </summary>
+        /// <param name="entity">The entity to refresh.</param>
+        public void Refresh(TEntity entity)
+        {
+            _Context.Entry<TEntity>(entity).Reload();
+        }
+
+        /// <summary>
+        /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
+        /// to be persisted and deleted by the repository.
+        /// </summary>
+        /// <param name="entity">An instance of <typeparamref name="TEntity"/> that should be
+        /// deleted from the database.</param>
+        /// <remarks>Implementors of this method must handle the PersistDelete scneario.</remarks>
+        public void Remove(TEntity entity)
+        {
+            _Context.Set<TEntity>().Remove(entity);
         }
 
         /// <summary>
@@ -193,6 +180,17 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
+        /// Validates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        /// <returns></returns>
+        /// <remarks></remarks>
+        public DbEntityValidationResult Validate(TEntity entity)
+        {
+            return _Context.Entry<TEntity>(entity).GetValidationResult();
+        }
+
+        /// <summary>
         /// Gets the <see cref="IQueryable{T}"/> used by <see cref="IEfGenericRepository{TEntity}"/> 
         /// to execute Linq queries.
         /// </summary>
@@ -200,7 +198,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks>
         /// Inheritors of this base class should return a valid non-null <see cref="IQueryable{TEntity}"/> instance.
         /// </remarks>
-        protected IQueryable<TEntity> RepositoryQuery
+        protected virtual IQueryable<TEntity> RepositoryQuery
         {
             get
             {

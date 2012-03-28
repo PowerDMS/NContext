@@ -37,6 +37,10 @@ namespace NContext.Dto
     [DataContract(Name = "ServiceResponseOf{0}")]
     public class ServiceResponse<T> : IResponseTransferObject<T>
     {
+        private IEnumerable<T> _Data;
+
+        private IEnumerable<Error> _Errors;
+
         #region Constructors
         
         /// <summary>
@@ -94,19 +98,39 @@ namespace NContext.Dto
         #endregion
 
         #region Properties
-
+        
         /// <summary>
         /// Gets the <typeparam name="T"/> data.
         /// </summary>
         [DataMember(Order = 1)]
-        public IEnumerable<T> Data { get; private set; }
+        public IEnumerable<T> Data
+        {
+            get
+            {
+                return _Data;
+            }
+            protected set
+            {
+                _Data = value;
+            }
+        }
 
         /// <summary>
         /// Gets the errors.
         /// </summary>
         /// <remarks></remarks>
         [DataMember(Order = 2)]
-        public IEnumerable<Error> Errors { get; private set; }
+        public IEnumerable<Error> Errors
+        {
+            get
+            {
+                return _Errors;
+            }
+            protected set
+            {
+                _Errors = value;
+            }
+        }
 
         #endregion
 

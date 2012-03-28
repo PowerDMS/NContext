@@ -107,6 +107,7 @@
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfigurationBuilder.cs" />
     <Compile Include="Security\Cryptography\CryptographyManager.cs" />
