@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="AutoMapperManager.cs" />
     <Compile Include="IConfigureAutoMapper.cs" />
+    <Compile Include="ObjectExtensions.cs" />
     <Compile Include="IManageAutoMapper.cs" />
     <Compile Include="IResponseTransferObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

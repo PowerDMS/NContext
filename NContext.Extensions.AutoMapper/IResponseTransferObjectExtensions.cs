@@ -45,30 +45,13 @@ namespace NContext.Extensions.AutoMapper
         {
             _MappingEngine = new Lazy<IMappingEngine>(
                 () =>
-                    {
-                        return ServiceLocator.Current
-                            .GetInstance<IManageAutoMapper>()
-                            .ToMaybe()
-                            .Bind(manager => manager.MappingEngine.ToMaybe())
-                            .FromMaybe(Mapper.Engine);
-                    });
-        }
-
-        /// <summary>
-        /// Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
-        /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;() 
-        /// and return a new <see cref="ServiceResponse{T2}"/> with errors.
-        /// </summary>
-        /// <typeparam name="T">The type of data.</typeparam>
-        /// <typeparam name="T2">The type of data to map to.</typeparam>
-        /// <param name="responseTransferObject">The current response transfer object instance.</param>
-        /// <returns>Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
-        /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;() 
-        /// and return a new <see cref="ServiceResponse{T2}"/> with errors.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<T2> Map<T, T2>(this IResponseTransferObject<T> responseTransferObject)
-        {
-            return responseTransferObject.Map<T, T2>(null);
+                {
+                    return ServiceLocator.Current
+                        .GetInstance<IMappingEngine>()
+                        .ToMaybe()
+                        .Bind(mappingEngine => mappingEngine.ToMaybe())
+                        .FromMaybe(Mapper.Engine);
+                });
         }
 
         /// <summary>
@@ -76,22 +59,22 @@ namespace NContext.Extensions.AutoMapper
         /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;()
         /// and return a new <see cref="ServiceResponse{T2}"/> with errors.
         /// </summary>
-        /// <typeparam name="T">The type of data.</typeparam>
-        /// <typeparam name="T2">The type of data to map to.</typeparam>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TTarget">The type of data to map to.</typeparam>
         /// <param name="responseTransferObject">The current response transfer object instance.</param>
         /// <param name="mappingOperationOptions">The mapping operation options.</param>
         /// <returns>Maps the <paramref name="responseTransferObject"/> to a new instance of <see cref="IResponseTransferObject{T2}"/>
         /// using AutoMapper. If errors exist, then this will act similarly to Bind&lt;T2&gt;()
         /// and return a new <see cref="ServiceResponse{T2}"/> with errors.</returns>
         /// <remarks></remarks>
-        public static IResponseTransferObject<T2> Map<T, T2>(this IResponseTransferObject<T> responseTransferObject, Action<IMappingOperationOptions> mappingOperationOptions)
+        public static IResponseTransferObject<TTarget> Map<TSource, TTarget>(this IResponseTransferObject<TSource> responseTransferObject, Action<IMappingOperationOptions> mappingOperationOptions = null)
         {
             if (responseTransferObject.Errors.Any())
             {
-                return new ServiceResponse<T2>(responseTransferObject.Errors);
+                return new ServiceResponse<TTarget>(responseTransferObject.Errors);
             }
 
-            return new ServiceResponse<T2>(GetMapper().Map<IEnumerable<T>, IEnumerable<T2>>(responseTransferObject.Data, mappingOperationOptions ?? (o => { })));
+            return new ServiceResponse<TTarget>(GetMapper().Map<IEnumerable<TTarget>>(responseTransferObject.Data, mappingOperationOptions ?? (o => { })));
         }
 
         private static IMappingEngine GetMapper()

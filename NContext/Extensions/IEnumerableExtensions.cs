@@ -51,6 +51,6 @@ namespace NContext.Extensions
             where TEntity : class, IEntity
         {
             return entities.AsQueryable().Where(specification.IsSatisfiedBy());
-        }
+        } 
     }
 }

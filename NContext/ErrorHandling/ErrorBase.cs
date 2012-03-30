@@ -34,6 +34,10 @@ using NContext.Extensions;
 
 namespace NContext.ErrorHandling
 {
+    using System.Collections.Generic;
+
+    using NContext.Dto;
+
     /// <summary>
     /// Defines an abstraction for localized application errors.
     /// </summary>
@@ -65,6 +69,23 @@ namespace NContext.ErrorHandling
             ErrorType = GetType();
             HttpStatusCode = httpStatusCode;
             SetErrorMessage(localizationKey, errorMessageParameters);
+        }
+
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="NContext.ErrorHandling.ErrorBase"/> to <see cref="NContext.Dto.Error"/>.
+        /// </summary>
+        /// <param name="error">The error.</param>
+        /// <returns>The result of the conversion.</returns>
+        /// <remarks></remarks>
+        public static implicit operator Error(ErrorBase error)
+        {
+            return new Error(
+                error.ErrorType.Name,
+                new List<String>
+                    {
+                        error.Message
+                    },
+                error.HttpStatusCode.ToString());
         }
 
         #endregion
