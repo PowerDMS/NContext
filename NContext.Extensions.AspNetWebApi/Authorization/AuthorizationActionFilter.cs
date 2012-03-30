@@ -35,7 +35,7 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
     /// <summary>
     /// Defines an <see cref="ActionFilterAttribute"/> for resource operation authorization.
     /// </summary>
-    public class AuthorizationActionFilter : ActionFilterAttribute
+    public class AuthorizationActionFilter : AuthorizationFilterAttribute
     {
         #region Fields
 
@@ -81,11 +81,9 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
         
         #region Overrides of ActionFilterAttribute
 
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        public override void OnAuthorization(HttpActionContext actionContext)
         {
             AuthorizeRequest(actionContext);
-
-            base.OnActionExecuting(actionContext);
         }
 
         #endregion
