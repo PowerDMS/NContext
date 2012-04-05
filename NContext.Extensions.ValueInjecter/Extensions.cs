@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.cs">
+// <copyright file="Extensions.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -34,8 +34,38 @@ namespace NContext.Extensions.ValueInjecter
     /// Defines a static class for providing IEnumerable type extension methods.
     /// </summary>
     /// <remarks></remarks>
-    public static class IEnumerableExtensions
+    public static class Extensions
     {
+        /// <summary>
+        /// Injects value from <paramref name="source"/> to <paramref name="target"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>Instance of <typeparamref name="T"/>.</returns>
+        /// <remarks></remarks>
+        public static T InjectInto<T>(this Object target, Object source) where T : class
+        {
+            return target.InjectInto<T, LoopValueInjection>(source);
+        }
+
+        /// <summary>
+        /// Injects value from <paramref name="source"/> to <paramref name="target"/> 
+        /// using the specified <see cref="ValueInjection"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>Instance of <typeparamref name="T"/>.</returns>
+        /// <remarks></remarks>
+        public static T InjectInto<T, TValueInjection>(this Object target, Object source)
+            where T : class
+            where TValueInjection : class, IValueInjection, new()
+        {
+            return target.InjectFrom<TValueInjection>(source) as T;
+        }
+
         /// <summary>
         /// Projects an <see cref="IEnumerable&lt;Object&gt;"/> into an enumerable of the specified type <typeparamref name="T"/>.
         /// </summary>

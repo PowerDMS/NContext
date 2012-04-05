@@ -22,12 +22,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Security.Principal;
-using System.Web.Http.Controllers;
-
 namespace NContext.Extensions.AspNetWebApi.Authorization
 {
+    using System;
+    using System.Security.Principal;
+    using System.Web.Http.Controllers;
+
     /// <summary>
     /// Defines a provider role for resource authorization.
     /// </summary>
@@ -38,9 +38,9 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
         /// Authorizes the specified <see cref="IPrincipal"/> against the specified <see cref="HttpActionDescriptor"/>.
         /// </summary>
         /// <param name="principal">The principal.</param>
-        /// <param name="actionDescriptor">The action descriptor to authorize.</param>
+        /// <param name="actionContext">The action context.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        Boolean Authorize(IPrincipal principal, HttpActionDescriptor actionDescriptor);
+        Boolean Authorize(IPrincipal principal, HttpActionContext actionContext);
     }
 }

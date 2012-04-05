@@ -106,6 +106,7 @@
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\HashSetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
@@ -129,14 +130,13 @@
     <Compile Include="Security\SecurityConfigurationBuilder.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
-    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ICacheManagerExtensions.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectCacheExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Utilities\CryptographyUtility.cs" />
   </ItemGroup>
   <ItemGroup>

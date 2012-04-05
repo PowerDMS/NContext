@@ -39,7 +39,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IResponseTransferObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueInjecterExtensions.cs" />

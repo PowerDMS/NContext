@@ -75,5 +75,46 @@ namespace NContext.Extensions.ValueInjecter
                                                                          .FromMaybe(default(TDto))).ToMaybe())
                                                .FromMaybe(Enumerable.Empty<TDto>()));
         }
+
+        /// <summary>
+        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/> using <see cref="LoopValueInjection"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TDto">The type of the dto.</typeparam>
+        /// <param name="response">The response.</param>
+        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
+        /// <remarks></remarks>
+        public static IResponseTransferObject<TDto> Translate<T, TDto>(this IResponseTransferObject<T> response) 
+            where TDto : class
+        {
+            return response.Translate<T, TDto, LoopValueInjection>();
+        }
+
+        /// <summary>
+        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/>
+        /// using the specified <typeparamref name="TValueInjection"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TDto">The type of the dto.</typeparam>
+        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
+        /// <param name="response">The response.</param>
+        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
+        /// <remarks></remarks>
+        public static IResponseTransferObject<TDto> Translate<T, TDto, TValueInjection>(this IResponseTransferObject<T> response)
+            where TDto : class
+            where TValueInjection : class, IValueInjection, new()
+        {
+            if (response.Errors.Any())
+            {
+                return new ServiceResponse<TDto>(response.Errors);
+            }
+
+            return new ServiceResponse<TDto>(
+                response.Data
+                        .Select(datum => 
+                            Activator.CreateInstance<TDto>()
+                                     .InjectFrom<TValueInjection>(datum))
+                        .Cast<TDto>());
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AuthenticationActionFilter.cs">
+// <copyright file="AuthenticationMessageHandler.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,55 +22,62 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-
 namespace NContext.Extensions.AspNetWebApi.Authentication
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web.Http.Filters;
+    using System.Web.Http.Hosting;
+
     /// <summary>
     /// Defines an <see cref="ActionFilterAttribute"/> for authentication.
     /// </summary>
-    public class AuthenticationActionFilter : ActionFilterAttribute
+    public class AuthenticationMessageHandler : DelegatingHandler
     {
         private readonly IEnumerable<IProvideResourceAuthentication> _AuthenticationProviders;
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AuthenticationActionFilter"/> class.
+        /// Initializes a new instance of the <see cref="AuthenticationMessageHandler"/> class.
         /// </summary>
         /// <param name="authenticationProviders">The authentication providers.</param>
         /// <remarks></remarks>
-        public AuthenticationActionFilter(IEnumerable<IProvideResourceAuthentication> authenticationProviders)
+        public AuthenticationMessageHandler(IEnumerable<IProvideResourceAuthentication> authenticationProviders)
         {
             _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideResourceAuthentication>();
         }
 
         #endregion
 
-        #region Overrides of ActionFilterAttribute
+        #region Overrides of DelegatingHandler
 
         /// <summary>
-        /// Called when [action executing].
+        /// Sends an HTTP request to the inner handler to send to the server as an asynchronous operation.
         /// </summary>
-        /// <param name="actionContext">The action context.</param>
-        /// <remarks></remarks>
-        public override void OnActionExecuting(HttpActionContext actionContext)
+        /// <returns>
+        /// Returns <see cref="T:System.Threading.Tasks.Task`1"/>. The task object representing the asynchronous operation.
+        /// </returns>
+        /// <param name="request">The HTTP request message to send to the server.</param><param name="cancellationToken">A cancellation token to cancel operation.</param><exception cref="T:System.ArgumentNullException">The <paramref name="request"/> was null.</exception>
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var input = actionContext.Request;
-
-            _AuthenticationProviders
-                .FirstOrDefault(p => p.CanAuthenticate(input)).ToMaybe()
-                .Bind(provider => provider.Authenticate(input).ToMaybe())
-                .Let(principal =>
+            return _AuthenticationProviders
+                .FirstOrDefault(p => p.CanAuthenticate(request)).ToMaybe()
+                .Bind(provider => provider.Authenticate(request).ToMaybe())
+                .Bind(principal =>
                     {
-                        Thread.CurrentPrincipal = principal;
-                    });
-
-            base.OnActionExecuting(actionContext);
+                        request.Properties[HttpPropertyKeys.UserPrincipalKey] = principal;
+                        return base.SendAsync(request, cancellationToken).ToMaybe();
+                    })
+                .FromMaybe(Task<HttpResponseMessage>.Factory.StartNew(
+                           () =>
+                           {
+                               return new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                           }));
         }
 
         #endregion

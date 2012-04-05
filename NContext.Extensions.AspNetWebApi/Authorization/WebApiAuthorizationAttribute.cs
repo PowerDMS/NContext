@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AuthorizationActionFilter.cs">
+// <copyright file="WebApiAuthorizationAttribute.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,62 +18,43 @@
 // </copyright>
 //
 // <summary>
-//   
+//   Defines an AuthorizationFilterAttribute for resource authorization.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Web.Http.Controllers;
-using System.Web.Http.Filters;
-
 namespace NContext.Extensions.AspNetWebApi.Authorization
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Security.Principal;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Filters;
+
     /// <summary>
-    /// Defines an <see cref="ActionFilterAttribute"/> for resource operation authorization.
+    /// Defines an <see cref="AuthorizationFilterAttribute"/> for resource authorization.
     /// </summary>
-    public class AuthorizationActionFilter : AuthorizationFilterAttribute
+    public class WebApiAuthorizationAttribute : AuthorizationFilterAttribute
     {
-        #region Fields
-
-        private readonly IEnumerable<IProvideResourceAuthorization> _AuthorizationProviders;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AuthorizationActionFilter"/> class.
-        /// </summary>
-        /// <param name="authorizationProviders">The authorization providers.</param>
-        /// <remarks></remarks>
-        public AuthorizationActionFilter(IEnumerable<IProvideResourceAuthorization> authorizationProviders)
-        {
-            _AuthorizationProviders = authorizationProviders ?? Enumerable.Empty<IProvideResourceAuthorization>();
-        }
-
-        #endregion
-
         #region Methods
 
         /// <summary>
         /// Authorizes the current request using the providers injected via constructor.
         /// </summary>
         /// <remarks></remarks>
-        protected virtual void AuthorizeRequest(HttpActionContext actionContext)
+        protected virtual void AuthorizeRequest(IPrincipal principal, HttpActionContext actionContext)
         {
-            var currentPrincipal = Thread.CurrentPrincipal;
-            if (!currentPrincipal.Identity.IsAuthenticated)
+            var unauthorizedResponseMessage = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+            if (principal == null)
             {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                actionContext.Response = unauthorizedResponseMessage;
+                return;
             }
 
-            if (_AuthorizationProviders.Any(provider => !provider.Authorize(currentPrincipal, actionContext.ActionDescriptor)))
+            if (!principal.Identity.IsAuthenticated)
             {
-                actionContext.Response = new HttpResponseMessage(HttpStatusCode.Unauthorized);
+                actionContext.Response = unauthorizedResponseMessage;
             }
         }
 
@@ -81,9 +62,19 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
         
         #region Overrides of ActionFilterAttribute
 
-        public override void OnAuthorization(HttpActionContext actionContext)
+        /// <summary>
+        /// Called when [authorization].
+        /// </summary>
+        /// <param name="actionContext">The action context.</param>
+        /// <remarks></remarks>
+        public sealed override void OnAuthorization(HttpActionContext actionContext)
         {
-            AuthorizeRequest(actionContext);
+            AuthorizeRequest(GetPrincipal(actionContext.Request), actionContext);
+        }
+
+        private IPrincipal GetPrincipal(HttpRequestMessage requestMessage)
+        {
+            return requestMessage.GetUserPrincipal() ?? new GenericPrincipal(new GenericIdentity(String.Empty), null);
         }
 
         #endregion

@@ -95,6 +95,16 @@ namespace NContext.Dto
             Errors = errors ?? Enumerable.Empty<Error>();
         }
 
+        /// <summary>
+        /// For deserialization purposes only.
+        /// </summary>
+        /// <remarks></remarks>
+        private ServiceResponse()
+        {
+            Data = Enumerable.Empty<T>();
+            Errors = Enumerable.Empty<Error>();
+        }
+
         #endregion
 
         #region Properties
