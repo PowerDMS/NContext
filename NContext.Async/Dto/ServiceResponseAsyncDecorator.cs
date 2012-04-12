@@ -23,20 +23,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 
-using NContext.Dto;
 using NContext.Extensions;
 
-namespace NContext
+namespace NContext.Dto
 {
     /// <summary>
     /// Defines asynchronous support for ServiceResponse.
     /// </summary>
+    [DataContract(Name = "ServiceResponseOf{0}")]
     public class ServiceResponseAsyncDecorator<T> : IResponseTransferObjectAsync<T>
     {
         #region Fields
@@ -89,10 +91,10 @@ namespace NContext
         #endregion
         
         #region Implementation of IResponseTransferObjectAsync<T>
-
+        
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current <see cref="IResponseTransferObject{T}.Errors"/> passed if <see cref="IResponseTransferObject{T}.Errors"/> exist.
-        /// Binds the <see cref="IResponseTransferObject{T}.Data"/> into the specified <paramref name="bindingFunction" /> if <see cref="IResponseTransferObject{T}.Data"/> exists - returning a <see cref="IResponseTransferObject{T2}"/>.
+        /// If <seealso cref="IResponseTransferObject{T}.Errors"/> exist, returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current 
+        /// <seealso cref="IResponseTransferObject{T}.Errors"/>. Else, binds the data into the specified <paramref name="bindingFunction"/>.
         /// </summary>
         /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
         /// <param name="bindingFunction">The binding function.</param>
@@ -106,13 +108,7 @@ namespace NContext
                 return new ServiceResponse<T2>(Errors);
             }
 
-            if (Data.Any())
-            {
-                return bindingFunction.Invoke(Data, _Task, _CancellationTokenSource);
-            }
-
-            throw new InvalidOperationException("Invalid use of Bind(). ServiceResponse must contain either data or errors. " +
-                                                "Use Default() to handle situations where both data and errors are empty.");
+            return bindingFunction.Invoke(Data, _Task, _CancellationTokenSource);
         }
 
         /// <summary>
@@ -163,7 +159,7 @@ namespace NContext
         /// <remarks></remarks>
         public IResponseTransferObject<T> Let(Action<IEnumerable<T>, Task, CancellationTokenSource> action)
         {
-            if (!Errors.Any() && Data.Any())
+            if (!Errors.Any())
             {
                 action.Invoke(Data, _Task, _CancellationTokenSource);
             }
@@ -181,7 +177,7 @@ namespace NContext
         /// <remarks></remarks>
         public IResponseTransferObjectAsync<T> LetParallel(Int32 maxDegreeOfParallelism = 1, params Action<IEnumerable<T>>[] actions)
         {
-            if (!Errors.Any() && Data.Any())
+            if (!Errors.Any())
             {
                 var cancellationTokenSource = new CancellationTokenSource();
                 var task = Task.Factory.StartNew(
@@ -210,7 +206,8 @@ namespace NContext
             return this;
         }
 
-        public IResponseTransferObject<T> Post<TTargetBlock>(TTargetBlock targetBlock, ParallelOptions parallelOptions = null) where TTargetBlock : ITargetBlock<T>
+        public IResponseTransferObjectAsync<T> Post<TTargetBlock>(TTargetBlock targetBlock) 
+            where TTargetBlock : ITargetBlock<T>
         {
             if (targetBlock == null)
             {
@@ -219,10 +216,23 @@ namespace NContext
 
             if (!Errors.Any() && Data.Any())
             {
-                Parallel.ForEach(Data, parallelOptions ?? new ParallelOptions(), data => targetBlock.Post(data));
+                var cancellationTokenSource = new CancellationTokenSource();
+                Task.Factory.StartNew(
+                    () =>
+                        {
+                            foreach (var value in Data)
+                            {
+                                targetBlock.Post(value);
+                            }
+
+                            targetBlock.Complete();
+                        },
+                    cancellationTokenSource.Token);
+
+                return new ServiceResponseAsyncDecorator<T>(_ResponseTransferObject, targetBlock.Completion, cancellationTokenSource);
             }
 
-            return _ResponseTransferObject;
+            return this;
         }
 
         #endregion
@@ -232,11 +242,12 @@ namespace NContext
         /// <summary>
         /// Gets the <typeparam name="T"/> data.
         /// </summary>
+        [DataMember(Order = 1)]
         public IEnumerable<T> Data
         {
             get
             {
-                return _ResponseTransferObject.Data;
+                return _ResponseTransferObject;
             }
         }
 
@@ -244,6 +255,7 @@ namespace NContext
         /// Gets the errors.
         /// </summary>
         /// <remarks></remarks>
+        [DataMember(Order = 2)]
         public IEnumerable<Error> Errors
         {
             get
@@ -289,7 +301,7 @@ namespace NContext
         }
 
         /// <summary>
-        /// Invokes the specified action if <see cref="IResponseTransferObject{T}.Data"/> exists with no <see cref="IResponseTransferObject{T}.Errors"/> present.
+        /// Invokes the specified action if data exists with no <see cref="IResponseTransferObject{T}.Errors"/> present.
         /// Returns the current <see cref="IResponseTransferObject{T}"/> instance.
         /// </summary>
         /// <param name="action">The action to invoke.</param>
@@ -298,6 +310,34 @@ namespace NContext
         public IResponseTransferObject<T> Let(Action<IEnumerable<T>> action)
         {
             return _ResponseTransferObject.Let(action);
+        }
+
+        #endregion
+
+        #region Implementation of IEnumerable
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return Data.GetEnumerator();
         }
 
         #endregion

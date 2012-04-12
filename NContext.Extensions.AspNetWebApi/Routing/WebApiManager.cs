@@ -35,7 +35,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
     /// <summary>
     /// Defines an application-level manager for configuring WCF service routes.
     /// </summary>
-    public class WebApiRoutingManager : IManageWebApiRouting
+    public class WebApiManager : IManageWebApi
     {
         #region Fields
 
@@ -54,12 +54,12 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiRoutingManager"/> class.
-        /// Prevents a default instance of the <see cref="WebApiRoutingManager"/> class from being created.
+        /// Initializes a new instance of the <see cref="WebApiManager"/> class.
+        /// Prevents a default instance of the <see cref="WebApiManager"/> class from being created.
         /// </summary>
         /// <param name="webApiConfiguration">The routing configuration.</param>
         /// <remarks></remarks>
-        public WebApiRoutingManager(WebApiConfiguration webApiConfiguration)
+        public WebApiManager(WebApiConfiguration webApiConfiguration)
         {
             if (webApiConfiguration == null)
             {
@@ -67,6 +67,11 @@ namespace NContext.Extensions.AspNetWebApi.Routing
             }
 
             _WebApiConfiguration = webApiConfiguration;
+            
+            if (webApiConfiguration.IsSelfHosted)
+            {
+                _SelfHostServer = new Lazy<HttpSelfHostServer>(() => new HttpSelfHostServer(WebApiConfiguration.HttpSelfHostConfiguration));
+            }
         }
 
         #endregion
@@ -95,7 +100,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// Gets the service routes registered.
         /// </summary>
         /// <remarks></remarks>
-        public ICollection<Route> ServiceRoutes
+        public ICollection<Route> HttpRoutes
         {
             get
             {
@@ -140,30 +145,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         #endregion
 
         #region Methods
-
-        /// <summary>
-        /// Registers the service route.
-        /// </summary>
-        /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
-        /// <remarks></remarks>
-        public void RegisterServiceRoute(String routeName, String routeTemplate)
-        {
-            RegisterServiceRoute(routeName, routeTemplate, null, null);
-        }
-
-        /// <summary>
-        /// Registers the service route.
-        /// </summary>
-        /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
-        /// <param name="defaults">The defaults.</param>
-        /// <remarks></remarks>
-        public void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults)
-        {
-            RegisterServiceRoute(routeName, routeTemplate, defaults, null);
-        }
-
+        
         /// <summary>
         /// Registers the service route.
         /// </summary>
@@ -172,9 +154,9 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// <param name="defaults">The defaults.</param>
         /// <param name="constraints">The constraints.</param>
         /// <remarks></remarks>
-        public virtual void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults, Object constraints)
+        public virtual void RegisterHttpRoute(String routeName, String routeTemplate, Object defaults = null, Object constraints = null)
         {
-            ServiceRoutes.Add(new Route(routeName, routeTemplate, defaults, constraints));
+            HttpRoutes.Add(new Route(routeName, routeTemplate, defaults, constraints));
         }
 
         /// <summary>
@@ -182,23 +164,23 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// </summary>
         protected virtual void CreateRoutes()
         {
-            var serviceRouteCreatedActions = _CompositionContainer.GetExports<IRunWhenAServiceRouteIsCreated>();
-            if (_WebApiConfiguration.IsSelfHosted)
+            var serviceRouteCreatedActions = CompositionContainer.GetExports<IRunWhenAWebApiRouteIsMapped>();
+            if (WebApiConfiguration.IsSelfHosted)
             {
-                _ServiceRoutes.Value.ForEach(
+                HttpRoutes.ForEach(
                     route =>
                         {
-                            _WebApiConfiguration.HttpSelfHostConfiguration.Routes
+                            SelfHostServer.Configuration.Routes
                                 .MapHttpRoute(route.RouteName, route.RouteTemplate, route.Defaults, route.Constraints);
 
                             serviceRouteCreatedActions.ForEach(createdAction => createdAction.Value.Run(route));
                         });
 
-                _SelfHostServer.Value.OpenAsync().Wait();
+                SelfHostServer.OpenAsync().Wait();
             }
             else
             {
-                _ServiceRoutes.Value.ForEach(
+                HttpRoutes.ForEach(
                     route =>
                         {
                             GlobalConfiguration
@@ -222,30 +204,27 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// <remarks></remarks>
         public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
-            if (!_IsConfigured)
+            if (!IsConfigured)
             {
-                _CompositionContainer = applicationConfiguration.CompositionContainer;
-                if (_WebApiConfiguration.IsSelfHosted)
+                CompositionContainer = applicationConfiguration.CompositionContainer;
+
+                if (!WebApiConfiguration.IsSelfHosted)
                 {
-                    _SelfHostServer = new Lazy<HttpSelfHostServer>(() => new HttpSelfHostServer(_WebApiConfiguration.HttpSelfHostConfiguration));
-                }
-                else
-                {
-                    if (_WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
+                    if (WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
                     {
-                        _WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(GlobalConfiguration.Configuration);
+                        WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(GlobalConfiguration.Configuration);
                     }
                 }
 
-                var serviceConfigurables = _CompositionContainer.GetExports<IConfigureWebApiRoutes>();
+                var serviceConfigurables = _CompositionContainer.GetExports<IConfigureWebApi>();
                 foreach (var serviceConfigurable in serviceConfigurables)
                 {
-                    serviceConfigurable.Value.RegisterServiceRoutes(this);
+                    serviceConfigurable.Value.Configure(this);
                 }
 
                 CreateRoutes();
 
-                _IsConfigured = true;
+                IsConfigured = true;
             }
         }
 

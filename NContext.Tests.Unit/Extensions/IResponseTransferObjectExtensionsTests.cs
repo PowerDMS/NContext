@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 using NContext.Dto;
 using NContext.Extensions;
@@ -56,7 +57,7 @@ namespace NContext.Tests.Unit.Extensions
             var taskStatus = TaskStatus.Created;
             var stubData = Mock.Create<FakeObject>();
             var mockResponse = new ServiceResponse<FakeObject>(stubData);
-            mockResponse.Arrange(response => response.Data).Returns(new[] { stubData });
+            Mock.NonPublic.Arrange<IEnumerable<FakeObject>>(mockResponse, "Data").Returns(new[] { stubData });
             mockResponse.Arrange(response => response.Let(Arg.IsAny<Action<IEnumerable<FakeObject>>>())).IgnoreArguments().CallOriginal();
 
             mockResponse.LetParallel(2,
@@ -83,6 +84,42 @@ namespace NContext.Tests.Unit.Extensions
 
             //Assert.That(activeThreadId, Is.Not.EqualTo(actionThreadId));
             //Assert.That(taskStatus == TaskStatus.RanToCompletion);
+        }
+
+        [Test]
+        public void Bla()
+        {
+            var actionBlock = new ActionBlock<Int32>(i =>
+                {
+                    Console.WriteLine(i);
+                },
+                new ExecutionDataflowBlockOptions { MaxDegreeOfParallelism = 4 });
+            var transformBlock = new TransformBlock<String, Int32>(s =>
+                {
+                    Thread.Sleep(500);
+                    return Convert.ToInt32(s);
+                }, 
+                new ExecutionDataflowBlockOptions{ MaxDegreeOfParallelism = 4 });
+
+            transformBlock.LinkTo(actionBlock);
+
+            var response = new ServiceResponse<String>(new[]
+                {
+                    "1","1","1","1",
+                    "2","2","2","2",
+                    "3","3","3","3",
+                    "4","4","4","4",
+                    "5","5","5","5"
+                });
+
+            new ServiceResponseAsyncDecorator<String>(response)
+                .Post(transformBlock)
+                .Let(data =>
+                    {
+                        Console.WriteLine("Im done.");
+                        Task.WaitAll(transformBlock.Completion);
+                    });
+
         }
 
         #endregion

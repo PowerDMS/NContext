@@ -18,20 +18,21 @@
 // </copyright>
 //
 // <summary>
-//   Defines an interface contract for the UnitOfWork pattern.
+//   Defines an Entity Framework unit of work.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+
+using NContext.Data;
 
 namespace NContext.Extensions.EntityFramework
 {
     /// <summary>
-    /// Defines an interface contract for the UnitOfWork pattern.
+    /// Defines an Entity Framework unit of work.
     /// </summary>
-    public interface IEfUnitOfWork : IDisposable
+    public interface IEfUnitOfWork : IUnitOfWork
     {
         /// <summary>
         /// Gets the context container.
@@ -40,17 +41,7 @@ namespace NContext.Extensions.EntityFramework
         IContextContainer ContextContainer { get; }
 
         /// <summary>
-        /// Commits the changes in each context to the database.
-        /// </summary>
-        void Commit();
-
-        /// <summary>
-        /// Rolls back each context within the unit of work.
-        /// </summary>
-        void Rollback();
-
-        /// <summary>
-        /// Validates the contexts.
+        /// Validates each context in the container.
         /// </summary>
         /// <returns></returns>
         /// <remarks></remarks>

@@ -78,6 +78,7 @@
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
@@ -92,7 +93,9 @@
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="Configuration\RegisteredApplicationComponent.cs" />
+    <Compile Include="Data\AmbientUnitOfWork.cs" />
     <Compile Include="Data\IEntity.cs" />
+    <Compile Include="Data\IUnitOfWork.cs" />
     <Compile Include="Data\Specifications\AdHocSpecification.cs" />
     <Compile Include="Data\Specifications\AndSpecification.cs" />
     <Compile Include="Data\Specifications\CompositeSpecification.cs" />
@@ -102,6 +105,9 @@
     <Compile Include="Data\Specifications\ParametersRebinder.cs" />
     <Compile Include="Data\Specifications\SpecificationBase.cs" />
     <Compile Include="Data\Specifications\TrueSpecification.cs" />
+    <Compile Include="Data\UnitOfWorkBase.cs" />
+    <Compile Include="Data\Persistence.cs" />
+    <Compile Include="Data\UnitOfWorkScope.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />

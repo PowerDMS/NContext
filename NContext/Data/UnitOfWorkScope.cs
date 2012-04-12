@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnitOfWorkController.cs">
-//   Copyright (c) 2012
+// <copyright file="UnitOfWorkScope.cs">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,37 +18,44 @@
 // </copyright>
 //
 // <summary>
-//   Defines a controller for management of active units of work.
+//   
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
 using System.Collections.Generic;
-using System.Threading;
+using System.Linq;
 
-namespace NContext.Extensions.EntityFramework
+using NContext.Extensions;
+
+namespace NContext.Data
 {
     /// <summary>
-    /// Defines a controller for management of active units of work.
+    /// 
     /// </summary>
-    /// <remarks></remarks>
-    internal static class UnitOfWorkController
+    public class UnitOfWorkScope : UnitOfWorkBase
     {
-        private static readonly ThreadLocal<Stack<AmbientUnitOfWork>> _AmbientUnitsOfWork =
-            new ThreadLocal<Stack<AmbientUnitOfWork>>(() => new Stack<AmbientUnitOfWork>());
+        private readonly HashSet<IUnitOfWork> _UnitsOfWork = new HashSet<IUnitOfWork>();
 
-        /// <summary>
-        /// Gets the ambient <see cref="IEfUnitOfWork"/>.
-        /// </summary>
-        /// <value>The ambient unit of work.</value>
-        /// <remarks></remarks>
-        public static IEfUnitOfWork AmbientUnitOfWork
+        private volatile Boolean _IsDisposing;
+
+        protected internal Boolean IsDisposing
         {
             get
             {
-                return _AmbientUnitsOfWork.Value.Count > 0
-                    ? _AmbientUnitsOfWork.Value.Peek().UnitOfWork
-                    : null;
+                return _IsDisposing;
+            }
+            protected set
+            {
+                _IsDisposing = value;
+            }
+        }
+        
+        protected HashSet<IUnitOfWork> UnitsOfWork
+        {
+            get
+            {
+                return _UnitsOfWork;
             }
         }
 
@@ -57,39 +64,56 @@ namespace NContext.Extensions.EntityFramework
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
         /// <remarks></remarks>
-        public static void AddUnitOfWork(IEfUnitOfWork unitOfWork)
+        public void AddUnitOfWork(IUnitOfWork unitOfWork)
         {
-            _AmbientUnitsOfWork.Value.Push(new AmbientUnitOfWork(unitOfWork));
-        }
-
-        /// <summary>
-        /// Retains this instance.
-        /// </summary>
-        /// <remarks></remarks>
-        public static void Retain()
-        {
-            var ambientUnitOfWork = _AmbientUnitsOfWork.Value.Peek();
-            ambientUnitOfWork.Increment();
-        }
-
-        /// <summary>
-        /// Disposes the unit of work.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public static Boolean DisposeUnitOfWork()
-        {
-            var ambientUnitOfWork = _AmbientUnitsOfWork.Value.Peek();
-            if (ambientUnitOfWork.ActiveSessions > 1)
+            if (UnitsOfWork.Any(uow => uow.Id == unitOfWork.Id))
             {
-                ambientUnitOfWork.Decrement();
-
-                return false;
+                return;
             }
 
-            _AmbientUnitsOfWork.Value.Pop();
-
-            return true;
+            UnitsOfWork.Add(unitOfWork);
         }
+
+        #region Overrides of UnitOfWorkBase
+
+        /// <summary>
+        /// Commits the changes within the persistence context.
+        /// </summary>
+        /// <remarks></remarks>
+        protected override void CommitChanges()
+        {
+            UnitsOfWork.ForEach(uow => uow.Commit());
+        }
+
+        /// <summary>
+        /// Rollback the transaction (if applicable).
+        /// </summary>
+        protected override void Rollback()
+        {
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
+        protected override void Dispose(Boolean disposeManagedResources)
+        {
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            if (disposeManagedResources)
+            {
+                IsDisposing = true;
+
+                UnitsOfWork.ForEach(uow => uow.Dispose());
+
+                IsDisposing = false;
+                IsDisposed = true;
+            }
+        }
+
+        #endregion
     }
 }

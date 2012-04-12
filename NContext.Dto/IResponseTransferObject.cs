@@ -32,13 +32,8 @@ namespace NContext.Dto
     /// </summary>
     /// <typeparam name="T">Type of data to return.</typeparam>
     /// <remarks></remarks>
-    public interface IResponseTransferObject<T> : IDisposable
+    public interface IResponseTransferObject<T> : IDisposable, IEnumerable<T>
     {
-        /// <summary>
-        /// Gets the <typeparam name="T"/> data.
-        /// </summary>
-        IEnumerable<T> Data { get; }
-
         /// <summary>
         /// Gets the errors.
         /// </summary>

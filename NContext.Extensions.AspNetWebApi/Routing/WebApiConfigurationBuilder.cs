@@ -97,9 +97,9 @@ namespace NContext.Extensions.AspNetWebApi.Routing
             if (!_IsConfigured)
             {
                 Builder.ApplicationConfiguration
-                    .RegisterComponent<IManageWebApiRouting>(
+                    .RegisterComponent<IManageWebApi>(
                         () => 
-                            new WebApiRoutingManager(
+                            new WebApiManager(
                                 new WebApiConfiguration(_AspNetHttpConfigurationDelegate, _HttpSelfHostConfigurationFactory)));
 
                 _IsConfigured = true;

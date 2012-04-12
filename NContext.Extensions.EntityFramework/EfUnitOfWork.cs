@@ -29,20 +29,18 @@ using System.Data.Entity.Validation;
 using System.Linq;
 using System.Transactions;
 
+using NContext.Data;
+
 namespace NContext.Extensions.EntityFramework
 {
     /// <summary>
-    /// Defines an Entity Framework 4 implementation of IEfUnitOfWork pattern.
+    /// Defines an Entity Framework 4 implementation of IEfUnitOfWork.
     /// </summary>
-    public class EfUnitOfWork : IEfUnitOfWork
+    public class EfUnitOfWork : UnitOfWorkBase, IEfUnitOfWork
     {
         #region Fields
 
         private readonly IContextContainer _ContextContianer;
-
-        private readonly TransactionScopeOption _TransactionScopeOption;
-
-        private Boolean _IsDisposed;
 
         #endregion
 
@@ -55,14 +53,41 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="transactionScopeOption">The transaction scope option.</param>
         /// <remarks></remarks>
         protected internal EfUnitOfWork(IContextContainer contextContianer, TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
+            : base(transactionScopeOption)
         {
-            if (contextContianer == null)
-            {
-                throw new ArgumentNullException("contextContianer", "Context container cannot be null.");
-            }
-
             _ContextContianer = contextContianer;
-            _TransactionScopeOption = transactionScopeOption;
+        }
+
+        #endregion
+
+        #region Overrides of UnitOfWorkBase
+
+        /// <summary>
+        /// Commits the changes within the persistence context.
+        /// </summary>
+        /// <remarks></remarks>
+        protected override void CommitChanges()
+        {
+            foreach (var context in ContextContainer.Contexts)
+            {
+                context.SaveChanges();
+            }
+        }
+
+        /// <summary>
+        /// Rolls back each context within the unit of work.
+        /// </summary>
+        /// <remarks></remarks>
+        protected override void Rollback()
+        {
+            foreach (var context in ContextContainer.Contexts)
+            {
+                context.ChangeTracker
+                    .Entries()
+                    .Where(e => e != null && e.State != EntityState.Unchanged)
+                    .Select(e => e.Entity)
+                    .ForEach(e => context.Entry(e).Reload());
+            }
         }
 
         #endregion
@@ -82,47 +107,10 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
-        /// Commits the changes in the context to the database.
+        /// Validates each context in the container.
         /// </summary>
-        public void Commit()
-        {
-            using (var scope = new TransactionScope(_TransactionScopeOption))
-            {
-                try
-                {
-                    foreach (var context in ContextContainer.Contexts)
-                    {
-                        context.SaveChanges();
-                    }
-                }
-                catch (Exception)
-                {
-                    // TODO: (DG) Can we catch DbEntityValidationException? Where can we store this?
-                    Rollback();
-                }
-                finally
-                {
-                    scope.Complete();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Rolls back each context within the unit of work.
-        /// </summary>
+        /// <returns></returns>
         /// <remarks></remarks>
-        public void Rollback()
-        {
-            foreach (var context in ContextContainer.Contexts)
-            {
-                context.ChangeTracker
-                       .Entries()
-                       .Where(e => e != null && e.State != EntityState.Unchanged)
-                       .Select(e => e.Entity)
-                       .ForEach(e => context.Entry(e).Reload());
-            }
-        }
-
         public IEnumerable<DbEntityValidationResult> Validate()
         {
             return ContextContainer.Contexts.SelectMany(c => c.GetValidationErrors());
@@ -133,41 +121,23 @@ namespace NContext.Extensions.EntityFramework
         #region Implementation of IDisposable
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the <see cref="EfUnitOfWork"/> is reclaimed by garbage collection.
-        /// </summary>
-        /// <remarks></remarks>
-        ~EfUnitOfWork()
-        {
-            Dispose(false);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
         /// Releases unmanaged and - optionally - managed resources
         /// </summary>
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        private void Dispose(Boolean disposeManagedResources)
+        protected override void Dispose(Boolean disposeManagedResources)
         {
-            if (_IsDisposed)
+            if (IsDisposed)
             {
                 return;
             }
 
             if (disposeManagedResources)
             {
-                if (UnitOfWorkController.DisposeUnitOfWork())
+                if (EfUnitOfWorkController.DisposeUnitOfWork())
                 {
                     ContextContainer.Contexts.ForEach(c => c.Dispose());
-                    _IsDisposed = true;
+
+                    IsDisposed = true;
                 }
             }
         }

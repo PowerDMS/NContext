@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PersistenceFactory.cs">
+// <copyright file="EfPersistenceFactory.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -33,7 +33,7 @@ namespace NContext.Extensions.EntityFramework
     /// <summary>
     /// Provides creation for all persistence-related operations including UnitOfWork and Repositories.
     /// </summary>
-    public class PersistenceFactory
+    public class EfPersistenceFactory
     {
         #region Methods
 
@@ -45,7 +45,7 @@ namespace NContext.Extensions.EntityFramework
         /// </para>
         /// <para>
         /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.Required"/>, than 
-        /// we are returned the <see cref="UnitOfWorkController.AmbientUnitOfWork"/> if one exists, else we create a
+        /// we are returned the <see cref="EfUnitOfWorkController.AmbientUnitOfWork"/> if one exists, else we create a
         /// new <see cref="EfUnitOfWork"/> and <see cref="ContextContainer"/> which becomes the ambient unit of work.
         /// </para>
         /// <para>The default transaction scope is <see cref="TransactionScopeOption.Required"/>.</para>
@@ -60,20 +60,21 @@ namespace NContext.Extensions.EntityFramework
                 transactionScopeOption == TransactionScopeOption.Suppress)
             {
                 unitOfWork = new EfUnitOfWork(new ContextContainer(), transactionScopeOption);
-                UnitOfWorkController.AddUnitOfWork(unitOfWork);
+                EfUnitOfWorkController.AddUnitOfWork(unitOfWork);
 
                 return unitOfWork;
             }
 
-            if (UnitOfWorkController.AmbientUnitOfWork != null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork != null)
             {
-                UnitOfWorkController.Retain();
-
-                return UnitOfWorkController.AmbientUnitOfWork;
+                unitOfWork = EfUnitOfWorkController.AmbientUnitOfWork;
+                EfUnitOfWorkController.Retain();
             }
-
-            unitOfWork = new EfUnitOfWork(new ContextContainer(), transactionScopeOption);
-            UnitOfWorkController.AddUnitOfWork(unitOfWork);
+            else
+            {
+                unitOfWork = new EfUnitOfWork(new ContextContainer(), transactionScopeOption);
+                EfUnitOfWorkController.AddUnitOfWork(unitOfWork);
+            }
 
             return unitOfWork;
         }
@@ -87,7 +88,7 @@ namespace NContext.Extensions.EntityFramework
         public static IEfGenericRepository<TEntity> CreateRepository<TEntity>() 
             where TEntity : class, IEntity
         {
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
@@ -106,7 +107,7 @@ namespace NContext.Extensions.EntityFramework
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
@@ -124,7 +125,7 @@ namespace NContext.Extensions.EntityFramework
         public static IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredNameForServiceLocation)
             where TEntity : class, IEntity
         {
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
@@ -139,12 +140,12 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public static DbContext GetOrCreateDefaultContext()
         {
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of a valid IEfUnitOfWork instance.");
             }
 
-            return UnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetDefaultContext();
+            return EfUnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetDefaultContext();
         }
 
         /// <summary>
@@ -156,12 +157,12 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public static DbContext GetOrCreateContext(String registeredNameForServiceLocation)
         {
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of a valid IEfUnitOfWork instance.");
             }
 
-            return UnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetContextFromServiceLocation(registeredNameForServiceLocation);
+            return EfUnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetContextFromServiceLocation(registeredNameForServiceLocation);
         }
 
         /// <summary>
@@ -172,12 +173,12 @@ namespace NContext.Extensions.EntityFramework
         public static TDbContext GetOrCreateContext<TDbContext>()
             where TDbContext : DbContext
         {
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of a valid IEfUnitOfWork instance.");
             }
 
-            return UnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetContext<TDbContext>();
+            return EfUnitOfWorkController.AmbientUnitOfWork.ContextContainer.GetContext<TDbContext>();
         }
 
         #endregion

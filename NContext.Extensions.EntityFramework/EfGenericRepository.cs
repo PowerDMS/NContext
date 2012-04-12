@@ -61,7 +61,7 @@ namespace NContext.Extensions.EntityFramework
                 throw new ArgumentNullException("context");
             }
 
-            if (UnitOfWorkController.AmbientUnitOfWork == null)
+            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }

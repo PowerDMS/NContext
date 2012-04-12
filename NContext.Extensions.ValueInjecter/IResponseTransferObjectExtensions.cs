@@ -110,8 +110,7 @@ namespace NContext.Extensions.ValueInjecter
             }
 
             return new ServiceResponse<TDto>(
-                response.Data
-                        .Select(datum => 
+                response.Select(datum => 
                             Activator.CreateInstance<TDto>()
                                      .InjectFrom<TValueInjection>(datum))
                         .Cast<TDto>());

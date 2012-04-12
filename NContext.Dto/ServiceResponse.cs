@@ -23,6 +23,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
@@ -84,6 +85,16 @@ namespace NContext.Dto
         }
 
         /// <summary>
+        /// For deserialization purposes only.
+        /// </summary>
+        /// <remarks></remarks>
+        protected ServiceResponse()
+        {
+            Data = Enumerable.Empty<T>();
+            Errors = Enumerable.Empty<Error>();
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="IResponseTransferObject{T}"/> class.
         /// </summary>
         /// <param name="data">The data.</param>
@@ -95,35 +106,39 @@ namespace NContext.Dto
             Errors = errors ?? Enumerable.Empty<Error>();
         }
 
+        #endregion
+
+        #region Operator Overloads
+
         /// <summary>
-        /// For deserialization purposes only.
+        /// Performs an implicit conversion from <see cref="NContext.Dto.ServiceResponse&lt;T&gt;"/> to <see cref="System.Boolean"/>.
         /// </summary>
+        /// <param name="serviceResponse">The service response.</param>
+        /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        private ServiceResponse()
+        public static implicit operator Boolean(ServiceResponse<T> serviceResponse)
         {
-            Data = Enumerable.Empty<T>();
-            Errors = Enumerable.Empty<Error>();
+            if (serviceResponse == null)
+            {
+                return false;
+            }
+
+            if (serviceResponse.Errors.Any())
+            {
+                return false;
+            }
+
+            if (typeof(T) == typeof(Boolean))
+            {
+                return serviceResponse.Cast<Boolean>().GetEnumerator().Current;
+            }
+
+            return serviceResponse.Any();
         }
 
         #endregion
 
         #region Properties
-        
-        /// <summary>
-        /// Gets the <typeparam name="T"/> data.
-        /// </summary>
-        [DataMember(Order = 1)]
-        public IEnumerable<T> Data
-        {
-            get
-            {
-                return _Data;
-            }
-            protected set
-            {
-                _Data = value;
-            }
-        }
 
         /// <summary>
         /// Gets the errors.
@@ -139,6 +154,22 @@ namespace NContext.Dto
             protected set
             {
                 _Errors = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the <typeparam name="T"/> data.
+        /// </summary>
+        [DataMember(Order = 1)]
+        protected IEnumerable<T> Data
+        {
+            get
+            {
+                return _Data;
+            }
+            set
+            {
+                _Data = value;
             }
         }
 
@@ -222,12 +253,38 @@ namespace NContext.Dto
         /// <remarks></remarks>
         public virtual IResponseTransferObject<T> Let(Action<IEnumerable<T>> action)
         {
-            if (!Errors.Any() && Data.Any())
+            if (!Errors.Any())
             {
                 action.Invoke(Data);
             }
 
             return this;
+        }
+
+        #endregion
+
+        #region Implementation of IEnumerable
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+        
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        public IEnumerator<T> GetEnumerator()
+        {
+            return Data.GetEnumerator();
         }
 
         #endregion

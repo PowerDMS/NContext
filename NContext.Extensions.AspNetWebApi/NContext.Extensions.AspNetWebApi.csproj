@@ -73,13 +73,13 @@
     <Compile Include="Authentication\IProvideResourceAuthentication.cs" />
     <Compile Include="Authorization\IProvideResourceAuthorization.cs" />
     <Compile Include="Formatters\JsonNetMediaTypeFormatter.cs" />
-    <Compile Include="Routing\IConfigureWebApiRoutes.cs" />
-    <Compile Include="Routing\IManageWebApiRouting.cs" />
-    <Compile Include="Routing\IRunWhenAServiceRouteIsCreated.cs" />
+    <Compile Include="Routing\IConfigureWebApi.cs" />
+    <Compile Include="Routing\IManageWebApi.cs" />
+    <Compile Include="Routing\IRunWhenAWebApiRouteIsMapped.cs" />
     <Compile Include="Routing\Route.cs" />
     <Compile Include="Routing\WebApiConfiguration.cs" />
     <Compile Include="Routing\WebApiConfigurationBuilder.cs" />
-    <Compile Include="Routing\WebApiRoutingManager.cs" />
+    <Compile Include="Routing\WebApiManager.cs" />
     <Compile Include="ResponseTransferObjectActionFilter.cs" />
   </ItemGroup>
   <ItemGroup />

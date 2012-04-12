@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRunWhenAServiceRouteIsCreated.cs">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IManageWebApi.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,26 +18,36 @@
 // </copyright>
 //
 // <summary>
-//   Defines a role-interface which allows implementors to run when ... has completed.
+//   Defines interface contract which encapsulates logic for creating ASP.NET Web API service routes.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.ComponentModel.Composition;
+using System;
+using System.Collections.Generic;
+
+using NContext.Configuration;
 
 namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
-    /// Defines a role-interface which allows implementors to run when a service route is created.
+    /// Defines interface contract which encapsulates logic for creating ASP.NET Web API service routes.
     /// </summary>
-    /// <remarks></remarks>
-    [InheritedExport]
-    public interface IRunWhenAServiceRouteIsCreated
+    public interface IManageWebApi : IApplicationComponent
     {
         /// <summary>
-        /// Runs  specified route.
+        /// Gets the service routes registered.
         /// </summary>
-        /// <param name="route">The route.</param>
         /// <remarks></remarks>
-        void Run(Route route);
+        ICollection<Route> HttpRoutes { get; }
+
+        /// <summary>
+        /// Registers the service route.
+        /// </summary>
+        /// <param name="routeName">Name of the route.</param>
+        /// <param name="routeTemplate">The route template.</param>
+        /// <param name="defaults">The defaults.</param>
+        /// <param name="constraints">The constraints.</param>
+        /// <remarks></remarks>
+        void RegisterHttpRoute(String routeName, String routeTemplate, Object defaults = null, Object constraints = null);
     }
 }

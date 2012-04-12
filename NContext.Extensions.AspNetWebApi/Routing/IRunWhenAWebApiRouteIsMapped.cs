@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigureWebApiRoutes.cs">
+// <copyright file="IRunWhenAWebApiRouteIsMapped.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,7 +18,7 @@
 // </copyright>
 //
 // <summary>
-//   Defines a role-interface used by the routing manger to register service routes.
+//   Defines a role-interface which allows implementors to run when ... has completed.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -27,15 +27,17 @@ using System.ComponentModel.Composition;
 namespace NContext.Extensions.AspNetWebApi.Routing
 {
     /// <summary>
-    /// Defines a role-interface used by the <see cref="IManageWebApiRouting"/> to register service routes.
+    /// Defines a role-interface which allows implementors to run when a service route is created.
     /// </summary>
-    [InheritedExport(typeof(IConfigureWebApiRoutes))]
-    public interface IConfigureWebApiRoutes
+    /// <remarks></remarks>
+    [InheritedExport]
+    public interface IRunWhenAWebApiRouteIsMapped
     {
         /// <summary>
-        /// Creates the WCF service routes.
+        /// Runs  specified route.
         /// </summary>
-        /// <param name="webApiRoutingManager">The routing manager.</param>
-        void RegisterServiceRoutes(IManageWebApiRouting webApiRoutingManager);
+        /// <param name="route">The route.</param>
+        /// <remarks></remarks>
+        void Run(Route route);
     }
 }

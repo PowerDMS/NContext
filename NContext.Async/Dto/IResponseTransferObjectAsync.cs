@@ -29,9 +29,7 @@ using System.Threading.Tasks;
 
 using System.Threading.Tasks.Dataflow;
 
-using NContext.Dto;
-
-namespace NContext
+namespace NContext.Dto
 {
     /// <summary>
     /// Defines a data-transfer object contract used for asynchronous functional composition.
@@ -39,8 +37,8 @@ namespace NContext
     public interface IResponseTransferObjectAsync<T> : IResponseTransferObject<T>
     {
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current <see cref="IResponseTransferObject{T}.Errors"/> passed if <see cref="IResponseTransferObject{T}.Errors"/> exist.
-        /// Binds the <see cref="IResponseTransferObject{T}.Data"/> into the specified <paramref name="bindingFunction" /> if <see cref="IResponseTransferObject{T}.Data"/> exists - returning a <see cref="IResponseTransferObject{T2}"/>.
+        /// If <seealso cref="IResponseTransferObject{T}.Errors"/> exist, returns a new <see cref="IResponseTransferObject{T2}"/> instance with the current 
+        /// <seealso cref="IResponseTransferObject{T}.Errors"/>. Else, binds the <seealso cref="IResponseTransferObject{T}.Data"/> into the specified <paramref name="bindingFunction"/>.
         /// </summary>
         /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}"/> to return.</typeparam>
         /// <param name="bindingFunction">The binding function.</param>
@@ -78,6 +76,6 @@ namespace NContext
         /// <remarks></remarks>
         IResponseTransferObjectAsync<T> LetParallel(Int32 maxDegreeOfParallelism = 1, params Action<IEnumerable<T>>[] actions);
 
-        IResponseTransferObject<T> Post<TTargetBlock>(TTargetBlock targetBlock, ParallelOptions parallelOptions = null) where TTargetBlock : ITargetBlock<T>;
+        IResponseTransferObjectAsync<T> Post<TTargetBlock>(TTargetBlock targetBlock) where TTargetBlock : ITargetBlock<T>;
     }
 }

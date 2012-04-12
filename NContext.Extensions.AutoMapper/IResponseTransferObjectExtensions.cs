@@ -74,7 +74,7 @@ namespace NContext.Extensions.AutoMapper
                 return new ServiceResponse<TTarget>(responseTransferObject.Errors);
             }
 
-            return new ServiceResponse<TTarget>(GetMapper().Map<IEnumerable<TTarget>>(responseTransferObject.Data, mappingOperationOptions ?? (o => { })));
+            return new ServiceResponse<TTarget>(GetMapper().Map<IEnumerable<TTarget>>(responseTransferObject, mappingOperationOptions ?? (o => { })));
         }
 
         private static IMappingEngine GetMapper()

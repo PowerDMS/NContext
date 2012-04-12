@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageWebApiRouting.cs">
+// <copyright file="AmbientUnitOfWork.cs">
 //   Copyright (c) 2012
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,53 +18,75 @@
 // </copyright>
 //
 // <summary>
-//   Defines interface contract which encapsulates logic for creating ASP.NET Web API service routes.
+//   Defines a unit of work in active use and keeps track of the number of sessions associated with it.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using System.Collections.Generic;
 
-using NContext.Configuration;
-
-namespace NContext.Extensions.AspNetWebApi.Routing
+namespace NContext.Data
 {
     /// <summary>
-    /// Defines interface contract which encapsulates logic for creating ASP.NET Web API service routes.
+    /// Defines a unit of work in active use and keeps track of the number of sessions associated with it.
     /// </summary>
-    public interface IManageWebApiRouting : IApplicationComponent
+    /// <remarks></remarks>
+    public class AmbientUnitOfWork
     {
-        /// <summary>
-        /// Gets the service routes registered.
-        /// </summary>
-        /// <remarks></remarks>
-        ICollection<Route> ServiceRoutes { get; }
+        private readonly IUnitOfWork _UnitOfWork;
+
+        private Int32 _ActiveSessions;
 
         /// <summary>
-        /// Registers the service route.
+        /// Initializes a new instance of the <see cref="AmbientUnitOfWork"/> class.
         /// </summary>
-        /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
+        /// <param name="unitOfWork">The unit of work.</param>
         /// <remarks></remarks>
-        void RegisterServiceRoute(String routeName, String routeTemplate);
+        public AmbientUnitOfWork(IUnitOfWork unitOfWork)
+        {
+            _ActiveSessions = 1;
+            _UnitOfWork = unitOfWork;
+        }
 
         /// <summary>
-        /// Registers the service route.
+        /// Gets the number of active sessions for the <seealso cref="UnitOfWork"/> instance.
         /// </summary>
-        /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
-        /// <param name="defaults">The defaults.</param>
         /// <remarks></remarks>
-        void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults);
+        public Int32 ActiveSessions
+        {
+            get
+            {
+                return _ActiveSessions;
+            }
+        }
 
         /// <summary>
-        /// Registers the service route.
+        /// Gets the unit of work.
         /// </summary>
-        /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
-        /// <param name="defaults">The defaults.</param>
-        /// <param name="constraints">The constraints.</param>
         /// <remarks></remarks>
-        void RegisterServiceRoute(String routeName, String routeTemplate, Object defaults, Object constraints);
+        public IUnitOfWork UnitOfWork
+        {
+            get
+            {
+                return _UnitOfWork;
+            }
+        }
+
+        /// <summary>
+        /// Decrements the active sessions for this <seealso cref="UnitOfWork"/> instance.
+        /// </summary>
+        /// <remarks></remarks>
+        public void Decrement()
+        {
+            _ActiveSessions--;
+        }
+
+        /// <summary>
+        /// Increments the active sessions for this <seealso cref="UnitOfWork"/> instance.
+        /// </summary>
+        /// <remarks></remarks>
+        public void Increment()
+        {
+            _ActiveSessions++;
+        }
     }
 }

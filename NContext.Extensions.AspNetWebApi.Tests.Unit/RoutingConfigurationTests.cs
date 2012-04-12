@@ -44,7 +44,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Unit
 
             Configure.Using(applicationConfiguration);
             
-            //Assert.That(applicationConfiguration.GetComponent<IManageWebApiRouting>(), Is.Not.Null);
+            //Assert.That(applicationConfiguration.GetComponent<IManageWebApi>(), Is.Not.Null);
             // TODO: (DG) Re-write test. This is temporary.
         }
     }
