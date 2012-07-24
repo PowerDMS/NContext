@@ -33,21 +33,22 @@ namespace NContext.Extensions.EntityFramework
     /// <summary>
     /// Defines a contract which aides in management of a distinct collection of <see cref="DbContext"/>s 
     /// based on type. It is responsible for ensuring that only one instance of a given context 
-    /// exists at any given point, per thread. This is done through Unity LifetimeManagers.
+    /// exists at any given point, per thread.
     /// </summary>
     public interface IContextContainer
     {
+        Guid Id { get; }
+
         /// <summary>
         /// Gets all contexts.
         /// </summary>
         IEnumerable<DbContext> Contexts { get; }
 
-        /// <summary>
-        /// Gets the application's default context.
-        /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        DbContext GetDefaultContext();
+        void Add(DbContext dbContext);
+
+        void Add(String key, DbContext dbContext);
+
+        Boolean Contains(String key);
 
         /// <summary>
         /// Gets or creates the <typeparamref name="TContext"/> context.
@@ -57,12 +58,8 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         TContext GetContext<TContext>() where TContext : DbContext;
 
-        /// <summary>
-        /// Gets the context from the application's service locator.
-        /// </summary>
-        /// <param name="registeredNameForServiceLocation">The context's registered name with the dependency injection container.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        DbContext GetContextFromServiceLocation(String registeredNameForServiceLocation);
+        DbContext GetContext(Type contextType);
+
+        DbContext GetContext(String key);
     }
 }

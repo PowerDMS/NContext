@@ -35,6 +35,8 @@ using NContext.Data.Specifications;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines a generic implementation of the repository pattern for database communication.
     /// </summary>
@@ -59,11 +61,6 @@ namespace NContext.Extensions.EntityFramework
             if (context == null)
             {
                 throw new ArgumentNullException("context");
-            }
-
-            if (EfUnitOfWorkController.AmbientUnitOfWork == null)
-            {
-                throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
 
             _Context = context;
@@ -180,6 +177,18 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
+        /// Executes the command and returns the number of rows affected.
+        /// </summary>
+        /// <param name="sqlCommand">The SQL command.</param>
+        /// <param name="parameters">The command parameters.</param>
+        /// <returns>Number of affected rows.</returns>
+        /// <remarks></remarks>
+        public Int32 SqlCommand(String sqlCommand, params Object[] parameters)
+        {
+            return _Context.Database.ExecuteSqlCommand(sqlCommand, parameters);
+        }
+
+        /// <summary>
         /// Validates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
@@ -267,7 +276,6 @@ namespace NContext.Extensions.EntityFramework
             return RepositoryQuery.GetEnumerator();
         }
 
-
         #endregion
 
         #region Implementation of IDisposable
@@ -311,6 +319,7 @@ namespace NContext.Extensions.EntityFramework
 
             if (disposeManagedResources)
             {
+                // TODO: (DG) If not part of a unit of work, dispose the _Context!
             }
 
             IsDisposed = true;

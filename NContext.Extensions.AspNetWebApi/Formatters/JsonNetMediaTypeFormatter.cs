@@ -30,8 +30,6 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-using NContext.Extensions.JsonNet;
-
 namespace NContext.Extensions.AspNetWebApi.Formatters
 {
     /// <summary>
@@ -44,44 +42,19 @@ namespace NContext.Extensions.AspNetWebApi.Formatters
         /// </summary>
         public JsonNetMediaTypeFormatter()
         {
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/json"));
-            SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/json"));
             SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/bson"));
-            Encoding = new UTF8Encoding(false, true);
         }
 
         /// <summary>
-        /// Determines whether this <see cref="T:System.Net.Http.Formatting.JsonMediaTypeFormatter"/> can read objects of the specified type.
-        /// </summary>
-        /// <param name="type">The type of object that will be read.</param>
-        /// <returns>true if objects of this type can be read, otherwise false.</returns>
-        /// <remarks></remarks>
-        protected override Boolean CanReadType(Type type)
-        {
-            return CanReadTypeInternal(type);
-        }
-
-        /// <summary>
-        /// Determines whether this <see cref="T:System.Net.Http.Formatting.JsonMediaTypeFormatter"/> can write objects of the specified type.
-        /// </summary>
-        /// <param name="type">The type of object that will be written.</param>
-        /// <returns>true if objects of this type can be written, otherwise false.</returns>
-        /// <remarks></remarks>
-        protected override Boolean CanWriteType(Type type)
-        {
-            return CanReadTypeInternal(type);
-        }
-
-        /// <summary>
-        /// Called when [read from stream async].
+        /// Reads from stream async.
         /// </summary>
         /// <param name="type">The type.</param>
         /// <param name="stream">The stream.</param>
         /// <param name="contentHeaders">The content headers.</param>
-        /// <param name="formatterContext">The formatter context.</param>
+        /// <param name="formatterLogger">The formatter logger.</param>
         /// <returns></returns>
         /// <remarks></remarks>
-        protected override Task<Object> OnReadFromStreamAsync(Type type, Stream stream, HttpContentHeaders contentHeaders, FormatterContext formatterContext)
+        public override Task<Object> ReadFromStreamAsync(Type type, Stream stream, HttpContentHeaders contentHeaders, IFormatterLogger formatterLogger)
         {
             if (type == null)
             {

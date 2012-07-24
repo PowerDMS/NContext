@@ -32,6 +32,8 @@ using NContext.Data.Specifications;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines a generic repository base abstraction.
     /// </summary>
@@ -114,6 +116,15 @@ namespace NContext.Extensions.EntityFramework
         /// <returns>IQueryable&lt;TEntity&gt; instance.</returns>
         /// <remarks></remarks>
         IQueryable<TEntity> SqlQuery(String sql, params Object[] parameters);
+
+        /// <summary>
+        /// Executes the command and returns the number of rows affected.
+        /// </summary>
+        /// <param name="sqlCommand">The SQL command.</param>
+        /// <param name="parameters">The command parameters.</param>
+        /// <returns>Number of affected rows.</returns>
+        /// <remarks></remarks>
+        Int32 SqlCommand(String sqlCommand, params Object[] parameters);
 
         /// <summary>
         /// Validates the specified entity.

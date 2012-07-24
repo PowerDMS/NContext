@@ -27,8 +27,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-using System.Threading.Tasks.Dataflow;
-
 namespace NContext.Dto
 {
     /// <summary>
@@ -46,17 +44,7 @@ namespace NContext.Dto
         /// <exception cref="InvalidOperationException">Thrown when no errors or data exist.</exception>
         /// <remarks></remarks>
         IResponseTransferObject<T2> Bind<T2>(Func<IEnumerable<T>, Task, CancellationTokenSource, IResponseTransferObject<T2>> bindingFunction);
-
-        /// <summary>
-        /// Invokes the specified <paramref name="actions"/> in parallel if <see cref="IResponseTransferObject{T}.Errors"/>
-        /// exist with no <see cref="IResponseTransferObject{T}.Data"/>.
-        /// </summary>
-        /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
-        /// <param name="actions">The actions to invoke.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObjectAsync{T}"/>.</returns>
-        /// <remarks></remarks>
-        IResponseTransferObjectAsync<T> CatchParallel(Int32 maxDegreeOfParallelism = 1, params Action<IEnumerable<Error>>[] actions);
-
+        
         /// <summary>
         /// Invokes the specified action if <see cref="IResponseTransferObject{T}.Data"/> exists with no <see cref="IResponseTransferObject{T}.Errors"/> present.
         /// Returns the current <see cref="IResponseTransferObject{T}"/> instance.
@@ -65,17 +53,5 @@ namespace NContext.Dto
         /// <returns>The current <see cref="IResponseTransferObject{T}"/> instance.</returns>
         /// <remarks></remarks>
         IResponseTransferObject<T> Let(Action<IEnumerable<T>, Task, CancellationTokenSource> action);
-
-        /// <summary>
-        /// Invokes the specified <paramref name="actions"/> in parallel if <see cref="IResponseTransferObject{T}.Data"/>
-        /// exists with no <see cref="IResponseTransferObject{T}.Errors"/>.
-        /// </summary>
-        /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
-        /// <param name="actions">The actions to invoke.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObjectAsync{T}"/>.</returns>
-        /// <remarks></remarks>
-        IResponseTransferObjectAsync<T> LetParallel(Int32 maxDegreeOfParallelism = 1, params Action<IEnumerable<T>>[] actions);
-
-        IResponseTransferObjectAsync<T> Post<TTargetBlock>(TTargetBlock targetBlock) where TTargetBlock : ITargetBlock<T>;
     }
 }

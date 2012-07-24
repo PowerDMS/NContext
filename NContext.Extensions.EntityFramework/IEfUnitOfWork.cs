@@ -22,13 +22,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-
-using NContext.Data;
-
 namespace NContext.Extensions.EntityFramework
 {
+    using System.Collections.Generic;
+    using System.Data.Entity.Validation;
+
+    using NContext.Data;
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines an Entity Framework unit of work.
     /// </summary>

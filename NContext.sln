@@ -41,9 +41,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Enterpr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Snap", "NContext.Extensions.Snap\NContext.Extensions.Snap.csproj", "{46178863-6D79-497A-91C0-96126208E904}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.RavenDB", "NContext.Extensions.RavenDB\NContext.Extensions.RavenDB.csproj", "{182A0E0C-6921-40C4-921D-31A19D99A6AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{787E4185-532E-4D30-A089-72E84D1784E1}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityFramework.Tests.Unit", "NContext.Extensions.EntityFramework.Tests.Unit\NContext.Extensions.EntityFramework.Tests.Unit.csproj", "{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -164,18 +169,18 @@ Global
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{46178863-6D79-497A-91C0-96126208E904}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{46178863-6D79-497A-91C0-96126208E904}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{46178863-6D79-497A-91C0-96126208E904}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{46178863-6D79-497A-91C0-96126208E904}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{46178863-6D79-497A-91C0-96126208E904}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{46178863-6D79-497A-91C0-96126208E904}.Release|Any CPU.Build.0 = Release|Any CPU
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -194,8 +199,8 @@ Global
 		{E4E34D0F-BCF6-4FFA-AF7C-4DF1CD826F15} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{1215A865-3388-40FE-9C72-F341E92FA072} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{97682107-3B66-4615-9350-F75FFE9510C8} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
-		{46178863-6D79-497A-91C0-96126208E904} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35

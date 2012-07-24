@@ -39,6 +39,8 @@ using System.Linq.Expressions;
 
 namespace NContext.Data.Specifications
 {
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines a specification which converts an original specification with inverse logic.
     /// </summary>

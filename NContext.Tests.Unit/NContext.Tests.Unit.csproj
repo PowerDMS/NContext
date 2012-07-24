@@ -29,6 +29,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AsyncCtpLibrary">
@@ -46,9 +47,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Users\Daniel.DGDEV\Documents\Microsoft Visual Studio Async CTP\Samples\System.Threading.Tasks.Dataflow.dll</HintPath>
     </Reference>
-    <Reference Include="Telerik.JustMock, Version=2012.1.321.1, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
+    <Reference Include="System.Transactions" />
+    <Reference Include="Telerik.JustMock, Version=2012.1.608.2, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JustMock.2012.1.321.0\lib\Net35\Telerik.JustMock.dll</HintPath>
+      <HintPath>..\packages\JustMock.2012.1.608.0\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -56,6 +58,7 @@
     <Compile Include="Configuration\ApplicationConfigurationBuilderTests.cs" />
     <Compile Include="Configuration\ApplicationConfigurationTests.cs" />
     <Compile Include="Configuration\ConfigureTests.cs" />
+    <Compile Include="Data\CompositeUnitOfWorkTests.cs" />
     <Compile Include="ErrorHandling\ErrorBaseTests.cs" />
     <Compile Include="ErrorHandling\Localization\MockApplicationError.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -92,6 +95,10 @@
       <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
       <Name>NContext.Dto</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NContext.Extensions.EntityFramework\NContext.Extensions.EntityFramework.csproj">
+      <Project>{C9F7B439-599F-404C-8203-A67AD5A3FEA9}</Project>
+      <Name>NContext.Extensions.EntityFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NContext.Public\NContext.Public.csproj">
       <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
       <Name>NContext.Public</Name>
@@ -102,11 +109,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Domain\" />
     <Folder Include="Security\" />
-    <Folder Include="Services\" />
     <Folder Include="Utilities\" />
-    <Folder Include="Validation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="JustMock.Readme.txt" />

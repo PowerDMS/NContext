@@ -161,7 +161,7 @@ namespace NContext.Dto
         /// Gets the <typeparam name="T"/> data.
         /// </summary>
         [DataMember(Order = 1)]
-        protected IEnumerable<T> Data
+        public IEnumerable<T> Data
         {
             get
             {
@@ -242,6 +242,16 @@ namespace NContext.Dto
             }
 
             return this;
+        }
+
+        public virtual IResponseTransferObject<T2> Fmap<T2>(Func<IEnumerable<T>, IEnumerable<T2>> mappingFunction)
+        {
+            if (Errors.Any())
+            {
+                return new ServiceResponse<T2>(Errors);
+            }
+
+            return new ServiceResponse<T2>(mappingFunction.Invoke(Data));
         }
 
         /// <summary>

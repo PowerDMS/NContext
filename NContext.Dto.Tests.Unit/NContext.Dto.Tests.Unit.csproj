@@ -42,6 +42,15 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Telerik.JustMock, Version=2012.1.608.2, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
+      <HintPath>..\packages\JustMock.2012.1.608.0\lib\Net35\Telerik.JustMock.dll</HintPath>
+    </Reference>
+    <Reference Include="TypeMock, Version=7.0.8.0, Culture=neutral, PublicKeyToken=3dae460033b8d8e2, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\Typemock\Isolator\7\AAA\TypeMock.dll</HintPath>
+    </Reference>
+    <Reference Include="Typemock.ArrangeActAssert, Version=7.0.8.0, Culture=neutral, PublicKeyToken=3dae460033b8d8e2, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Program Files (x86)\Typemock\Isolator\7\AAA\Typemock.ArrangeActAssert.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ServiceResponseTests.cs" />

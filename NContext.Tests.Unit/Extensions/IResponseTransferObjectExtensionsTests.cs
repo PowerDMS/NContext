@@ -55,32 +55,43 @@ namespace NContext.Tests.Unit.Extensions
             Int32 actionThreadId = activeThreadId;
 
             var taskStatus = TaskStatus.Created;
-            var stubData = Mock.Create<FakeObject>();
+            var stubData = Mock.Create<List<FakeObject>>();
+            stubData.Add(new FakeObject());
+            stubData.Add(new FakeObject());
+
             var mockResponse = new ServiceResponse<FakeObject>(stubData);
-            Mock.NonPublic.Arrange<IEnumerable<FakeObject>>(mockResponse, "Data").Returns(new[] { stubData });
+            Mock.NonPublic.Arrange<IEnumerable<FakeObject>>(mockResponse, "Data").Returns(new List<FakeObject>(stubData));
             mockResponse.Arrange(response => response.Let(Arg.IsAny<Action<IEnumerable<FakeObject>>>())).IgnoreArguments().CallOriginal();
 
-            mockResponse.LetParallel(2,
-                            data => { Console.WriteLine("I'm first action. " + Thread.CurrentThread.ManagedThreadId); },
-                            data => { Thread.Sleep(20); Console.WriteLine("I'm second action. " + Thread.CurrentThread.ManagedThreadId); },
-                            data => { Thread.Sleep(TimeSpan.FromSeconds(2)); Console.WriteLine("I'm third action. " + Thread.CurrentThread.ManagedThreadId); },
+            mockResponse.AsConcurrent()
+                        .Let(3, CancellationToken.None, ParallelExecutionMode.ForceParallelism,
+                            data =>
+                            {
+                                Console.WriteLine(data.Count() + "I'm first action. " + Thread.CurrentThread.ManagedThreadId);
+                            },
+                            data => {
+                                data = new List<FakeObject>();
+                                Console.WriteLine(data.Count() + "I'm second action. " + Thread.CurrentThread.ManagedThreadId);
+                            },
+                            data => { Console.WriteLine("I'm third action. " + Thread.CurrentThread.ManagedThreadId); },
                             data => { Console.WriteLine("I'm fourth action. " + Thread.CurrentThread.ManagedThreadId); },
                             data => { Console.WriteLine("I'm fifth action. " + Thread.CurrentThread.ManagedThreadId); },
                             data => { Thread.Sleep(TimeSpan.FromSeconds(2)); Console.WriteLine("I'm sixth action. " + Thread.CurrentThread.ManagedThreadId); },
                             data => { Console.WriteLine("I'm seventh action. " + Thread.CurrentThread.ManagedThreadId); },
-                            data => { Console.WriteLine("I'm eigth action. " + Thread.CurrentThread.ManagedThreadId); })
+                            data => { Console.WriteLine(data.Count() + "I'm eigth action. " + Thread.CurrentThread.ManagedThreadId); })
                         .Bind((data, task, cancellationSource) =>
                             {
                                 Console.WriteLine("I'm the non-parallel action. " + Thread.CurrentThread.ManagedThreadId);
-                                Console.WriteLine(task.IsCanceled);
-                                Thread.Sleep(50);
+                                Console.WriteLine("Is Canceled: " + task.IsCanceled);
                                 cancellationSource.Cancel();
-                                Console.WriteLine(cancellationSource.IsCancellationRequested);
+                                Console.WriteLine("Is Cancel Requested: " + cancellationSource.IsCancellationRequested);
                                 Thread.Sleep(TimeSpan.FromSeconds(5));
-                                Console.WriteLine(task.IsCanceled);
 
+                                Console.WriteLine("Is Canceled: " + task.IsCanceled);
+                                
                                 return new ServiceResponse<FakeObject2>(Enumerable.Empty<FakeObject2>());
-                            });
+                            })
+                        ;
 
             //Assert.That(activeThreadId, Is.Not.EqualTo(actionThreadId));
             //Assert.That(taskStatus == TaskStatus.RanToCompletion);
@@ -112,7 +123,7 @@ namespace NContext.Tests.Unit.Extensions
                     "5","5","5","5"
                 });
 
-            new ServiceResponseAsyncDecorator<String>(response)
+            new ServiceResponseParallelDecorator<String>(response)
                 .Post(transformBlock)
                 .Let(data =>
                     {

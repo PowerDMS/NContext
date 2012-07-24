@@ -35,6 +35,12 @@ namespace NContext.Dto
     public interface IResponseTransferObject<T> : IDisposable, IEnumerable<T>
     {
         /// <summary>
+        /// Gets the data.
+        /// </summary>
+        /// <remarks></remarks>
+        IEnumerable<T> Data { get; }
+        
+        /// <summary>
         /// Gets the errors.
         /// </summary>
         /// <remarks></remarks>
@@ -66,6 +72,8 @@ namespace NContext.Dto
         /// <returns>If errors exist, returns the instance of IResponseTransferObject&lt;T&gt; returned by <paramref name="continueWithFunction"/>, else returns current instance.</returns>
         /// <remarks></remarks>
         IResponseTransferObject<T> CatchAndContinue(Func<IEnumerable<Error>, IResponseTransferObject<T>> continueWithFunction);
+
+        IResponseTransferObject<T2> Fmap<T2>(Func<IEnumerable<T>, IEnumerable<T2>> mappingFunction);
 
         /// <summary>
         /// Invokes the specified action if <see cref="Data"/> exists with no <see cref="Errors"/> present.

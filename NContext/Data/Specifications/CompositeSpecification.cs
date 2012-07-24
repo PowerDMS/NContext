@@ -35,6 +35,8 @@
 
 namespace NContext.Data.Specifications
 {
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines a base abstraction for creating composite specifications.
     /// </summary>

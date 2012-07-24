@@ -38,9 +38,9 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Security" />
-    <Reference Include="Telerik.JustMock, Version=2012.1.321.1, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
+    <Reference Include="Telerik.JustMock, Version=2012.1.608.2, Culture=neutral, PublicKeyToken=8b221631f7271365, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JustMock.2012.1.321.0\lib\Net35\Telerik.JustMock.dll</HintPath>
+      <HintPath>..\packages\JustMock.2012.1.608.0\lib\Net35\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

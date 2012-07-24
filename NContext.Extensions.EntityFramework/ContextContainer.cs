@@ -23,24 +23,25 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-
-using Microsoft.Practices.ServiceLocation;
-
 namespace NContext.Extensions.EntityFramework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Linq;
+
     /// <summary>
     /// Defines an implementation of IContextContainer which is responsible for ensuring that only one instance 
-    /// of a given <see cref="DbContext"/> exists within a <see cref="IEfUnitOfWork"/>, per thread.
+    /// of a given <see cref="DbContext"/> exists within a <see cref="IEfUnitOfWork"/>.
     /// </summary>
     /// <remarks></remarks>
     public class ContextContainer : IContextContainer
     {
         #region Fields
 
-        private readonly Dictionary<Type, DbContext> _Contexts = new Dictionary<Type, DbContext>();
+        private readonly Guid _Id;
+
+        private readonly Dictionary<String, DbContext> _Contexts = new Dictionary<String, DbContext>();
 
         #endregion
 
@@ -48,6 +49,7 @@ namespace NContext.Extensions.EntityFramework
         
         protected internal ContextContainer()
         {
+            _Id = Guid.NewGuid();
         }
 
         #endregion
@@ -62,37 +64,36 @@ namespace NContext.Extensions.EntityFramework
             get { return _Contexts.Values; }
         }
 
+        public Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+        }
+
         #endregion
 
         #region Implementation of IContextContainer
 
-        /// <summary>
-        /// Gets the application's default context.
-        /// </summary>
-        /// <returns>Instance of the application's default DbContext.</returns>
-        /// <remarks></remarks>
-        public DbContext GetDefaultContext()
+        public void Add(DbContext dbContext)
         {
-            // TODO: (DG) Find a better way of getting the MappedToType Type object given a ServiceType and Key.
-            // Currently we have to resolve an instance even though we may already have it in our dictionary.
-            // http://commonservicelocator.codeplex.com/workitem/14336
-
-            var defaultContext = ServiceLocator.Current.GetInstance<DbContext>("default");
-            if (defaultContext == null)
+            if (Contains(dbContext.GetType().Name))
             {
-                throw new InvalidOperationException(
-                    @"No default context has been set by the application. The default context must be registered using your preferred dependency injection container using typeof 'DbContext' with a named key 'default'.");
+                return;
             }
 
-            var defaultContextType = defaultContext.GetType();
-            if (_Contexts.ContainsKey(defaultContextType))
-            {
-                return _Contexts[defaultContextType];
-            }
+            _Contexts.Add(dbContext.GetType().Name, dbContext);
+        }
 
-            _Contexts.Add(defaultContextType, defaultContext);
+        public void Add(String key, DbContext dbContext)
+        {
+            _Contexts.Add(key, dbContext);
+        }
 
-            return defaultContext;
+        public Boolean Contains(String key)
+        {
+            return _Contexts.ContainsKey(key);
         }
 
         /// <summary>
@@ -104,39 +105,22 @@ namespace NContext.Extensions.EntityFramework
         public TContext GetContext<TContext>() 
             where TContext : DbContext
         {
-            if (_Contexts.ContainsKey(typeof(TContext)))
+            if (_Contexts.ContainsKey(typeof(TContext).Name))
             {
-                return _Contexts[typeof(TContext)] as TContext;
+                return _Contexts[typeof(TContext).Name] as TContext;
             }
 
-            var context = ServiceLocator.Current.GetInstance<TContext>();
-            if (context == null)
-            {
-                throw new ArgumentException(String.Format("Context type '{0}' counld not be found and is not registered for service location.", typeof(TContext).Name));
-            }
-
-            _Contexts.Add(typeof(TContext), context);
-
-            return context;
+            return null;
         }
 
-        /// <summary>
-        /// Gets the context from the application's service locator.
-        /// </summary>
-        /// <param name="registeredNameForServiceLocation">The context's registered name with the dependency injection container.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        public DbContext GetContextFromServiceLocation(String registeredNameForServiceLocation)
+        public DbContext GetContext(Type contextType)
         {
-            var context = ServiceLocator.Current.GetInstance<DbContext>(registeredNameForServiceLocation);
-            if (context == null)
-            {
-                throw new ArgumentException("Context type is not registered for service location.");
-            }
+            return GetContext(contextType.Name);
+        }
 
-            _Contexts.Add(context.GetType(), context);
-
-            return context;
+        public DbContext GetContext(String key)
+        {
+            return Contains(key) ? _Contexts.Single(c => c.Key == key).Value : null;
         }
 
         #endregion

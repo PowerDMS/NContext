@@ -48,8 +48,8 @@ namespace NContext.Extensions.AspNetWebApi
         /// <remarks></remarks>
         public override void OnActionExecuted(HttpActionExecutedContext actionExecutedContext)
         {
-            var httpResponseMessage = actionExecutedContext.Result;
-            dynamic response = httpResponseMessage.Content.ReadAsOrDefaultAsync(typeof(IResponseTransferObject<>)).Result;
+            var httpResponseMessage = actionExecutedContext.Response;
+            dynamic response = httpResponseMessage.Content.ReadAsAsync(typeof(IResponseTransferObject<>)).Result;
             if (response != null)
             {
                 HttpStatusCode statusCode;

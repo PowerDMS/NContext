@@ -24,7 +24,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity.Validation;
 using System.Linq;
 using System.Transactions;
@@ -33,6 +32,11 @@ using NContext.Data;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using System.Diagnostics;
+    using System.Threading;
+
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines an Entity Framework 4 implementation of IEfUnitOfWork.
     /// </summary>
@@ -46,18 +50,29 @@ namespace NContext.Extensions.EntityFramework
 
         #region Constructors
         
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EfUnitOfWork"/> class.
-        /// </summary>
-        /// <param name="contextContianer">The context contianer.</param>
-        /// <param name="transactionScopeOption">The transaction scope option.</param>
-        /// <remarks></remarks>
-        protected internal EfUnitOfWork(IContextContainer contextContianer, TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
-            : base(transactionScopeOption)
+        protected internal EfUnitOfWork(AmbientTransactionManagerBase transactionManager, IContextContainer contextContainer)
+            : this(transactionManager, () => new CommittableTransaction(), contextContainer, null)
         {
-            _ContextContianer = contextContianer;
         }
 
+        protected internal EfUnitOfWork(AmbientTransactionManagerBase transactionManager, IContextContainer contextContainer, UnitOfWorkBase parent)
+            : this(transactionManager, () => parent.ScopeTransaction, contextContainer, parent)
+        {
+        }
+
+        private EfUnitOfWork(AmbientTransactionManagerBase transactionManager, Func<Transaction> transactionFactory, IContextContainer contextContainer, UnitOfWorkBase parent)
+            : base(transactionManager, transactionFactory, parent)
+        {
+            if (contextContainer == null)
+            {
+                throw new ArgumentNullException("contextContainer");
+            }
+
+            _ContextContianer = contextContainer;
+
+            Debug.WriteLine(String.Format("EfUnitOfWork: {0} created.", Id));
+        }
+        
         #endregion
 
         #region Overrides of UnitOfWorkBase
@@ -66,11 +81,43 @@ namespace NContext.Extensions.EntityFramework
         /// Commits the changes within the persistence context.
         /// </summary>
         /// <remarks></remarks>
-        protected override void CommitChanges()
+        protected override void CommitTransaction(TransactionScope transactionScope)
         {
-            foreach (var context in ContextContainer.Contexts)
+            if (Parent == null)
             {
-                context.SaveChanges();
+                try
+                {
+                    CommitTransactionInternal(transactionScope);
+                }
+                catch (InvalidOperationException)
+                {
+                    Rollback();
+                }
+            }
+            else
+            {
+                CommitTransactionInternal(transactionScope);
+            }
+        }
+
+        private void CommitTransactionInternal(TransactionScope transactionScope)
+        {
+            using (transactionScope)
+            {
+                Debug.WriteLine(
+                    "EfUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
+                    Id,
+                    ThreadSafeTransaction.GetType(),
+                    ScopeThread.ManagedThreadId,
+                    Thread.CurrentThread.ManagedThreadId,
+                    Transaction.Current.TransactionInformation.LocalIdentifier);
+
+                foreach (var context in ContextContainer.Contexts)
+                {
+                    context.SaveChanges();
+                }
+
+                transactionScope.Complete();
             }
         }
 
@@ -78,16 +125,10 @@ namespace NContext.Extensions.EntityFramework
         /// Rolls back each context within the unit of work.
         /// </summary>
         /// <remarks></remarks>
-        protected override void Rollback()
+        public override void Rollback()
         {
-            foreach (var context in ContextContainer.Contexts)
-            {
-                context.ChangeTracker
-                    .Entries()
-                    .Where(e => e != null && e.State != EntityState.Unchanged)
-                    .Select(e => e.Entity)
-                    .ForEach(e => context.Entry(e).Reload());
-            }
+            // TODO: (DG) Should we be re-loading each enity marked as changed?
+            Debug.WriteLine(String.Format("EfUoW: {0} is rolling back.", Id));
         }
 
         #endregion
@@ -120,26 +161,12 @@ namespace NContext.Extensions.EntityFramework
 
         #region Implementation of IDisposable
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected override void Dispose(Boolean disposeManagedResources)
+        protected override void DisposeManagedResources()
         {
-            if (IsDisposed)
-            {
-                return;
-            }
+            ContextContainer.Contexts.ForEach(c => c.Dispose());
+            IsDisposed = true;
 
-            if (disposeManagedResources)
-            {
-                if (EfUnitOfWorkController.DisposeUnitOfWork())
-                {
-                    ContextContainer.Contexts.ForEach(c => c.Dispose());
-
-                    IsDisposed = true;
-                }
-            }
+            Debug.WriteLine(String.Format("EfUnitOfWork: {0} disposed.", Id));
         }
 
         #endregion

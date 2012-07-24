@@ -30,6 +30,8 @@ using NContext.Data.Specifications;
 
 namespace NContext.Extensions
 {
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines extension methods for IEnumerable.
     /// </summary>

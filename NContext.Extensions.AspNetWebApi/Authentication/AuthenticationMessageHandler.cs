@@ -31,7 +31,6 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http.Filters;
-    using System.Web.Http.Hosting;
 
     /// <summary>
     /// Defines an <see cref="ActionFilterAttribute"/> for authentication.
@@ -70,7 +69,8 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                 .Bind(provider => provider.Authenticate(request).ToMaybe())
                 .Bind(principal =>
                     {
-                        request.Properties[HttpPropertyKeys.UserPrincipalKey] = principal;
+                        // Thread.CurrentPrincipal = principal; << Bug Fixed Soon
+                        request.Properties["Principal"] = principal;
                         return base.SendAsync(request, cancellationToken).ToMaybe();
                     })
                 .FromMaybe(Task<HttpResponseMessage>.Factory.StartNew(

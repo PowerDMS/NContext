@@ -28,7 +28,6 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
     using System.Net;
     using System.Net.Http;
     using System.Security.Principal;
-    using System.Web.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
 
@@ -74,7 +73,7 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
 
         private IPrincipal GetPrincipal(HttpRequestMessage requestMessage)
         {
-            return requestMessage.GetUserPrincipal() ?? new GenericPrincipal(new GenericIdentity(String.Empty), null);
+            return requestMessage.Properties["Principal"] as IPrincipal ?? new GenericPrincipal(new GenericIdentity(String.Empty), null);
         }
 
         #endregion

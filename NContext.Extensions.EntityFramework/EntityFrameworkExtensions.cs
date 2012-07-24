@@ -29,6 +29,10 @@ using System.Linq;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using NContext.Data;
+    using NContext.Data.Persistence;
+    using NContext.Dto;
+
     /// <summary>
     /// Defines extension methods for Entity Framework.
     /// </summary>
@@ -44,6 +48,12 @@ namespace NContext.Extensions.EntityFramework
         public static Boolean AreValid(this IEnumerable<DbEntityValidationResult> validationResults)
         {
             return validationResults.All(validationResult => validationResult.IsValid);
+        }
+
+        public static IResponseTransferObject<TEntity> ToServiceResponse<TEntity>(this IEnumerable<TEntity> entities)
+            where TEntity : IEntity
+        {
+            return new EfServiceResponse<TEntity>(entities);
         }
     }
 }

@@ -38,6 +38,8 @@ using System.Linq.Expressions;
 
 namespace NContext.Data.Specifications
 {
+    using NContext.Data.Persistence;
+
     /// <summary>
     /// Defines a specification which is composed AdHoc via constructor.
     /// </summary>

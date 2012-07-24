@@ -34,7 +34,7 @@ namespace NContext.Extensions
     public static class TypeExtensions
     {
         /// <summary>
-        /// Evaluates whether the specified type implements the type <typeparamref name="T"/>.
+        /// Evaluates whether the current type implements the specified type <typeparamref name="T"/>.
         /// </summary>
         /// <typeparam name="T">The base type or interface type to check against.</typeparam>
         /// <param name="type">The derived type.</param>
@@ -42,6 +42,18 @@ namespace NContext.Extensions
         public static Boolean Implements<T>(this Type type)
         {
             return typeof(T).IsAssignableFrom(type);
+        }
+
+        /// <summary>
+        /// Evaluates whether the current type implements the type specified.
+        /// </summary>
+        /// <param name="type">The derived type.</param>
+        /// <param name="typeToCheck">The type to check.</param>
+        /// <returns><c>True</c> if <paramref name="type"/> implements or inherits from type <paramref name="typeToCheck"/>, else <c>false</c>.</returns>
+        /// <remarks></remarks>
+        public static Boolean Implements(this Type type, Type typeToCheck)
+        {
+            return typeToCheck.IsAssignableFrom(type);
         }
 
         /// <summary>

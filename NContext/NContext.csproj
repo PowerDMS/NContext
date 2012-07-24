@@ -61,6 +61,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\NContext.xml</DocumentationFile>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug DLL and Web|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -93,9 +94,17 @@
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="Configuration\RegisteredApplicationComponent.cs" />
-    <Compile Include="Data\AmbientUnitOfWork.cs" />
-    <Compile Include="Data\IEntity.cs" />
-    <Compile Include="Data\IUnitOfWork.cs" />
+    <Compile Include="Data\Persistence\AmbientTransactionManagerBase.cs" />
+    <Compile Include="Data\Persistence\IAmbientTransactionManagerFactory.cs" />
+    <Compile Include="Data\Persistence\AmbientUnitOfWork.cs" />
+    <Compile Include="Data\Persistence\IEntity.cs" />
+    <Compile Include="Data\Persistence\IPersistenceFactory.cs" />
+    <Compile Include="Data\Persistence\IUnitOfWork.cs" />
+    <Compile Include="Data\Persistence\NonAtomicUnitOfWork.cs" />
+    <Compile Include="Data\Persistence\PerRequestTransactionManager.cs" />
+    <Compile Include="Data\Persistence\PerRequestTransactionManagerFactory.cs" />
+    <Compile Include="Data\Persistence\PersistenceFactoryBase.cs" />
+    <Compile Include="Data\Persistence\PersistenceOptions.cs" />
     <Compile Include="Data\Specifications\AdHocSpecification.cs" />
     <Compile Include="Data\Specifications\AndSpecification.cs" />
     <Compile Include="Data\Specifications\CompositeSpecification.cs" />
@@ -105,9 +114,11 @@
     <Compile Include="Data\Specifications\ParametersRebinder.cs" />
     <Compile Include="Data\Specifications\SpecificationBase.cs" />
     <Compile Include="Data\Specifications\TrueSpecification.cs" />
-    <Compile Include="Data\UnitOfWorkBase.cs" />
-    <Compile Include="Data\Persistence.cs" />
-    <Compile Include="Data\UnitOfWorkScope.cs" />
+    <Compile Include="Data\Persistence\ThreadLocalTransactionManagerFactory.cs" />
+    <Compile Include="Data\Persistence\UnitOfWorkBase.cs" />
+    <Compile Include="Data\Persistence\PersistenceFactory.cs" />
+    <Compile Include="Data\Persistence\ThreadLocalTransactionManager.cs" />
+    <Compile Include="Data\Persistence\CompositeUnitOfWork.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
