@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PersistenceFactory.cs">
-//   Copyright (c) 2012
+// <copyright file="PersistenceFactory.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Data.Persistence
@@ -27,16 +23,10 @@ namespace NContext.Data.Persistence
     using System;
     using System.Transactions;
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <remarks></remarks>
     public class PersistenceFactory : PersistenceFactoryBase, IPersistenceFactory
     {
         private readonly PersistenceOptions _PersistenceOptions;
-
-        #region Constructors
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="PersistenceFactory"/> class.
         /// </summary>
@@ -46,8 +36,8 @@ namespace NContext.Data.Persistence
         {
         }
 
-        public PersistenceFactory(IAmbientTransactionManagerFactory transactionManagerFactory)
-            : this(transactionManagerFactory, null)
+        public PersistenceFactory(IAmbientContextManagerFactory contextManagerFactory)
+            : this(contextManagerFactory, null)
         {
         }
 
@@ -61,49 +51,20 @@ namespace NContext.Data.Persistence
         {
         }
 
-        public PersistenceFactory(IAmbientTransactionManagerFactory transactionManagerFactory, PersistenceOptions persistenceOptions)
-            : base(transactionManagerFactory)
+        public PersistenceFactory(IAmbientContextManagerFactory contextManagerFactory, PersistenceOptions persistenceOptions)
+            : base(contextManagerFactory)
         {
             _PersistenceOptions = persistenceOptions ?? PersistenceOptions.Default;
         }
 
-        #endregion
-
-        #region Overrides of PersistenceFactoryBase
-
         public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
-            UnitOfWorkBase unitOfWork;
             switch (transactionScopeOption)
             {
                 case TransactionScopeOption.Required:
-                    if (TransactionManager.Ambient != null)
-                    {
-                        if (TransactionManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
-                        {
-                            var currentCompositeUnitOfWork = ((CompositeUnitOfWork)TransactionManager.Ambient.UnitOfWork);
-                            unitOfWork = new CompositeUnitOfWork(TransactionManager, currentCompositeUnitOfWork, _PersistenceOptions);
-                            currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
-                            TransactionManager.AddUnitOfWork(unitOfWork);
-                        }
-                        else
-                        {
-                            unitOfWork = TransactionManager.Ambient.UnitOfWork;
-                            TransactionManager.RetainAmbient();
-                        }
-
-                        return unitOfWork;
-                    }
-
-                    unitOfWork = new CompositeUnitOfWork(TransactionManager, _PersistenceOptions);
-                    TransactionManager.AddUnitOfWork(unitOfWork);
-
-                    return unitOfWork;
+                    return GetRequiredUnitOfWork();
                 case TransactionScopeOption.RequiresNew:
-                    unitOfWork = new CompositeUnitOfWork(TransactionManager, _PersistenceOptions);
-                    TransactionManager.AddUnitOfWork(unitOfWork);
-
-                    return unitOfWork;
+                    return GetRequiredNewUnitOfWork();
                 case TransactionScopeOption.Suppress:
                     return base.CreateUnitOfWork(transactionScopeOption);
                 default:
@@ -111,6 +72,37 @@ namespace NContext.Data.Persistence
             }
         }
 
-        #endregion
+        private IUnitOfWork GetRequiredUnitOfWork()
+        {
+            UnitOfWorkBase unitOfWork;
+            if (!AmbientContextManager.AmbientExists)
+            {
+                return GetRequiredNewUnitOfWork();
+            }
+
+            if (AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
+            {
+                var currentCompositeUnitOfWork = (CompositeUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+                unitOfWork = new CompositeUnitOfWork(AmbientContextManager, currentCompositeUnitOfWork, _PersistenceOptions);
+                currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
+                AmbientContextManager.AddUnitOfWork(unitOfWork);
+            }
+            else
+            {
+                // TODO: (DG) Revisit this! If it's not a Composite, it's either a NonAtomic or something else. Should we really retain it if something else? Throw exc?
+                unitOfWork = AmbientContextManager.Ambient.UnitOfWork;
+                AmbientContextManager.RetainAmbient();
+            }
+
+            return unitOfWork;
+        }
+
+        private IUnitOfWork GetRequiredNewUnitOfWork()
+        {
+            UnitOfWorkBase unitOfWork = new CompositeUnitOfWork(AmbientContextManager, _PersistenceOptions);
+            AmbientContextManager.AddUnitOfWork(unitOfWork);
+
+            return unitOfWork;
+        }
     }
 }

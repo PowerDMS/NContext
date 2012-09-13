@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SafeDirectoryCatalog.cs">
-//   Copyright (c) 2012
+// <copyright file="SafeDirectoryCatalog.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,22 +16,18 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a MEF catalog which prevents exceptions from being thrown when an assembly cannot be added.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
-using System.ComponentModel.Composition.Primitives;
-using System.IO;
-using System.Linq;
-using System.Reflection;
 
 namespace NContext.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.Primitives;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+
     /// <summary>
     /// Defines a MEF catalog which prevents exceptions from being thrown when an assembly cannot be added.
     /// </summary>
@@ -50,7 +46,7 @@ namespace NContext.Configuration
             var assemblyDirectories = directories.ToList();
             if (!assemblyDirectories.All(Directory.Exists))
             {
-                throw new DirectoryNotFoundException("Invalid directory path specified. Could not create AggregateCatalog.");
+                throw new DirectoryNotFoundException("Invalid composition directory path specified. Could not create AggregateCatalog.");
             }
 
             _Catalog = new AggregateCatalog();
@@ -82,10 +78,13 @@ namespace NContext.Configuration
         /// <summary>
         /// Gets the part definitions that are contained in the catalog.
         /// </summary>
-        /// <returns>The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition"/> contained in the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/>.</returns>
-        ///   
-        /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/> object has been disposed of.</exception>
-        /// <remarks></remarks>
+        /// <returns>
+        /// The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartDefinition"/> 
+        /// contained in the <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/>.
+        /// </returns>
+        /// <exception cref="T:System.ObjectDisposedException">
+        /// The <see cref="T:System.ComponentModel.Composition.Primitives.ComposablePartCatalog"/> object has been disposed of.
+        /// </exception>
         public override IQueryable<ComposablePartDefinition> Parts
         {
             get

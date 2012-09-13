@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebApiAuthorizationAttribute.cs">
-//   Copyright (c) 2012
+// <copyright file="WebApiAuthorizationAttribute.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an AuthorizationFilterAttribute for resource authorization.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Extensions.AspNetWebApi.Authorization
@@ -28,6 +24,7 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
     using System.Net;
     using System.Net.Http;
     using System.Security.Principal;
+    using System.Threading;
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
 
@@ -36,12 +33,11 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
     /// </summary>
     public class WebApiAuthorizationAttribute : AuthorizationFilterAttribute
     {
-        #region Methods
-
         /// <summary>
         /// Authorizes the current request using the providers injected via constructor.
         /// </summary>
-        /// <remarks></remarks>
+        /// <param name="principal">The principal.</param>
+        /// <param name="actionContext">The action context.</param>
         protected virtual void AuthorizeRequest(IPrincipal principal, HttpActionContext actionContext)
         {
             var unauthorizedResponseMessage = new HttpResponseMessage(HttpStatusCode.Unauthorized);
@@ -57,10 +53,6 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
             }
         }
 
-        #endregion
-        
-        #region Overrides of ActionFilterAttribute
-
         /// <summary>
         /// Called when [authorization].
         /// </summary>
@@ -71,11 +63,9 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
             AuthorizeRequest(GetPrincipal(actionContext.Request), actionContext);
         }
 
-        private IPrincipal GetPrincipal(HttpRequestMessage requestMessage)
+        protected virtual IPrincipal GetPrincipal(HttpRequestMessage requestMessage)
         {
-            return requestMessage.Properties["Principal"] as IPrincipal ?? new GenericPrincipal(new GenericIdentity(String.Empty), null);
+            return Thread.CurrentPrincipal ?? new GenericPrincipal(new GenericIdentity(String.Empty), null);
         }
-
-        #endregion
     }
 }

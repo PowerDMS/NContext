@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageEnterpriseLibrary.cs">
-//   Copyright (c) 2012
+// <copyright file="IManageEnterpriseLibrary.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,18 +16,14 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an application component for Microsoft Enterprise Library support.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel;
-
-using NContext.Configuration;
 
 namespace NContext.Extensions.EnterpriseLibrary
 {
+    using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel;
+
+    using NContext.Configuration;
+
     /// <summary>
     /// Defines an application component for Microsoft Enterprise Library support.
     /// </summary>

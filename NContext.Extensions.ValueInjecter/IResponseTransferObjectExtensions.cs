@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponseTransferObjectExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="IResponseTransferObjectExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,104 +16,86 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for IResponseTransferObject{T}.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using NContext.Dto;
-
-using Omu.ValueInjecter;
 
 namespace NContext.Extensions.ValueInjecter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using NContext.Dto;
+
+    using Omu.ValueInjecter;
+
     /// <summary>
     /// Defines extension methods for <see cref="IResponseTransferObject{T}"/>
     /// </summary>
     public static class IResponseTransferObjectExtensions
     {
         /// <summary>
-        /// Translates the source <see cref="IResponseTransferObject{TEntity}"/> to a <see cref="IResponseTransferObject{TDto}"/> using <see cref="LoopValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <param name="source">The source.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObject{TDto}"/>.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<TDto> InjectTo<TDto>(this IEnumerable<Object> source)
-           where TDto : class, new()
-        {
-            return InjectTo<TDto, LoopValueInjection>(source);
-        }
-
-        /// <summary>
-        /// Translates the source <see cref="IResponseTransferObject{TEntity}"/> to a <see cref="IResponseTransferObject{TDto}"/> using the specified <see cref="IValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <param name="source">The source.</param>
-        /// <returns>Instance of <see cref="IResponseTransferObject{TDto}"/>.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<TDto> InjectTo<TDto, TValueInjection>(this IEnumerable<Object> source)
-            where TDto : class, new()
-            where TValueInjection : IValueInjection, new()
-        {
-            return (IResponseTransferObject<TDto>)
-                Activator.CreateInstance(typeof(ServiceResponse<TDto>),
-                                         source.ToMaybe()
-                                               .Select(objects =>
-                                                       objects.Select(obj =>
-                                                                      obj.ToMaybe()
-                                                                         .Bind(objInstance =>
-                                                                               Activator.CreateInstance(typeof(TDto))
-                                                                                        .InjectFrom<TDto, TValueInjection>(objInstance)
-                                                                                        .ToMaybe())
-                                                                         .FromMaybe(default(TDto))).ToMaybe())
-                                               .FromMaybe(Enumerable.Empty<TDto>()));
-        }
-
-        /// <summary>
         /// Translates this instance to a <see cref="ServiceResponse{TDto}"/> using <see cref="LoopValueInjection"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
+        /// <typeparam name="TTarget">The type of the dto.</typeparam>
         /// <param name="response">The response.</param>
         /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
         /// <remarks></remarks>
-        public static IResponseTransferObject<TDto> Translate<T, TDto>(this IResponseTransferObject<T> response) 
-            where TDto : class
+        public static IResponseTransferObject<TTarget> Translate<TTarget>(this IResponseTransferObject<Object> response)
+            where TTarget : class
         {
-            return response.Translate<T, TDto, LoopValueInjection>();
+            return response.Translate<Object, TTarget, LoopValueInjection>();
         }
 
         /// <summary>
         /// Translates this instance to a <see cref="ServiceResponse{TDto}"/>
         /// using the specified <typeparamref name="TValueInjection"/>.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TDto">The type of the dto.</typeparam>
+        /// <typeparam name="TTarget">The type of the dto.</typeparam>
         /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
         /// <param name="response">The response.</param>
         /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
         /// <remarks></remarks>
-        public static IResponseTransferObject<TDto> Translate<T, TDto, TValueInjection>(this IResponseTransferObject<T> response)
-            where TDto : class
-            where TValueInjection : class, IValueInjection, new()
+        public static IResponseTransferObject<TTarget> Translate<TTarget, TValueInjection>(this IResponseTransferObject<Object> response)
+            where TTarget : class
+            where TValueInjection : IValueInjection, new()
+        {
+            return response.Translate<Object, TTarget, TValueInjection>();
+        }
+
+        /// <summary>
+        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/> using <see cref="LoopValueInjection"/>.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TTarget">The type of the dto.</typeparam>
+        /// <param name="response">The response.</param>
+        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
+        /// <remarks></remarks>
+        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget>(this IResponseTransferObject<TSource> response)
+            where TTarget : class
+        {
+            return response.Translate<TSource, TTarget, LoopValueInjection>();
+        }
+
+        /// <summary>
+        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/>
+        /// using the specified <typeparamref name="TValueInjection"/>.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TTarget">The type of the dto.</typeparam>
+        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
+        /// <param name="response">The response.</param>
+        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
+        /// <remarks></remarks>
+        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> response)
+            where TTarget : class
+            where TValueInjection : IValueInjection, new()
         {
             if (response.Errors.Any())
             {
-                return new ServiceResponse<TDto>(response.Errors);
+                return new ServiceResponse<TTarget>(response.Errors);
             }
 
-            return new ServiceResponse<TDto>(
-                response.Select(datum => 
-                            Activator.CreateInstance<TDto>()
-                                     .InjectFrom<TValueInjection>(datum))
-                        .Cast<TDto>());
+            return new ServiceResponse<TTarget>(Activator.CreateInstance<TTarget>().InjectFrom<TTarget, TValueInjection>(response.Data));
         }
     }
 }

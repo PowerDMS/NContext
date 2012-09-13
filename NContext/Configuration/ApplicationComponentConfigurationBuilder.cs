@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationComponentConfigurationBuilder.cs">
-//   Copyright (c) 2012
+// <copyright file="ApplicationComponentConfigurationBuilder.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,30 +16,20 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a fluent-interface builder for application components.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext.Configuration
 {
+    using System;
+
     /// <summary>
     /// Defines a fluent-interface builder for application components.
     /// </summary>
     public class ApplicationComponentConfigurationBuilder
     {
-        #region Fields
-
         private readonly ApplicationConfigurationBuilder _ApplicationConfigurationBuilder;
 
         private ApplicationComponentConfigurationBase _ApplicationComponentConfiguration;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBuilder"/> class.
@@ -50,8 +40,6 @@ namespace NContext.Configuration
         {
             _ApplicationConfigurationBuilder = applicationConfigurationBuilder;
         }
-
-        #endregion
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="ApplicationComponentConfigurationBase"/>

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ServiceRoute.cs">
-//   Copyright (c) 2012
+// <copyright file="Route.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,23 +16,17 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a class which represents a WCF service route.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext.Extensions.AspNetWebApi.Routing
 {
+    using System;
+
     /// <summary>
-    /// Defines a class which represents an HTTP service route.
+    /// Defines a class which represents a Web API service route.
     /// </summary>
     public class Route
     {
-        #region Fields
-
         private readonly String _RouteName;
 
         private readonly String _RouteTemplate;
@@ -40,10 +34,6 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         private readonly Object _Defaults;
 
         private readonly Object _Constraints;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Route"/> class for hosting within an ASP.NET application.
@@ -83,10 +73,6 @@ namespace NContext.Extensions.AspNetWebApi.Routing
             _Defaults = defaults;
             _Constraints = constraints;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the name of the route.
@@ -135,7 +121,5 @@ namespace NContext.Extensions.AspNetWebApi.Routing
                 return _Constraints;
             }
         }
-
-        #endregion
     }
 }

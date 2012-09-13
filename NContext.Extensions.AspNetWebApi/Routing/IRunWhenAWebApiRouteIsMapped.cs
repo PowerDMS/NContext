@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRunWhenAWebApiRouteIsMapped.cs">
-//   Copyright (c) 2012
+// <copyright file="IRunWhenAWebApiRouteIsMapped.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,25 +16,21 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a role-interface which allows implementors to run when ... has completed.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System.ComponentModel.Composition;
 
 namespace NContext.Extensions.AspNetWebApi.Routing
 {
+    using System.ComponentModel.Composition;
+
     /// <summary>
-    /// Defines a role-interface which allows implementors to run when a service route is created.
+    /// Defines a role-interface which allows implementors to run when a Web API route is mapped.
     /// </summary>
     /// <remarks></remarks>
     [InheritedExport]
     public interface IRunWhenAWebApiRouteIsMapped
     {
         /// <summary>
-        /// Runs  specified route.
+        /// Executes the action providing the specified route as an argument.
         /// </summary>
         /// <param name="route">The route.</param>
         /// <remarks></remarks>

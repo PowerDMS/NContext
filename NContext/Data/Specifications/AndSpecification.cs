@@ -1,17 +1,6 @@
-﻿//===================================================================================
-// Microsoft Developer & Platform Evangelism
-//=================================================================================== 
-// THIS CODE AND INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
-// OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-//===================================================================================
-// Copyright (c) Microsoft Corporation.  All Rights Reserved.
-// This code is released under the terms of the MS-LPL license, 
-// http://microsoftnlayerapp.codeplex.com/license
-//===================================================================================
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AndSpecification.cs">
-//   Copyright (c) 2012
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AndSpecification.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -27,17 +16,13 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a composite specification for AND-logic.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Linq.Expressions;
 
 namespace NContext.Data.Specifications
 {
+    using System;
+    using System.Linq.Expressions;
+
     using NContext.Data.Persistence;
 
     /// <summary>
@@ -111,7 +96,7 @@ namespace NContext.Data.Specifications
             Expression<Func<TEntity, Boolean>> left = _LeftSideSpecification.IsSatisfiedBy();
             Expression<Func<TEntity, Boolean>> right = _RightSideSpecification.IsSatisfiedBy();
 
-            return (left.And(right));
+            return left.And(right);
         }
 
         #endregion

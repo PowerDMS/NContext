@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SecurityConfigurationBuilder.cs">
-//   Copyright (c) 2012
+// <copyright file="SecurityConfigurationBuilder.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,37 +16,27 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a configuration class to build the application's SecurityManager.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Runtime.Caching;
-
-using NContext.Caching;
-using NContext.Configuration;
 
 namespace NContext.Security
 {
+    using System;
+    using System.Runtime.Caching;
+
+    using NContext.Caching;
+    using NContext.Configuration;
+
     /// <summary>
     /// Defines a configuration class to build the application's <see cref="SecurityManager"/>.
     /// </summary>
     /// <remarks></remarks>
     public class SecurityConfigurationBuilder : ApplicationComponentConfigurationBase
     {
-        #region Fields
-
         private DateTimeOffset _TokenAbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration;
 
         private TimeSpan _TokenSlidingExpiration = ObjectCache.NoSlidingExpiration;
 
         private TimeSpan _TokenInitialLifespan = new TimeSpan(0, 1, 0, 0);
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityConfigurationBuilder"/> class.
@@ -57,10 +47,6 @@ namespace NContext.Security
             : base(applicationConfigurationBuilder)
         {
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Sets the default cache configuration settings for security token expiration.
@@ -95,7 +81,5 @@ namespace NContext.Security
                         cachingManager,
                         new SecurityConfiguration(_TokenAbsoluteExpiration, _TokenSlidingExpiration, _TokenInitialLifespan)));
         }
-
-        #endregion
     }
 }

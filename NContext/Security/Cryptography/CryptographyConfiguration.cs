@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CryptographyConfiguration.cs">
-//   Copyright (c) 2012
+// <copyright file="CryptographyConfiguration.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,24 +16,18 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines configuration settings for application cryptographic operations.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Security.Cryptography;
 
 namespace NContext.Security.Cryptography
 {
+    using System;
+    using System.Security.Cryptography;
+
     /// <summary>
     /// Defines configuration settings for application cryptographic operations.
     /// </summary>
     public class CryptographyConfiguration
     {
-        #region Fields
-
         private readonly Type _DefaultHashAlgorithm;
 
         private readonly Type _DefaultKeyedHashAlgorithm;
@@ -45,10 +39,6 @@ namespace NContext.Security.Cryptography
         private readonly Func<IProvideKeyedHashing> _KeyedHashProviderFactory;
 
         private readonly Func<IProvideSymmetricEncryption> _SymmetricEncryptionProviderFactory;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptographyConfiguration"/> class.
@@ -69,10 +59,6 @@ namespace NContext.Security.Cryptography
             _KeyedHashProviderFactory = keyedHashProviderFactory;
             _SymmetricEncryptionProviderFactory = symmetricEncryptionProviderFactory;
         }
-
-        #endregion
-        
-        #region Properties
 
         /// <summary>
         /// Gets the symmetric encryption provider factory.
@@ -145,7 +131,5 @@ namespace NContext.Security.Cryptography
                 return _DefaultSymmetricAlgorithm;
             }
         }
-
-        #endregion
     }
 }

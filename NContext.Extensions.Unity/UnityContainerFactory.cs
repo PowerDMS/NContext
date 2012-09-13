@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnityContainerFactory.cs">
-//   Copyright (c) 2012
+// <copyright file="UnityContainerFactory.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,23 +16,19 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a simple factory for creating a <see
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Configuration;
-using System.IO;
-using System.Reflection;
-
-using Microsoft.Practices.Unity;
-using Microsoft.Practices.Unity.Configuration;
-using Microsoft.Practices.Unity.InterceptionExtension;
 
 namespace NContext.Extensions.Unity
 {
+    using System;
+    using System.Configuration;
+    using System.IO;
+    using System.Reflection;
+
+    using Microsoft.Practices.Unity;
+    using Microsoft.Practices.Unity.Configuration;
+    using Microsoft.Practices.Unity.InterceptionExtension;
+
     /// <summary>
     /// Defines a simple factory for creating a <see cref="IUnityContainer"/>
     /// </summary>
@@ -51,11 +47,20 @@ namespace NContext.Extensions.Unity
         /// <summary>
         /// Creates an instance of <see cref="IUnityContainer"/> used for dependency injection.
         /// </summary>
-        /// <param name="configurationFileName">Name of the configuration file.</param>
-        /// <param name="configurationSectionName">Name of the configuration section.</param>
-        /// <param name="containerName">Name of the container.</param>
-        /// <returns>Instance of <see cref="IUnityContainer"/>.</returns>
-        /// <remarks></remarks>
+        /// <param name="configurationFileName">
+        /// Name of the configuration file.
+        /// </param>
+        /// <param name="containerName">
+        /// Name of the container.
+        /// </param>
+        /// <param name="configurationSectionName">
+        /// Name of the configuration section.
+        /// </param>
+        /// <returns>
+        /// Instance of <see cref="IUnityContainer"/>.
+        /// </returns>
+        /// <remarks>
+        /// </remarks>
         public static IUnityContainer Create(String configurationFileName, String containerName = "", String configurationSectionName = "unity")
         {
             IUnityContainer container = null;

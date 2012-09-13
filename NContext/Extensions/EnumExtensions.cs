@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EnumExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="EnumExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,19 +16,15 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a static class for providing enum type extension methods.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.ComponentModel;
-
-using NContext.Utilities;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.ComponentModel;
+
+    using NContext.Utilities;
+
     /// <summary>
     /// Defines a static class for providing enum type extension methods.
     /// </summary>
@@ -39,7 +35,7 @@ namespace NContext.Extensions
         /// Gets the <see cref="DescriptionAttribute"/> value based upon the enum value specified.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>The value of the <see cref="DescriptionAttribute"/> if one exists, else <see cref="String.Empty"/>.</returns>
+        /// <returns>The value of the <see cref="DescriptionAttribute"/> if one exists, else <see cref="string.Empty"/>.</returns>
         /// <remarks></remarks>
         public static String ToDescriptionValue(this Enum value)
         {

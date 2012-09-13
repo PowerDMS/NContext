@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CryptographyManager.cs">
-//   Copyright (c) 2012
+// <copyright file="CryptographyManager.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,29 +16,22 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines manager class for application cryptography-related operations.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Security.Cryptography;
-
-using NContext.Configuration;
 
 namespace NContext.Security.Cryptography
 {
+    using System;
+    using System.Security.Cryptography;
+
+    using NContext.Configuration;
+
     /// <summary>
     /// Defines manager class for application cryptography-related operations.
     /// </summary>
     /// <remarks></remarks>
+    // TODO: (DG) Add support for default symmetric keys.
     public class CryptographyManager : IManageCryptography
     {
-        #region Fields
-
-        // TODO: (DG) Add support for default symmetric keys.
-
         private readonly CryptographyConfiguration _CryptographyConfiguration;
 
         private Type _DefaultHashAlgorithm;
@@ -55,10 +48,6 @@ namespace NContext.Security.Cryptography
 
         private Boolean _IsConfigured;
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptographyManager"/> class.
         /// </summary>
@@ -73,10 +62,6 @@ namespace NContext.Security.Cryptography
 
             _CryptographyConfiguration = cryptographyConfiguration;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether this instance is configured.
@@ -176,10 +161,6 @@ namespace NContext.Security.Cryptography
             }
         }
 
-        #endregion
-
-        #region Implementation of IApplicationComponent
-
         /// <summary>
         /// Configures the component instance.
         /// </summary>
@@ -208,7 +189,5 @@ namespace NContext.Security.Cryptography
                 _IsConfigured = true;
             }
         }
-
-        #endregion
     }
 }

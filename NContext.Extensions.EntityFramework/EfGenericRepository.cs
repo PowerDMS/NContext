@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EfGenericRepository.cs">
-//   Copyright (c) 2012
+// <copyright file="EfGenericRepository.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,26 +16,20 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a entity framework implementation of the repository pattern for database communication.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Linq.Expressions;
-
-using NContext.Data;
-using NContext.Data.Specifications;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Data.Entity;
+    using System.Data.Entity.Validation;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     using NContext.Data.Persistence;
+    using NContext.Data.Specifications;
 
     /// <summary>
     /// Defines a generic implementation of the repository pattern for database communication.
@@ -43,13 +37,7 @@ namespace NContext.Extensions.EntityFramework
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
     public class EfGenericRepository<TEntity> : IEfGenericRepository<TEntity> where TEntity : class, IEntity
     {
-        #region Fields
-
         private readonly DbContext _Context;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EfGenericRepository{TEntity}"/> class.
@@ -65,8 +53,6 @@ namespace NContext.Extensions.EntityFramework
 
             _Context = context;
         }
-
-        #endregion
 
         #region Implementation of IEfGenericRepository<TEntity>
 

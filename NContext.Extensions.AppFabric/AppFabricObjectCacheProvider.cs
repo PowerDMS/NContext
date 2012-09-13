@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AppFabricObjectCacheProvider.cs">
-//   Copyright (c) 2012
+// <copyright file="AppFabricObjectCacheProvider.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,149 +16,104 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-// <summary>
-//   Defines a caching provider for AppFabric.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Runtime.Caching;
-
-using Microsoft.ApplicationServer.Caching;
 
 namespace NContext.Extensions.AppFabric
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Runtime.Caching;
+
+    using Microsoft.ApplicationServer.Caching;
+
     /// <summary>
-    /// Defines a caching provider for AppFabric.
+    /// Class AppFabricObjectCacheProvider
     /// </summary>
     public class AppFabricObjectCacheProvider : ObjectCache
     {
-        #region Constants and Fields
+        private const String _RegionKeyTemplate = "{0}:{1}";
+
+        private const String _AppFabricObjectCacheName = @"AppFabricCacheService";
+
+        private readonly DataCacheFactory _CacheFactory;
 
         /// <summary>
-        /// The region key template.
-        /// </summary>
-        private const String regionKeyTemplate = "{0}:{1}";
-
-        /// <summary>
-        /// The cache factory.
-        /// </summary>
-        private readonly DataCacheFactory cacheFactory;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AppFabricObjectCacheProvider"/> class.
+        /// Initializes a new instance of the <see cref="AppFabricObjectCacheProvider" /> class.
         /// </summary>
         public AppFabricObjectCacheProvider()
         {
-            cacheFactory = new DataCacheFactory();
+            _CacheFactory = new DataCacheFactory();
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
-        /// Gets DefaultCacheCapabilities.
+        /// When overridden in a derived class, gets a description of the features that a cache implementation provides.
         /// </summary>
+        /// <value>The default cache capabilities.</value>
+        /// <returns>A bitwise combination of flags that indicate the default capabilities of a cache implementation.</returns>
         public override DefaultCacheCapabilities DefaultCacheCapabilities
         {
             get
             {
-                return DefaultCacheCapabilities.OutOfProcessProvider | DefaultCacheCapabilities.AbsoluteExpirations |
+                return DefaultCacheCapabilities.OutOfProcessProvider | 
+                       DefaultCacheCapabilities.AbsoluteExpirations |
                        DefaultCacheCapabilities.SlidingExpirations;
             }
         }
 
         /// <summary>
-        /// Gets Name.
+        /// Gets the name of a specific <see cref="T:System.Runtime.Caching.ObjectCache" /> instance.
         /// </summary>
+        /// <value>The name.</value>
+        /// <returns>The name of a specific cache instance.</returns>
         public override String Name
         {
             get
             {
-                return "AppFabricCacheService";
+                return _AppFabricObjectCacheName;
             }
         }
 
-        #endregion
-
-        #region Indexers
-
         /// <summary>
-        /// The 
+        /// Gets or sets the default indexer for the <see cref="T:System.Runtime.Caching.ObjectCache" /> class.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <exception cref="NotSupportedException">
-        /// </exception>
+        /// <param name="key">The key.</param>
+        /// <returns>.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
         public override Object this[String key]
         {
             get
             {
                 return Get(key);
             }
-
             set
             {
                 throw new NotSupportedException();
             }
         }
 
-        #endregion
-
-        #region Public Methods
-
         /// <summary>
-        /// The add or get existing.
+        /// When overridden in a derived class, inserts a cache entry into the cache, specifying a key and a value for the cache entry, and information about how the entry will be evicted.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="policy">
-        /// The policy.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The add or get existing.
-        /// </returns>
-        public override Object AddOrGetExisting(
-            String key, Object value, CacheItemPolicy policy, String regionName = null)
+        /// <param name="key">A unique identifier for the cache entry.</param>
+        /// <param name="value">The object to insert.</param>
+        /// <param name="policy">An object that contains eviction details for the cache entry. This object provides more options for eviction than a simple absolute expiration.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry can be added, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>If a cache entry with the same key exists, the specified cache entry's value; otherwise, null.</returns>
+        public override Object AddOrGetExisting(String key, Object value, CacheItemPolicy policy, String regionName = null)
         {
             return AddOrGetExisting(new CacheItem(key, value, regionName), policy).Value;
         }
 
         /// <summary>
-        /// The add or get existing.
+        /// When overridden in a derived class, inserts a cache entry into the cache, by using a key, an object for the cache entry, an absolute expiration value, and an optional region to add the cache into.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="absoluteExpiration">
-        /// The absolute expiration.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The add or get existing.
-        /// </returns>
-        public override Object AddOrGetExisting(
-            String key, Object value, DateTimeOffset absoluteExpiration, String regionName = null)
+        /// <param name="key">A unique identifier for the cache entry.</param>
+        /// <param name="value">The object to insert.</param>
+        /// <param name="absoluteExpiration">The fixed date and time at which the cache entry will expire.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry can be added, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>If a cache entry with the same key exists, the specified cache entry's value; otherwise, null.</returns>
+        public override Object AddOrGetExisting(String key, Object value, DateTimeOffset absoluteExpiration, String regionName = null)
         {
             return
                 AddOrGetExisting(
@@ -167,16 +122,11 @@ namespace NContext.Extensions.AppFabric
         }
 
         /// <summary>
-        /// The add or get existing.
+        /// When overridden in a derived class, inserts the specified <see cref="T:System.Runtime.Caching.CacheItem" /> object into the cache, specifying information about how the entry will be evicted.
         /// </summary>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="policy">
-        /// The policy.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="value">The object to insert.</param>
+        /// <param name="policy">An object that contains eviction details for the cache entry. This object provides more options for eviction than a simple absolute expiration.</param>
+        /// <returns>If a cache entry with the same key exists, the specified cache entry; otherwise, null.</returns>
         public override CacheItem AddOrGetExisting(CacheItem value, CacheItemPolicy policy)
         {
             var data = Get(value.Key, value.RegionName);
@@ -190,58 +140,39 @@ namespace NContext.Extensions.AppFabric
         }
 
         /// <summary>
-        /// The contains.
+        /// When overridden in a derived class, checks whether the cache entry already exists in the cache.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The contains.
-        /// </returns>
+        /// <param name="key">A unique identifier for the cache entry.</param>
+        /// <param name="regionName">Optional. A named region in the cache where the cache can be found, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>true if the cache contains a cache entry with the same key value as <paramref name="key" />; otherwise, false.</returns>
         public override Boolean Contains(String key, String regionName = null)
         {
             return Get(key, regionName) != null;
         }
 
         /// <summary>
-        /// The create cache entry change monitor.
+        /// When overridden in a derived class, creates a <see cref="T:System.Runtime.Caching.CacheEntryChangeMonitor" /> object that can trigger events in response to changes to specified cache entries.
         /// </summary>
-        /// <param name="keys">
-        /// The keys.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        /// <exception cref="NotSupportedException">
-        /// </exception>
-        public override CacheEntryChangeMonitor CreateCacheEntryChangeMonitor(
-            IEnumerable<String> keys, String regionName = null)
+        /// <param name="keys">The unique identifiers for cache entries to monitor.</param>
+        /// <param name="regionName">Optional. A named region in the cache where the cache keys in the <paramref name="keys" /> parameter exist, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>A change monitor that monitors cache entries in the cache.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        public override CacheEntryChangeMonitor CreateCacheEntryChangeMonitor(IEnumerable<String> keys, String regionName = null)
         {
             throw new NotSupportedException();
         }
 
         /// <summary>
-        /// The get.
+        /// When overridden in a derived class, gets the specified cache entry from the cache as an object.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The get.
-        /// </returns>
+        /// <param name="key">A unique identifier for the cache entry to get.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry was added, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>The cache entry that is identified by <paramref name="key" />.</returns>
         public override Object Get(String key, String regionName = null)
         {
             try
             {
-                return cacheFactory.GetDefaultCache().Get(GetKey(key, regionName));
+                return _CacheFactory.GetDefaultCache().Get(GetKey(key, regionName));
             }
             catch (DataCacheException ex)
             {
@@ -256,16 +187,11 @@ namespace NContext.Extensions.AppFabric
         }
 
         /// <summary>
-        /// The get cache item.
+        /// When overridden in a derived class, gets the specified cache entry from the cache as a <see cref="T:System.Runtime.Caching.CacheItem" /> instance.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// </returns>
+        /// <param name="key">A unique identifier for the cache entry to get.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache was added, if regions are implemented. Because regions are not implemented in .NET Framework 4, the default is null.</param>
+        /// <returns>The cache entry that is identified by <paramref name="key" />.</returns>
         public override CacheItem GetCacheItem(String key, String regionName = null)
         {
             var data = Get(key, regionName);
@@ -279,57 +205,40 @@ namespace NContext.Extensions.AppFabric
         }
 
         /// <summary>
-        /// The get count.
+        /// When overridden in a derived class, gets the total number of cache entries in the cache.
         /// </summary>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The get count.
-        /// </returns>
-        /// <exception cref="NotSupportedException">
-        /// </exception>
+        /// <param name="regionName">Optional. A named region in the cache for which the cache entry count should be computed, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>The number of cache entries in the cache. If <paramref name="regionName" /> is not null, the count indicates the number of entries that are in the specified cache region.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
         public override Int64 GetCount(String regionName = null)
         {
             throw new NotSupportedException();
         }
 
         /// <summary>
-        /// The get values.
+        /// When overridden in a derived class, gets a set of cache entries that correspond to the specified keys.
         /// </summary>
-        /// <param name="keys">
-        /// The keys.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// </returns>
-        /// <exception cref="NotSupportedException">
-        /// </exception>
+        /// <param name="keys">A collection of unique identifiers for the cache entries to get.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry or entries were added, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>A dictionary of key/value pairs that represent cache entries.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
         public override IDictionary<String, Object> GetValues(IEnumerable<String> keys, String regionName = null)
         {
             throw new NotSupportedException();
         }
 
         /// <summary>
-        /// The remove.
+        /// When overridden in a derived class, removes the cache entry from the cache.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The remove.
-        /// </returns>
+        /// <param name="key">A unique identifier for the cache entry.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry was added, if regions are implemented. The default value for the optional parameter is null.</param>
+        /// <returns>An object that represents the value of the removed cache entry that was specified by the key, or null if the specified entry was not found.</returns>
         public override Object Remove(String key, String regionName = null)
         {
             var data = Get(key, regionName);
             if (data != null)
             {
-                cacheFactory.GetDefaultCache().Remove(GetKey(key, regionName));
+                _CacheFactory.GetDefaultCache().Remove(GetKey(key, regionName));
                 return data;
             }
 
@@ -337,55 +246,34 @@ namespace NContext.Extensions.AppFabric
         }
 
         /// <summary>
-        /// The set.
+        /// When overridden in a derived class, inserts a cache entry into the cache.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="policy">
-        /// The policy.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
+        /// <param name="key">A unique identifier for the cache entry.</param>
+        /// <param name="value">The object to insert.</param>
+        /// <param name="policy">An object that contains eviction details for the cache entry. This object provides more options for eviction than a simple absolute expiration.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry can be added, if regions are implemented. The default value for the optional parameter is null.</param>
         public override void Set(String key, Object value, CacheItemPolicy policy, String regionName = null)
         {
             Set(new CacheItem(key, value, regionName), policy);
         }
 
         /// <summary>
-        /// The set.
+        /// When overridden in a derived class, inserts a cache entry into the cache, specifying time-based expiration details.
         /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="value">
-        /// The value.
-        /// </param>
-        /// <param name="absoluteExpiration">
-        /// The absolute expiration.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
+        /// <param name="key">A unique identifier for the cache entry.</param>
+        /// <param name="value">The object to insert.</param>
+        /// <param name="absoluteExpiration">The fixed date and time at which the cache entry will expire.</param>
+        /// <param name="regionName">Optional. A named region in the cache to which the cache entry can be added, if regions are implemented. The default value for the optional parameter is null.</param>
         public override void Set(String key, Object value, DateTimeOffset absoluteExpiration, String regionName = null)
         {
-            Set(
-                new CacheItem(key, value, regionName), new CacheItemPolicy { AbsoluteExpiration = absoluteExpiration });
+            Set(new CacheItem(key, value, regionName), new CacheItemPolicy { AbsoluteExpiration = absoluteExpiration });
         }
 
         /// <summary>
-        /// The set.
+        /// When overridden in a derived class, inserts the cache entry into the cache as a <see cref="T:System.Runtime.Caching.CacheItem" /> instance, specifying information about how the entry will be evicted.
         /// </summary>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="policy">
-        /// The policy.
-        /// </param>
+        /// <param name="item">The cache item to add.</param>
+        /// <param name="policy">An object that contains eviction details for the cache entry. This object provides more options for eviction than a simple absolute expiration.</param>
         public override void Set(CacheItem item, CacheItemPolicy policy)
         {
             if (item.Value == null)
@@ -405,7 +293,7 @@ namespace NContext.Extensions.AppFabric
                     timeout = policy.AbsoluteExpiration - DateTime.UtcNow;
                 }
 
-                cacheFactory.GetDefaultCache().Put(GetKey(item.Key, item.RegionName), item.Value, timeout);
+                _CacheFactory.GetDefaultCache().Put(GetKey(item.Key, item.RegionName), item.Value, timeout);
             }
             catch (DataCacheException ex)
             {
@@ -419,34 +307,16 @@ namespace NContext.Extensions.AppFabric
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// The get enumerator.
+        /// When overridden in a derived class, creates an enumerator that can be used to iterate through a collection of cache entries.
         /// </summary>
-        /// <returns>
-        /// </returns>
-        /// <exception cref="NotSupportedException">
-        /// </exception>
+        /// <returns>The enumerator object that provides access to the cache entries in the cache.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
         protected override IEnumerator<KeyValuePair<String, Object>> GetEnumerator()
         {
             throw new NotSupportedException();
         }
 
-        /// <summary>
-        /// The get key.
-        /// </summary>
-        /// <param name="key">
-        /// The key.
-        /// </param>
-        /// <param name="regionName">
-        /// The region name.
-        /// </param>
-        /// <returns>
-        /// The get key.
-        /// </returns>
         private static String GetKey(String key, String regionName)
         {
             if (String.IsNullOrWhiteSpace(regionName))
@@ -454,9 +324,7 @@ namespace NContext.Extensions.AppFabric
                 return key;
             }
 
-            return String.Format(CultureInfo.InvariantCulture, regionKeyTemplate, key, regionName);
+            return String.Format(CultureInfo.InvariantCulture, _RegionKeyTemplate, key, regionName);
         }
-
-        #endregion
     }
 }

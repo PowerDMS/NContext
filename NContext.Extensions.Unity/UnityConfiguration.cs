@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnityConfiguration.cs">
-//   Copyright (c) 2012
+// <copyright file="UnityConfiguration.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,32 +16,22 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines configuration settings for Unity.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext.Extensions.Unity
 {
+    using System;
+
     /// <summary>
     /// Defines configuration settings for Unity.
     /// </summary>
     public class UnityConfiguration
     {
-        #region Fields
-
         private readonly String _ContainerName;
 
         private readonly String _ConfigurationFileName;
 
         private readonly String _ConfigurationSectionName;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnityConfiguration"/> class.
@@ -56,10 +46,6 @@ namespace NContext.Extensions.Unity
             _ConfigurationFileName = configurationFileName;
             _ConfigurationSectionName = configurationSectionName;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the dependency injection container adapter.
@@ -96,7 +82,5 @@ namespace NContext.Extensions.Unity
                 return _ConfigurationSectionName;
             }
         }
-
-        #endregion 
     }
 }

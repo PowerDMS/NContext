@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CryptographyConfigurationBuilder.cs">
-//   Copyright (c) 2012
+// <copyright file="CryptographyConfigurationBuilder.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,27 +16,20 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a configuration class to build the application's CryptographyManager.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Security.Cryptography;
-
-using NContext.Configuration;
-using NContext.Extensions;
 
 namespace NContext.Security.Cryptography
 {
+    using System;
+    using System.Security.Cryptography;
+
+    using NContext.Configuration;
+
     /// <summary>
     /// Defines a configuration class to build the application's <see cref="CryptographyManager"/>.
     /// </summary>
     public class CryptographyConfigurationBuilder : ApplicationComponentConfigurationBase
     {
-        #region Fields
-
         private Type _DefaultHashAlgorithm;
 
         private Type _DefaultKeyedHashAlgorithm;
@@ -49,10 +42,6 @@ namespace NContext.Security.Cryptography
 
         private Func<IProvideSymmetricEncryption> _SymmetricEncryptionProviderFactory;
 
-        #endregion
-
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="CryptographyConfigurationBuilder"/> class.
         /// </summary>
@@ -63,37 +52,21 @@ namespace NContext.Security.Cryptography
         {
         }
 
-        #endregion
-        
-        #region Methods
-
         /// <summary>
-        /// Sets the application's default cryptographic algorithms. (<see cref="HashAlgorithm"/>, <see cref="KeyedHashAlgorithm"/>, <see cref="SymmetricAlgorithm"/>)
+        /// Sets the application's default cryptographic algorithms. (<see cref="HashAlgorithm" />, <see cref="KeyedHashAlgorithm" />, <see cref="SymmetricAlgorithm" />)
         /// </summary>
-        /// <param name="defaultHashAlgorithm">The default <see cref="HashAlgorithm"/>.</param>
-        /// <param name="defaultKeyedHashAlgorithm">The default <see cref="KeyedHashAlgorithm"/>.</param>
-        /// <param name="defaultSymmetricAlgorithm">The default <see cref="SymmetricAlgorithm"/>.</param>
-        /// <remarks></remarks>
-        public CryptographyConfigurationBuilder SetDefaults(Type defaultHashAlgorithm, Type defaultKeyedHashAlgorithm, Type defaultSymmetricAlgorithm)
+        /// <typeparam name="THashAlgorithm">The type of hash algorithm.</typeparam>
+        /// <typeparam name="TKeyedHashAlgorithm">The type of keyed hash algorithm.</typeparam>
+        /// <typeparam name="TSymmetricAlgorithm">The type of symmetric algorithm.</typeparam>
+        /// <returns>Current CryptographyConfigurationBuilder instance.</returns>
+        public CryptographyConfigurationBuilder SetDefaults<THashAlgorithm, TKeyedHashAlgorithm, TSymmetricAlgorithm>()
+            where THashAlgorithm : HashAlgorithm
+            where TKeyedHashAlgorithm : KeyedHashAlgorithm
+            where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            if (!defaultHashAlgorithm.Implements<HashAlgorithm>())
-            {
-                throw new ArgumentException("DefaultHashAlgorithm is invalid. Must be of type HashAlgorithm.", "defaultHashAlgorithm");
-            }
-
-            if (!defaultKeyedHashAlgorithm.Implements<KeyedHashAlgorithm>())
-            {
-                throw new ArgumentException("DefaultKeyedHashAlgorithm is invalid. Must be of type HashAlgorithm.", "defaultKeyedHashAlgorithm");
-            }
-
-            if (!defaultSymmetricAlgorithm.Implements<SymmetricAlgorithm>())
-            {
-                throw new ArgumentException("DefaultSymmetricAlgorithm is invalid. Must be of type HashAlgorithm.", "defaultSymmetricAlgorithm");
-            }
-
-            _DefaultHashAlgorithm = defaultHashAlgorithm;
-            _DefaultKeyedHashAlgorithm = defaultKeyedHashAlgorithm;
-            _DefaultSymmetricAlgorithm = defaultSymmetricAlgorithm;
+            _DefaultHashAlgorithm = typeof(THashAlgorithm);
+            _DefaultKeyedHashAlgorithm = typeof(TKeyedHashAlgorithm);
+            _DefaultSymmetricAlgorithm = typeof(TSymmetricAlgorithm);
 
             return this;
         }
@@ -137,8 +110,6 @@ namespace NContext.Security.Cryptography
             return this;
         }
 
-        #endregion
-
         #region Implementation of ApplicationComponentConfigurationBase
 
         /// <summary>
@@ -158,8 +129,7 @@ namespace NContext.Security.Cryptography
                                _DefaultSymmetricAlgorithm,
                                _HashProviderFactory,
                                _KeyedHashProviderFactory,
-                               _SymmetricEncryptionProviderFactory
-                               )));
+                               _SymmetricEncryptionProviderFactory)));
         }
 
         #endregion

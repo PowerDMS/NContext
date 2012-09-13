@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EfServiceResponse.cs">
-//   Copyright (c) 2012
+// <copyright file="EfServiceResponse.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,29 +16,25 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-// 
-// <summary>
-//   Defines an entity framework ServiceResponse<T> adapter.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Linq;
-
-using NContext.Dto;
-using NContext.ErrorHandling;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Validation;
+    using System.Linq;
+
+    using NContext.Dto;
+    using NContext.ErrorHandling;
+
     /// <summary>
     /// Defines an Entity Framework <see cref="ServiceResponse{T}"/> adapter.
     /// </summary>
+    /// <typeparam name="T">
+    /// </typeparam>
     public class EfServiceResponse<T> : ServiceResponse<T>
     {
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
         /// </summary>
@@ -89,20 +85,6 @@ namespace NContext.Extensions.EntityFramework
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EfServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <remarks></remarks>
-        public EfServiceResponse(IEnumerable<T> data)
-            : base(data)
-        {
-        }
-
-        #endregion
-
-        #region Methods
-
         private static IEnumerable<Error> TranslateErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
         {
             return errors.ToMaybe()
@@ -120,7 +102,5 @@ namespace NContext.Extensions.EntityFramework
                                                                                              .Select(validationError => validationError.ErrorMessage))).ToMaybe())
                                     .FromMaybe(Enumerable.Empty<ValidationError>());
         }
-
-        #endregion
     }
 }

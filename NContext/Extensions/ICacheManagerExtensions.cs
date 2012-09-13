@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICacheManagerExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="ICacheManagerExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,19 +16,15 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for ICacheManager.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Runtime.Caching;
-
-using NContext.Caching;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.Runtime.Caching;
+
+    using NContext.Caching;
+
     /// <summary>
     /// Defines extension methods for ICacheManager.
     /// </summary>
@@ -41,8 +37,7 @@ namespace NContext.Extensions
         /// <param name="cacheManager">The cache manager.</param>
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="instance">The instance.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>Boolean.</returns>
         public static Boolean AddOrUpdateItem(this IManageCaching cacheManager, Guid cacheEntryKey, Object instance)
         {
             return cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance);
@@ -56,8 +51,7 @@ namespace NContext.Extensions
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="instance">The instance.</param>
         /// <param name="cacheItemPolicy">The cache item policy.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>Boolean.</returns>
         public static Boolean AddOrUpdateItem<TObject>(this IManageCaching cacheManager, Guid cacheEntryKey, TObject instance, CacheItemPolicy cacheItemPolicy)
         {
             return cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance, cacheItemPolicy);
@@ -70,8 +64,7 @@ namespace NContext.Extensions
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="instance">The instance.</param>
         /// <param name="cacheItemPolicy">The cache item policy.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>Boolean.</returns>
         public static Boolean AddOrUpdateItem(this IManageCaching cacheManager, Guid cacheEntryKey, Object instance, CacheItemPolicy cacheItemPolicy)
         {
             return cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance, cacheItemPolicy);

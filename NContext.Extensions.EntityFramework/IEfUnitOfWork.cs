@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEfUnitOfWork.cs">
-//   Copyright (c) 2012
+// <copyright file="IEfUnitOfWork.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an Entity Framework unit of work.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Extensions.EntityFramework
@@ -27,7 +23,6 @@ namespace NContext.Extensions.EntityFramework
     using System.Collections.Generic;
     using System.Data.Entity.Validation;
 
-    using NContext.Data;
     using NContext.Data.Persistence;
 
     /// <summary>
@@ -39,13 +34,12 @@ namespace NContext.Extensions.EntityFramework
         /// Gets the context container.
         /// </summary>
         /// <remarks></remarks>
-        IContextContainer ContextContainer { get; }
+        IDbContextContainer DbContextContainer { get; }
 
         /// <summary>
         /// Validates each context in the container.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>IEnumerable{DbEntityValidationResult}.</returns>
         IEnumerable<DbEntityValidationResult> Validate();
     }
 }

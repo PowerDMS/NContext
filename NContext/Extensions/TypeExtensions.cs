@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="TypeExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="TypeExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,18 +16,14 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a static class for providing Type extension methods.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.Reflection;
+    using System.Runtime.CompilerServices;
+
     /// <summary>
     /// Defines a static class for providing Type extension methods.
     /// </summary>
@@ -60,15 +56,17 @@ namespace NContext.Extensions
         /// Determines whether the specified type is anonymous.
         /// </summary>
         /// <param name="type">The type.</param>
-        /// <returns><c>true</c> if [is anonymous type] [the specified type]; otherwise, <c>false</c>.</returns>
+        /// <returns><c>true</c> if the specified type [is anonymous]; otherwise, <c>false</c>.</returns>
         /// <remarks></remarks>
         public static Boolean IsAnonymousType(this Type type)
         {
-            return type.IsGenericType && (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic
-                && (type.Name.StartsWith("<>", StringComparison.OrdinalIgnoreCase) ||
-                    type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase))
-                && type.Name.Contains("AnonymousType")
-                && Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false);
+            return 
+                type.IsGenericType && 
+                (type.Attributes & TypeAttributes.NotPublic) == TypeAttributes.NotPublic && 
+                (type.Name.StartsWith("<>", StringComparison.OrdinalIgnoreCase) || 
+                 type.Name.StartsWith("VB$", StringComparison.OrdinalIgnoreCase)) && 
+                type.Name.Contains("AnonymousType") && 
+                Attribute.IsDefined(type, typeof(CompilerGeneratedAttribute), false);
         }
     }
 }

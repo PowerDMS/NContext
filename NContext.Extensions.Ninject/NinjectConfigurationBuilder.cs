@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NinjectConfigurationBuilder.cs">
-//   Copyright (c) 2012
+// <copyright file="NinjectConfigurationBuilder.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,38 +16,25 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-
-using NContext.Configuration;
-
-using Ninject;
-using Ninject.Modules;
 
 namespace NContext.Extensions.Ninject
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+
+    using NContext.Configuration;
+
+    using global::Ninject;
+    using global::Ninject.Modules;
+
     public class NinjectConfigurationBuilder : ApplicationComponentConfigurationBase
     {
-        #region Fields
-
         private Func<IKernel> _KernelFactory; 
 
         private Func<IEnumerable<INinjectModule>> _ModuleFactory;
 
         private Func<INinjectSettings> _NinjectSettings;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBase"/> class.
@@ -59,10 +46,6 @@ namespace NContext.Extensions.Ninject
         {
             _KernelFactory = () => new StandardKernel();
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Sets the <see cref="IKernel"/> instance to use.  By default, NContext will use <see cref="StandardKernel"/>.  
@@ -107,10 +90,6 @@ namespace NContext.Extensions.Ninject
             return this;
         }
 
-        #endregion
-
-        #region Overrides of ApplicationComponentConfigurationBase
-
         /// <summary>
         /// Register's an <see cref="IManageNinject"/> application component instance.
         /// </summary>
@@ -123,7 +102,5 @@ namespace NContext.Extensions.Ninject
                        new NinjectManager(
                            new NinjectConfiguration(_KernelFactory, _ModuleFactory, _NinjectSettings)));
         }
-
-        #endregion
     }
 }

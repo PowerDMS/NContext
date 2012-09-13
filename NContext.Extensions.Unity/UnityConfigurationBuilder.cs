@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnityConfigurationBuilder.cs">
-//   Copyright (c) 2012
+// <copyright file="UnityConfigurationBuilder.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,35 +16,25 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a configuration class to build the application's UnityManager.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-
-using NContext.Configuration;
 
 namespace NContext.Extensions.Unity
 {
+    using System;
+
+    using NContext.Configuration;
+
     /// <summary>
     /// Defines a configuration class to build the application's <see cref="UnityManager"/>.
     /// </summary>
     /// <remarks></remarks>
     public class UnityConfigurationBuilder : ApplicationComponentConfigurationBase
     {
-        #region Fields
-
         private String _ContainerName;
 
         private String _ConfigurationFileName;
 
         private String _ConfigurationSectionName;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnityConfigurationBuilder"/> class.
@@ -55,10 +45,6 @@ namespace NContext.Extensions.Unity
             : base(applicationConfigurationBuilder)
         {
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Sets the name of the container.
@@ -106,7 +92,5 @@ namespace NContext.Extensions.Unity
                        new UnityManager(
                            new UnityConfiguration(_ContainerName, _ConfigurationFileName, _ConfigurationSectionName)));
         }
-
-        #endregion
     }
 }

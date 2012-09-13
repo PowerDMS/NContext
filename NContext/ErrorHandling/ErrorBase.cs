@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ErrorBase.cs">
-//   Copyright (c) 2012
+// <copyright file="ErrorBase.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,27 +16,21 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an abstraction for localized application errors.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Reflection;
-using System.Resources;
-using System.Text.RegularExpressions;
-
-using NContext.Extensions;
 
 namespace NContext.ErrorHandling
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net;
+    using System.Reflection;
+    using System.Resources;
+    using System.Text.RegularExpressions;
 
     using NContext.Dto;
+    using NContext.Extensions;
 
     /// <summary>
     /// Defines an abstraction for localized application errors.
@@ -44,8 +38,6 @@ namespace NContext.ErrorHandling
     /// <remarks></remarks>
     public abstract class ErrorBase
     {
-        #region Constructors
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ErrorBase"/> class.
         /// </summary>
@@ -88,10 +80,6 @@ namespace NContext.ErrorHandling
                 error.HttpStatusCode.ToString());
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets the error name.
         /// </summary>
@@ -109,10 +97,6 @@ namespace NContext.ErrorHandling
         /// </summary>
         /// <remarks></remarks>
         public HttpStatusCode HttpStatusCode { get; private set; }
-
-        #endregion
-
-        #region Methods
 
         private void SetErrorMessage(String localizationKey, params Object[] errorMessageParameters)
         {
@@ -166,7 +150,5 @@ namespace NContext.ErrorHandling
 
             return message;
         }
-
-        #endregion
     }
 }

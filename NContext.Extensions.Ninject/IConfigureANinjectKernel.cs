@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigureANinjectKernel.cs">
-//   Copyright (c) 2012
+// <copyright file="IConfigureANinjectKernel.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,21 +16,17 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a role-interface for IKernel configuration.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.ComponentModel.Composition;
-
-using Ninject;
 
 namespace NContext.Extensions.Ninject
 {
+    using System;
+    using System.ComponentModel.Composition;
+
+    using global::Ninject;
+
     /// <summary>
-    /// Defines a role-interface for <see cref="IKernel"/> configuration.
+    /// Defines a role-interface for Ninject's IKernel configuration.
     /// </summary>
     [InheritedExport]
     public interface IConfigureANinjectKernel

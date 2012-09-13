@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageSecurity.cs">
-//   Copyright (c) 2012
+// <copyright file="IManageSecurity.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,21 +16,17 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines interface contract which encapsulates logic for application security-related operations.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System.IdentityModel.Tokens;
-using System.Security.Principal;
-
-using NContext.Caching;
-using NContext.Configuration;
-using NContext.Dto;
 
 namespace NContext.Security
 {
+    using System.IdentityModel.Tokens;
+    using System.Security.Principal;
+
+    using NContext.Caching;
+    using NContext.Configuration;
+    using NContext.Dto;
+
     /// <summary>
     /// Defines interface contract which encapsulates logic for application security-related operations.
     /// </summary>

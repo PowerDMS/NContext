@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Extensions.cs">
-//   Copyright (c) 2012
+// <copyright file="Extensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,20 +16,16 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a static class for providing IEnumerable type extension methods.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Omu.ValueInjecter;
 
 namespace NContext.Extensions.ValueInjecter
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using Omu.ValueInjecter;
+
     /// <summary>
     /// Defines a static class for providing IEnumerable type extension methods.
     /// </summary>

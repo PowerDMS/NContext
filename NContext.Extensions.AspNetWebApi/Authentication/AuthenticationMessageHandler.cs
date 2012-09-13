@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AuthenticationMessageHandler.cs">
-//   Copyright (c) 2012
+// <copyright file="AuthenticationMessageHandler.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an HttpOperationHandler for authentication.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Extensions.AspNetWebApi.Authentication
@@ -37,23 +33,17 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     /// </summary>
     public class AuthenticationMessageHandler : DelegatingHandler
     {
-        private readonly IEnumerable<IProvideResourceAuthentication> _AuthenticationProviders;
-
-        #region Constructors
+        private readonly IEnumerable<IProvideRequestAuthentication> _AuthenticationProviders;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AuthenticationMessageHandler"/> class.
         /// </summary>
         /// <param name="authenticationProviders">The authentication providers.</param>
         /// <remarks></remarks>
-        public AuthenticationMessageHandler(IEnumerable<IProvideResourceAuthentication> authenticationProviders)
+        public AuthenticationMessageHandler(IEnumerable<IProvideRequestAuthentication> authenticationProviders)
         {
-            _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideResourceAuthentication>();
+            _AuthenticationProviders = authenticationProviders ?? Enumerable.Empty<IProvideRequestAuthentication>();
         }
-
-        #endregion
-
-        #region Overrides of DelegatingHandler
 
         /// <summary>
         /// Sends an HTTP request to the inner handler to send to the server as an asynchronous operation.
@@ -65,12 +55,11 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return _AuthenticationProviders
-                .FirstOrDefault(p => p.CanAuthenticate(request)).ToMaybe()
+                .FirstOrDefault(provider => provider.CanAuthenticate(request)).ToMaybe()
                 .Bind(provider => provider.Authenticate(request).ToMaybe())
                 .Bind(principal =>
                     {
-                        // Thread.CurrentPrincipal = principal; << Bug Fixed Soon
-                        request.Properties["Principal"] = principal;
+                        Thread.CurrentPrincipal = principal;
                         return base.SendAsync(request, cancellationToken).ToMaybe();
                     })
                 .FromMaybe(Task<HttpResponseMessage>.Factory.StartNew(
@@ -79,7 +68,5 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                            }));
         }
-
-        #endregion
     }
 }

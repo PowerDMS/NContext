@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageNinject.cs">
-//   Copyright (c) 2012
+// <copyright file="IManageNinject.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,18 +16,14 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a dependency injection application component using Ninject.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using NContext.Configuration;
-
-using Ninject;
 
 namespace NContext.Extensions.Ninject
 {
+    using NContext.Configuration;
+
+    using global::Ninject;
+
     /// <summary>
     /// Defines a dependency injection application component using Ninject.
     /// </summary>

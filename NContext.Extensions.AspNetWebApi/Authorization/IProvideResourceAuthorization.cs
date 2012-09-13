@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IProvideResourceAuthorization.cs">
-//   Copyright (c) 2012
+// <copyright file="IProvideResourceAuthorization.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a provider role for resource authorization.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Extensions.AspNetWebApi.Authorization
@@ -35,12 +31,11 @@ namespace NContext.Extensions.AspNetWebApi.Authorization
     public interface IProvideResourceAuthorization
     {
         /// <summary>
-        /// Authorizes the specified <see cref="IPrincipal"/> against the specified <see cref="HttpActionDescriptor"/>.
+        /// Authorizes the specified <see cref="IPrincipal" /> against the specified <see cref="HttpActionDescriptor" />.
         /// </summary>
         /// <param name="principal">The principal.</param>
         /// <param name="actionContext">The action context.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>Boolean.</returns>
         Boolean Authorize(IPrincipal principal, HttpActionContext actionContext);
     }
 }

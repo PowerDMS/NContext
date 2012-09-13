@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValueInjecterExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="ValueInjecterExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,65 +16,45 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for Value Injecter.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-
-using Omu.ValueInjecter;
 
 namespace NContext.Extensions.ValueInjecter
 {
+    using System;
+
+    using Omu.ValueInjecter;
+
     /// <summary>
     /// Defines extension methods for Value Injecter.
     /// </summary>
     public static class ValueInjecterExtensions
     {
         /// <summary>
-        /// Injects values from source into target using the default <see cref="LoopValueInjection"/>.
+        /// Injects values from source into target using the default <see cref="LoopValueInjection" />.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target">The target object.</param>
-        /// <param name="source">The source object.</param>
-        /// <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
-        /// <remarks></remarks>
-        public static T InjectFrom<T>(this T target, Object source)
-            where T : class
+        /// <typeparam name="TTarget">The type of the T target.</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>TTarget instance.</returns>
+        public static TTarget InjectFrom<TTarget>(this TTarget target, Object source)
+            where TTarget : class
         {
-            return target.InjectFrom<T, LoopValueInjection>(source);
+            return target.InjectFrom<TTarget, LoopValueInjection>(source);
         }
 
         /// <summary>
-        /// Injects values from source into target using the default <see cref="LoopValueInjection"/>.
+        /// Injects values from source into target using the specified <see cref="ValueInjection" />.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target">The target object.</param>
-        /// <param name="source">The source object.</param>
-        /// <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
-        /// <remarks></remarks>
-        public static T InjectFrom<T>(this Object target, Object source)
-            where T : class
-        {
-            return target.InjectFrom<T, LoopValueInjection>(source);
-        }
-
-        /// <summary>
-        /// Injects values from source into target using the specified <see cref="ValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <param name="target">The target object.</param>
-        /// <param name="source">The source object.</param>
-        /// <returns>Instance of <typeparamref name="T"/> with the injected values.</returns>
-        /// <remarks></remarks>
-        public static T InjectFrom<T, TValueInjection>(this Object target, Object source)
-            where T : class
+        /// <typeparam name="TTarget">The type of the T target.</typeparam>
+        /// <typeparam name="TValueInjection">The type of the T value injection.</typeparam>
+        /// <param name="target">The target.</param>
+        /// <param name="source">The source.</param>
+        /// <returns>TTarget instance.</returns>
+        public static TTarget InjectFrom<TTarget, TValueInjection>(this TTarget target, Object source)
+            where TTarget : class
             where TValueInjection : IValueInjection, new()
         {
-            return StaticValueInjecter.InjectFrom<TValueInjection>(target, source) as T;
+            return target.InjectFrom(Activator.CreateInstance<TValueInjection>(), source) as TTarget;
         }
     }
 }

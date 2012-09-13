@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NinjectManager.cs">
-//   Copyright (c) 2012
+// <copyright file="NinjectManager.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,43 +16,33 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a dependency injection application component using Ninject.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-
-using Microsoft.Practices.ServiceLocation;
-
-using NContext.Configuration;
-
-using Ninject;
-
-using NinjectAdapter;
 
 namespace NContext.Extensions.Ninject
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
+
+    using Microsoft.Practices.ServiceLocation;
+
+    using NContext.Configuration;
+
+    using global::Ninject;
+
+    using NinjectAdapter;
+
     /// <summary>
     /// Defines a dependency injection application component using Ninject.
     /// </summary>
     public class NinjectManager : IManageNinject
     {
-        #region Fields
-
         private readonly NinjectConfiguration _Configuration;
 
         private Boolean _IsConfigured;
 
         private IKernel _Kernel;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NinjectManager"/> class.
@@ -68,10 +58,6 @@ namespace NContext.Extensions.Ninject
 
             _Configuration = configuration;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets a value indicating whether this instance is configured.
@@ -101,10 +87,6 @@ namespace NContext.Extensions.Ninject
             }
         }
 
-        #endregion
-
-        #region Implementation of IApplicationComponent
-        
         /// <summary>
         /// Configures the component instance. This method should set <see cref="IApplicationComponent.IsConfigured"/>.
         /// </summary>
@@ -122,7 +104,7 @@ namespace NContext.Extensions.Ninject
 
             var serviceLocator = new NinjectServiceLocator(_Kernel);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
-
+            
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IKernel>(_Kernel);
             _Kernel.Bind<CompositionContainer>().ToConstant(applicationConfiguration.CompositionContainer).InSingletonScope();
 
@@ -133,7 +115,5 @@ namespace NContext.Extensions.Ninject
 
             _IsConfigured = true;
         }
-
-        #endregion
     }
 }

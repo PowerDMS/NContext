@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SecurityConfiguration.cs">
-//   Copyright (c) 2012
+// <copyright file="SecurityConfiguration.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,32 +16,22 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines application security configuration settings.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext.Security
 {
+    using System;
+
     /// <summary>
     /// Defines application security configuration settings.
     /// </summary>
     public class SecurityConfiguration
     {
-        #region Fields
-
         private readonly DateTimeOffset _TokenAbsoluteExpiration;
 
         private readonly TimeSpan _TokenSlidingExpiration;
 
         private readonly TimeSpan _TokenInitialLifespan;
-
-        #endregion
-
-        #region Constructors
 
         public SecurityConfiguration(DateTimeOffset tokenAbsoluteExpiration, TimeSpan tokenSlidingExpiration, TimeSpan tokenInitialLifespan)
         {
@@ -49,10 +39,6 @@ namespace NContext.Security
             _TokenSlidingExpiration = tokenSlidingExpiration;
             _TokenInitialLifespan = tokenInitialLifespan;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the token absolute expiration.
@@ -89,7 +75,5 @@ namespace NContext.Security
                 return _TokenInitialLifespan;
             }
         }
-
-        #endregion
     }
 }

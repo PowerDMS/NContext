@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEfGenericRepository.cs">
-//   Copyright (c) 2012
+// <copyright file="IEfGenericRepository.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,23 +16,17 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a generic repository base abstraction.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Linq.Expressions;
-
-using NContext.Data;
-using NContext.Data.Specifications;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using System;
+    using System.Data.Entity.Validation;
+    using System.Linq;
+    using System.Linq.Expressions;
+
     using NContext.Data.Persistence;
+    using NContext.Data.Specifications;
 
     /// <summary>
     /// Defines a generic repository base abstraction.
@@ -42,8 +36,6 @@ namespace NContext.Extensions.EntityFramework
     public interface IEfGenericRepository<TEntity> : IDisposable, IQueryable<TEntity>
         where TEntity : class, IEntity
     {
-        #region Methods
-
         /// <summary>
         /// Adds an instance of <typeparamref name="TEntity"/> to the unit of work
         /// to be persisted and inserted by the repository.
@@ -89,7 +81,7 @@ namespace NContext.Extensions.EntityFramework
         /// </summary>
         /// <typeparam name="TProperty">The type of the property.</typeparam>
         /// <param name="path">The path.</param>
-        /// <remarks></remarks>
+        /// <returns>IQueryable{TEntity}.</returns>
         IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> path);
 
         /// <summary>
@@ -130,10 +122,7 @@ namespace NContext.Extensions.EntityFramework
         /// Validates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>DbEntityValidationResult.</returns>
         DbEntityValidationResult Validate(TEntity entity);
-
-        #endregion
     }
 }

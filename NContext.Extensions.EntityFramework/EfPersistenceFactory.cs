@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EfPersistenceFactory.cs">
-//   Copyright (c) 2012
+// <copyright file="EfPersistenceFactory.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Provides creation for all persistence-related operations including UnitOfWork and Repositories.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Extensions.EntityFramework
@@ -37,33 +33,38 @@ namespace NContext.Extensions.EntityFramework
     {
         private readonly IDbContextFactory _DbContextFactory;
 
-        #region Constructors
-
         public EfPersistenceFactory()
             : this(null, null)
         {
         }
 
-        public EfPersistenceFactory(IDbContextFactory dbContextFactory, IAmbientTransactionManagerFactory transactionManagerFactory)
-            : base(transactionManagerFactory)
+        public EfPersistenceFactory(IAmbientContextManagerFactory contextManagerFactory)
+            : this(null, contextManagerFactory)
+        {
+        }
+
+        public EfPersistenceFactory(IDbContextFactory dbContextFactory)
+            : this(dbContextFactory, null)
+        {
+        }
+
+        public EfPersistenceFactory(IDbContextFactory dbContextFactory, IAmbientContextManagerFactory contextManagerFactory)
+            : base(contextManagerFactory)
         {
             _DbContextFactory = dbContextFactory ?? new ServiceLocatorDbContextFactory();
         }
-
-        #endregion
 
         #region Overrides of PersistenceFactoryBase
 
         /// <summary>
         /// <para>
-        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.RequiresNew"/> or 
-        /// <see cref="TransactionScopeOption.Suppress"/>, than a new instance of <see cref="EfUnitOfWork"/> is 
-        /// created along with a fresh <see cref="ContextContainer"/>.
+        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.RequiresNew"/>, 
+        /// then a new instance of <see cref="EfUnitOfWork"/> is created along with a new <see cref="DbContextContainer"/>.
         /// </para>
         /// <para>
-        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.Required"/>, than 
-        /// we are returned the <see cref="AmbientUnitOfWork"/> if one exists, else we create a
-        /// new <see cref="EfUnitOfWork"/> and <see cref="ContextContainer"/> which becomes the ambient unit of work.
+        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.Required"/>, then 
+        /// if an ambient unit of work exists <see cref="AmbientUnitOfWorkDecorator"/> if one exists, else we create a
+        /// new <see cref="EfUnitOfWork"/> and <see cref="DbContextContainer"/> which becomes the ambient unit of work.
         /// </para>
         /// <para>The default transaction scope is <see cref="TransactionScopeOption.Required"/>.</para>
         /// </summary>
@@ -72,42 +73,54 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
-            UnitOfWorkBase unitOfWork;
             switch (transactionScopeOption)
             {
                 case TransactionScopeOption.Required:
-                    if (TransactionManager.AmbientExists && TransactionManager.AmbientIsValid)
-                    {
-                        if (TransactionManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
-                        {
-                            var currentCompositeUnitOfWork = ((CompositeUnitOfWork)TransactionManager.Ambient.UnitOfWork);
-                            unitOfWork = new EfUnitOfWork(TransactionManager, new ContextContainer(), currentCompositeUnitOfWork);
-                            currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
-                            TransactionManager.AddUnitOfWork(unitOfWork);
-                        }
-                        else
-                        {
-                            unitOfWork = TransactionManager.Ambient.UnitOfWork;
-                            TransactionManager.RetainAmbient();
-                        }
-                    }
-                    else
-                    {
-                        unitOfWork = new EfUnitOfWork(TransactionManager, new ContextContainer());
-                        TransactionManager.AddUnitOfWork(unitOfWork);
-                    }
-
-                    return unitOfWork;
+                    return GetRequiredUnitOfWork();
                 case TransactionScopeOption.RequiresNew:
-                    unitOfWork = new EfUnitOfWork(TransactionManager, new ContextContainer());
-                    TransactionManager.AddUnitOfWork(unitOfWork);
-
-                    return unitOfWork;
+                    return GetRequiredNewUnitOfWork();
                 case TransactionScopeOption.Suppress:
                     return base.CreateUnitOfWork(transactionScopeOption);
                 default:
                     throw new ArgumentOutOfRangeException("transactionScopeOption");
             }
+        }
+
+        private IUnitOfWork GetRequiredUnitOfWork()
+        {
+            if (!AmbientContextManager.AmbientExists || !AmbientContextManager.AmbientUnitOfWorkIsValid)
+            {
+                return GetRequiredNewUnitOfWork();
+            }
+
+            var ambient = AmbientContextManager.Ambient;
+            if (ambient.IsTypeOf<CompositeUnitOfWork>())
+            {
+                var currentCompositeUnitOfWork = (CompositeUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+                var unitOfWork = new EfUnitOfWork(AmbientContextManager, new DbContextContainer(), currentCompositeUnitOfWork);
+                currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
+                AmbientContextManager.AddUnitOfWork(unitOfWork);
+
+                return unitOfWork;
+            }
+
+            if (ambient.IsTypeOf<IEfUnitOfWork>())
+            {
+                var unitOfWork = AmbientContextManager.Ambient.UnitOfWork;
+                AmbientContextManager.RetainAmbient();
+
+                return unitOfWork;
+            }
+
+            return GetRequiredNewUnitOfWork();
+        }
+
+        private IUnitOfWork GetRequiredNewUnitOfWork()
+        {
+            var unitOfWork = new EfUnitOfWork(AmbientContextManager, new DbContextContainer());
+            AmbientContextManager.AddUnitOfWork(unitOfWork);
+
+            return unitOfWork;
         }
 
         #endregion
@@ -122,7 +135,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>() where TEntity : class, IEntity
         {
-            if (TransactionManager.Ambient == null || !TransactionManager.Ambient.IsTypeOf<IEfUnitOfWork>())
+            if (AmbientContextManager.Ambient == null || !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
@@ -141,7 +154,7 @@ namespace NContext.Extensions.EntityFramework
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
-            if (TransactionManager.Ambient == null)
+            if (AmbientContextManager.Ambient == null)
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
@@ -159,7 +172,7 @@ namespace NContext.Extensions.EntityFramework
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredDbContextNameForServiceLocation)
             where TEntity : class, IEntity
         {
-            if (TransactionManager.Ambient == null)
+            if (AmbientContextManager.Ambient == null)
             {
                 throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
             }
@@ -186,17 +199,17 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public DbContext GetOrCreateDbContext(String registeredNameForServiceLocation)
         {
-            if (TransactionManager.Ambient == null || !TransactionManager.Ambient.IsTypeOf<IEfUnitOfWork>())
+            if (AmbientContextManager.Ambient == null || !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
             {
                 throw new Exception("A DBContext must be created within the scope of a valid IEfUnitOfWork instance.");
             }
 
-            var currentUnitOfWork = ((IEfUnitOfWork)TransactionManager.Ambient.UnitOfWork);
-            return currentUnitOfWork.ContextContainer.GetContext(registeredNameForServiceLocation) ??
+            var currentUnitOfWork = (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+            return currentUnitOfWork.DbContextContainer.GetContext(registeredNameForServiceLocation) ??
                    new Func<DbContext>(() =>
                        {
                            var context = _DbContextFactory.Create(registeredNameForServiceLocation);
-                           currentUnitOfWork.ContextContainer.Add(registeredNameForServiceLocation, context);
+                           currentUnitOfWork.DbContextContainer.Add(registeredNameForServiceLocation, context);
                            return context;
                        }).Invoke();
         }
@@ -208,17 +221,17 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public TDbContext GetOrCreateDbContext<TDbContext>() where TDbContext : DbContext
         {
-            if (TransactionManager.Ambient == null || !TransactionManager.Ambient.IsTypeOf<IEfUnitOfWork>())
+            if (AmbientContextManager.Ambient == null || !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
             {
                 throw new Exception("A DBContext must be created within the scope of a valid IEfUnitOfWork instance.");
             }
 
-            var currentUnitOfWork = ((IEfUnitOfWork)TransactionManager.Ambient.UnitOfWork);
-            return currentUnitOfWork.ContextContainer.GetContext<TDbContext>() ??
+            var currentUnitOfWork = ((IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork);
+            return currentUnitOfWork.DbContextContainer.GetContext<TDbContext>() ??
                 new Func<TDbContext>(() =>
                 {
                     var context = _DbContextFactory.Create<TDbContext>();
-                    currentUnitOfWork.ContextContainer.Add(context);
+                    currentUnitOfWork.DbContextContainer.Add(context);
                     return context;
                 }).Invoke();
         }

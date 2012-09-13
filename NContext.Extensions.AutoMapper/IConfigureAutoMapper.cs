@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigureAutoMapper.cs">
-//   Copyright (c) 2012
+// <copyright file="IConfigureAutoMapper.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,20 +16,14 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a role-interface for application composition and configuration of AutoMapper.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-
-using AutoMapper;
 
 namespace NContext.Extensions.AutoMapper
 {
+    using System.ComponentModel.Composition;
+
+    using global::AutoMapper;
+
     /// <summary>
     /// Defines a role-interface for application composition and configuration of AutoMapper.
     /// </summary>

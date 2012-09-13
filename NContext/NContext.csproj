@@ -12,14 +12,6 @@
     <AssemblyName>NContext</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -41,6 +33,8 @@
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -94,38 +88,43 @@
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="Configuration\RegisteredApplicationComponent.cs" />
-    <Compile Include="Data\Persistence\AmbientTransactionManagerBase.cs" />
-    <Compile Include="Data\Persistence\IAmbientTransactionManagerFactory.cs" />
-    <Compile Include="Data\Persistence\AmbientUnitOfWork.cs" />
+    <Compile Include="Data\Persistence\AmbientContextManagerBase.cs" />
+    <Compile Include="Data\Persistence\AmbientContextManagerHelper.cs" />
+    <Compile Include="Data\Persistence\AmbientUnitOfWorkDecorator.cs" />
+    <Compile Include="Data\Persistence\FileSystemUnitOfWork.cs" />
+    <Compile Include="Data\Persistence\IAmbientContextManagerFactory.cs" />
     <Compile Include="Data\Persistence\IEntity.cs" />
     <Compile Include="Data\Persistence\IPersistenceFactory.cs" />
     <Compile Include="Data\Persistence\IUnitOfWork.cs" />
     <Compile Include="Data\Persistence\NonAtomicUnitOfWork.cs" />
-    <Compile Include="Data\Persistence\PerRequestTransactionManager.cs" />
-    <Compile Include="Data\Persistence\PerRequestTransactionManagerFactory.cs" />
+    <Compile Include="Data\Persistence\PerRequestAmbientContextManagerFactory.cs" />
+    <Compile Include="Data\Persistence\PerRequestAmbientContextManager.cs" />
     <Compile Include="Data\Persistence\PersistenceFactoryBase.cs" />
     <Compile Include="Data\Persistence\PersistenceOptions.cs" />
+    <Compile Include="Data\Persistence\ThreadLocalAmbientContextManager.cs" />
+    <Compile Include="Data\Persistence\ThreadLocalAmbientContextManagerFactory.cs" />
     <Compile Include="Data\Specifications\AdHocSpecification.cs" />
     <Compile Include="Data\Specifications\AndSpecification.cs" />
     <Compile Include="Data\Specifications\CompositeSpecification.cs" />
     <Compile Include="Data\Specifications\ExpressionExtensions.cs" />
     <Compile Include="Data\Specifications\NotSpecification.cs" />
     <Compile Include="Data\Specifications\OrSpecification.cs" />
-    <Compile Include="Data\Specifications\ParametersRebinder.cs" />
+    <Compile Include="Data\Specifications\ParameterRebinder.cs" />
     <Compile Include="Data\Specifications\SpecificationBase.cs" />
     <Compile Include="Data\Specifications\TrueSpecification.cs" />
-    <Compile Include="Data\Persistence\ThreadLocalTransactionManagerFactory.cs" />
     <Compile Include="Data\Persistence\UnitOfWorkBase.cs" />
     <Compile Include="Data\Persistence\PersistenceFactory.cs" />
-    <Compile Include="Data\Persistence\ThreadLocalTransactionManager.cs" />
     <Compile Include="Data\Persistence\CompositeUnitOfWork.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
+    <Compile Include="ErrorHandling\Errors\Localization\NContextPersistenceError.Designer.cs" />
+    <Compile Include="ErrorHandling\Errors\NContextPersistenceError.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
-    <Compile Include="Extensions\HashSetExtensions.cs" />
+    <Compile Include="Extensions\ISetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Configuration\ApplicationComponentDependencyAttribute.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfigurationBuilder.cs" />
     <Compile Include="Security\Cryptography\CryptographyManager.cs" />
@@ -176,7 +175,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="ErrorHandling\Errors\Localization\NContextPersistenceError.resx" />
+  </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>

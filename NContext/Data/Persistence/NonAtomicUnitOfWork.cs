@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NonAtomicUnitOfWork.cs">
+// <copyright file="NonAtomicUnitOfWork.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -16,10 +16,6 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Data.Persistence
@@ -28,13 +24,12 @@ namespace NContext.Data.Persistence
     using System.Diagnostics;
     using System.Transactions;
 
-    /// <summary>
-    /// 
-    /// </summary>
+    using NContext.Dto;
+
     internal sealed class NonAtomicUnitOfWork : UnitOfWorkBase
     {
-        public NonAtomicUnitOfWork(AmbientTransactionManagerBase transactionManager)
-            : base(transactionManager)
+        public NonAtomicUnitOfWork(AmbientContextManagerBase ambientContextManager)
+            : base(ambientContextManager)
         {
             Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} created.", Id));
         }
@@ -44,8 +39,9 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
-        protected override void CommitTransaction(TransactionScope transactionScope)
+        protected override IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope)
         {
+            return new ServiceResponse<Boolean>(true);
         }
 
         /// <summary>

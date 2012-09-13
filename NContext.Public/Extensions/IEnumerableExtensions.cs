@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="IEnumerableExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,17 +16,13 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for IEnumerable<T>.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Defines extension methods for IEnumerable{T}.
     /// </summary>
@@ -41,10 +37,7 @@ namespace NContext.Extensions
         /// <param name="action">The action executed for each iten in the enumerable.</param>
         public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
-            foreach (var item in collection)
-            {
-                action(item);
-            }
+            collection.GetEnumerator().ForEach(action);
         }
 
         /// <summary>
@@ -52,18 +45,21 @@ namespace NContext.Extensions
         /// an action.
         /// </summary>
         /// <typeparam name="T">The type that this extension is applicable for.</typeparam>
-        /// <param name="collection">The enumerator instance that this extension operates on.</param>
+        /// <param name="enumerator">The enumerator instance that this extension operates on.</param>
         /// <param name="action">The action executed for each iten in the enumerable.</param>
-        public static void ForEach<T>(this IEnumerator<T> collection, Action<T> action)
+        public static void ForEach<T>(this IEnumerator<T> enumerator, Action<T> action)
         {
-            while (collection.MoveNext())
+            using (enumerator)
             {
-                action(collection.Current);
+                while (enumerator.MoveNext())
+                {
+                    action(enumerator.Current);
+                }
             }
         }
 
         /// <summary>
-        /// For Each extension that enumerates over a enumerable collection and attempts to execute 
+        /// ForEach extension that enumerates over a enumerable enumerator and attempts to execute 
         /// the provided action delegate and it the action throws an exception, continues enumerating.
         /// </summary>
         /// <typeparam name="T">The type that this extension is applicable for.</typeparam>
@@ -71,18 +67,11 @@ namespace NContext.Extensions
         /// <param name="action">The action excecuted for each item in the enumerable.</param>
         public static void TryForEach<T>(this IEnumerable<T> collection, Action<T> action)
         {
-            foreach (var item in collection)
-            {
-                try
-                {
-                    action(item);
-                }
-                catch { }
-            }
+            collection.GetEnumerator().TryForEach(action);
         }
 
         /// <summary>
-        /// For each extension that enumerates over an enumerator and attempts to execute the provided
+        /// ForEach extension that enumerates over an enumerator and attempts to execute the provided
         /// action delegate and if the action throws an exception, continues executing.
         /// </summary>
         /// <typeparam name="T">The type that this extension is applicable for.</typeparam>
@@ -90,13 +79,18 @@ namespace NContext.Extensions
         /// <param name="action">The action executed for each item in the enumerator.</param>
         public static void TryForEach<T>(this IEnumerator<T> enumerator, Action<T> action)
         {
-            while (enumerator.MoveNext())
+            using (enumerator)
             {
-                try
+                while (enumerator.MoveNext())
                 {
-                    action(enumerator.Current);
+                    try
+                    {
+                        action(enumerator.Current);
+                    }
+                    catch
+                    {
+                    }
                 }
-                catch { }
             }
         }
     }

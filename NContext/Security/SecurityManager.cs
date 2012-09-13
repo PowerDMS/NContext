@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SecurityManager.cs">
-//   Copyright (c) 2012
+// <copyright file="SecurityManager.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,40 +16,31 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a manager class which implements logic for application security-related operations.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.IdentityModel.Tokens;
-using System.Runtime.Caching;
-using System.Security.Principal;
-
-using NContext.Caching;
-using NContext.Configuration;
-using NContext.Dto;
 
 namespace NContext.Security
 {
+    using System;
+    using System.IdentityModel.Tokens;
+    using System.Runtime.Caching;
+    using System.Security.Principal;
+
+    using NContext.Caching;
+    using NContext.Configuration;
+    using NContext.Dto;
+
     /// <summary>
     /// Defines a manager class which implements logic for application security-related operations.
     /// </summary>
     /// <remarks></remarks>
+    [ApplicationComponentDependency(typeof(IManageCaching))]
     public class SecurityManager : IManageSecurity
     {
-        #region Fields
-
         private readonly IManageCaching _CacheManager;
 
         private readonly CacheItemPolicy _AuthenticationCachePolicy;
 
         private Boolean _IsConfigured;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityManager"/> class.
@@ -80,10 +71,6 @@ namespace NContext.Security
             };
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets a value indicating whether this instance is configured.
         /// </summary>
@@ -107,10 +94,6 @@ namespace NContext.Security
                 return _CacheManager;
             }
         }
-
-        #endregion
-
-        #region Implementation of IManageSecurity
 
         /// <summary>
         /// Saves the principal to cache using the application's <see cref="IManageCaching"/>.
@@ -203,10 +186,6 @@ namespace NContext.Security
             return CacheManager.Get<TPrincipal>(token.Value);
         }
 
-        #endregion
-
-        #region Implementation of IApplicationComponent
-
         /// <summary>
         /// Configures the component instance.
         /// </summary>
@@ -219,7 +198,5 @@ namespace NContext.Security
                 _IsConfigured = true;
             }
         }
-
-        #endregion
     }
 }

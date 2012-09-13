@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EntityFrameworkExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="EntityFrameworkExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,20 +16,15 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for Entity Framework.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Linq;
 
 namespace NContext.Extensions.EntityFramework
 {
-    using NContext.Data;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Validation;
+    using System.Linq;
+
     using NContext.Data.Persistence;
     using NContext.Dto;
 
@@ -50,10 +45,10 @@ namespace NContext.Extensions.EntityFramework
             return validationResults.All(validationResult => validationResult.IsValid);
         }
 
-        public static IResponseTransferObject<TEntity> ToServiceResponse<TEntity>(this IEnumerable<TEntity> entities)
+        public static IResponseTransferObject<TEntity> ToServiceResponse<TEntity>(this TEntity entity)
             where TEntity : IEntity
         {
-            return new EfServiceResponse<TEntity>(entities);
+            return new EfServiceResponse<TEntity>(entity);
         }
     }
 }

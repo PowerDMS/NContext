@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositeUnitOfWork.cs">
+// <copyright file="CompositeUnitOfWork.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -16,24 +16,21 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace NContext.Data.Persistence
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
 
-    /// <summary>
-    /// 
-    /// </summary>
+    using NContext.Dto;
+    using NContext.ErrorHandling.Errors;
+
     public class CompositeUnitOfWork : UnitOfWorkBase
     {
         #region Fields
@@ -44,23 +41,23 @@ namespace NContext.Data.Persistence
 
         #region Constructors
 
-        public CompositeUnitOfWork(AmbientTransactionManagerBase transactionManager)
-            : this(transactionManager, () => new CommittableTransaction(), null, null)
+        public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager)
+            : this(ambientContextManager, () => new CommittableTransaction(), null, null)
         {
         }
 
-        public CompositeUnitOfWork(AmbientTransactionManagerBase transactionManager, PersistenceOptions persistenceOptions)
-            : this(transactionManager, () => new CommittableTransaction(), null, persistenceOptions)
+        public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, PersistenceOptions persistenceOptions)
+            : this(ambientContextManager, () => new CommittableTransaction(), null, persistenceOptions)
         {
         }
 
-        public CompositeUnitOfWork(AmbientTransactionManagerBase transactionManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
-            : this(transactionManager, () => parent.ScopeTransaction, parent, persistenceOptions)
+        public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
+            : this(ambientContextManager, () => parent.ScopeTransaction, parent, persistenceOptions)
         {
         }
 
-        private CompositeUnitOfWork(AmbientTransactionManagerBase transactionManager, Func<Transaction> transactionFactory, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
-            : base(transactionManager, transactionFactory, parent, persistenceOptions)
+        private CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, Func<Transaction> transactionFactory, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
+            : base(ambientContextManager, transactionFactory, parent, persistenceOptions)
         {
             Debug.WriteLine(String.Format("CompositeUnitOfWork: {0} created.", Id));
         }
@@ -92,6 +89,85 @@ namespace NContext.Data.Persistence
 
         #region Overrides of UnitOfWorkBase
 
+        protected override IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope)
+        {
+            using (transactionScope)
+            {
+#if DEBUG
+                // TODO: (DG) Remove this block
+                if (Parent == null)
+                {
+                    Debug.WriteLine(String.Format("-----  Transaction: {0}  -----", Transaction.Current.TransactionInformation.LocalIdentifier));
+                }
+#endif
+
+                var commitExceptions = new ConcurrentQueue<Exception>();
+
+                Parallel.ForEach(
+                    UnitsOfWork,
+                    new ParallelOptions
+                        {
+                            MaxDegreeOfParallelism = PersistenceOptions.MaxDegreeOfParallelism
+                        },
+                    (unitOfWork, state) =>
+                        {
+                            try
+                            {
+                                if (state.IsExceptional || state.ShouldExitCurrentIteration) return;
+
+                                unitOfWork.Commit()
+                                    .Catch(errors =>
+                                        {
+                                            state.Break();
+                                            commitExceptions.Enqueue(
+                                                new AggregateException(
+                                                    errors.Select(error => new Exception(error.Messages.ToString()))));
+                                        });
+                            }
+                            catch (Exception exception)
+                            {
+                                state.Break();
+                                commitExceptions.Enqueue(exception);
+
+                                // TODO: (DG) Logging ...
+                            }
+                        });
+
+                if (!commitExceptions.Any())
+                {
+                    Debug.WriteLine(
+                        "CompositeUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
+                        Id,
+                        ThreadSafeTransaction.GetType(),
+                        ScopeThread.ManagedThreadId,
+                        System.Threading.Thread.CurrentThread.ManagedThreadId,
+                        Transaction.Current.TransactionInformation.LocalIdentifier);
+
+                    transactionScope.Complete();
+
+#if DEBUG
+                    if (Parent == null) Debug.WriteLine("----- Transaction End -----");
+#endif
+
+                    return new ServiceResponse<Boolean>(true);
+                }
+
+                Rollback();
+
+#if DEBUG
+                if (Parent == null) Debug.WriteLine("----- Transaction End -----");
+#endif
+
+                //throw new AggregateException(commitExceptions); // TODO: (DG) NContext Exception vs ErrorHandling
+                return
+                    new ServiceResponse<Boolean>(
+                        NContextPersistenceError.CommitFailed(
+                            Id,
+                            Transaction.Current.TransactionInformation.LocalIdentifier,
+                            new AggregateException(commitExceptions)));
+            }
+        }
+
         /// <summary>
         /// Rollback the transaction (if applicable).
         /// </summary>
@@ -107,74 +183,11 @@ namespace NContext.Data.Persistence
                        .ForAll(uow => uow.Rollback());
         }
 
-        protected override void CommitTransaction(TransactionScope transactionScope)
-        {
-            using (transactionScope)
-            {
-                if (Parent == null)
-                {
-                    Debug.WriteLine(String.Format("-----  Transaction: {0}  -----", Transaction.Current.TransactionInformation.LocalIdentifier));
-                }
-
-                var commitSucceeded = true;
-
-                Parallel.ForEach(
-                    UnitsOfWork,
-                    new ParallelOptions
-                        {
-                            MaxDegreeOfParallelism = PersistenceOptions.MaxDegreeOfParallelism
-                        },
-                    (uow, state) =>
-                        {
-                            try
-                            {
-                                if (state.IsExceptional || state.ShouldExitCurrentIteration)
-                                {
-                                    return;
-                                }
-
-                                uow.Commit();
-                            }
-                            catch
-                            {
-                                state.Break();
-                                commitSucceeded = false;
-
-                                // TODO: (DG) Logging ...
-                            }
-                        });
-
-                if (commitSucceeded)
-                {
-                    Debug.WriteLine(
-                        "CompositeUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
-                        Id,
-                        ThreadSafeTransaction.GetType(),
-                        ScopeThread.ManagedThreadId,
-                        System.Threading.Thread.CurrentThread.ManagedThreadId,
-                        Transaction.Current.TransactionInformation.LocalIdentifier);
-
-                    transactionScope.Complete();
-                }
-                else
-                {
-                    Rollback();
-                }
-
-                if (Parent == null)
-                {
-                    Debug.WriteLine("----- Transaction End -----");
-                }
-            }
-        }
-
         protected override void DisposeManagedResources()
         {
             UnitsOfWork.AsParallel()
                        .WithDegreeOfParallelism(PersistenceOptions.MaxDegreeOfParallelism)
                        .ForAll(uow => uow.Dispose());
-
-            IsDisposed = true;
 
             Debug.WriteLine(String.Format("CompositeUnitOfWork: {0} disposed.", Id));
         }

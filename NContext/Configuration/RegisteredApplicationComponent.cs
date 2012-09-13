@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="RegisteredApplicationComponent.cs">
-//   Copyright (c) 2012
+// <copyright file="RegisteredApplicationComponent.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,16 +16,12 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an application component that has been registered with an ApplicationConfigurationBase.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext.Configuration
 {
+    using System;
+
     /// <summary>
     /// Defines an application component that has been registered with an ApplicationConfigurationBase.
     /// </summary>
@@ -37,7 +33,7 @@ namespace NContext.Configuration
         private readonly Lazy<IApplicationComponent> _ApplicationComponentFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RegisteredApplicationComponent"/> struct.
+        /// Initializes a new instance of the <see cref="RegisteredApplicationComponent"/> class.
         /// </summary>
         /// <param name="registeredComponentType">Type of the registered component.</param>
         /// <param name="applicationComponentFactory">The application component.</param>

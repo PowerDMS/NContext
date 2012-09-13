@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="StringExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="StringExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,26 +16,22 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a static class for providing String type extension methods.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Specialized;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.Collections.Specialized;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
     /// <summary>
     /// Defines a static class for providing String type extension methods.
     /// </summary>
     public static class StringExtensions
     {
         /// <summary>
-        /// Returns the number of <see cref="String.Format(String,Object[])"/> parameters in the specified text.
+        /// Returns the number of <see cref="String.Format(String, Object[])"/> parameters in the specified text.
         /// </summary>
         /// <param name="text">The text to scan.</param>
         /// <returns>Number of required String.Format parameters.</returns>
@@ -57,48 +53,47 @@ namespace NContext.Extensions
         /// <summary>
         /// Splits a string into a NameValueCollection, where each "namevalue" is separated by
         /// the "OuterSeparator". The parameter "NameValueSeparator" sets the split between Name and Value.
-        /// Example: 
-        ///             String str = "param1=value1;param2=value2";
-        ///             NameValueCollection nvOut = str.ToNameValueCollection(';', '=');
-        ///             
+        /// Example:
+        /// String nameValueString = "param1=value1;param2=value2";
+        /// NameValueCollection nvOut = nameValueString.ToNameValueCollection(';', '=');
         /// The result is a NameValueCollection where:
-        ///             key[0] is "param1" and value[0] is "value1"
-        ///             key[1] is "param2" and value[1] is "value2"
+        /// key[0] is "param1" and value[0] is "value1"
+        /// key[1] is "param2" and value[1] is "value2"
         /// </summary>
-        /// <param name="str">String to process</param>
+        /// <param name="nameValueString">String to process</param>
         /// <param name="OuterSeparator">Separator for each "NameValue"</param>
         /// <param name="NameValueSeparator">Separator for Name/Value splitting</param>
-        /// <returns></returns>
-        public static NameValueCollection ToNameValueCollection(this String str, Char OuterSeparator, Char NameValueSeparator)
+        /// <returns>NameValueCollection.</returns>
+        public static NameValueCollection ToNameValueCollection(this String nameValueString, Char OuterSeparator, Char NameValueSeparator)
         {
-            NameValueCollection nvText = null;
-            str = str.TrimEnd(OuterSeparator);
-            if (!String.IsNullOrEmpty(str))
+            NameValueCollection nameValueCollection = null;
+            nameValueString = nameValueString.TrimEnd(OuterSeparator);
+            if (!String.IsNullOrEmpty(nameValueString))
             {
-                String[] arrStrings = str.TrimEnd(OuterSeparator).Split(OuterSeparator);
+                String[] arrStrings = nameValueString.TrimEnd(OuterSeparator).Split(OuterSeparator);
 
                 foreach (String nameValuePair in arrStrings)
                 {
                     Int32 posSep = nameValuePair.IndexOf(NameValueSeparator);
                     String name = nameValuePair.Substring(0, posSep);
-                    String value = nameValuePair.Substring(posSep + 1).Trim(new [] { '"' });
-                    if (nvText == null)
+                    String value = nameValuePair.Substring(posSep + 1).Trim(new[] { '"' });
+                    if (nameValueCollection == null)
                     {
-                        nvText = new NameValueCollection();
+                        nameValueCollection = new NameValueCollection();
                     }
 
-                    nvText.Add(name, value);
+                    nameValueCollection.Add(name, value);
                 }
             }
 
-            return nvText;
+            return nameValueCollection;
         }
 
         /// <summary>
         /// Gets the bytes from the string using <see cref="UTF8Encoding"/>.
         /// </summary>
         /// <param name="value">The value.</param>
-        /// <returns>The </returns>
+        /// <returns>The byte array.</returns>
         /// <remarks></remarks>
         public static Byte[] ToBytes(this String value)
         {
@@ -160,8 +155,8 @@ namespace NContext.Extensions
         /// Gets the bytes from a base64 encoded string.
         /// </summary>
         /// <param name="base64EncodedString">The base64 encoded string.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>Byte[].</returns>
+        /// <exception cref="System.ArgumentException">Thrown when specified string is an invalid base64 encoding.</exception>
         public static Byte[] ToBytesFromBase64(this String base64EncodedString)
         {
             try
@@ -170,7 +165,7 @@ namespace NContext.Extensions
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("Invalid base64 string.", ex);
+                throw new ArgumentException("String contains invalid base64 encoded string.", ex);
             }
         }
     }

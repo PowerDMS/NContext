@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EfUnitOfWork.cs">
-//   Copyright (c) 2012
+// <copyright file="EfUnitOfWork.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,119 +16,132 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an Entity Framework 4 implementation of IEfUnitOfWork pattern.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Data.Entity.Validation;
-using System.Linq;
-using System.Transactions;
-
-using NContext.Data;
 
 namespace NContext.Extensions.EntityFramework
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Validation;
     using System.Diagnostics;
+    using System.Linq;
     using System.Threading;
+    using System.Transactions;
 
     using NContext.Data.Persistence;
+    using NContext.Dto;
+    using NContext.ErrorHandling.Errors;
 
     /// <summary>
-    /// Defines an Entity Framework 4 implementation of IEfUnitOfWork.
+    /// Defines an Entity Framework 5 implementation of <see cref="UnitOfWorkBase"/>.
     /// </summary>
     public class EfUnitOfWork : UnitOfWorkBase, IEfUnitOfWork
     {
-        #region Fields
+        private readonly IDbContextContainer _DbContextContianer;
 
-        private readonly IContextContainer _ContextContianer;
-
-        #endregion
-
-        #region Constructors
-        
-        protected internal EfUnitOfWork(AmbientTransactionManagerBase transactionManager, IContextContainer contextContainer)
-            : this(transactionManager, () => new CommittableTransaction(), contextContainer, null)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EfUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="ambientContextManager">The transaction manager.</param>
+        /// <param name="dbContextContainer">The context container.</param>
+        /// <remarks></remarks>
+        protected internal EfUnitOfWork(AmbientContextManagerBase ambientContextManager, IDbContextContainer dbContextContainer)
+            : this(ambientContextManager, dbContextContainer, () => new CommittableTransaction(), null)
         {
         }
 
-        protected internal EfUnitOfWork(AmbientTransactionManagerBase transactionManager, IContextContainer contextContainer, UnitOfWorkBase parent)
-            : this(transactionManager, () => parent.ScopeTransaction, contextContainer, parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EfUnitOfWork"/> class.
+        /// </summary>
+        /// <param name="ambientContextManager">The transaction manager.</param>
+        /// <param name="dbContextContainer">The context container.</param>
+        /// <param name="parent">The parent.</param>
+        /// <remarks></remarks>
+        protected internal EfUnitOfWork(AmbientContextManagerBase ambientContextManager, IDbContextContainer dbContextContainer, UnitOfWorkBase parent)
+            : this(ambientContextManager, dbContextContainer, () => parent.ScopeTransaction, parent)
         {
         }
 
-        private EfUnitOfWork(AmbientTransactionManagerBase transactionManager, Func<Transaction> transactionFactory, IContextContainer contextContainer, UnitOfWorkBase parent)
-            : base(transactionManager, transactionFactory, parent)
+        private EfUnitOfWork(AmbientContextManagerBase ambientContextManager, IDbContextContainer dbContextContainer, Func<Transaction> transactionFactory, UnitOfWorkBase parent)
+            : base(ambientContextManager, transactionFactory, parent)
         {
-            if (contextContainer == null)
+            if (dbContextContainer == null)
             {
-                throw new ArgumentNullException("contextContainer");
+                throw new ArgumentNullException("dbContextContainer");
             }
 
-            _ContextContianer = contextContainer;
+            _DbContextContianer = dbContextContainer;
 
             Debug.WriteLine(String.Format("EfUnitOfWork: {0} created.", Id));
         }
-        
-        #endregion
 
         #region Overrides of UnitOfWorkBase
 
         /// <summary>
         /// Commits the changes within the persistence context.
         /// </summary>
-        /// <remarks></remarks>
-        protected override void CommitTransaction(TransactionScope transactionScope)
+        /// <param name="transactionScope">The transaction scope.</param>
+        /// <returns>IResponseTransferObject{Boolean}.</returns>
+        protected override IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope)
         {
             if (Parent == null)
             {
-                try
+                using (transactionScope)
                 {
-                    CommitTransactionInternal(transactionScope);
-                }
-                catch (InvalidOperationException)
-                {
-                    Rollback();
-                }
-            }
-            else
-            {
-                CommitTransactionInternal(transactionScope);
-            }
-        }
+                    try
+                    {
+                        return CommitTransactionInternal().Let(_ => transactionScope.Complete());
+                    }
+                    catch (Exception exception)
+                    {
+                        Rollback();
 
-        private void CommitTransactionInternal(TransactionScope transactionScope)
-        {
+                        // TODO: (DG) NContext Exception vs ErrorHandling
+                        // throw new AggregateException(commitExceptions);
+                        return
+                            new ServiceResponse<Boolean>(
+                                NContextPersistenceError.CommitFailed(
+                                    Id,
+                                    Transaction.Current.TransactionInformation.LocalIdentifier,
+                                    new AggregateException(exception)));
+                    }
+                }
+            }
+
             using (transactionScope)
             {
-                Debug.WriteLine(
-                    "EfUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
-                    Id,
-                    ThreadSafeTransaction.GetType(),
-                    ScopeThread.ManagedThreadId,
-                    Thread.CurrentThread.ManagedThreadId,
-                    Transaction.Current.TransactionInformation.LocalIdentifier);
-
-                foreach (var context in ContextContainer.Contexts)
-                {
-                    context.SaveChanges();
-                }
-
-                transactionScope.Complete();
+                return CommitTransactionInternal().Let(_ => transactionScope.Complete());
             }
         }
 
         /// <summary>
-        /// Rolls back each context within the unit of work.
+        /// Rolls-back each DbContext within the unit of work.
         /// </summary>
-        /// <remarks></remarks>
+        /// <remarks>
+        /// This does not dispose the contexts. Instead we leave that for when the instance gets disposed.
+        /// </remarks>
         public override void Rollback()
         {
-            // TODO: (DG) Should we be re-loading each enity marked as changed?
             Debug.WriteLine(String.Format("EfUoW: {0} is rolling back.", Id));
+        }
+
+        private IResponseTransferObject<Boolean> CommitTransactionInternal()
+        {
+            Debug.WriteLine(
+                    "EfUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction LocalId: {4}; Transaction GlobalId: {5}",
+                    Id,
+                    ThreadSafeTransaction.GetType(),
+                    ScopeThread.ManagedThreadId,
+                    Thread.CurrentThread.ManagedThreadId,
+                    Transaction.Current.TransactionInformation.LocalIdentifier,
+                    Transaction.Current.TransactionInformation.DistributedIdentifier);
+
+            foreach (var context in DbContextContainer.Contexts)
+            {
+                context.SaveChanges();
+            }
+
+            return new ServiceResponse<Boolean>(true);
         }
 
         #endregion
@@ -139,22 +152,21 @@ namespace NContext.Extensions.EntityFramework
         /// Gets the context container.
         /// </summary>
         /// <remarks></remarks>
-        public IContextContainer ContextContainer
+        public IDbContextContainer DbContextContainer
         {
             get
             {
-                return _ContextContianer;
+                return _DbContextContianer;
             }
         }
 
         /// <summary>
         /// Validates each context in the container.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>IEnumerable{DbEntityValidationResult}.</returns>
         public IEnumerable<DbEntityValidationResult> Validate()
         {
-            return ContextContainer.Contexts.SelectMany(c => c.GetValidationErrors());
+            return DbContextContainer.Contexts.SelectMany(c => c.GetValidationErrors());
         }
 
         #endregion
@@ -163,9 +175,8 @@ namespace NContext.Extensions.EntityFramework
 
         protected override void DisposeManagedResources()
         {
-            ContextContainer.Contexts.ForEach(c => c.Dispose());
-            IsDisposed = true;
-
+            DbContextContainer.Dispose();
+            
             Debug.WriteLine(String.Format("EfUnitOfWork: {0} disposed.", Id));
         }
 

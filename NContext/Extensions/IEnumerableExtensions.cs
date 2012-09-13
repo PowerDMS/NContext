@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.cs">
+// <copyright file="IEnumerableExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -16,21 +16,16 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for IEnumerable.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System.Collections.Generic;
-using System.Linq;
-
-using NContext.Data;
-using NContext.Data.Specifications;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     using NContext.Data.Persistence;
+    using NContext.Data.Specifications;
 
     /// <summary>
     /// Defines extension methods for IEnumerable.
@@ -42,17 +37,27 @@ namespace NContext.Extensions
         /// are only satisfied by the specification.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <paramref name="entities"/>
-        /// <param name="specification">A <see cref="SpecificationBase{TEntity}"/> instance used to filter results
-        /// that only satisfy the specification.</param>
-        /// <returns>
-        /// A <see cref="IQueryable{TEntity}"/> that can be used to enumerate over the results
-        /// of the query.
-        /// </returns>
+        /// <param name="entities">The entities.</param>
+        /// <param name="specification">
+        /// A <see cref="SpecificationBase{TEntity}" /> instance used to filter results that only satisfy the specification.
+        /// </param>
+        /// <returns>A <see cref="IQueryable{TEntity}" /> that can be used to enumerate over the results
+        /// of the query.</returns>
+        /// <paramref name="entities" />
         public static IEnumerable<TEntity> AllMatching<TEntity>(this IEnumerable<TEntity> entities, SpecificationBase<TEntity> specification)
             where TEntity : class, IEntity
         {
             return entities.AsQueryable().Where(specification.IsSatisfiedBy());
-        } 
+        }
+
+        public static IEnumerable<TSource> Distinct<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> getKey)
+        {
+            var hashSet = new HashSet<TKey>();
+
+            return from item in source 
+                   let key = getKey(item) 
+                   where hashSet.Add(key) 
+                   select item;
+        }
     }
 }

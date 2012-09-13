@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CacheManager.cs">
-//   Copyright (c) 2012
+// <copyright file="CacheManager.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,20 +16,16 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a default IManageCaching implementation.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Runtime.Caching;
-
-using NContext.Configuration;
-using NContext.Extensions;
 
 namespace NContext.Caching
 {
+    using System;
+    using System.Runtime.Caching;
+
+    using NContext.Configuration;
+    using NContext.Extensions;
+
     /// <summary>
     /// Defines a default <see cref="IManageCaching"/> implementation.
     /// </summary>
@@ -79,7 +75,7 @@ namespace NContext.Caching
         /// <summary>
         /// Gets a value indicating whether this instance is configured.
         /// </summary>
-        /// <remarks></remarks>
+        /// <value>The is configured.</value>
         public Boolean IsConfigured
         {
             get

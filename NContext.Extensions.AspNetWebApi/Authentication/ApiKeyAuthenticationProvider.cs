@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApiKeyAuthenticationProvider.cs">
-//   Copyright (c) 2012
+// <copyright file="ApiKeyAuthenticationProvider.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,34 +16,24 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an HttpOperationHandler for authentication.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Net.Http;
-using System.Security.Principal;
-using System.Web;
 
 namespace NContext.Extensions.AspNetWebApi.Authentication
 {
+    using System;
+    using System.Net.Http;
+    using System.Security.Principal;
+    using System.Web;
+
     /// <summary>
     /// Defines a skeleton abstraction for API key authentication.
     /// </summary>
     /// <remarks></remarks>
-    public abstract class ApiKeyAuthenticationProvider : IProvideResourceAuthentication
+    public abstract class ApiKeyAuthenticationProvider : IProvideRequestAuthentication
     {
-        #region Fields
-
         private readonly String _AuthorizationHeaderScheme;
 
         private readonly String _QueryStringKey;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApiKeyAuthenticationProvider"/> class.
@@ -57,44 +47,22 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
             _QueryStringKey = queryStringKey;
         }
 
-        #endregion
-
-        #region Implementation of IProvideResourceAuthentication
-
-        /// <summary>
-        /// Determines whether this instance can authenticate the specified request message.
-        /// </summary>
-        /// <param name="requestMessage">The request message.</param>
-        /// <returns><c>true</c> if this instance can authenticate the specified request message; otherwise, <c>false</c>.</returns>
-        /// <remarks></remarks>
-        public virtual Boolean CanAuthenticate(HttpRequestMessage requestMessage)
-        {
-            if (requestMessage.Headers.Authorization != null && !String.IsNullOrWhiteSpace(_AuthorizationHeaderScheme) && 
-                requestMessage.Headers.Authorization.Scheme.Equals(_AuthorizationHeaderScheme, 
-                StringComparison.InvariantCultureIgnoreCase))
-            {
-                return true;
-            }
-
-            if (_QueryStringKey != null && HttpUtility.ParseQueryString(requestMessage.RequestUri.Query)[_QueryStringKey] != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Authenticates the specified request message.
         /// </summary>
         /// <param name="requestMessage">The request message.</param>
         /// <returns>Instance of <see cref="IPrincipal"/>.</returns>
         /// <remarks></remarks>
-        public IPrincipal Authenticate(HttpRequestMessage requestMessage)
+        public virtual IPrincipal Authenticate(HttpRequestMessage requestMessage)
         {
-            if (requestMessage.Headers.Authorization != null && !String.IsNullOrWhiteSpace(_AuthorizationHeaderScheme) &&
-                requestMessage.Headers.Authorization.Scheme.Equals(_AuthorizationHeaderScheme,
-                StringComparison.InvariantCultureIgnoreCase))
+            if (!CanAuthenticate(requestMessage))
+            {
+                return null;
+            }
+
+            if (requestMessage.Headers.Authorization != null && 
+                !String.IsNullOrWhiteSpace(_AuthorizationHeaderScheme) &&
+                requestMessage.Headers.Authorization.Scheme.Equals(_AuthorizationHeaderScheme, StringComparison.InvariantCultureIgnoreCase))
             {
                 return AuthenticateApiKey(requestMessage.Headers.Authorization.Parameter);
             }
@@ -108,13 +76,33 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         }
 
         /// <summary>
+        /// Determines whether this instance can authenticate the specified request message.
+        /// </summary>
+        /// <param name="requestMessage">The request message.</param>
+        /// <returns><c>true</c> if this instance can authenticate the specified request message; otherwise, <c>false</c>.</returns>
+        /// <remarks></remarks>
+        public virtual Boolean CanAuthenticate(HttpRequestMessage requestMessage)
+        {
+            if (requestMessage.Headers.Authorization != null && 
+                !String.IsNullOrWhiteSpace(_AuthorizationHeaderScheme) && 
+                requestMessage.Headers.Authorization.Scheme.Equals(_AuthorizationHeaderScheme, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return true;
+            }
+
+            if (!String.IsNullOrWhiteSpace(_QueryStringKey) && HttpUtility.ParseQueryString(requestMessage.RequestUri.Query)[_QueryStringKey] != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Authenticates the API key.
         /// </summary>
         /// <param name="apiKey">The API key.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>IPrincipal.</returns>
         public abstract IPrincipal AuthenticateApiKey(String apiKey);
-
-        #endregion
     }
 }

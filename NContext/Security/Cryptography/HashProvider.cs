@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="HashProvider.cs">
-//   Copyright (c) 2012
+// <copyright file="HashProvider.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,33 +16,23 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a provider for cryptographic hash operations.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Security.Cryptography;
-
-using NContext.Extensions;
-using NContext.Utilities;
 
 namespace NContext.Security.Cryptography
 {
+    using System;
+    using System.Security.Cryptography;
+
+    using NContext.Extensions;
+    using NContext.Utilities;
+
     /// <summary>
     /// Defines a provider for cryptographic hash operations.
     /// </summary>
     /// <remarks></remarks>
     public class HashProvider : IProvideHashing
     {
-        #region Fields
-
         private readonly Type _DefaultHashAlgorithm;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HashProvider"/> class.
@@ -63,8 +53,6 @@ namespace NContext.Security.Cryptography
 
             _DefaultHashAlgorithm = defaultHashAlgorithm;
         }
-
-        #endregion
 
         #region Hash CreateHash Methods
 

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnityManager.cs">
-//   Copyright (c) 2012
+// <copyright file="UnityManager.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,40 +16,30 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Implementation of IManageUnity interface for management of a Unity container.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-
-using Microsoft.Practices.ServiceLocation;
-using Microsoft.Practices.Unity;
-
-using NContext.Configuration;
 
 namespace NContext.Extensions.Unity
 {
+    using System;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
+
+    using Microsoft.Practices.ServiceLocation;
+    using Microsoft.Practices.Unity;
+
+    using NContext.Configuration;
+
     /// <summary>
     /// Implementation of <see cref="IManageUnity"/> interface for management of a <see cref="IUnityContainer"/>.
     /// </summary>
     public class UnityManager : IManageUnity
     {
-        #region Fields
-
         private readonly UnityConfiguration _UnityConfiguration;
 
         private Boolean _IsConfigured;
 
         private IUnityContainer _Container;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnityManager"/> class.
@@ -66,10 +56,6 @@ namespace NContext.Extensions.Unity
             _UnityConfiguration = unityConfiguration;
         }
 
-        #endregion
-
-        #region Properties
-        
         /// <summary>
         /// Gets the unity container.
         /// </summary>
@@ -98,10 +84,6 @@ namespace NContext.Extensions.Unity
                 _IsConfigured = value;
             }
         }
-
-        #endregion
-        
-        #region Implementation of IApplicationComponent
 
         /// <summary>
         /// Configures the component instance.
@@ -138,7 +120,5 @@ namespace NContext.Extensions.Unity
             var serviceLocator = new UnityServiceLocator(_Container);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
         }
-
-        #endregion
     }
 }

@@ -1,0 +1,143 @@
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AmbientContextManagerBase.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace NContext.Data.Persistence
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
+    /// <summary>
+    /// Defines an abstraction for managing the ambient-context lifespan for units of work.
+    /// </summary>
+    /// <remarks></remarks>
+    public abstract class AmbientContextManagerBase
+    {
+        public virtual AmbientUnitOfWorkDecorator Ambient
+        {
+            get
+            {
+                return AmbientExists ? AmbientUnitsOfWork.Peek() : null;
+            }
+        }
+
+        public virtual Boolean AmbientUnitOfWorkIsValid
+        {
+            get
+            {
+                return AmbientExists && AmbientUnitsOfWork.Peek().UnitOfWork != null;
+            }
+        }
+
+        public abstract Boolean AmbientExists { get; }
+
+        protected abstract Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork { get; }
+
+        /// <summary>
+        /// Adds the unit of work.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
+        /// <remarks></remarks>
+        public virtual void AddUnitOfWork(UnitOfWorkBase unitOfWork)
+        {
+            AmbientUnitsOfWork.Push(new AmbientUnitOfWorkDecorator(unitOfWork));
+            Debug.WriteLine("Ambient Pushed");
+        }
+
+        /// <summary>
+        /// Determines whether the specified <paramref name="unitOfWork"/> can be committed.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
+        /// <returns><c>true</c> if the specified unit of work can be committed; otherwise, <c>false</c>.</returns>
+        /// <remarks>
+        /// <para>
+        /// Group 1 (if the <paramref name="unitOfWork"/> is <c>not</c> part of a <see cref="CompositeUnitOfWork"/>)
+        ///     <paramref name="unitOfWork"/>.Parent is NULL
+        ///         <c>true</c> if the <paramref name="unitOfWork"/> does not belong to a <see cref="CompositeUnitOfWork"/>; otherwise <c>false</c>
+        ///     AmbientExists -
+        ///         <c>true</c> if an ambient exists within a given scope; otherwise <c>false</c>
+        ///         (ie. per-thread <see cref="ThreadLocalAmbientContextManager"/> or per-request <see cref="PerRequestAmbientContextManager"/>)
+        ///     Ambient.IsCommittable
+        ///         true if there is only a single active session on the ambient context; otherwise, false
+        /// </para>
+        /// <para>
+        /// Group 2 (if the <paramref name="unitOfWork"/> belongs to a <see cref="CompositeUnitOfWork"/> - ie. has a parent)
+        ///     Ambient.UnitOfWork.IsCommitting
+        ///         <c>true</c> if the ambient unit of work is currently being committed; otherwise <c>false</c>
+        /// </para>
+        /// </remarks>
+        public virtual Boolean CanCommitUnitOfWork(UnitOfWorkBase unitOfWork)
+        {
+            return (unitOfWork.Parent == null &&
+                       (AmbientExists &&
+                        Ambient.Equals(unitOfWork) &&
+                        Ambient.IsCommittable)) || 
+                   Ambient.UnitOfWork.IsCommitting;
+        }
+
+        /// <summary>
+        /// Determines whether the specified <paramref name="unitOfWork"/> can be disposed.
+        /// </summary>
+        /// <param name="unitOfWork">The unit of work.</param>
+        /// <returns>
+        /// <c>true</c> if no <see cref="AmbientExists"/>; otherwise: 
+        /// <c>true</c> if the <see cref="AmbientUnitOfWorkDecorator.IsDisposable"/> and <paramref name="unitOfWork.Parent"/> is null; otherwise <c>false</c>
+        /// </returns>
+        /// <remarks></remarks>
+        public virtual Boolean CanDisposeUnitOfWork(UnitOfWorkBase unitOfWork)
+        {
+            if (AmbientExists)
+            {
+                // Save the current disposable state of the ambient unit of work locally since further execution may affect it.
+                var isDisposable = Ambient.IsDisposable;
+
+                if (unitOfWork.IsCommitted || (isDisposable && Ambient.Equals(unitOfWork)))
+                {
+                    AmbientUnitsOfWork.Pop();
+                    Debug.WriteLine("Ambient Popped");
+                }
+                else if (!isDisposable)
+                {
+                    Ambient.Decrement();
+                    Debug.WriteLine("Ambient Decremented");
+                }
+
+                if (isDisposable && unitOfWork.Parent == null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Increments the active session count on the ambient unit of work.
+        /// </summary>
+        /// <remarks></remarks>
+        public virtual void RetainAmbient()
+        {
+            Ambient.Increment();
+            Debug.WriteLine("Ambient Incremented");
+        }
+    }
+}

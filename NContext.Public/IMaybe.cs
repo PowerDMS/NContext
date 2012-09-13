@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMaybe.cs">
-//   Copyright (c) 2012
+// <copyright file="IMaybe.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,16 +16,12 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a Maybe monad interface.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext
 {
+    using System;
+
     /// <summary>
     /// Defines a Maybe monad contract.
     /// </summary>
@@ -57,10 +53,9 @@ namespace NContext
         T FromMaybe(T defaultValue);
 
         /// <summary>
-        /// Returns <see cref="Nothing{T}"/>
+        /// Returns <see cref="Nothing{T}" />
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns><see cref="Nothing{T}"/>.</returns>
         IMaybe<T> Empty();
 
         /// <summary>

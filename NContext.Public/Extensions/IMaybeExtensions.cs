@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMaybeExtensions.cs">
-//   Copyright (c) 2012
+// <copyright file="IMaybeExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,19 +16,14 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines extension methods for IMaybe<T>.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NContext.Extensions
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+
     /// <summary>
     /// Defines extension methods for <see cref="IMaybe{T}"/>.
     /// </summary>
@@ -38,11 +33,10 @@ namespace NContext.Extensions
         /// Selects the specified maybe.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TResult">The type of the U.</typeparam>
+        /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="maybe">The maybe.</param>
         /// <param name="selectFunction">The selectManyFunction function.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>IMaybe{<typeparamref name="TResult" />}.</returns>
         public static IMaybe<TResult> Select<T, TResult>(this IMaybe<T> maybe, Func<T, IMaybe<TResult>> selectFunction)
             where T : IEnumerable
             where TResult : IEnumerable
@@ -76,10 +70,31 @@ namespace NContext.Extensions
         /// <returns><see cref="IMaybe{T}"/></returns>
         public static IMaybe<T> MaybeFirst<T>(this IEnumerable<T> enumerable)
         {
-            var value = enumerable.GetEnumerator();
-            return value.MoveNext() 
-                ? value.Current.ToMaybe() 
+            using (var enumerator = enumerable.GetEnumerator())
+            {
+                return enumerator.MoveNext() 
+                ? enumerator.Current.ToMaybe() 
                 : new Nothing<T>();
+            }
+        }
+
+        public static IMaybe<T> MaybeSingle<T>(this IEnumerable<T> enumerable)
+        {
+            using (var enumerator = enumerable.GetEnumerator())
+            {
+                if (!enumerator.MoveNext())
+                {
+                    return new Nothing<T>();
+                }
+
+                T current = enumerator.Current;
+                if (!enumerator.MoveNext())
+                {
+                    return current.ToMaybe();
+                }
+            }
+
+            return new Nothing<T>();
         }
     }
 }

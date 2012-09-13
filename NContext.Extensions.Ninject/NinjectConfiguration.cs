@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NinjectConfiguration.cs">
-//   Copyright (c) 2012
+// <copyright file="NinjectConfiguration.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,35 +16,27 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines configuration settings for Ninject.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
-using Ninject;
-using Ninject.Modules;
 
 namespace NContext.Extensions.Ninject
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    using global::Ninject;
+    using global::Ninject.Modules;
+
     /// <summary>
     /// Defines configuration settings for Ninject.
     /// </summary>
     public class NinjectConfiguration
     {
-        #region Fields
-
         private readonly Func<IKernel> _KernelFactory;
 
         private readonly Func<IEnumerable<INinjectModule>> _ModuleFactory;
 
         private readonly Func<INinjectSettings> _NinjectSettings;
-
-        #endregion
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NinjectConfiguration"/> class.
@@ -59,8 +51,6 @@ namespace NContext.Extensions.Ninject
             _ModuleFactory = moduleFactory;
             _NinjectSettings = ninjectSettings;
         }
-
-        #region Properties
 
         /// <summary>
         /// Creates the <see cref="IKernel"/> instance.
@@ -87,7 +77,5 @@ namespace NContext.Extensions.Ninject
                     ? new NinjectSettings()
                     : _NinjectSettings.Invoke();
         }
-
-        #endregion 
     }
 }

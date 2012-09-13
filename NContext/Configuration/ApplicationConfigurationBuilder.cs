@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationConfigurationBuilder.cs">
-//   Copyright (c) 2012
+// <copyright file="ApplicationConfigurationBuilder.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,37 +16,27 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a fluent interface builder for application configuration.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Web;
 
 namespace NContext.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Reflection;
+    using System.Web;
+
     /// <summary>
     /// Defines a fluent interface builder for application configuration.
     /// </summary>
     /// <remarks></remarks>
     public class ApplicationConfigurationBuilder
     {
-        #region Fields
-        
         private static readonly ApplicationConfiguration _ApplicationConfiguration =
             new ApplicationConfiguration();
 
         private static readonly Dictionary<Type, ApplicationComponentConfigurationBuilder> _Components =
             new Dictionary<Type, ApplicationComponentConfigurationBuilder>();
         
-        #endregion
-        
-        #region Properties
-
         /// <summary>
         /// Gets the application configuration.
         /// </summary>
@@ -58,10 +48,6 @@ namespace NContext.Configuration
                 return _ApplicationConfiguration;
             }
         }
-
-        #endregion
-
-        #region Operator Overloads
         
         /// <summary>
         /// Performs an implicit conversion from <see cref="ApplicationConfigurationBuilder"/> 
@@ -74,10 +60,6 @@ namespace NContext.Configuration
         {
             return _ApplicationConfiguration;
         }
-
-        #endregion
-        
-        #region Methods
 
         /// <summary>
         /// Composes the application for web environments. This will use the <see cref="HttpRuntime.BinDirectory"/> for runtime composition.
@@ -131,7 +113,7 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        /// Registers the component with the <see cref="ApplicationConfigurationBuilder"/> components collection.
+        /// Registers the component with the <see cref="ApplicationConfigurationBuilder"/> components enumerator.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
@@ -165,7 +147,5 @@ namespace NContext.Configuration
 
             return this;
         }
-
-        #endregion
     }
 }

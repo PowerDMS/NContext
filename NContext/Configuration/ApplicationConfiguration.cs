@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationConfiguration.cs">
-//   Copyright (c) 2012
+// <copyright file="ApplicationConfiguration.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,32 +16,27 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a class for application configuration.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition.Hosting;
 
 namespace NContext.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition.Hosting;
+
     /// <summary>
-    /// Defines a class for application configuration.
+    /// Defines a default implementation for application configuration.
     /// </summary>
     public class ApplicationConfiguration : ApplicationConfigurationBase
     {
-        #region Methods
-        
         /// <summary>
         /// Creates the composition container from the executing assembly.
         /// </summary>
-        /// <returns>
-        /// Application's <see cref="CompositionContainer"/> instance.
-        /// </returns>
-        protected override CompositionContainer CreateCompositionContainer(HashSet<String> compositionDirectories, HashSet<Predicate<String>> compositionFileNameConstraints)
+        /// <param name="compositionDirectories">The composition directories.</param>
+        /// <param name="compositionFileNameConstraints">The composition file name constraints.</param>
+        /// <returns>Application's <see cref="CompositionContainer" /> instance.</returns>
+        /// <exception cref="System.Exception"></exception>
+        protected override CompositionContainer CreateCompositionContainer(ISet<String> compositionDirectories, ISet<Predicate<String>> compositionFileNameConstraints)
         {
             if (IsConfigured)
             {
@@ -57,7 +52,5 @@ namespace NContext.Configuration
 
             return compositionContainer;
         }
-
-        #endregion
     }
 }

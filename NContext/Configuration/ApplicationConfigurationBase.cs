@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationConfigurationBase.cs">
-//   Copyright (c) 2012
+// <copyright file="ApplicationConfigurationBase.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,44 +16,34 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an application configuration abstraction.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Composition;
-using System.ComponentModel.Composition.Hosting;
-using System.Linq;
-
-using NContext.Extensions;
 
 namespace NContext.Configuration
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
+    using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
+
+    using NContext.Extensions;
+
     /// <summary>
     /// Defines an application configuration abstraction.
     /// </summary>
     /// <remarks></remarks>
     public abstract class ApplicationConfigurationBase
     {
-        #region Fields
-
-        private readonly HashSet<RegisteredApplicationComponent> _Components =
+        private readonly ISet<RegisteredApplicationComponent> _Components =
             new HashSet<RegisteredApplicationComponent>();
 
-        private readonly HashSet<String> _CompositionDirectories;
+        private readonly ISet<String> _CompositionDirectories;
 
-        private readonly HashSet<Predicate<String>> _CompositionFileNameConstraints;
+        private readonly ISet<Predicate<String>> _CompositionFileNameConstraints;
 
         private CompositionContainer _CompositionContainer;
 
         private Boolean _IsConfigured;
-
-        #endregion
-
-        #region Constructors
 
         protected ApplicationConfigurationBase()
         {
@@ -63,10 +53,6 @@ namespace NContext.Configuration
                     new Predicate<String>(fileName => fileName.StartsWith("NContext", StringComparison.OrdinalIgnoreCase))
                 };
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the application components.
@@ -81,8 +67,8 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        ///  Gets the application composition container.
-        ///  </summary>
+        /// Gets the application composition container.
+        /// </summary>
         public CompositionContainer CompositionContainer
         {
             get
@@ -107,8 +93,6 @@ namespace NContext.Configuration
             }
         }
 
-        #endregion
-        
         /// <summary>
         /// Adds the specified conditions for application composition.
         /// </summary>
@@ -117,13 +101,23 @@ namespace NContext.Configuration
         /// <remarks></remarks>
         public void AddCompositionConditions(IEnumerable<String> directories, IEnumerable<Predicate<String>> fileNameConstraints)
         {
-            _CompositionDirectories.AddRange(directories);
-            _CompositionFileNameConstraints.AddRange(fileNameConstraints);
+            if (!_CompositionDirectories.AddRange(directories.Distinct()))
+            {
+                throw new Exception("NContext was unable to add the specified composition directories.");
+            }
+
+            if (!_CompositionFileNameConstraints.AddRange(fileNameConstraints))
+            {
+                throw new Exception("NContext was unable to add all the specified composition file name constraints. Possible duplicate constraints?");
+            }
         }
 
         /// <summary>
         ///  Gets the application component by type registered.
-        ///  </summary><typeparam name="TApplicationComponent">The type of the application component.</typeparam><returns>Instance of <typeparamref name="TApplicationComponent" /> if it exists, else null.</returns><remarks></remarks>
+        ///  </summary>
+        /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+        /// <returns>Instance of <typeparamref name="TApplicationComponent" /> if it exists, else null.</returns>
+        /// <remarks></remarks>
         public TApplicationComponent GetComponent<TApplicationComponent>()
             where TApplicationComponent : IApplicationComponent
         {
@@ -134,8 +128,11 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        ///  Registers an application component.
-        ///  </summary><typeparam name="TApplicationComponent">The type of the application component.</typeparam><param name="componentFactory">The component factory.</param><remarks></remarks>
+        /// Registers an application component.
+        /// </summary>
+        /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
+        /// <param name="componentFactory">The component factory.</param>
+        /// <remarks></remarks>
         public void RegisterComponent<TApplicationComponent>(Func<IApplicationComponent> componentFactory)
             where TApplicationComponent : IApplicationComponent
         {
@@ -182,6 +179,6 @@ namespace NContext.Configuration
             }
         }
 
-        protected abstract CompositionContainer CreateCompositionContainer(HashSet<String> compositionDirectories, HashSet<Predicate<String>> compositionFileNameConstraints);
+        protected abstract CompositionContainer CreateCompositionContainer(ISet<String> compositionDirectories, ISet<Predicate<String>> compositionFileNameConstraints);
     }
 }

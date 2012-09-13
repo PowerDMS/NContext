@@ -1,6 +1,6 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AutoMapperManager.cs">
-//   Copyright (c) 2012
+// <copyright file="AutoMapperManager.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,29 +16,23 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an AutoMapper application component.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-
-using AutoMapper;
-using AutoMapper.Mappers;
-
-using NContext.Configuration;
 
 namespace NContext.Extensions.AutoMapper
 {
+    using System;
+
+    using global::AutoMapper;
+    using global::AutoMapper.Mappers;
+
+    using NContext.Configuration;
+
     /// <summary>
     /// Defines an AutoMapper application component.
     /// </summary>
     /// <remarks></remarks>
     public class AutoMapperManager : IManageAutoMapper
     {
-        #region Fields
-
         private static readonly Lazy<ConfigurationStore> _ConfigurationStore =
             new Lazy<ConfigurationStore>(() => new ConfigurationStore(new TypeMapFactory(), MapperRegistry.AllMappers()));
 
@@ -46,10 +40,6 @@ namespace NContext.Extensions.AutoMapper
             new Lazy<IMappingEngine>(() => new MappingEngine(_ConfigurationStore.Value));
 
         private Boolean _IsConfigured;
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the configuration provider.
@@ -87,10 +77,6 @@ namespace NContext.Extensions.AutoMapper
             }
         }
 
-        #endregion
-
-        #region Implementation of IApplicationComponent
-
         /// <summary>
         /// Gets a value indicating whether this instance is configured.
         /// </summary>
@@ -125,7 +111,5 @@ namespace NContext.Extensions.AutoMapper
 
             _IsConfigured = true;
         }
-
-        #endregion
     }
 }

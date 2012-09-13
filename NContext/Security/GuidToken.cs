@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GenericToken.cs">
-//   Copyright (c) 2012
+// <copyright file="GuidToken.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,29 +16,23 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a generic SecurityToken using a Guid as a token identifier.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IdentityModel.Tokens;
-
-using NContext.Dto;
 
 namespace NContext.Security
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.IdentityModel.Tokens;
+
+    using NContext.Dto;
+
     /// <summary>
     /// Defines a generic <see cref="SecurityToken"/> using a <see cref="Guid"/>
     /// as a token identifier.
     /// </summary>
     public class GuidToken : SecurityToken, IToken
     {
-        #region Fields
-
         private readonly Guid _Id;
 
         private readonly DateTime _ValidFrom;
@@ -46,10 +40,6 @@ namespace NContext.Security
         private readonly DateTime _ValidTo;
 
         private readonly ReadOnlyCollection<SecurityKey> _SecurityKeys;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.IdentityModel.Tokens.SecurityToken"/> class.
@@ -72,10 +62,6 @@ namespace NContext.Security
             _ValidTo = DateTimeOffset.MaxValue.UtcDateTime;
             _SecurityKeys = new ReadOnlyCollection<SecurityKey>(new List<SecurityKey>());
         }
-
-        #endregion
-
-        #region Implementation of SecurityToken
 
         /// <summary>
         /// Gets a unique identifier of the security token.
@@ -129,10 +115,6 @@ namespace NContext.Security
             }
         }
 
-        #endregion
-
-        #region Implementation of IToken
-
         public String Value
         {
             get
@@ -140,7 +122,5 @@ namespace NContext.Security
                 return _Id.ToString();
             }
         }
-
-        #endregion
     }
 }

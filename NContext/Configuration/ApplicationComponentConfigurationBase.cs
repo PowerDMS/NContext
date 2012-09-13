@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationConfigurationBuilderSectionBase.cs">
-//   Copyright (c) 2012
+// <copyright file="ApplicationComponentConfigurationBase.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,16 +16,12 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines an abstraction for creating application component configurations.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
-
-using System;
 
 namespace NContext.Configuration
 {
+    using System;
+
     /// <summary>
     /// Defines an abstraction for creating application component configurations which 
     /// can in turn be used with an <see cref="ApplicationConfigurationBuilder"/>.
@@ -33,13 +29,7 @@ namespace NContext.Configuration
     /// <remarks></remarks>
     public abstract class ApplicationComponentConfigurationBase
     {
-        #region Fields
-
         private readonly ApplicationConfigurationBuilder _ApplicationConfigurationBuilder;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBase"/> class.
@@ -56,10 +46,6 @@ namespace NContext.Configuration
             _ApplicationConfigurationBuilder = applicationConfigurationBuilder;
         }
 
-        #endregion
-
-        #region Operator Overloads
-
         /// <summary>
         /// Performs an implicit conversion from <see cref="ApplicationComponentConfigurationBase"/> 
         /// to <see cref="ApplicationConfiguration"/>.
@@ -74,10 +60,6 @@ namespace NContext.Configuration
             return componentConfiguration.Builder;
         }
 
-        #endregion
-
-        #region Properties
-
         /// <summary>
         /// Gets the builder instance.
         /// </summary>
@@ -90,16 +72,11 @@ namespace NContext.Configuration
             }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
-        /// Registers the component with the <see cref="ApplicationConfigurationBase"/>.
+        /// Registers the component with the <see cref="ApplicationConfigurationBase" />.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>ApplicationComponentConfigurationBuilder.</returns>
         public ApplicationComponentConfigurationBuilder RegisterComponent<TApplicationComponent>()
             where TApplicationComponent : class, IApplicationComponent
         {
@@ -109,12 +86,11 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        /// Registers the component with the <see cref="ApplicationConfigurationBase"/>.
+        /// Registers the component with the <see cref="ApplicationConfigurationBase" />.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <param name="componentFactory">The component factory.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>ApplicationConfigurationBuilder.</returns>
         public ApplicationConfigurationBuilder RegisterComponent<TApplicationComponent>(Func<TApplicationComponent> componentFactory)
             where TApplicationComponent : class, IApplicationComponent
         {
@@ -128,7 +104,5 @@ namespace NContext.Configuration
         /// </summary>
         /// <remarks></remarks>
         protected abstract void Setup();
-
-        #endregion
     }
 }
