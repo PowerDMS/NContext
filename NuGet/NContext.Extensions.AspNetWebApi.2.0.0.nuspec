@@ -20,7 +20,7 @@
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src=".\NContext.Extensions.AspNetWebApi\bin\Release\NContext.Extensions.AspNetWebApi.dll" target="lib\net40\NContext.Extensions.AspNetWebApi.dll" />
-    <file src=".\NContext.Extensions.AspNetWebApi\bin\Release\NContext.Extensions.AspNetWebApi.xml" target="lib\net40\NContext.Extensions.AspNetWebApi.xml" />
+    <file src="..\NContext.Extensions.AspNetWebApi\bin\Release\NContext.Extensions.AspNetWebApi.dll" target="lib\net40\NContext.Extensions.AspNetWebApi.dll" />
+    <file src="..\NContext.Extensions.AspNetWebApi\bin\Release\NContext.Extensions.AspNetWebApi.xml" target="lib\net40\NContext.Extensions.AspNetWebApi.xml" />
   </files>
 </package>

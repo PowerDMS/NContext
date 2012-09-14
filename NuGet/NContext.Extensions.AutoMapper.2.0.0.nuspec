@@ -16,7 +16,7 @@
     <tags>NContext</tags>
   </metadata>
   <files>
-    <file src=".\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.dll" target="lib\net40\NContext.Extensions.AutoMapper.dll" />
-    <file src=".\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.xml" target="lib\net40\NContext.Extensions.AutoMapper.xml" />
+    <file src="..\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.dll" target="lib\net40\NContext.Extensions.AutoMapper.dll" />
+    <file src="..\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.xml" target="lib\net40\NContext.Extensions.AutoMapper.xml" />
   </files>
 </package>

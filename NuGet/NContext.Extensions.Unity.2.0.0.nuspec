@@ -21,7 +21,7 @@
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src=".\NContext.Extensions.Unity\bin\Release\NContext.Extensions.Unity.dll" target="lib\net40\NContext.Extensions.Unity.dll" />
-    <file src=".\NContext.Extensions.Unity\bin\Release\NContext.Extensions.Unity.xml" target="lib\net40\NContext.Extensions.Unity.xml" />
+    <file src="..\NContext.Extensions.Unity\bin\Release\NContext.Extensions.Unity.dll" target="lib\net40\NContext.Extensions.Unity.dll" />
+    <file src="..\NContext.Extensions.Unity\bin\Release\NContext.Extensions.Unity.xml" target="lib\net40\NContext.Extensions.Unity.xml" />
   </files>
 </package>

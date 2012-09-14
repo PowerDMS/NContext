@@ -14,9 +14,9 @@ This is built upon Microsoft Portable Class Libraries in efforts to support Silv
     <tags>NContext</tags>
   </metadata>
   <files>
-    <file src=".\NContext.Dto\bin\Release\NContext.Dto.dll" target="lib\net40\NContext.Dto.dll" />
-    <file src=".\NContext.Dto\bin\Release\NContext.Dto.xml" target="lib\net40\NContext.Dto.xml" />
-    <file src=".\NContext.Public\bin\Release\NContext.Public.dll" target="lib\net40\NContext.Public.dll" />
-    <file src=".\NContext.Public\bin\Release\NContext.Public.xml" target="lib\net40\NContext.Public.xml" />
+    <file src="..\NContext.Dto\bin\Release\NContext.Dto.dll" target="lib\net40\NContext.Dto.dll" />
+    <file src="..\NContext.Dto\bin\Release\NContext.Dto.xml" target="lib\net40\NContext.Dto.xml" />
+    <file src="..\NContext.Public\bin\Release\NContext.Public.dll" target="lib\net40\NContext.Public.dll" />
+    <file src="..\NContext.Public\bin\Release\NContext.Public.xml" target="lib\net40\NContext.Public.xml" />
   </files>
 </package>
