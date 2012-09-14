@@ -18,7 +18,7 @@
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src=".\NContext\bin\Release\NContext.dll" target="lib\net40\NContext.dll" />
-    <file src=".\NContext\bin\Release\NContext.xml" target="lib\net40\NContext.xml" />
+    <file src="..\NContext\bin\Release\NContext.dll" target="lib\net40\NContext.dll" />
+    <file src="..\NContext\bin\Release\NContext.xml" target="lib\net40\NContext.xml" />
   </files>
 </package>
