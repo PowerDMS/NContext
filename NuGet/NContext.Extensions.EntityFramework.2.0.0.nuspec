@@ -18,7 +18,7 @@
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.EntityFramework\bin\Release\NContext.Extensions.EntityFramework.dll" target="lib\net40\NContext.Extensions.EntityFramework.dll" />
-    <file src="..\NContext.Extensions.EntityFramework\bin\Release\NContext.Extensions.EntityFramework.xml" target="lib\net40\NContext.Extensions.EntityFramework.xml" />
+    <file src=".\NContext.Extensions.EntityFramework\bin\Release\NContext.Extensions.EntityFramework.dll" target="lib\net40\NContext.Extensions.EntityFramework.dll" />
+    <file src=".\NContext.Extensions.EntityFramework\bin\Release\NContext.Extensions.EntityFramework.xml" target="lib\net40\NContext.Extensions.EntityFramework.xml" />
   </files>
 </package>

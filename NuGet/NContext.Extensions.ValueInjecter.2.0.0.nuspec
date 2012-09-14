@@ -16,7 +16,7 @@
     <tags>NContext</tags>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.dll" target="lib\net40\NContext.Extensions.ValueInjecter.dll" />
-    <file src="..\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.xml" target="lib\net40\NContext.Extensions.ValueInjecter.xml" />
+    <file src=".\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.dll" target="lib\net40\NContext.Extensions.ValueInjecter.dll" />
+    <file src=".\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.xml" target="lib\net40\NContext.Extensions.ValueInjecter.xml" />
   </files>
 </package>

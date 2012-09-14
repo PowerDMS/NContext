@@ -21,7 +21,7 @@
     <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.dll" target="lib\net40\NContext.Extensions.Ninject.dll" />
-    <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.xml" target="lib\net40\NContext.Extensions.Ninject.xml" />
+    <file src=".\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.dll" target="lib\net40\NContext.Extensions.Ninject.dll" />
+    <file src=".\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.xml" target="lib\net40\NContext.Extensions.Ninject.xml" />
   </files>
 </package>
