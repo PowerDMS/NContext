@@ -38,6 +38,10 @@ namespace NContext.Data.Persistence
             }
         }
 
+        /// <summary>
+        /// Gets whether the ambient unit of work is valid.
+        /// </summary>
+        /// <value>The ambient unit of work is valid.</value>
         public virtual Boolean AmbientUnitOfWorkIsValid
         {
             get
