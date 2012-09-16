@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.JsonNet
+namespace NContext.Extensions.AspNetWebApi
 {
     using System;
     using System.IO;

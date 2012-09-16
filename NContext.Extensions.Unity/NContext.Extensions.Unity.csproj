@@ -57,6 +57,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AssemblyInfoShared.cs">
+      <Link>Properties\AssemblyInfoShared.cs</Link>
+    </Compile>
     <Compile Include="IConfigureAUnityContainer.cs" />
     <Compile Include="IManageUnity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,9 +72,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NContext.Public\NContext.Public.csproj">
-      <Project>{A1E2F769-1887-4300-9AC4-5005F22457E7}</Project>
-      <Name>NContext.Public</Name>
+    <ProjectReference Include="..\NContext.Common\NContext.Common.csproj">
+      <Project>{2ec085ce-bf81-46ed-a2d7-8cd0b9afdec2}</Project>
+      <Name>NContext.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NContext\NContext.csproj">
       <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
