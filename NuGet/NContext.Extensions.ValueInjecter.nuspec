@@ -4,20 +4,19 @@
     <id>NContext.Extensions.ValueInjecter</id>
     <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>$author$</owners>
-    <copyright>$author$</copyright>
-    <description>$description$</description>
+    <owners>Waking Venture Inc.</owners>
+    <copyright>Waking Venture Inc.</copyright>
+    <description>[to fill]</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://ncontext.wakingventure.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext.Common" version="[2.0.0,)" />
-      <dependency id="ValueInjecter" version="2.3" />
+      <dependency id="NContext.Common" version="[$version$,)" />
+      <dependency id="ValueInjecter" version="2.3.3" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.dll" target="lib\net40\NContext.Extensions.ValueInjecter.dll" />
-    <file src="..\NContext.Extensions.ValueInjecter\bin\Release\NContext.Extensions.ValueInjecter.xml" target="lib\net40\NContext.Extensions.ValueInjecter.xml" />
+    <file src="..\NContext.Extensions.ValueInjecter\bin\$Configuration$\NContext.Extensions.ValueInjecter.*" target="lib\net40\" />
   </files>
 </package>

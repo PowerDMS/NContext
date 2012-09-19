@@ -4,22 +4,21 @@
     <id>NContext.Extensions.Ninject</id>
     <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>$author$</owners>
-    <copyright>$author$</copyright>
-    <description>$description$</description>
+    <owners>Waking Venture Inc.</owners>
+    <copyright>Waking Venture Inc.</copyright>
+    <description>[to fill]</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://ncontext.wakingventure.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="[2.0.0,)" />
+      <dependency id="NContext" version="[$version$,)" />
       <dependency id="CommonServiceLocator" version="1.0" />
       <dependency id="CommonServiceLocator.NinjectAdapter" version="1.0.0.0" />
       <dependency id="Ninject" version="3.0.0.15" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.dll" target="lib\net40\NContext.Extensions.Ninject.dll" />
-    <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.xml" target="lib\net40\NContext.Extensions.Ninject.xml" />
+    <file src="..\NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net40\" />
   </files>
 </package>

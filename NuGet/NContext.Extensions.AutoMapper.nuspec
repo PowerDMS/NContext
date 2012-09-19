@@ -4,20 +4,19 @@
     <id>NContext.Extensions.AutoMapper</id>
     <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>$author$</owners>
-    <copyright>$author$</copyright>
-    <description>$description$</description>
+    <owners>Waking Venture Inc.</owners>
+    <copyright>Waking Venture Inc.</copyright>
+    <description>[to fill]</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://ncontext.wakingventure.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext.Common" version="[2.0.0,)" />
+      <dependency id="NContext.Common" version="[$version$,)" />
       <dependency id="AutoMapper" version="2.1.265" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.dll" target="lib\net40\NContext.Extensions.AutoMapper.dll" />
-    <file src="..\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.xml" target="lib\net40\NContext.Extensions.AutoMapper.xml" />
+    <file src="..\NContext.Extensions.AutoMapper\bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net40\" />
   </files>
 </package>

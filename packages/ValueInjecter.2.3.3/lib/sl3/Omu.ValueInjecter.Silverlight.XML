@@ -89,6 +89,11 @@
             </summary>
             <returns>search result or null if nothing was found</returns>
         </member>
+        <member name="T:Omu.ValueInjecter.Silverlight.ValueInjecter">
+            <summary>
+            ValueInjecter
+            </summary>
+        </member>
         <member name="M:Omu.ValueInjecter.Silverlight.ValueInjecter.Inject``1(System.Object,System.Object[])">
             <summary>
             inject values from source to target

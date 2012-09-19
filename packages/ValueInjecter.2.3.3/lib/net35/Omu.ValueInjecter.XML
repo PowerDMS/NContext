@@ -51,7 +51,11 @@
             first version of this class was made by Vadim Plamadeala ☺
             </summary>
         </member>
-        <!-- Badly formed XML comment ignored for member "T:Omu.ValueInjecter.PropertyInfosStorage" -->
+        <member name="T:Omu.ValueInjecter.PropertyInfosStorage">
+            <summary>
+            this is for caching the PropertyDescriptorCollection and PropertyInfo[] for each Type
+            </summary>
+        </member>
         <member name="T:Omu.ValueInjecter.LoopValueInjection`2">
             <summary>
             maps the properties with the same name from the source object of type TSourceProperty to the ones from the target object of type TTargetProperty

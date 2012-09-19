@@ -4,22 +4,21 @@
     <id>NContext.Extensions.Unity</id>
     <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>$author$</owners>
-    <copyright>$author$</copyright>
-    <description>$description$</description>
+    <owners>Waking Venture Inc.</owners>
+    <copyright>Waking Venture Inc.</copyright>
+    <description>[to fill]</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>http://ncontext.wakingventure.com</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="[2.0.0,)" />
+      <dependency id="NContext" version="[$version$,)" />
       <dependency id="CommonServiceLocator" version="1.0" />
       <dependency id="Unity" version="2.1.505.0" />
       <dependency id="Unity.Interception" version="2.1.505.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.Unity\bin\Release\NContext.Extensions.Unity.dll" target="lib\net40\NContext.Extensions.Unity.dll" />
-    <file src="..\NContext.Extensions.Unity\bin\Release\NContext.Extensions.Unity.xml" target="lib\net40\NContext.Extensions.Unity.xml" />
+    <file src="..\NContext.Extensions.Unity\bin\$Configuration$\NContext.Extensions.Unity.*" target="lib\net40\" />
   </files>
 </package>
