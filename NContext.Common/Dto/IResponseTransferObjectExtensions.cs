@@ -42,7 +42,11 @@ namespace NContext.Dto
             {
                 try
                 {
-                    return Activator.CreateInstance(responseTransferObject.GetType(), responseTransferObject.Errors) as IResponseTransferObject<T2>;
+                    return Activator.CreateInstance(
+                        responseTransferObject.GetType()
+                                              .GetGenericTypeDefinition()
+                                              .MakeGenericType(typeof(T2)), 
+                        responseTransferObject.Errors) as IResponseTransferObject<T2>;
                 }
                 catch (TargetInvocationException)
                 {
@@ -105,32 +109,7 @@ namespace NContext.Dto
 
             return new ServiceResponse<T2>(responseTransferObject.Errors);
         }
-
-        //public static IResponseTransferObject<T2> Fmap<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<T>, IEnumerable<T2>> mappingFunction)
-        //{
-        //    if (responseTransferObject.Errors.Any())
-        //    {
-        //        try
-        //        {
-        //            return Activator.CreateInstance(responseTransferObject.GetType(), responseTransferObject.Errors) as IResponseTransferObject<T2>;
-        //        }
-        //        catch (TargetInvocationException)
-        //        {
-        //            // No contructor found that supported IEnumerable<Error>! Return default.
-        //            return new ServiceResponse<T2>(responseTransferObject.Errors);
-        //        }
-        //    }
-        //    try
-        //    {
-        //        return Activator.CreateInstance(responseTransferObject.GetType(), mappingFunction.Invoke(responseTransferObject.Data)) as IResponseTransferObject<T2>;
-        //    }
-        //    catch (TargetInvocationException)
-        //    {
-        //        // No contructor found that supported IEnumerable<T>! Return default.
-        //        return new ServiceResponse<T2>(mappingFunction.Invoke(responseTransferObject.Data));
-        //    }
-        //}
-
+        
         /// <summary>
         /// Invokes the specified action if <see cref="IResponseTransferObject{T}.Data" /> exists with no <see cref="IResponseTransferObject{T}Errors" /> present.
         /// Returns the current <see cref="IResponseTransferObject{T}" /> instance.

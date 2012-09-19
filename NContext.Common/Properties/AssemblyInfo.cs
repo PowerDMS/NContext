@@ -24,7 +24,6 @@ using System.Reflection;
 [assembly: AssemblyTitle("NContext.Common")]
 [assembly: AssemblyDescription(@"Common (core) dependency for NContext libraries. This is built upon Microsoft Portable Class Libraries in efforts to support Silverlight and Windows Phone.")]
 
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 [assembly: CLSCompliant(true)]

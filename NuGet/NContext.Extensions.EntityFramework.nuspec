@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>2.0.1</version>
+    <id>NContext.Extensions.EntityFramework</id>
+    <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>Waking Venture Inc.</owners>
+    <owners>$author$</owners>
+    <copyright>$author$</copyright>
+    <description>$description$</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://ncontext.wakingventure.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="2.0.0" />
+      <dependency id="NContext" version="[2.0.0,)" />
       <dependency id="CommonServiceLocator" version="1.0" />
       <dependency id="EntityFramework" version="4.3.1" />
     </dependencies>
-    <id>NContext.Extensions.EntityFramework</id>
-    <title />
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Entity Framework 4.3 persistence support for NContext.</description>
-    <releaseNotes />
-    <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
     <file src="..\NContext.Extensions.EntityFramework\bin\Release\NContext.Extensions.EntityFramework.dll" target="lib\net40\NContext.Extensions.EntityFramework.dll" />

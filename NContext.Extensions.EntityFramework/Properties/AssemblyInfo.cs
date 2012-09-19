@@ -25,5 +25,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NContext.Extensions.EntityFramework")]
 [assembly: AssemblyDescription("NContext framework extension for Entity Framework.")]
 
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

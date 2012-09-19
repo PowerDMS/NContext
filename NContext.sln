@@ -50,6 +50,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AssemblyInfoShared.cs = AssemblyInfoShared.cs
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet\NContext.Common.nuspec = NuGet\NContext.Common.nuspec
+		NuGet\NContext.Extensions.AspNetWebApi.nuspec = NuGet\NContext.Extensions.AspNetWebApi.nuspec
+		NuGet\NContext.Extensions.AutoMapper.nuspec = NuGet\NContext.Extensions.AutoMapper.nuspec
+		NuGet\NContext.Extensions.EnterpriseLibrary.nuspec = NuGet\NContext.Extensions.EnterpriseLibrary.nuspec
+		NuGet\NContext.Extensions.EntityFramework.nuspec = NuGet\NContext.Extensions.EntityFramework.nuspec
+		NuGet\NContext.Extensions.Ninject.nuspec = NuGet\NContext.Extensions.Ninject.nuspec
+		NuGet\NContext.Extensions.Unity.nuspec = NuGet\NContext.Extensions.Unity.nuspec
+		NuGet\NContext.Extensions.ValueInjecter.nuspec = NuGet\NContext.Extensions.ValueInjecter.nuspec
+		NuGet\NContext.nuspec = NuGet\NContext.nuspec
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{7737B376-DAD7-4F46-A4EE-F38B21E3D790}"
+	ProjectSection(SolutionItems) = preProject
+		ncontext.extensions.versioning.targets = ncontext.extensions.versioning.targets
+		ncontext.versioning.targets = ncontext.versioning.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -139,6 +158,8 @@ Global
 		{182A0E0C-6921-40C4-921D-31A19D99A6AC} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{D1FB4EE4-CAF4-448E-BDE8-BBBEE075077C} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{D2575F6C-3078-4E68-B87F-B57F80891301} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0} = {4FDB19A9-243F-49B6-9F9D-3732515A632A}
+		{7737B376-DAD7-4F46-A4EE-F38B21E3D790} = {4FDB19A9-243F-49B6-9F9D-3732515A632A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35

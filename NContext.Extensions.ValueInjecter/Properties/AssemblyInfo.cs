@@ -26,7 +26,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NContext.Extensions.ValueInjecter")]
 [assembly: AssemblyDescription("NContext framework extension for ValueInjecter")]
 
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]
 
 [assembly: CLSCompliant(false)]

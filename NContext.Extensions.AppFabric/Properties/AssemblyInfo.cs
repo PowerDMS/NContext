@@ -25,5 +25,4 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NContext.Extensions.AppFabric")]
 [assembly: AssemblyDescription("NContext framework extension for AppFabric.")]
 
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0")]
+[assembly: AssemblyFileVersion("2.0.0.0")]

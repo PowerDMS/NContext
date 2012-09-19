@@ -1,19 +1,20 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>2.0.2</version>
+    <id>NContext.Extensions.AutoMapper</id>
+    <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>Waking Venture Inc.</owners>
+    <owners>$author$</owners>
+    <copyright>$author$</copyright>
+    <description>$description$</description>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://ncontext.wakingventure.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext.Common" version="2.0.0" />
+      <dependency id="NContext.Common" version="[2.0.0,)" />
       <dependency id="AutoMapper" version="2.1.265" />
     </dependencies>
-    <id>NContext.Extensions.AutoMapper</id>
-    <title />
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>AutoMapper extensions for NContext. Gives extended support for IResponseTransferObject.  Mapping/Translating DTOs.</description>
-    <copyright>Waking Venture Inc.</copyright>
-    <tags>NContext</tags>
   </metadata>
   <files>
     <file src="..\NContext.Extensions.AutoMapper\bin\Release\NContext.Extensions.AutoMapper.dll" target="lib\net40\NContext.Extensions.AutoMapper.dll" />

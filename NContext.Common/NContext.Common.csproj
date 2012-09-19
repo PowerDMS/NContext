@@ -42,8 +42,10 @@
     </Compile>
     <Compile Include="Dto\Error.cs" />
     <Compile Include="Dto\IResponseTransferObject.cs" />
+    <Compile Include="Dto\IResponseTransferObjectEnumerableExtensions.cs" />
     <Compile Include="Dto\IResponseTransferObjectExtensions.cs" />
     <Compile Include="Dto\IToken.cs" />
+    <Compile Include="Error.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\IMaybeExtensions.cs" />
     <Compile Include="IMaybe.cs" />

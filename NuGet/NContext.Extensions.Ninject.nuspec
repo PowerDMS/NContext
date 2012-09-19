@@ -1,24 +1,22 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <version>2.0.0</version>
+    <id>NContext.Extensions.Ninject</id>
+    <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>Waking Venture Inc.</owners>
+    <owners>$author$</owners>
+    <copyright>$author$</copyright>
+    <description>$description$</description>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://ncontext.wakingventure.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="2.0.0" />
+      <dependency id="NContext" version="[2.0.0,)" />
       <dependency id="CommonServiceLocator" version="1.0" />
       <dependency id="CommonServiceLocator.NinjectAdapter" version="1.0.0.0" />
       <dependency id="Ninject" version="3.0.0.15" />
     </dependencies>
-    <frameworkAssemblies>
-      <frameworkAssembly assemblyName="System.ComponentModel.Composition" targetFramework="" />
-    </frameworkAssemblies>
-    <id>NContext.Extensions.Ninject</id>
-    <title />
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Ninject dependency injection add-on for NContext.</description>
-    <releaseNotes />
-    <copyright>Waking Venture Inc.</copyright>
   </metadata>
   <files>
     <file src="..\NContext.Extensions.Ninject\bin\Release\NContext.Extensions.Ninject.dll" target="lib\net40\NContext.Extensions.Ninject.dll" />
