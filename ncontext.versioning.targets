@@ -1,7 +1,5 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   
-  <Import Project="$(MSBuildExtensionsPath)\MSBuildCommunityTasks\MSBuild.Community.Tasks.Targets"/>
-
   <PropertyGroup>
     <NContextMajorVersion>2</NContextMajorVersion>
     <NContextMinorVersion>0</NContextMinorVersion>
