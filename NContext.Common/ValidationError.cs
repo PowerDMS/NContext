@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Error.cs" company="Waking Venture, Inc.">
+// <copyright file="ValidationError.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,52 +18,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Dto
+namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Defines a data-transfer-object which represents an error.
+    /// Defines a transfer object which represents validation errors.
     /// </summary>
-    /// <remarks></remarks>
     [DataContract]
-    public class Error
+    public class ValidationError : Error
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Error"/> class.
+        /// Initializes a new instance of the <see cref="ValidationError"/> class.
         /// </summary>
-        /// <param name="name">The name of the error which occurred.</param>
-        /// <param name="messages">The messages describing the error.</param>
-        /// <param name="errorCode">The code associated with the error.</param>
+        /// <param name="entityType">Type of the entity.</param>
+        /// <param name="messages">The messages.</param>
         /// <remarks></remarks>
-        public Error(String name, IEnumerable<String> messages, String errorCode = "")
+        public ValidationError(Type entityType, IEnumerable<String> messages)
+            : base(entityType.Name, messages)
         {
-            ErrorType = name;
-            Messages = messages;
-            ErrorCode = errorCode;
         }
-
-        /// <summary>
-        /// Gets the error code.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(Order = 0)]
-        public String ErrorCode { get; private set; }
-
-        /// <summary>
-        /// Gets the error type.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(Order = 1)]
-        public String ErrorType { get; private set; }
-
-        /// <summary>
-        /// Gets the error messages.
-        /// </summary>
-        /// <remarks></remarks>
-        [DataMember(Order = 2)]
-        public IEnumerable<String> Messages { get; private set; }
     }
 }

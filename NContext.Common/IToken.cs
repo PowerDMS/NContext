@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ValidationError.cs" company="Waking Venture, Inc.">
+// <copyright file="IToken.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,27 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Dto
+namespace NContext.Common
 {
     using System;
-    using System.Collections.Generic;
-    using System.Runtime.Serialization;
 
     /// <summary>
-    /// Defines a transfer object which represents validation errors.
+    /// Allows end users to implement their own security tokens.
     /// </summary>
-    [DataContract]
-    public class ValidationError : Error
+    public interface IToken
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ValidationError"/> class.
+        /// Gets the tokens value. Typically a unique identifier of type <see cref="Guid"/> 
+        /// or a calculated result from <see cref="Object.GetHashCode"/>.
         /// </summary>
-        /// <param name="entityType">Type of the entity.</param>
-        /// <param name="messages">The messages.</param>
         /// <remarks></remarks>
-        public ValidationError(Type entityType, IEnumerable<String> messages)
-            : base(entityType.Name, messages)
-        {
-        }
+        String Value { get; }
     }
 }

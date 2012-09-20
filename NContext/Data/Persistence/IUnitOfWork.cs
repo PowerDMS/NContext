@@ -22,7 +22,7 @@ namespace NContext.Data.Persistence
 {
     using System;
 
-    using NContext.Dto;
+    using NContext.Common;
 
     /// <summary>
     /// Defines a contract for all unit of work implementations.

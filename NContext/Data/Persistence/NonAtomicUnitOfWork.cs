@@ -24,7 +24,7 @@ namespace NContext.Data.Persistence
     using System.Diagnostics;
     using System.Transactions;
 
-    using NContext.Dto;
+    using NContext.Common;
 
     internal sealed class NonAtomicUnitOfWork : UnitOfWorkBase
     {

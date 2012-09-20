@@ -25,8 +25,8 @@ namespace NContext.Extensions.EntityFramework
     using System.Data.Entity.Validation;
     using System.Linq;
 
+    using NContext.Common;
     using NContext.Data.Persistence;
-    using NContext.Dto;
 
     /// <summary>
     /// Defines extension methods for Entity Framework.

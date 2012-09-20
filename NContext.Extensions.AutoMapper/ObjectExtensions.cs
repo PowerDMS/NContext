@@ -23,6 +23,8 @@ namespace NContext.Extensions.AutoMapper
     using System;
     using System.Collections.Generic;
 
+    using NContext.Common.Extensions;
+
     using global::AutoMapper;
 
     using Microsoft.Practices.ServiceLocation;

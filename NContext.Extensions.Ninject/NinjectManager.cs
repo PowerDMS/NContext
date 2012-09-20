@@ -27,6 +27,7 @@ namespace NContext.Extensions.Ninject
 
     using Microsoft.Practices.ServiceLocation;
 
+    using NContext.Common.Extensions;
     using NContext.Configuration;
 
     using global::Ninject;

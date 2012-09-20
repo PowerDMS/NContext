@@ -29,7 +29,8 @@ namespace NContext.ErrorHandling
     using System.Resources;
     using System.Text.RegularExpressions;
 
-    using NContext.Dto;
+    using NContext.Common;
+    using NContext.Common.Extensions;
     using NContext.Extensions;
 
     /// <summary>
@@ -64,7 +65,7 @@ namespace NContext.ErrorHandling
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NContext.ErrorHandling.ErrorBase"/> to <see cref="NContext.Dto.Error"/>.
+        /// Performs an implicit conversion from <see cref="NContext.ErrorHandling.ErrorBase"/> to <see cref="Error"/>.
         /// </summary>
         /// <param name="error">The error.</param>
         /// <returns>The result of the conversion.</returns>

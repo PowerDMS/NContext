@@ -24,7 +24,7 @@ namespace NContext.Extensions.ValueInjecter
     using System.Collections.Generic;
     using System.Linq;
 
-    using NContext.Dto;
+    using NContext.Common;
 
     using Omu.ValueInjecter;
 

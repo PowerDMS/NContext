@@ -18,14 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions
+namespace NContext.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
-
-    using NContext.Dto;
 
     public static class IResponseTransferObjectExtensions
     {

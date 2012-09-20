@@ -26,6 +26,7 @@ namespace NContext.Configuration
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
 
+    using NContext.Common.Extensions;
     using NContext.Extensions;
 
     /// <summary>

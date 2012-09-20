@@ -28,8 +28,9 @@ namespace NContext.Extensions.EntityFramework
     using System.Threading;
     using System.Transactions;
 
+    using NContext.Common;
+    using NContext.Common.Extensions;
     using NContext.Data.Persistence;
-    using NContext.Dto;
     using NContext.ErrorHandling.Errors;
 
     /// <summary>

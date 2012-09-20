@@ -28,7 +28,8 @@ namespace NContext.Data.Persistence
     using System.Threading.Tasks;
     using System.Transactions;
 
-    using NContext.Dto;
+    using NContext.Common;
+    using NContext.Common.Extensions;
     using NContext.ErrorHandling.Errors;
     using NContext.Extensions;
 

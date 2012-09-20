@@ -18,21 +18,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions
+namespace NContext.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
-    //using System.Diagnostics.Contracts;
     using System.Linq;
-
-    using NContext.Dto;
+    // using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Defines extension methods for <see cref="IEnumerable{T}"/> yielding a new <see cref="IResponseTransferObject{T}"/>.
     /// </summary>
     public static class IResponseTransferObjectEnumerableExtensions
     {
-        public static IResponseTransferObject<T> First<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> FirstResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
             //Contract.Requires(enumerable != null);
 
@@ -48,7 +46,7 @@ namespace NContext.Extensions
             }
         }
 
-        public static IResponseTransferObject<T> Single<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> SingleResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
             //Contract.Requires(enumerable != null);
 

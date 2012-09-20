@@ -26,8 +26,8 @@ namespace NContext.Security
     using System.Security.Principal;
 
     using NContext.Caching;
+    using NContext.Common;
     using NContext.Configuration;
-    using NContext.Dto;
 
     /// <summary>
     /// Defines a manager class which implements logic for application security-related operations.

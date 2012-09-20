@@ -25,7 +25,7 @@ namespace NContext.Security
     using System.Collections.ObjectModel;
     using System.IdentityModel.Tokens;
 
-    using NContext.Dto;
+    using NContext.Common;
 
     /// <summary>
     /// Defines a generic <see cref="SecurityToken"/> using a <see cref="Guid"/>

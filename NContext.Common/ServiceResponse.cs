@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Dto
+namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
@@ -135,7 +135,7 @@ namespace NContext.Dto
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="NContext.Dto.ServiceResponse{T}"/> to <see cref="System.Boolean"/>.
+        /// Performs an implicit conversion from <see cref="ServiceResponse{T}"/> to <see cref="System.Boolean"/>.
         /// </summary>
         /// <param name="serviceResponse">The service response.</param>
         /// <returns>The result of the conversion.</returns>

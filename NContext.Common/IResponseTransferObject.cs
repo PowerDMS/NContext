@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IToken.cs" company="Waking Venture, Inc.">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IResponseTransferObject.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,20 +18,28 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Dto
+namespace NContext.Common
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
-    /// Allows end users to implement their own security tokens.
+    /// Defines a data-transfer object contract used for functional composition.
     /// </summary>
-    public interface IToken
+    /// <typeparam name="T">Type of data to return.</typeparam>
+    /// <remarks></remarks>
+    public interface IResponseTransferObject<T> : IDisposable
     {
         /// <summary>
-        /// Gets the tokens value. Typically a unique identifier of type <see cref="Guid"/> 
-        /// or a calculated result from <see cref="Object.GetHashCode"/>.
+        /// Gets the data.
         /// </summary>
         /// <remarks></remarks>
-        String Value { get; }
+        T Data { get; }
+        
+        /// <summary>
+        /// Gets the errors.
+        /// </summary>
+        /// <remarks></remarks>
+        IEnumerable<Error> Errors { get; }
     }
 }

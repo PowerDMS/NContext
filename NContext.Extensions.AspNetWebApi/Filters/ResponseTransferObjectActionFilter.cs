@@ -27,7 +27,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using System.Net.Http;
     using System.Web.Http.Filters;
 
-    using NContext.Dto;
+    using NContext.Common;
 
     /// <summary>
     /// Defines and operation handler for translating response instances 

@@ -7,7 +7,7 @@
     <ProjectGuid>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NContext</RootNamespace>
+    <RootNamespace>NContext.Common</RootNamespace>
     <AssemblyName>NContext.Common</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
@@ -40,20 +40,19 @@
     <Compile Include="..\AssemblyInfoShared.cs">
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
-    <Compile Include="Dto\Error.cs" />
-    <Compile Include="Dto\IResponseTransferObject.cs" />
+    <Compile Include="Error.cs" />
+    <Compile Include="IResponseTransferObject.cs" />
     <Compile Include="Extensions\IResponseTransferObjectEnumerableExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
-    <Compile Include="Dto\IToken.cs" />
-    <Compile Include="Error.cs" />
+    <Compile Include="IToken.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\IMaybeExtensions.cs" />
     <Compile Include="IMaybe.cs" />
     <Compile Include="Just.cs" />
     <Compile Include="Nothing.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Dto\ServiceResponse.cs" />
-    <Compile Include="Dto\ValidationError.cs" />
+    <Compile Include="ServiceResponse.cs" />
+    <Compile Include="ValidationError.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts">

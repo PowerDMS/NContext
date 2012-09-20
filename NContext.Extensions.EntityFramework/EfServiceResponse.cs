@@ -25,7 +25,8 @@ namespace NContext.Extensions.EntityFramework
     using System.Data.Entity.Validation;
     using System.Linq;
 
-    using NContext.Dto;
+    using NContext.Common;
+    using NContext.Common.Extensions;
     using NContext.ErrorHandling;
 
     /// <summary>

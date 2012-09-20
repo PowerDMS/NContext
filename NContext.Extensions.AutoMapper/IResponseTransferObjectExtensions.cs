@@ -23,11 +23,12 @@ namespace NContext.Extensions.AutoMapper
     using System;
     using System.Linq;
 
+    using NContext.Common;
+    using NContext.Common.Extensions;
+
     using global::AutoMapper;
     
     using Microsoft.Practices.ServiceLocation;
-
-    using NContext.Dto;
 
     /// <summary>
     /// Defines extension methods for <see cref="IResponseTransferObject{T}"/>.

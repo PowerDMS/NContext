@@ -1,84 +1,69 @@
-namespace NContext
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Error.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace NContext.Common
 {
     using System;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
     /// <summary>
-    /// Defines a Nothing implementation of <see cref="IMaybe{T}"/>.
+    /// Defines a data-transfer-object which represents an error.
     /// </summary>
-    /// <typeparam name="T">Type of object.</typeparam>
-    public sealed class Error<T> : IMaybe<T>
+    /// <remarks></remarks>
+    [DataContract]
+    public class Error
     {
-        public Error()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Error"/> class.
+        /// </summary>
+        /// <param name="name">The name of the error which occurred.</param>
+        /// <param name="messages">The messages describing the error.</param>
+        /// <param name="errorCode">The code associated with the error.</param>
+        /// <remarks></remarks>
+        public Error(String name, IEnumerable<String> messages, String errorCode = "")
         {
-            // TODO: (DG) Rethink this!
+            ErrorType = name;
+            Messages = messages;
+            ErrorCode = errorCode;
         }
 
         /// <summary>
-        /// Gets a value indicating whether the instance is <see cref="Just{T}"/>.
+        /// Gets the error code.
         /// </summary>
         /// <remarks></remarks>
-        public Boolean IsJust
-        {
-            get
-            {
-                return false;
-            }
-        }
+        [DataMember(Order = 0)]
+        public String ErrorCode { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating whether the instance is <see cref="Error{T}"/>.
+        /// Gets the error type.
         /// </summary>
         /// <remarks></remarks>
-        public Boolean IsNothing
-        {
-            get
-            {
-                return true;
-            }
-        }
+        [DataMember(Order = 1)]
+        public String ErrorType { get; private set; }
 
         /// <summary>
-        /// Returns the specified default value if the <see cref="IMaybe{T}"/> is <see cref="Error{T}"/>; 
-        /// otherwise, it returns the value contained in the <see cref="IMaybe{T}"/>.
+        /// Gets the error messages.
         /// </summary>
-        /// <param name="defaultValue">The default value.</param>
-        /// <returns>Instance of <typeparamref name="T"/>.</returns>
         /// <remarks></remarks>
-        public T FromMaybe(T defaultValue)
-        {
-            return defaultValue;
-        }
-
-        /// <summary>
-        /// Returns this instance.
-        /// </summary>
-        /// <returns>Nothing{T}.</returns>
-        public IMaybe<T> Empty()
-        {
-            return this;
-        }
-
-        /// <summary>
-        /// Returns a new <see cref="Error{T}"/>.
-        /// </summary>
-        /// <typeparam name="T2">The type of the result.</typeparam>
-        /// <param name="bindingFunction">The function used to bind.</param>
-        /// <returns>Instance of <see cref="IMaybe{TResult}"/>.</returns>
-        /// <remarks></remarks>
-        public IMaybe<T2> Bind<T2>(Func<T, IMaybe<T2>> bindingFunction)
-        {
-            return new Error<T2>();
-        }
-
-        /// <summary>
-        /// Returns the current instance.
-        /// </summary>
-        /// <param name="action">The action to invoke.</param>
-        /// <returns>Current instance.</returns>
-        /// <remarks></remarks>
-        public IMaybe<T> Let(Action<T> action)
-        {
-            return this;
-        }
+        [DataMember(Order = 2)]
+        public IEnumerable<String> Messages { get; private set; }
     }
 }
