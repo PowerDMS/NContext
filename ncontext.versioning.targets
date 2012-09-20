@@ -11,7 +11,7 @@
     <AssemblyInfoFile>$(MSBuildProjectDirectory)\..\AssemblyInfoShared.cs</AssemblyInfoFile>
     <AssemblyVersion>$(NContextMajorVersion).$(NContextMinorVersion).$(NContextPatchVersion)</AssemblyVersion>
     <TeamCityBuildNumber>$(AssemblyVersion)+build.$(BuildNumber).$(BuildVcsNumber)</TeamCityBuildNumber>
-    <NuGetPackageVersion>$(AssemblyVersion)+build.$(BuildNumber)</NuGetPackageVersion>
+    <NuGetPackageVersion>$(AssemblyVersion).$(BuildNumber)</NuGetPackageVersion>
   </PropertyGroup>
 
   <!-- Set TeamCity Build Number -->
