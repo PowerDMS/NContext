@@ -30,6 +30,7 @@ namespace NContext.Data.Persistence
 
     using NContext.Dto;
     using NContext.ErrorHandling.Errors;
+    using NContext.Extensions;
 
     public class CompositeUnitOfWork : UnitOfWorkBase
     {

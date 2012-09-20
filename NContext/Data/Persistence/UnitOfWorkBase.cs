@@ -26,6 +26,7 @@ namespace NContext.Data.Persistence
 
     using NContext.Dto;
     using NContext.ErrorHandling.Errors;
+    using NContext.Extensions;
 
     using LocalizedPersistenceError = NContext.ErrorHandling.Errors.Localization.NContextPersistenceError;
 
@@ -210,6 +211,12 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
+        /// <param name="transactionScope">
+        /// The transaction Scope.
+        /// </param>
+        /// <returns>
+        /// The IResponseTransferObject{Boolean}.
+        /// </returns>
         protected abstract IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope);
 
         #region Implementation of IUnitOfWork
