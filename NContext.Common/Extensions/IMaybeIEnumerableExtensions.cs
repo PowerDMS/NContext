@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMaybeIQueryableExtensions.cs" company="Waking Venture, Inc.">
+// <copyright file="IMaybeIEnumerableExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,49 +18,44 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions
+namespace NContext.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
 
-    using NContext.Common;
-    using NContext.Common.Extensions;
-
-    /// <summary>
-    /// Defines extension methods for <see cref="IMaybe{T}"/>.
-    /// </summary>
-    public static class IMaybeIQueryableExtensions
+    public static class IMaybeIEnumerableExtensions
     {
         /// <summary>
-        /// Returns the first element in an <see cref="IQueryable{T}" /> as a
+        /// Returns the first element in an <see cref="IEnumerable{T}" /> as a
         /// <see cref="Just{T}" />, or, if the sequence contains no elements, returns
         /// a <see cref="Nothing{T}" />.
         /// </summary>
-        /// <typeparam name="T">The type of the object in the <see cref="IQueryable{T}" /></typeparam>
-        /// <param name="queryable">The <see cref="IQueryable{T}"/> to return the first element of.</param>
+        /// <typeparam name="T">The type of the object in the <see cref="IEnumerable{T}" /></typeparam>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the first element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns><see cref="IMaybe{T}" /></returns>
-        public static IMaybe<T> MaybeFirst<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
+        public static IMaybe<T> MaybeFirst<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            using (var enumerator = GetEnumerator(queryable, predicate))
+            using (var enumerator = GetEnumerator(enumerable, predicate))
             {
-                return enumerator.MoveNext() ? enumerator.Current.ToMaybe() : new Nothing<T>();
+                return enumerator.MoveNext()
+                ? enumerator.Current.ToMaybe()
+                : new Nothing<T>();
             }
         }
 
         /// <summary>
-        /// Returns the first element in an <see cref="IQueryable{T}" /> as a <see cref="Just{T}" />, or, 
+        /// Returns the first element in an <see cref="IEnumerable{T}" /> as a <see cref="Just{T}" />, or, 
         /// if the sequence contains no elements, returns a <see cref="Nothing{T}" />.
         /// </summary>
-        /// <typeparam name="T">The type of the object in the <see cref="IQueryable{T}" /></typeparam>
-        /// <param name="queryable">The <see cref="IQueryable{T}"/> to return the single element of.</param>
+        /// <typeparam name="T">The type of the object in the <see cref="IEnumerable{T}" /></typeparam>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the single element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns><see cref="IMaybe{T}" /></returns>
-        public static IMaybe<T> MaybeSingle<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
+        public static IMaybe<T> MaybeSingle<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            using (var enumerator = GetEnumerator(queryable, predicate))
+            using (var enumerator = GetEnumerator(enumerable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
@@ -77,9 +72,9 @@ namespace NContext.Extensions
             return new Nothing<T>();
         }
 
-        private static IEnumerator<T> GetEnumerator<T>(IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
+        private static IEnumerator<T> GetEnumerator<T>(IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            return (predicate == null) ? queryable.GetEnumerator() : queryable.Where(predicate).GetEnumerator();
+            return (predicate == null) ? enumerable.GetEnumerator() : enumerable.Where(predicate).GetEnumerator();
         }
     }
 }
