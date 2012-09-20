@@ -22,7 +22,7 @@ namespace NContext.Extensions
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics.Contracts;
+    //using System.Diagnostics.Contracts;
     using System.Linq;
 
     using NContext.Dto;
@@ -34,7 +34,7 @@ namespace NContext.Extensions
     {
         public static IResponseTransferObject<T> First<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            Contract.Requires(enumerable != null);
+            //Contract.Requires(enumerable != null);
 
             // TODO: (DG) Re-write this error!
             using (var enumerator = GetEnumerator(enumerable, predicate))
@@ -50,7 +50,7 @@ namespace NContext.Extensions
 
         public static IResponseTransferObject<T> Single<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            Contract.Requires(enumerable != null);
+            //Contract.Requires(enumerable != null);
 
             // TODO: (DG) Re-write these errors!
             using (var enumerator = GetEnumerator(enumerable, predicate))
