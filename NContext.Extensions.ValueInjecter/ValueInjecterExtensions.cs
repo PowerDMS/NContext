@@ -54,7 +54,7 @@ namespace NContext.Extensions.ValueInjecter
             where TTarget : class
             where TValueInjection : IValueInjection, new()
         {
-            return target.InjectFrom(Activator.CreateInstance<TValueInjection>(), source) as TTarget;
+            return target.InjectFrom((TValueInjection)Activator.CreateInstance<TValueInjection>(), source) as TTarget;
         }
     }
 }

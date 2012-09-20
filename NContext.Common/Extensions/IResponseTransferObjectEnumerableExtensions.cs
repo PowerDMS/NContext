@@ -18,56 +18,40 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Dto
+namespace NContext.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
     using System.Linq;
-    using System.Reflection;
+
+    using NContext.Dto;
 
     /// <summary>
     /// Defines extension methods for <see cref="IEnumerable{T}"/> yielding a new <see cref="IResponseTransferObject{T}"/>.
     /// </summary>
     public static class IResponseTransferObjectEnumerableExtensions
     {
-        public static IResponseTransferObject<T2> Fmap<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<T, T2> mappingFunction)
+        public static IResponseTransferObject<T> First<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            if (responseTransferObject.Errors.Any())
-            {
-                try
-                {
-                    return
-                        Activator.CreateInstance(
-                            responseTransferObject.GetType()
-                                                  .GetGenericTypeDefinition()
-                                                  .MakeGenericType(typeof(T2)),
-                            responseTransferObject.Errors) as IResponseTransferObject<T2>;
-                }
-                catch (TargetInvocationException)
-                {
-                    // No contructor found that supported Errors! Return default.
-                    return new ServiceResponse<T2>(responseTransferObject.Errors);
-                }
-            }
+            Contract.Requires(enumerable != null);
 
-            T2 result = mappingFunction.Invoke(responseTransferObject.Data);
-            try
+            // TODO: (DG) Re-write this error!
+            using (var enumerator = GetEnumerator(enumerable, predicate))
             {
-                return Activator.CreateInstance(
-                    responseTransferObject.GetType()
-                                          .GetGenericTypeDefinition()
-                                          .MakeGenericType(typeof(T2)),
-                    result) as IResponseTransferObject<T2>;
-            }
-            catch (TargetInvocationException)
-            {
-                // No contructor found that supported IEnumerable<T>! Return default.
-                return new ServiceResponse<T2>(result);
+                if (!enumerator.MoveNext())
+                {
+                    return new ServiceResponse<T>(new Error("NoMatch", new[] { "No match" }));
+                }
+
+                return new ServiceResponse<T>(enumerator.Current);
             }
         }
 
         public static IResponseTransferObject<T> Single<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
+            Contract.Requires(enumerable != null);
+
             // TODO: (DG) Re-write these errors!
             using (var enumerator = GetEnumerator(enumerable, predicate))
             {

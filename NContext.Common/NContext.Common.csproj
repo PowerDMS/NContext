@@ -42,8 +42,8 @@
     </Compile>
     <Compile Include="Dto\Error.cs" />
     <Compile Include="Dto\IResponseTransferObject.cs" />
-    <Compile Include="Dto\IResponseTransferObjectEnumerableExtensions.cs" />
-    <Compile Include="Dto\IResponseTransferObjectExtensions.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectEnumerableExtensions.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
     <Compile Include="Dto\IToken.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -55,7 +55,11 @@
     <Compile Include="Dto\ServiceResponse.cs" />
     <Compile Include="Dto\ValidationError.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Reference Include="Microsoft.Contracts">
+      <HintPath>..\..\..\Program Files (x86)\Microsoft\Contracts\PublicAssemblies\WindowsPhone71\Microsoft.Contracts.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
