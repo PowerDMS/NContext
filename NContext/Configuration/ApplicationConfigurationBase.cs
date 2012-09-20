@@ -102,7 +102,7 @@ namespace NContext.Configuration
         /// <remarks></remarks>
         public void AddCompositionConditions(IEnumerable<String> directories, IEnumerable<Predicate<String>> fileNameConstraints)
         {
-            if (!_CompositionDirectories.AddRange(directories.Distinct()))
+            if (!ISetExtensions.AddRange(_CompositionDirectories, directories.Distinct()))
             {
                 throw new Exception("NContext was unable to add the specified composition directories.");
             }
@@ -124,7 +124,7 @@ namespace NContext.Configuration
         {
             return _Components.Where(pair => pair.RegisteredComponentType == typeof(TApplicationComponent))
                               .MaybeFirst()
-                              .Bind<TApplicationComponent>(pair => ((TApplicationComponent)pair.ApplicationComponent).ToMaybe())
+                              .Bind<TApplicationComponent>(pair => IMaybeExtensions.ToMaybe(((TApplicationComponent)pair.ApplicationComponent)))
                               .FromMaybe(default(TApplicationComponent));
         }
 

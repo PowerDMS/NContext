@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponseTransferObjectEnumerableExtensions.cs" company="Waking Venture, Inc.">
+// <copyright file="IResponseTransferObjectIQueryableExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,31 +18,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Common.Extensions
+namespace NContext.Extensions
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    // using System.Diagnostics.Contracts;
+
+    using NContext.Common;
 
     /// <summary>
     /// Defines extension methods for <see cref="IEnumerable{T}"/> yielding a new <see cref="IResponseTransferObject{T}"/>.
     /// </summary>
-    public static class IResponseTransferObjectEnumerableExtensions
+    public static class IResponseTransferObjectIQueryableExtensions
     {
         /// <summary>
         /// Returns an <see cref="IResponseTransferObject{T}"/> with the first element of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the first element of.</param>
+        /// <param name="queryable">The <see cref="IQueryable{T}"/> to return the first element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns>IResponseTransferObject{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> FirstResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> FirstResponse<T>(this IQueryable<T> queryable, Func<T, Boolean> predicate = null)
         {
-            //Contract.Requires(enumerable != null);
-
             // TODO: (DG) Re-write this error!
-            using (var enumerator = GetEnumerator(enumerable, predicate))
+            using (var enumerator = GetEnumerator(queryable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
@@ -57,15 +56,13 @@ namespace NContext.Common.Extensions
         /// Returns an <see cref="IResponseTransferObject{T}"/> with the single, specific element of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the single element of.</param>
+        /// <param name="querable">The <see cref="IQueryable{T}"/> to return the single element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns>IResponseTransferObject{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> SingleResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> SingleResponse<T>(this IQueryable<T> querable, Func<T, Boolean> predicate = null)
         {
-            //Contract.Requires(enumerable != null);
-
             // TODO: (DG) Re-write these errors!
-            using (var enumerator = GetEnumerator(enumerable, predicate))
+            using (var enumerator = GetEnumerator(querable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
@@ -82,9 +79,9 @@ namespace NContext.Common.Extensions
             return new ServiceResponse<T>(new Error("MoreThanOneMatch", new[] { "More than one match!" }));
         }
 
-        private static IEnumerator<T> GetEnumerator<T>(IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
+        private static IEnumerator<T> GetEnumerator<T>(IQueryable<T> queryable, Func<T, Boolean> predicate = null)
         {
-            return (predicate == null) ? enumerable.GetEnumerator() : enumerable.Where(predicate).GetEnumerator();
+            return (predicate == null) ? queryable.GetEnumerator() : queryable.Where(predicate).GetEnumerator();
         }
     }
 }

@@ -42,7 +42,6 @@
     </Compile>
     <Compile Include="Error.cs" />
     <Compile Include="IResponseTransferObject.cs" />
-    <Compile Include="Extensions\IResponseTransferObjectEnumerableExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
     <Compile Include="IToken.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

@@ -31,7 +31,6 @@ namespace NContext.ErrorHandling
 
     using NContext.Common;
     using NContext.Common.Extensions;
-    using NContext.Extensions;
 
     /// <summary>
     /// Defines an abstraction for localized application errors.
@@ -104,7 +103,7 @@ namespace NContext.ErrorHandling
             String errorMessage = GetLocalizedErrorMessage(localizationKey) ?? String.Empty;
             if (!String.IsNullOrWhiteSpace(errorMessage))
             {
-                var formatters = errorMessage.MinimumFormatParametersRequired();
+                var formatters = Extensions.StringExtensions.MinimumFormatParametersRequired(errorMessage);
                 if (formatters > 0)
                 {
                     errorMessage = String.Format(errorMessage, errorMessageParameters);

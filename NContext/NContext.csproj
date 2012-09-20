@@ -125,6 +125,8 @@
     <Compile Include="ErrorHandling\Errors\NContextPersistenceError.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectIQueryableExtensions.cs" />
     <Compile Include="Extensions\ISetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Configuration\ApplicationComponentDependencyAttribute.cs" />
