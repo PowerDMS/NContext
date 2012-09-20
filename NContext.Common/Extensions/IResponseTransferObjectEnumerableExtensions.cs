@@ -30,6 +30,13 @@ namespace NContext.Common.Extensions
     /// </summary>
     public static class IResponseTransferObjectEnumerableExtensions
     {
+        /// <summary>
+        /// Returns an <see cref="IResponseTransferObject{T}"/> with the first element of a sequence.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the first element of.</param>
+        /// <param name="predicate">An optional function to test each element for a condition.</param>
+        /// <returns>IResponseTransferObject{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
         public static IResponseTransferObject<T> FirstResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
             //Contract.Requires(enumerable != null);
@@ -46,6 +53,13 @@ namespace NContext.Common.Extensions
             }
         }
 
+        /// <summary>
+        /// Returns an <see cref="IResponseTransferObject{T}"/> with the single, specific element of a sequence.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the single element of.</param>
+        /// <param name="predicate">An optional function to test each element for a condition.</param>
+        /// <returns>IResponseTransferObject{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
         public static IResponseTransferObject<T> SingleResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
             //Contract.Requires(enumerable != null);

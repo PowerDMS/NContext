@@ -135,11 +135,6 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>() where TEntity : class, IEntity
         {
-            if (AmbientContextManager.Ambient == null || !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
-            {
-                throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
-            }
-
             return new EfGenericRepository<TEntity>(GetOrCreateDbContext());
         }
 
@@ -154,11 +149,6 @@ namespace NContext.Extensions.EntityFramework
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
-            if (AmbientContextManager.Ambient == null)
-            {
-                throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
-            }
-
             return new EfGenericRepository<TEntity>(GetOrCreateDbContext<TDbContext>());
         }
 
@@ -172,11 +162,6 @@ namespace NContext.Extensions.EntityFramework
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredDbContextNameForServiceLocation)
             where TEntity : class, IEntity
         {
-            if (AmbientContextManager.Ambient == null)
-            {
-                throw new Exception("A repository must be created within the scope of an existing IEfUnitOfWork instance.");
-            }
-
             return new EfGenericRepository<TEntity>(GetOrCreateDbContext(registeredDbContextNameForServiceLocation));
         }
 
@@ -199,10 +184,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public DbContext GetOrCreateDbContext(String registeredNameForServiceLocation)
         {
-            if (AmbientContextManager.Ambient == null || !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
-            {
-                throw new Exception("A DBContext must be created within the scope of a valid IEfUnitOfWork instance.");
-            }
+            EnsureEfUnitOfWorkExists();
 
             var currentUnitOfWork = (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
             return currentUnitOfWork.DbContextContainer.GetContext(registeredNameForServiceLocation) ??
@@ -215,16 +197,13 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
-        /// Gets the specified context from the ambient <see cref="IEfUnitOfWork"/> if one exists, else it tries to create a new one via service location.
+        /// Gets the specified context from the ambient <see cref="IEfUnitOfWork" /> if one exists, else it tries to create a new one via service location.
         /// </summary>
-        /// <returns>Instance of <see cref="DbContext"/>.</returns>
-        /// <remarks></remarks>
+        /// <typeparam name="TDbContext">The type of the <see cref="DbContext"/>.</typeparam>
+        /// <returns>Instance of <see cref="DbContext" />.</returns>
         public TDbContext GetOrCreateDbContext<TDbContext>() where TDbContext : DbContext
         {
-            if (AmbientContextManager.Ambient == null || !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
-            {
-                throw new Exception("A DBContext must be created within the scope of a valid IEfUnitOfWork instance.");
-            }
+            EnsureEfUnitOfWorkExists();
 
             var currentUnitOfWork = ((IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork);
             return currentUnitOfWork.DbContextContainer.GetContext<TDbContext>() ??
@@ -234,6 +213,16 @@ namespace NContext.Extensions.EntityFramework
                     currentUnitOfWork.DbContextContainer.Add(context);
                     return context;
                 }).Invoke();
+        }
+
+        private void EnsureEfUnitOfWorkExists()
+        {
+            if (!AmbientContextManager.AmbientExists || 
+                !AmbientContextManager.AmbientUnitOfWorkIsValid || 
+                !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
+            {
+                CreateUnitOfWork();
+            }
         }
 
         #endregion
