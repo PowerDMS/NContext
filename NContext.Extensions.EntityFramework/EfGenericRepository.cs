@@ -85,12 +85,26 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
-        /// Attaches a detached entity.
+        /// Attaches the specified entity to the context underlying the set. That is, the entity is placed into the context in the
+        /// Unchanged state, just as if it had been read from the database.
         /// </summary>
         /// <param name="entity">The entity instance to attach back to the repository.</param>
         public void Attach(TEntity entity)
         {
             _Context.Set<TEntity>().Attach(entity);
+        }
+
+        /// <summary>
+        /// Finds an entity with the given primary key values. If an entity with the given primary key values exists in the context, 
+        /// then it is returned immediately without making a request to the store. Otherwise, a request is made to the store for an 
+        /// entity with the given primary key values for this entity, if found, is attached to the context and returned. If no entity 
+        /// is found in the context, then null is returned.
+        /// </summary>
+        /// <param name="keyValues">The key values.</param>
+        /// <returns><typeparamref name="TEntity"/> if found in the context or data store; otherwise, null.</returns>
+        public TEntity Find(params Object[] keyValues)
+        {
+            return _Context.Set<TEntity>().Find(keyValues);
         }
 
         /// <summary>
@@ -101,8 +115,7 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="pageCount">The page count.</param>
         /// <param name="orderByExpression">The order by expression.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>IQueryable{TEntity}.</returns>
         public IQueryable<TEntity> GetPaged<TProperty>(Int32 pageIndex, Int32 pageCount, Expression<Func<TEntity, TProperty>> orderByExpression, Boolean ascending = true)
         {
             var set = _Context.Set<TEntity>();
@@ -123,7 +136,7 @@ namespace NContext.Extensions.EntityFramework
         /// </summary>
         /// <typeparam name="TProperty">The type of the property.</typeparam>
         /// <param name="path">The path.</param>
-        /// <remarks></remarks>
+        /// <returns>IQueryable{`0}.</returns>
         public IQueryable<TEntity> Include<TProperty>(Expression<Func<TEntity, TProperty>> path)
         {
             return _Context.Set<TEntity>().Include(path);
@@ -151,12 +164,11 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
-        /// Queries the <see cref="DbContext"/> via SQL, using the specified parameters.
+        /// Queries the <see cref="DbContext" /> via SQL, using the specified parameters.
         /// </summary>
         /// <param name="sql">The SQL.</param>
         /// <param name="parameters">The parameters.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>IQueryable{TEntity}.</returns>
         public IQueryable<TEntity> SqlQuery(String sql, params Object[] parameters)
         {
             return _Context.Set<TEntity>().SqlQuery(sql, parameters).AsQueryable();
@@ -178,8 +190,7 @@ namespace NContext.Extensions.EntityFramework
         /// Validates the specified entity.
         /// </summary>
         /// <param name="entity">The entity.</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
+        /// <returns>DbEntityValidationResult.</returns>
         public DbEntityValidationResult Validate(TEntity entity)
         {
             return _Context.Entry<TEntity>(entity).GetValidationResult();
@@ -267,10 +278,8 @@ namespace NContext.Extensions.EntityFramework
         #region Implementation of IDisposable
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before 
-        /// the <see cref="EfGenericRepository{TEntity}"/> is reclaimed by garbage collection.
+        /// Finalizes an instance of the <see cref="EfGenericRepository{TEntity}" /> class.
         /// </summary>
-        /// <remarks></remarks>
         ~EfGenericRepository()
         {
             Dispose(false);
@@ -305,7 +314,7 @@ namespace NContext.Extensions.EntityFramework
 
             if (disposeManagedResources)
             {
-                // TODO: (DG) If not part of a unit of work, dispose the _Context!
+                // TODO: (DG) If not part of a unit of work, dispose the _Context? Can the rep exist outside a UoW? Not currently.
             }
 
             IsDisposed = true;

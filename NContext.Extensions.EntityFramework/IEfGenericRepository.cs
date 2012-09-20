@@ -65,6 +65,16 @@ namespace NContext.Extensions.EntityFramework
         void Attach(TEntity entity);
 
         /// <summary>
+        /// Finds an entity with the given primary key values. If an entity with the given primary key values exists in the context, 
+        /// then it is returned immediately without making a request to the store. Otherwise, a request is made to the store for an 
+        /// entity with the given primary key values for this entity, if found, is attached to the context and returned. If no entity 
+        /// is found in the context, then null is returned.
+        /// </summary>
+        /// <param name="keyValues">The key values.</param>
+        /// <returns><typeparamref name="TEntity"/> if found in the context or data store; otherwise, null.</returns>
+        TEntity Find(params Object[] keyValues);
+
+        /// <summary>
         /// Get all elements of type <typeparamref name="TEntity"/>. 
         /// </summary>
         /// <typeparam name="TProperty">The type of the property.</typeparam>
