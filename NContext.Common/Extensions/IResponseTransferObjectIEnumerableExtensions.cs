@@ -1,4 +1,24 @@
-namespace NContext.Extensions
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IResponseTransferObjectIEnumerableExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
+//
+//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
+//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
+//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
+//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+//
+//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
+//   of the Software.
+//
+//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
+//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
+//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
+//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+//   DEALINGS IN THE SOFTWARE.
+// </copyright>
+// --------------------------------------------------------------------------------------------------------------------
+
+namespace NContext.Common.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -15,13 +35,13 @@ namespace NContext.Extensions
         /// Returns an <see cref="IResponseTransferObject{T}"/> with the first element of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="queryable">The <see cref="IEnumerable{T}"/> to return the first element of.</param>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the first element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns>IResponseTransferObject{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> FirstResponse<T>(this IEnumerable<T> queryable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> FirstResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
             // TODO: (DG) Re-write this error!
-            using (var enumerator = GetEnumerator(queryable, predicate))
+            using (var enumerator = GetEnumerator(enumerable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
@@ -36,13 +56,13 @@ namespace NContext.Extensions
         /// Returns an <see cref="IResponseTransferObject{T}"/> with the single, specific element of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="querable">The <see cref="IEnumerable{T}"/> to return the single element of.</param>
+        /// <param name="enumerable">The <see cref="IEnumerable{T}"/> to return the single element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns>IResponseTransferObject{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> SingleResponse<T>(this IEnumerable<T> querable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> SingleResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
             // TODO: (DG) Re-write these errors!
-            using (var enumerator = GetEnumerator(querable, predicate))
+            using (var enumerator = GetEnumerator(enumerable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
@@ -59,9 +79,9 @@ namespace NContext.Extensions
             return new ServiceResponse<T>(new Error("MoreThanOneMatch", new[] { "More than one match!" }));
         }
 
-        private static IEnumerator<T> GetEnumerator<T>(IEnumerable<T> queryable, Func<T, Boolean> predicate = null)
+        private static IEnumerator<T> GetEnumerator<T>(IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            return (predicate == null) ? queryable.GetEnumerator() : queryable.Where(predicate).GetEnumerator();
+            return (predicate == null) ? enumerable.GetEnumerator() : enumerable.Where(predicate).GetEnumerator();
         }
     }
 }

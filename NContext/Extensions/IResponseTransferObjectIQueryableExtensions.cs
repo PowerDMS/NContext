@@ -23,6 +23,7 @@ namespace NContext.Extensions
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
 
     using NContext.Common;
 
@@ -38,7 +39,7 @@ namespace NContext.Extensions
         /// <param name="queryable">The <see cref="IQueryable{T}"/> to return the first element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns>IResponseTransferObject{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> FirstResponse<T>(this IQueryable<T> queryable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> FirstResponse<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
         {
             // TODO: (DG) Re-write this error!
             using (var enumerator = GetEnumerator(queryable, predicate))
@@ -59,7 +60,7 @@ namespace NContext.Extensions
         /// <param name="querable">The <see cref="IQueryable{T}"/> to return the single element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
         /// <returns>IResponseTransferObject{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> SingleResponse<T>(this IQueryable<T> querable, Func<T, Boolean> predicate = null)
+        public static IResponseTransferObject<T> SingleResponse<T>(this IQueryable<T> querable, Expression<Func<T, Boolean>> predicate = null)
         {
             // TODO: (DG) Re-write these errors!
             using (var enumerator = GetEnumerator(querable, predicate))
@@ -79,7 +80,7 @@ namespace NContext.Extensions
             return new ServiceResponse<T>(new Error("MoreThanOneMatch", new[] { "More than one match!" }));
         }
 
-        private static IEnumerator<T> GetEnumerator<T>(IQueryable<T> queryable, Func<T, Boolean> predicate = null)
+        private static IEnumerator<T> GetEnumerator<T>(IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
         {
             return (predicate == null) ? queryable.GetEnumerator() : queryable.Where(predicate).GetEnumerator();
         }

@@ -41,6 +41,7 @@
       <Link>Properties\AssemblyInfoShared.cs</Link>
     </Compile>
     <Compile Include="Error.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectIEnumerableExtensions.cs" />
     <Compile Include="IResponseTransferObject.cs" />
     <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
     <Compile Include="IToken.cs" />
