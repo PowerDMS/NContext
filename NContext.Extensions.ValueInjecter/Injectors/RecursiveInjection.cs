@@ -36,6 +36,9 @@ namespace NContext.Extensions.ValueInjecter.Injectors
         /// </summary>
         private static readonly ConcurrentDictionary<Type, Delegate> ConstructorCache = new ConcurrentDictionary<Type, Delegate>();
 
+        /// <summary>
+        /// Cache for the casting method.
+        /// </summary>
         private static readonly ConcurrentDictionary<Tuple<Type, Type>, MethodInfo> CastingCache = new ConcurrentDictionary<Tuple<Type, Type>, MethodInfo>();
 
         protected override bool Match(ConventionInfo c)
