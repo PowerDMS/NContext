@@ -20,6 +20,7 @@
   </metadata>
   <files>
     <file src="..\NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net40\" />
+    <file src="..\NContext.Extensions.Ninject\bin\$Configuration$\System.Web.Http.dll" target="lib\net40\" />
     <file src="..\NContext.Extensions.Ninject\**\*.cs" target="src" />
   </files>
 </package>
