@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.cs" company="Waking Venture, Inc.">
+// <copyright file="EnumerableExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,7 +30,7 @@ namespace NContext.Extensions
     /// <summary>
     /// Defines extension methods for IEnumerable.
     /// </summary>
-    public static class IEnumerableExtensions
+    public static class EnumerableExtensions
     {
         /// <summary>
         /// Queries the context based on the provided specification and returns results that
