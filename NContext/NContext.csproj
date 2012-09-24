@@ -124,7 +124,7 @@
     <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectIQueryableExtensions.cs" />
     <Compile Include="Extensions\ISetExtensions.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Configuration\ApplicationComponentDependencyAttribute.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfiguration.cs" />
     <Compile Include="Security\Cryptography\CryptographyConfigurationBuilder.cs" />
