@@ -20,5 +20,6 @@
   </metadata>
   <files>
     <file src="..\NContext.Extensions.EnterpriseLibrary\bin\$Configuration$\NContext.Extensions.EnterpriseLibrary.*" target="lib\net40\" />
+    <file src="..\NContext.Extensions.EnterpriseLibrary\**\*.cs" target="src" />
   </files>
 </package>

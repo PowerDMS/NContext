@@ -19,5 +19,6 @@
   </metadata>
   <files>
     <file src="..\NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net40\" />
+    <file src="..\NContext.Extensions.EntityFramework\**\*.cs" target="src" />
   </files>
 </package>

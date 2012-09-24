@@ -18,5 +18,6 @@
   </metadata>
   <files>
     <file src="..\NContext.Extensions.AutoMapper\bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net40\" />
+    <file src="..\NContext.Extensions.AutoMapper\**\*.cs" target="src" />
   </files>
 </package>
