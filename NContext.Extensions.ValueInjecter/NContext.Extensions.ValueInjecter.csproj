@@ -44,9 +44,6 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
     <Compile Include="Extensions.cs" />
     <Compile Include="Injectors\RecursiveInjection.cs" />
     <Compile Include="IResponseTransferObjectExtensions.cs" />

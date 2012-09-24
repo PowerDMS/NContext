@@ -24,9 +24,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4FDB19A9-243F-49B6-9F9D-3732515A632A}"
-	ProjectSection(SolutionItems) = preProject
-		AssemblyInfoShared.cs = AssemblyInfoShared.cs
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
 	ProjectSection(SolutionItems) = preProject

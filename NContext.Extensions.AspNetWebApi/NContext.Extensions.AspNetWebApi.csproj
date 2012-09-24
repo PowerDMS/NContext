@@ -68,9 +68,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyInfoShared.cs">
-      <Link>Properties\AssemblyInfoShared.cs</Link>
-    </Compile>
     <Compile Include="Authorization\WebApiAuthorizationAttribute.cs" />
     <Compile Include="Handlers\XHttpMethodOverrideMessageHandler.cs" />
     <Compile Include="JsonNetExtensions.cs" />
