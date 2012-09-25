@@ -71,10 +71,11 @@ namespace NContext.ErrorHandling.Errors
         /// <summary>
         /// IUnitOfWork instance id: {0} cannot be committed.
         /// </summary>
+        /// <param name="unitOfWorkId">The unit of work id.</param>
         /// <returns>NContextPersistenceError.</returns>
-        public static NContextPersistenceError UnitOfWorkNonCommittable()
+        public static NContextPersistenceError UnitOfWorkNonCommittable(Guid unitOfWorkId)
         {
-            return new NContextPersistenceError("UnitOfWorkNonCommittable");
+            return new NContextPersistenceError("UnitOfWorkNonCommittable", unitOfWorkId);
         }
     }
 }

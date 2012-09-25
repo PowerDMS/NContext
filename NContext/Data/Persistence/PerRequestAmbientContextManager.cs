@@ -44,6 +44,7 @@ namespace NContext.Data.Persistence
         {
             get
             {
+                // TODO: (DG) HttpContext.Current is thread local!! This doesn't work!
                 return HttpContext.Current != null && 
                        HttpContext.Current.Items.Contains(AmbientUnitsOfWorkKey) && 
                        AmbientUnitsOfWork.Count > 0;

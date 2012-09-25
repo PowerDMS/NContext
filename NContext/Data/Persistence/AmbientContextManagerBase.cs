@@ -110,20 +110,23 @@ namespace NContext.Data.Persistence
             if (AmbientExists)
             {
                 // Save the current disposable state of the ambient unit of work locally since further execution may affect it.
-                var isDisposable = Ambient.IsDisposable;
+                var ambientIsDisposable = Ambient.IsDisposable;
 
-                if (unitOfWork.IsCommitted || (isDisposable && Ambient.Equals(unitOfWork)))
+                if (Ambient.Equals(unitOfWork))
                 {
-                    AmbientUnitsOfWork.Pop();
-                    Debug.WriteLine("Ambient Popped");
-                }
-                else if (!isDisposable)
-                {
-                    Ambient.Decrement();
-                    Debug.WriteLine("Ambient Decremented");
+                    if (ambientIsDisposable)
+                    {
+                        AmbientUnitsOfWork.Pop();
+                        Debug.WriteLine("Ambient Popped");
+                    }
+                    else
+                    {
+                        Ambient.Decrement();
+                        Debug.WriteLine("Ambient Decremented");
+                    }
                 }
 
-                if (isDisposable && unitOfWork.Parent == null)
+                if (unitOfWork.IsCommitted || (ambientIsDisposable && unitOfWork.Parent == null))
                 {
                     return true;
                 }

@@ -80,7 +80,7 @@ namespace NContext.Data.Persistence
                 return GetRequiredNewUnitOfWork();
             }
 
-            if (AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
+            if (!AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
             {
                 var currentCompositeUnitOfWork = (CompositeUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
                 unitOfWork = new CompositeUnitOfWork(AmbientContextManager, currentCompositeUnitOfWork, _PersistenceOptions);
@@ -89,7 +89,6 @@ namespace NContext.Data.Persistence
             }
             else
             {
-                // TODO: (DG) Revisit this! If it's not a Composite, it's either a NonAtomic or something else. Should we really retain it if something else? Throw exc?
                 unitOfWork = AmbientContextManager.Ambient.UnitOfWork;
                 AmbientContextManager.RetainAmbient();
             }

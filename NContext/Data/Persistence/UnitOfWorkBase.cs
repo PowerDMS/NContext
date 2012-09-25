@@ -243,7 +243,7 @@ namespace NContext.Data.Persistence
             
             if (!AmbientContextManager.CanCommitUnitOfWork(this))
             {
-                return new ServiceResponse<Boolean>(NContextPersistenceError.UnitOfWorkNonCommittable());
+                return new ServiceResponse<Boolean>(NContextPersistenceError.UnitOfWorkNonCommittable(Id));
             }
 
             if (ScopeTransaction != null && ScopeThread != Thread.CurrentThread)
