@@ -44,7 +44,6 @@
     <Compile Include="IResponseTransferObject.cs" />
     <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
     <Compile Include="IToken.cs" />
-    <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\IMaybeExtensions.cs" />
     <Compile Include="IMaybe.cs" />
     <Compile Include="Just.cs" />

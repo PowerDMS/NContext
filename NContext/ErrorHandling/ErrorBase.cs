@@ -30,7 +30,6 @@ namespace NContext.ErrorHandling
     using System.Text.RegularExpressions;
 
     using NContext.Common;
-    using NContext.Common.Extensions;
 
     /// <summary>
     /// Defines an abstraction for localized application errors.

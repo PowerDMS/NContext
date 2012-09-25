@@ -26,7 +26,6 @@ namespace NContext.Extensions
     using System.Linq.Expressions;
 
     using NContext.Common;
-    using NContext.Common.Extensions;
 
     /// <summary>
     /// Defines extension methods for <see cref="IMaybe{T}"/>.

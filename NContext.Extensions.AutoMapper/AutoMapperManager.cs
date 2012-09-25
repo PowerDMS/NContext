@@ -22,8 +22,6 @@ namespace NContext.Extensions.AutoMapper
 {
     using System;
 
-    using NContext.Common.Extensions;
-
     using global::AutoMapper;
     using global::AutoMapper.Mappers;
 

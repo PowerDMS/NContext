@@ -18,12 +18,10 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Common.Extensions
+namespace NContext.Common
 {
     using System;
     using System.Collections;
-    using System.Collections.Generic;
-    using System.Linq;
 
     /// <summary>
     /// Defines extension methods for <see cref="IMaybe{T}"/>.

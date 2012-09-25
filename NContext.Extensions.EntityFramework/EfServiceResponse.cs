@@ -26,7 +26,6 @@ namespace NContext.Extensions.EntityFramework
     using System.Linq;
 
     using NContext.Common;
-    using NContext.Common.Extensions;
     using NContext.ErrorHandling;
 
     /// <summary>

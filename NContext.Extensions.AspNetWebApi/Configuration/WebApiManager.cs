@@ -26,7 +26,6 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     using System.Web.Http;
     using System.Web.Http.SelfHost;
 
-    using NContext.Common.Extensions;
     using NContext.Configuration;
     using NContext.Extensions.AspNetWebApi.Routing;
 

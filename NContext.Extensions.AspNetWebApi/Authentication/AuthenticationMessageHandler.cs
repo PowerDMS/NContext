@@ -28,7 +28,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     using System.Threading.Tasks;
     using System.Web.Http.Filters;
 
-    using NContext.Common.Extensions;
+    using NContext.Common;
 
     /// <summary>
     /// Defines an <see cref="ActionFilterAttribute"/> for authentication.

@@ -18,13 +18,11 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Common.Extensions
+namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using NContext.Common;
 
     /// <summary>
     /// Defines extension methods for <see cref="IEnumerable{T}"/> yielding a new <see cref="IResponseTransferObject{T}"/>.

@@ -24,7 +24,6 @@ namespace NContext.Extensions.AutoMapper
     using System.Linq;
 
     using NContext.Common;
-    using NContext.Common.Extensions;
 
     using global::AutoMapper;
     

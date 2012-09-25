@@ -23,7 +23,7 @@ namespace NContext.Extensions.AutoMapper
     using System;
     using System.Collections.Generic;
 
-    using NContext.Common.Extensions;
+    using NContext.Common;
 
     using global::AutoMapper;
 

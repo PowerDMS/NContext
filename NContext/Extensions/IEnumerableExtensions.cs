@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IEnumerableExtensions.cs" company="Waking Venture, Inc.">
+// <copyright file="EnumerableExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,18 +18,50 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Common.Extensions
+namespace NContext.Extensions
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+
+    using NContext.Data.Persistence;
+    using NContext.Data.Specifications;
 
     /// <summary>
-    /// Defines extension methods for IEnumerable{T}.
+    /// Defines extension methods for IEnumerable.
     /// </summary>
     public static class IEnumerableExtensions
     {
         /// <summary>
-        /// ForEach extension that enumerates over all items in an <see cref="IEnumerable{T}"/> and executes 
+        /// Queries the context based on the provided specification and returns results that
+        /// are only satisfied by the specification.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entities">The entities.</param>
+        /// <param name="specification">
+        /// A <see cref="SpecificationBase{TEntity}" /> instance used to filter results that only satisfy the specification.
+        /// </param>
+        /// <returns>A <see cref="IQueryable{TEntity}" /> that can be used to enumerate over the results
+        /// of the query.</returns>
+        /// <paramref name="entities" />
+        public static IEnumerable<TEntity> AllMatching<TEntity>(this IEnumerable<TEntity> entities, SpecificationBase<TEntity> specification)
+            where TEntity : class, IEntity
+        {
+            return entities.AsQueryable().Where(specification.IsSatisfiedBy());
+        }
+
+        public static IEnumerable<TSource> Distinct<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> getKey)
+        {
+            var hashSet = new HashSet<TKey>();
+
+            return from item in source 
+                   let key = getKey(item) 
+                   where hashSet.Add(key) 
+                   select item;
+        }
+
+        /// <summary>
+        /// ForEach extension that enumerates over all items in an <see cref="IEnumerable{T}.Collections.Generic.IEnumerable{T}"/> and executes 
         /// an action.
         /// </summary>
         /// <typeparam name="T">The type that this extension is applicable for.</typeparam>
@@ -41,7 +73,7 @@ namespace NContext.Common.Extensions
         }
 
         /// <summary>
-        /// ForEach extension that enumerates over all items in an <see cref="IEnumerator{T}"/> and executes 
+        /// ForEach extension that enumerates over all items in an <see cref="IEnumerator{T}.Collections.Generic.IEnumerator{T}"/> and executes 
         /// an action.
         /// </summary>
         /// <typeparam name="T">The type that this extension is applicable for.</typeparam>

@@ -28,7 +28,6 @@ namespace NContext.Extensions.Unity
     using Microsoft.Practices.ServiceLocation;
     using Microsoft.Practices.Unity;
 
-    using NContext.Common.Extensions;
     using NContext.Configuration;
 
     /// <summary>

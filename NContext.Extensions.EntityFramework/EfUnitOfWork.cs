@@ -29,7 +29,6 @@ namespace NContext.Extensions.EntityFramework
     using System.Transactions;
 
     using NContext.Common;
-    using NContext.Common.Extensions;
     using NContext.Data.Persistence;
     using NContext.ErrorHandling.Errors;
 
