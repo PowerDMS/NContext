@@ -186,6 +186,7 @@
     <ProjectReference Include="..\NContext.Common\NContext.Common.csproj">
       <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
       <Name>NContext.Common</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
