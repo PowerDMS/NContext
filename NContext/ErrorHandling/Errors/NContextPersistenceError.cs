@@ -23,6 +23,9 @@ namespace NContext.ErrorHandling.Errors
     using System;
     using System.Net;
 
+    using NContext.Common;
+    using NContext.Data.Persistence;
+
     public class NContextPersistenceError : ErrorBase
     {
         /// <summary>
@@ -76,6 +79,17 @@ namespace NContext.ErrorHandling.Errors
         public static NContextPersistenceError UnitOfWorkNonCommittable(Guid unitOfWorkId)
         {
             return new NContextPersistenceError("UnitOfWorkNonCommittable", unitOfWorkId);
+        }
+
+        /// <summary>
+        /// The active ambient context manager of type {0} does not support parallel commits per transaction.
+        /// To use this manager, PersistenceOptions.MaxDegreeOfParallelism cannot be more than one.
+        /// </summary>
+        /// <param name="ambientContextManagerType">The type of the <see cref="AmbientContextManagerBase"/>.</param>
+        /// <returns>NContextPersistenceError.</returns>
+        public static NContextPersistenceError ConcurrencyUnsupported(Type ambientContextManagerType)
+        {
+            return new NContextPersistenceError("ConcurrencyUnsupported", ambientContextManagerType.Name);
         }
     }
 }

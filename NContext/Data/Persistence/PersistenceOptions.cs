@@ -21,21 +21,88 @@
 namespace NContext.Data.Persistence
 {
     using System;
+    using System.Transactions;
 
     /// <summary>
     /// Defines persistence-related options for transactional operations.
     /// </summary>
-    public class PersistenceOptions
+    public struct PersistenceOptions
     {
-        private TimeSpan? _TransactionTimeOut;
+        private TimeSpan _TransactionTimeOut;
 
-        private Int32? _MaxDegreeOfParallelism;
+        private UInt16 _MaxDegreeOfParallelism;
 
-        public Int32 MaxDegreeOfParallelism
+        private IsolationLevel _IsolationLevel;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// </summary>
+        /// <param name="transactionTimeOut">The transaction time out.</param>
+        public PersistenceOptions(TimeSpan transactionTimeOut)
+            : this(transactionTimeOut, 1, IsolationLevel.Serializable)
+        {
+        }
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// </summary>
+        /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
+        public PersistenceOptions(UInt16 maxDegreeOfParallelism)
+            : this(TransactionManager.DefaultTimeout, maxDegreeOfParallelism, IsolationLevel.Serializable)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// </summary>
+        /// <param name="isolationLevel">The isolation level.</param>
+        public PersistenceOptions(IsolationLevel isolationLevel)
+            : this(TransactionManager.DefaultTimeout, 1, isolationLevel)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// </summary>
+        /// <param name="transactionTimeOut">The transaction time out.</param>
+        /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
+        public PersistenceOptions(TimeSpan transactionTimeOut, UInt16 maxDegreeOfParallelism)
+            : this(transactionTimeOut, maxDegreeOfParallelism, IsolationLevel.Serializable)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// </summary>
+        /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
+        /// <param name="isolationLevel">The isolation level.</param>
+        public PersistenceOptions(UInt16 maxDegreeOfParallelism, IsolationLevel isolationLevel)
+            : this(TransactionManager.DefaultTimeout, maxDegreeOfParallelism, isolationLevel)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="T:System.Object" /> class.
+        /// </summary>
+        /// <param name="transactionTimeOut">The transaction time out.</param>
+        /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
+        /// <param name="isolationLevel">The isolation level.</param>
+        public PersistenceOptions(TimeSpan transactionTimeOut, UInt16 maxDegreeOfParallelism, IsolationLevel isolationLevel)
+        {
+            _TransactionTimeOut = transactionTimeOut;
+            _MaxDegreeOfParallelism = maxDegreeOfParallelism;
+            _IsolationLevel = isolationLevel;
+        }
+
+        /// <summary>
+        /// Gets or sets the max degree of parallelism.
+        /// </summary>
+        /// <value>The max degree of parallelism.</value>
+        public UInt16 MaxDegreeOfParallelism
         {
             get
             {
-                return _MaxDegreeOfParallelism ?? 1;
+                return _MaxDegreeOfParallelism == 0 ? (UInt16)1 : _MaxDegreeOfParallelism;
             }
             set
             {
@@ -43,11 +110,15 @@ namespace NContext.Data.Persistence
             }
         }
 
+        /// <summary>
+        /// Gets or sets the transaction time out.
+        /// </summary>
+        /// <value>The transaction time out.</value>
         public TimeSpan TransactionTimeOut
         {
             get
             {
-                return _TransactionTimeOut ?? System.Transactions.TransactionManager.DefaultTimeout;
+                return _TransactionTimeOut;
             }
             set
             {
@@ -55,11 +126,19 @@ namespace NContext.Data.Persistence
             }
         }
 
-        public static PersistenceOptions Default
+        /// <summary>
+        /// Gets or sets the isolation level.
+        /// </summary>
+        /// <value>The isolation level.</value>
+        public IsolationLevel IsolationLevel
         {
             get
             {
-                return new PersistenceOptions();
+                return _IsolationLevel;
+            }
+            set
+            {
+                _IsolationLevel = value;
             }
         }
     }

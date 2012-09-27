@@ -42,7 +42,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NContext")]
 [assembly: AssemblyDescription("NContext is an application composition framework for .NET 4.0.")]
 
-[assembly: InternalsVisibleTo("NContext.Tests.Unit")]
+[assembly: InternalsVisibleTo("NContext.Tests.Specs")]
 
 [assembly: AssemblyFileVersion("2.0.0.0")]
 

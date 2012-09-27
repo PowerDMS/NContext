@@ -45,6 +45,12 @@ namespace NContext.Extensions.EntityFramework
             return validationResults.All(validationResult => validationResult.IsValid);
         }
 
+        /// <summary>
+        /// Returns a new <see cref="IResponseTransferObject{TEntity}"/>.
+        /// </summary>
+        /// <typeparam name="TEntity">The type of the entity.</typeparam>
+        /// <param name="entity">The entity.</param>
+        /// <returns>IResponseTransferObject{TEntity}.</returns>
         public static IResponseTransferObject<TEntity> ToServiceResponse<TEntity>(this TEntity entity)
             where TEntity : IEntity
         {

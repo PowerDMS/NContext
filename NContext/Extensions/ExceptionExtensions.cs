@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NonAtomicUnitOfWork.cs" company="Waking Venture, Inc.">
+// <copyright file="ExceptionExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,53 +18,38 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Data.Persistence
+namespace NContext.Extensions
 {
     using System;
-    using System.Diagnostics;
-    using System.Transactions;
-
-    using Microsoft.FSharp.Core;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Net;
 
     using NContext.Common;
 
-    internal sealed class NonAtomicUnitOfWork : UnitOfWorkBase
+    /// <summary>
+    /// Defines extension methods for exception handling.
+    /// </summary>
+    public static class ExceptionExtensions
     {
-        public NonAtomicUnitOfWork(AmbientContextManagerBase ambientContextManager)
-            : base(ambientContextManager)
-        {
-            Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} created.", Id));
-        }
-
-        #region Overrides of UnitOfWorkBase
-
         /// <summary>
-        /// Commits the changes to the database.
+        /// Returns an error representing the exception.
         /// </summary>
-        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
+        /// <param name="exception">The exception.</param>
+        /// <returns>Error instance.</returns>
+        public static Error ToError(this Exception exception)
         {
-            return new ServiceResponse<Unit>(default(Unit));
+            return new Error(exception.GetType().Name, new[] { exception.Message }, HttpStatusCode.InternalServerError.ToString());
         }
 
         /// <summary>
-        /// Rollback the transaction (if applicable).
+        /// Returns the <see cref="AggregateException"/> as an enumerable of <see cref="Error"/>.
         /// </summary>
-        public override void Rollback()
+        /// <param name="aggregateException">The aggregate exception.</param>
+        /// <returns>IEnumerable{Error}.</returns>
+        public static IEnumerable<Error> ToErrors(this AggregateException aggregateException)
         {
+            return aggregateException.InnerExceptions.Select(ToError);
         }
-
-        protected override void Dispose(Boolean disposeManagedResources)
-        {
-            Status = TransactionStatus.Committed;
-
-            base.Dispose(disposeManagedResources);
-        }
-
-        protected override void DisposeManagedResources()
-        {
-            Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} disposed.", Id));
-        }
-
-        #endregion
     }
 }

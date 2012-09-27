@@ -120,6 +120,9 @@
   <data name="CommitFailed" xml:space="preserve">
     <value>IUnitOfWork instance Id: {0} with transaction Id: {1} has failed to commit due to the following exception(s): {2}</value>
   </data>
+  <data name="ConcurrencyUnsupported" xml:space="preserve">
+    <value>The active ambient context manager of type {0} does not support parallel commits per transaction. To use this manager, PersistenceOptions.MaxDegreeOfParallelism cannot be more than one.</value>
+  </data>
   <data name="ScopeTransactionIsNull" xml:space="preserve">
     <value>ScopeTransaction cannot be null. This is due to an invalid "Func&lt;Transaction&gt; transactionFactory" parameter being supplied to the UnitOfWorkBase constructor. ScopeTransaction is used for two things: 1. If IUnitOfWork.Commit() is called on the same thread with which the IUnitOfWork instance was created, then ScopeTransaction is the System.Transactions.CommittableTransaction that will be used; and 2. If IUnitOfWork.Commit() is called on a different thread from which the IUnitOfWork instance was created, then ScopeTransaction is used to create a System.Transactions.DependentTransaction - which then is used to commit all transactional work in a thread-safe manner.</value>
   </data>

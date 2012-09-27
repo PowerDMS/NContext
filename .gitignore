@@ -15,3 +15,11 @@ NContext*Dto*Extensions*
 NContext*RavenDB*
 NContext*Snap*
 NContext*Async*
+*ncrunch*
+*Specs*
+*.rb
+*.png
+*.bat
+sidekick*
+*nspec*
+*specwatchr*

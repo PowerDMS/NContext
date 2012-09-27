@@ -22,6 +22,8 @@ namespace NContext.Data.Persistence
 {
     using System;
 
+    using Microsoft.FSharp.Core;
+
     using NContext.Common;
 
     /// <summary>
@@ -40,6 +42,6 @@ namespace NContext.Data.Persistence
         /// Commits the changes to the database.
         /// </summary>
         /// <returns>IResponseTransferObject{Boolean}.</returns>
-        IResponseTransferObject<Boolean> Commit();
+        IResponseTransferObject<Unit> Commit();
     }
 }

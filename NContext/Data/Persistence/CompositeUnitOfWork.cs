@@ -28,42 +28,50 @@ namespace NContext.Data.Persistence
     using System.Threading.Tasks;
     using System.Transactions;
 
+    using Microsoft.FSharp.Core;
+
     using NContext.Common;
     using NContext.ErrorHandling.Errors;
     using NContext.Extensions;
 
     public class CompositeUnitOfWork : UnitOfWorkBase
     {
-        #region Fields
-
         private readonly HashSet<UnitOfWorkBase> _UnitsOfWork = new HashSet<UnitOfWorkBase>();
 
-        #endregion
-
-        #region Constructors
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeUnitOfWork" /> class.
+        /// </summary>
+        /// <param name="ambientContextManager">The ambient context manager.</param>
         public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager)
-            : this(ambientContextManager, () => new CommittableTransaction(), null, null)
+            : this(ambientContextManager, null, new PersistenceOptions())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeUnitOfWork" /> class.
+        /// </summary>
+        /// <param name="ambientContextManager">The ambient context manager.</param>
+        /// <param name="persistenceOptions">The persistence options.</param>
         public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, PersistenceOptions persistenceOptions)
-            : this(ambientContextManager, () => new CommittableTransaction(), null, persistenceOptions)
+            : this(ambientContextManager, null, persistenceOptions)
         {
         }
 
-        public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
-            : this(ambientContextManager, () => parent.ScopeTransaction, parent, persistenceOptions)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeUnitOfWork" /> class.
+        /// </summary>
+        /// <param name="ambientContextManager">The ambient context manager.</param>
+        /// <param name="parent">The parent.</param>
+        public CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent)
+            : this(ambientContextManager, parent, new PersistenceOptions())
         {
         }
 
-        private CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, Func<Transaction> transactionFactory, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
-            : base(ambientContextManager, transactionFactory, parent, persistenceOptions)
+        protected internal CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
+            : base(ambientContextManager, parent, persistenceOptions)
         {
             Debug.WriteLine(String.Format("CompositeUnitOfWork: {0} created.", Id));
         }
-
-        #endregion
 
         protected HashSet<UnitOfWorkBase> UnitsOfWork
         {
@@ -88,9 +96,22 @@ namespace NContext.Data.Persistence
             UnitsOfWork.Add(unitOfWork);
         }
 
-        #region Overrides of UnitOfWorkBase
+        /// <summary>
+        /// Rollback the transaction (if applicable).
+        /// </summary>
+        public override void Rollback()
+        {
+            if (Parent == null)
+                Debug.WriteLine(String.Format("----- Transaction: {0} is Rolling Back -----", Transaction.Current != null ? Transaction.Current.TransactionInformation.LocalIdentifier : String.Empty));
+            else
+                Debug.WriteLine(String.Format("CompositeUoW: {0} is rolling back.", Id));
 
-        protected override IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope)
+            UnitsOfWork.AsParallel()
+                       .WithDegreeOfParallelism(PersistenceOptions.MaxDegreeOfParallelism)
+                       .ForAll(uow => uow.Rollback());
+        }
+
+        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
         {
             using (transactionScope)
             {
@@ -101,10 +122,67 @@ namespace NContext.Data.Persistence
                     Debug.WriteLine(String.Format("-----  Transaction: {0}  -----", Transaction.Current.TransactionInformation.LocalIdentifier));
                 }
 #endif
+                return (PersistenceOptions.MaxDegreeOfParallelism == 1 ? CommitChildren() : CommitChildrenParallel())
+                    .Catch(errors =>
+                        {
+                            Rollback();
+                            transactionScope.Dispose();
+                            // throw new AggregateException(commitExceptions); // TODO: (DG) NContext Exception vs ErrorHandling Support
+                        })
+                    .Let(_ =>
+                        {
+#if DEBUG
+                            Console.WriteLine(
+                                "CompositeUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
+                                Id,
+                                CommittableTransaction.GetType(),
+                                ScopeThread.ManagedThreadId,
+                                System.Threading.Thread.CurrentThread.ManagedThreadId,
+                                Transaction.Current.TransactionInformation.LocalIdentifier);
+                            
+                            Console.WriteLine(
+                                "Transaction {0} - Complete() is about to be called.",
+                                Transaction.Current.TransactionInformation.LocalIdentifier);
 
-                var commitExceptions = new ConcurrentQueue<Exception>();
+                            if (Parent == null)
+                                Debug.WriteLine("----- Transaction End -----");
+#endif
+                            transactionScope.Complete();
+                        });
+            }
+        }
 
-                Parallel.ForEach(
+        private IResponseTransferObject<Unit> CommitChildren()
+        {
+            foreach (var unitOfWork in UnitsOfWork)
+            {
+                try
+                {
+                    IEnumerable<Error> errors;
+                    if ((errors = unitOfWork.Commit().Errors).Any())
+                    {
+                        return new ServiceResponse<Unit>(errors);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    return new ServiceResponse<Unit>(exception.ToError());
+                }
+            }
+
+            return new ServiceResponse<Unit>(default(Unit));
+        }
+
+        private IResponseTransferObject<Unit> CommitChildrenParallel()
+        {
+            if (!AmbientContextManager.SupportsConcurrency)
+            {
+                return NContextPersistenceError.ConcurrencyUnsupported(AmbientContextManager.GetType()).ToServiceResponse();
+            }
+
+            var commitExceptions = new ConcurrentQueue<Error>();
+
+            Parallel.ForEach(
                     UnitsOfWork,
                     new ParallelOptions
                         {
@@ -120,68 +198,21 @@ namespace NContext.Data.Persistence
                                     .Catch(errors =>
                                         {
                                             state.Break();
-                                            commitExceptions.Enqueue(
-                                                new AggregateException(
-                                                    errors.Select(error => new Exception(error.Messages.ToString()))));
+                                            errors.ForEach(commitExceptions.Enqueue);
                                         });
                             }
                             catch (Exception exception)
                             {
                                 state.Break();
-                                commitExceptions.Enqueue(exception);
+                                commitExceptions.Enqueue(exception.ToError());
 
                                 // TODO: (DG) Logging ...
                             }
                         });
 
-                if (!commitExceptions.Any())
-                {
-                    Debug.WriteLine(
-                        "CompositeUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
-                        Id,
-                        ThreadSafeTransaction.GetType(),
-                        ScopeThread.ManagedThreadId,
-                        System.Threading.Thread.CurrentThread.ManagedThreadId,
-                        Transaction.Current.TransactionInformation.LocalIdentifier);
-
-                    transactionScope.Complete();
-
-#if DEBUG
-                    if (Parent == null) Debug.WriteLine("----- Transaction End -----");
-#endif
-
-                    return new ServiceResponse<Boolean>(true);
-                }
-
-                Rollback();
-
-#if DEBUG
-                if (Parent == null) Debug.WriteLine("----- Transaction End -----");
-#endif
-
-                //throw new AggregateException(commitExceptions); // TODO: (DG) NContext Exception vs ErrorHandling
-                return
-                    new ServiceResponse<Boolean>(
-                        NContextPersistenceError.CommitFailed(
-                            Id,
-                            Transaction.Current.TransactionInformation.LocalIdentifier,
-                            new AggregateException(commitExceptions)));
-            }
-        }
-
-        /// <summary>
-        /// Rollback the transaction (if applicable).
-        /// </summary>
-        public override void Rollback()
-        {
-            if (Parent == null)
-                Debug.WriteLine(String.Format("----- Transaction: {0} is Rolling Back -----", Transaction.Current.TransactionInformation.LocalIdentifier));
-            else
-                Debug.WriteLine(String.Format("CompositeUoW: {0} is rolling back.", Id));
-
-            UnitsOfWork.AsParallel()
-                       .WithDegreeOfParallelism(PersistenceOptions.MaxDegreeOfParallelism)
-                       .ForAll(uow => uow.Rollback());
+            return commitExceptions.Any()
+                       ? new ServiceResponse<Unit>(commitExceptions.Select(error => error))
+                       : new ServiceResponse<Unit>(default(Unit));
         }
 
         protected override void DisposeManagedResources()
@@ -190,9 +221,7 @@ namespace NContext.Data.Persistence
                        .WithDegreeOfParallelism(PersistenceOptions.MaxDegreeOfParallelism)
                        .ForAll(uow => uow.Dispose());
 
-            Debug.WriteLine(String.Format("CompositeUnitOfWork: {0} disposed.", Id));
+            Console.WriteLine("CompositeUnitOfWork: {0} disposed.", Id);
         }
-
-        #endregion
     }
 }

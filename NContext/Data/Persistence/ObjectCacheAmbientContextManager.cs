@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ThreadLocalAmbientContextManager.cs" company="Waking Venture, Inc.">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ObjectCacheAmbientContextManager.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,27 +22,41 @@ namespace NContext.Data.Persistence
 {
     using System;
     using System.Collections.Generic;
-    using System.Threading;
+    using System.Runtime.Caching;
 
     /// <summary> 
-    /// Defines an ambient-context manager for per-thread storage. Each thread will 
-    /// maintain its own <see cref="AmbientUnitOfWorkDecorator"/> stack.
+    /// Defines an ambient-context manager for cache-level storage. The cache maintains the <see cref="AmbientUnitOfWorkDecorator"/> stack.
     /// </summary>
-    /// <remarks></remarks>
-    public class ThreadLocalAmbientContextManager : AmbientContextManagerBase
+    public class ObjectCacheAmbientContextManager : AmbientContextManagerBase
     {
-        private static readonly ThreadLocal<Stack<AmbientUnitOfWorkDecorator>> _AmbientUnitsOfWork =
-            new ThreadLocal<Stack<AmbientUnitOfWorkDecorator>>(() => new Stack<AmbientUnitOfWorkDecorator>());
+        private const String _AmbientUnitsOfWorkCacheKey = @"NContextAmbientUnitsOfWork";
+
+        private readonly ObjectCache _Cache;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectCacheAmbientContextManager" /> class.
+        /// </summary>
+        /// <param name="cache">The cache.</param>
+        /// <exception cref="System.ArgumentNullException">Thrown when <paramref name="cache"/> is null.</exception>
+        public ObjectCacheAmbientContextManager(ObjectCache cache)
+        {
+            if (cache == null)
+            {
+                throw new ArgumentNullException("cache");
+            }
+
+            _Cache = cache;
+        }
 
         /// <summary>
-        /// Gets whether the ambient context exists.
+        /// Gets the ambient exists.
         /// </summary>
         /// <value>The ambient exists.</value>
         public override Boolean AmbientExists
         {
             get
             {
-                return _AmbientUnitsOfWork.IsValueCreated && _AmbientUnitsOfWork.Value.Count > 0;
+                return AmbientUnitsOfWork.Count > 0;
             }
         }
 
@@ -50,11 +64,15 @@ namespace NContext.Data.Persistence
         /// Gets whether the <see cref="AmbientContextManagerBase"/> instance supports concurrency. This is 
         /// required if you set <see cref="PersistenceOptions.MaxDegreeOfParallelism"/> greater than one.
         /// </summary>
+        /// <returns>
+        ///   <c>true</c>, however, this should only be used in scenarios where only one 
+        ///   active session or user is using the application (ie. a desktop application)
+        /// </returns>
         protected internal override Boolean SupportsConcurrency
         {
             get
             {
-                return false;
+                return true;
             }
         }
 
@@ -66,7 +84,13 @@ namespace NContext.Data.Persistence
         {
             get
             {
-                return _AmbientUnitsOfWork.Value;
+                var ambientUnitsOfWork = _Cache[_AmbientUnitsOfWorkCacheKey] as Stack<AmbientUnitOfWorkDecorator>;
+                if (ambientUnitsOfWork == null)
+                {
+                    _Cache[_AmbientUnitsOfWorkCacheKey] = ambientUnitsOfWork = new Stack<AmbientUnitOfWorkDecorator>();
+                }
+
+                return ambientUnitsOfWork;
             }
         }
     }

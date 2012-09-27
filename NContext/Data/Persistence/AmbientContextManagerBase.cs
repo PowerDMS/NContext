@@ -23,6 +23,7 @@ namespace NContext.Data.Persistence
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Transactions;
 
     /// <summary>
     /// Defines an abstraction for managing the ambient-context lifespan for units of work.
@@ -30,6 +31,10 @@ namespace NContext.Data.Persistence
     /// <remarks></remarks>
     public abstract class AmbientContextManagerBase
     {
+        /// <summary>
+        /// Gets the ambient.
+        /// </summary>
+        /// <value>The ambient.</value>
         public virtual AmbientUnitOfWorkDecorator Ambient
         {
             get
@@ -50,15 +55,26 @@ namespace NContext.Data.Persistence
             }
         }
 
+        /// <summary>
+        /// Gets whether the ambient context exists.
+        /// </summary>
         public abstract Boolean AmbientExists { get; }
 
+        /// <summary>
+        /// Gets whether the <see cref="AmbientContextManagerBase"/> instance supports concurrency. This is 
+        /// required if you set <see cref="PersistenceOptions.MaxDegreeOfParallelism"/> greater than one.
+        /// </summary>
+        protected internal abstract Boolean SupportsConcurrency { get; }
+
+        /// <summary>
+        /// Gets the ambient units of work.
+        /// </summary>
         protected abstract Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork { get; }
 
         /// <summary>
-        /// Adds the unit of work.
+        /// Adds the unit of work to the stack; thus making it the new ambient context.
         /// </summary>
         /// <param name="unitOfWork">The unit of work.</param>
-        /// <remarks></remarks>
         public virtual void AddUnitOfWork(UnitOfWorkBase unitOfWork)
         {
             AmbientUnitsOfWork.Push(new AmbientUnitOfWorkDecorator(unitOfWork));
@@ -93,7 +109,7 @@ namespace NContext.Data.Persistence
                        (AmbientExists &&
                         Ambient.Equals(unitOfWork) &&
                         Ambient.IsCommittable)) || 
-                   Ambient.UnitOfWork.IsCommitting;
+                   Ambient.UnitOfWork.Status == TransactionStatus.Active;
         }
 
         /// <summary>
@@ -126,7 +142,8 @@ namespace NContext.Data.Persistence
                     }
                 }
 
-                if (unitOfWork.IsCommitted || (ambientIsDisposable && unitOfWork.Parent == null))
+                if ((unitOfWork.Status == TransactionStatus.Committed || unitOfWork.Status == TransactionStatus.Aborted) || 
+                    (ambientIsDisposable && unitOfWork.Parent == null))
                 {
                     return true;
                 }

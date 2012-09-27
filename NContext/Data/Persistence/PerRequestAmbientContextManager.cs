@@ -32,6 +32,10 @@ namespace NContext.Data.Persistence
     {
         protected const String AmbientUnitsOfWorkKey = @"AmbientUnitsOfWork";
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PerRequestAmbientContextManager" /> class.
+        /// </summary>
+        /// <exception cref="System.ApplicationException"></exception>
         public PerRequestAmbientContextManager()
         {
             if (String.IsNullOrWhiteSpace(HttpRuntime.AppDomainAppVirtualPath))
@@ -40,17 +44,37 @@ namespace NContext.Data.Persistence
             }
         }
 
+        /// <summary>
+        /// Gets whether the ambient context exists.
+        /// </summary>
+        /// <value>The ambient exists.</value>
         public override Boolean AmbientExists
         {
             get
             {
-                // TODO: (DG) HttpContext.Current is thread local!! This doesn't work!
                 return HttpContext.Current != null && 
                        HttpContext.Current.Items.Contains(AmbientUnitsOfWorkKey) && 
                        AmbientUnitsOfWork.Count > 0;
             }
         }
-        
+
+        /// <summary>
+        /// Gets whether the <see cref="AmbientContextManagerBase"/> instance supports concurrency. This is 
+        /// required if you set <see cref="PersistenceOptions.MaxDegreeOfParallelism"/> greater than one.
+        /// </summary>
+        protected internal override Boolean SupportsConcurrency
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the ambient units of work.
+        /// </summary>
+        /// <value>The ambient units of work.</value>
+        /// <exception cref="System.InvalidOperationException"></exception>
         protected override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
         {
             get

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NonAtomicUnitOfWork.cs" company="Waking Venture, Inc.">
+// <copyright file="ErrorBaseExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,53 +18,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Data.Persistence
+namespace NContext.Extensions
 {
-    using System;
-    using System.Diagnostics;
-    using System.Transactions;
-
     using Microsoft.FSharp.Core;
 
     using NContext.Common;
+    using NContext.ErrorHandling;
 
-    internal sealed class NonAtomicUnitOfWork : UnitOfWorkBase
+    /// <summary>
+    /// Defines extension methods for <see cref="ErrorBase"/>.
+    /// </summary>
+    public static class ErrorBaseExtensions
     {
-        public NonAtomicUnitOfWork(AmbientContextManagerBase ambientContextManager)
-            : base(ambientContextManager)
-        {
-            Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} created.", Id));
-        }
-
-        #region Overrides of UnitOfWorkBase
-
         /// <summary>
-        /// Commits the changes to the database.
+        /// Returns a new <see cref="IResponseTransferObject{T}"/> with the specified <paramref name="error"/>.
         /// </summary>
-        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
+        /// <typeparam name="T">Type of IResponseTransferObject.</typeparam>
+        /// <param name="error">The error.</param>
+        /// <returns>IResponseTransferObject{T}.</returns>
+        public static IResponseTransferObject<Unit> ToServiceResponse(this ErrorBase error)
         {
-            return new ServiceResponse<Unit>(default(Unit));
+            return new ServiceResponse<Unit>(error);
         }
-
-        /// <summary>
-        /// Rollback the transaction (if applicable).
-        /// </summary>
-        public override void Rollback()
-        {
-        }
-
-        protected override void Dispose(Boolean disposeManagedResources)
-        {
-            Status = TransactionStatus.Committed;
-
-            base.Dispose(disposeManagedResources);
-        }
-
-        protected override void DisposeManagedResources()
-        {
-            Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} disposed.", Id));
-        }
-
-        #endregion
     }
 }

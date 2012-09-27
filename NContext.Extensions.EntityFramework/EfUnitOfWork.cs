@@ -25,12 +25,16 @@ namespace NContext.Extensions.EntityFramework
     using System.Data.Entity.Validation;
     using System.Diagnostics;
     using System.Linq;
+    using System.Text;
     using System.Threading;
     using System.Transactions;
+
+    using Microsoft.FSharp.Core;
 
     using NContext.Common;
     using NContext.Data.Persistence;
     using NContext.ErrorHandling.Errors;
+    using NContext.Extensions;
 
     /// <summary>
     /// Defines an Entity Framework 5 implementation of <see cref="UnitOfWorkBase"/>.
@@ -46,7 +50,7 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="dbContextContainer">The context container.</param>
         /// <remarks></remarks>
         protected internal EfUnitOfWork(AmbientContextManagerBase ambientContextManager, IDbContextContainer dbContextContainer)
-            : this(ambientContextManager, dbContextContainer, () => new CommittableTransaction(), null)
+            : this(ambientContextManager, dbContextContainer, null)
         {
         }
 
@@ -58,12 +62,7 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="parent">The parent.</param>
         /// <remarks></remarks>
         protected internal EfUnitOfWork(AmbientContextManagerBase ambientContextManager, IDbContextContainer dbContextContainer, UnitOfWorkBase parent)
-            : this(ambientContextManager, dbContextContainer, () => parent.ScopeTransaction, parent)
-        {
-        }
-
-        private EfUnitOfWork(AmbientContextManagerBase ambientContextManager, IDbContextContainer dbContextContainer, Func<Transaction> transactionFactory, UnitOfWorkBase parent)
-            : base(ambientContextManager, transactionFactory, parent)
+            : base(ambientContextManager, parent)
         {
             if (dbContextContainer == null)
             {
@@ -82,36 +81,49 @@ namespace NContext.Extensions.EntityFramework
         /// </summary>
         /// <param name="transactionScope">The transaction scope.</param>
         /// <returns>IResponseTransferObject{Boolean}.</returns>
-        protected override IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope)
+        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
         {
             if (Parent == null)
             {
-                using (transactionScope)
+                try
                 {
-                    try
+                    using (transactionScope)
                     {
-                        return CommitTransactionInternal().Let(_ => transactionScope.Complete());
+#if DEBUG
+                        // TODO: (DG) Remove this block
+                        Debug.WriteLine(String.Format("-----  Transaction: {0}  -----", Transaction.Current.TransactionInformation.LocalIdentifier));
+#endif
+                        return CommitTransactionInternal()
+                                   .Catch(errors =>
+                                       {
+                                           // TODO: (DG) Support exceptions!
+                                           // If NContext exception vs error handling IS Exception-based, don't rollback here; just throw;
+                                           Rollback();
+                                           // throw new NContextPersistenceException(errors);
+#if DEBUG
+                                           Console.WriteLine(String.Format("----- Transaction: {0} is Rolling Back -----", Transaction.Current != null ? Transaction.Current.TransactionInformation.LocalIdentifier : String.Empty));
+#endif
+                                       })
+                                   .Let(_ =>
+                                       {
+#if DEBUG
+                                           Console.WriteLine("Transaction {0} - Complete() is about to be called.", Transaction.Current.TransactionInformation.LocalIdentifier);
+                                           Console.WriteLine("----- Transaction End -----");
+#endif
+                                           transactionScope.Complete();
+                                       });
                     }
-                    catch (Exception exception)
-                    {
-                        Rollback();
+                }
+                catch (Exception exception)
+                {
+                    Rollback();
 
-                        // TODO: (DG) NContext Exception vs ErrorHandling
-                        // throw new AggregateException(commitExceptions);
-                        return
-                            new ServiceResponse<Boolean>(
-                                NContextPersistenceError.CommitFailed(
-                                    Id,
-                                    Transaction.Current.TransactionInformation.LocalIdentifier,
-                                    new AggregateException(exception)));
-                    }
+                    // TODO: (DG) NContext Exception vs ErrorHandling
+                    return ErrorBaseExtensions.ToServiceResponse(NContextPersistenceError.CommitFailed(Id, "tranId", new AggregateException(exception)));
                 }
             }
 
-            using (transactionScope)
-            {
-                return CommitTransactionInternal().Let(_ => transactionScope.Complete());
-            }
+            return CommitTransactionInternal();
         }
 
         /// <summary>
@@ -125,23 +137,23 @@ namespace NContext.Extensions.EntityFramework
             Debug.WriteLine(String.Format("EfUoW: {0} is rolling back.", Id));
         }
 
-        private IResponseTransferObject<Boolean> CommitTransactionInternal()
+        private IResponseTransferObject<Unit> CommitTransactionInternal()
         {
-            Debug.WriteLine(
-                    "EfUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction LocalId: {4}; Transaction GlobalId: {5}",
-                    Id,
-                    ThreadSafeTransaction.GetType(),
-                    ScopeThread.ManagedThreadId,
-                    Thread.CurrentThread.ManagedThreadId,
-                    Transaction.Current.TransactionInformation.LocalIdentifier,
-                    Transaction.Current.TransactionInformation.DistributedIdentifier);
+            Console.Write(
+                new StringBuilder()
+                    .AppendFormat("EfUnitOfWork: {0}", Id).AppendLine()
+                    .AppendFormat("\tType: {0}", CommittableTransaction == null ? String.Empty : CommittableTransaction.GetType().ToString()).AppendLine()
+                    .AppendFormat("\tScope Thread: {0}", ScopeThread.ManagedThreadId).AppendLine()
+                    .AppendFormat("\tCommit Thread: {0}", Thread.CurrentThread.ManagedThreadId).AppendLine()
+                    .AppendFormat("\tTransaction LocalId: {0}", Transaction.Current.TransactionInformation.LocalIdentifier).AppendLine()
+                    .AppendFormat("\tTransaction GlobalId: {0}", Transaction.Current.TransactionInformation.DistributedIdentifier).AppendLine());
 
             foreach (var context in DbContextContainer.Contexts)
             {
                 context.SaveChanges();
             }
 
-            return new ServiceResponse<Boolean>(true);
+            return new ServiceResponse<Unit>(default(Unit));
         }
 
         #endregion

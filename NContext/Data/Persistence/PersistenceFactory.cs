@@ -23,6 +23,10 @@ namespace NContext.Data.Persistence
     using System;
     using System.Transactions;
 
+    /// <summary>
+    /// Defines a <see cref="System.Transactions"/> persistence abstraction that allows composition of
+    /// infrastructural components to be part of.
+    /// </summary>
     public class PersistenceFactory : PersistenceFactoryBase, IPersistenceFactory
     {
         private readonly PersistenceOptions _PersistenceOptions;
@@ -32,12 +36,16 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <remarks></remarks>
         public PersistenceFactory()
-            : this(null, null)
+            : this(null, new PersistenceOptions())
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersistenceFactory" /> class.
+        /// </summary>
+        /// <param name="contextManagerFactory">The context manager factory.</param>
         public PersistenceFactory(IAmbientContextManagerFactory contextManagerFactory)
-            : this(contextManagerFactory, null)
+            : this(contextManagerFactory, new PersistenceOptions())
         {
         }
 
@@ -51,12 +59,23 @@ namespace NContext.Data.Persistence
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersistenceFactory" /> class.
+        /// </summary>
+        /// <param name="contextManagerFactory">The context manager factory.</param>
+        /// <param name="persistenceOptions">The persistence options.</param>
         public PersistenceFactory(IAmbientContextManagerFactory contextManagerFactory, PersistenceOptions persistenceOptions)
             : base(contextManagerFactory)
         {
-            _PersistenceOptions = persistenceOptions ?? PersistenceOptions.Default;
+            _PersistenceOptions = persistenceOptions;
         }
 
+        /// <summary>
+        /// Creates the unit of work.
+        /// </summary>
+        /// <param name="transactionScopeOption">The transaction scope option.</param>
+        /// <returns>IUnitOfWork.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
             switch (transactionScopeOption)

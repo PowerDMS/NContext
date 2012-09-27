@@ -33,21 +33,37 @@ namespace NContext.Extensions.EntityFramework
     {
         private readonly IDbContextFactory _DbContextFactory;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EfPersistenceFactory" /> class.
+        /// </summary>
         public EfPersistenceFactory()
             : this(null, null)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EfPersistenceFactory" /> class.
+        /// </summary>
+        /// <param name="contextManagerFactory">The context manager factory.</param>
         public EfPersistenceFactory(IAmbientContextManagerFactory contextManagerFactory)
             : this(null, contextManagerFactory)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EfPersistenceFactory" /> class.
+        /// </summary>
+        /// <param name="dbContextFactory">The db context factory.</param>
         public EfPersistenceFactory(IDbContextFactory dbContextFactory)
             : this(dbContextFactory, null)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EfPersistenceFactory" /> class.
+        /// </summary>
+        /// <param name="dbContextFactory">The db context factory.</param>
+        /// <param name="contextManagerFactory">The context manager factory.</param>
         public EfPersistenceFactory(IDbContextFactory dbContextFactory, IAmbientContextManagerFactory contextManagerFactory)
             : base(contextManagerFactory)
         {
@@ -93,6 +109,10 @@ namespace NContext.Extensions.EntityFramework
                 return GetRequiredNewUnitOfWork();
             }
 
+            /* First check if the ambient is a CompositeUnitOfWork and add to its collection.
+             * This must come prior to checking whether it is not an instance of IEfUnitOfWork so we can 
+             * add it as a leaf to a composite.
+             * */
             var ambient = AmbientContextManager.Ambient;
             if (ambient.IsTypeOf<CompositeUnitOfWork>())
             {
@@ -103,16 +123,17 @@ namespace NContext.Extensions.EntityFramework
 
                 return unitOfWork;
             }
-
-            if (ambient.IsTypeOf<IEfUnitOfWork>())
+            
+            // Current ambient is not Entity Framework.
+            if (!AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
             {
-                var unitOfWork = AmbientContextManager.Ambient.UnitOfWork;
-                AmbientContextManager.RetainAmbient();
-
-                return unitOfWork;
+                return GetRequiredNewUnitOfWork();
             }
+            
+            // Current ambient implements IEfUnitOfWork so let's simply retain it by incrementing the ambient session count.
+            AmbientContextManager.RetainAmbient();
 
-            return GetRequiredNewUnitOfWork();
+            return AmbientContextManager.Ambient.UnitOfWork;
         }
 
         private IUnitOfWork GetRequiredNewUnitOfWork()
@@ -203,14 +224,16 @@ namespace NContext.Extensions.EntityFramework
         /// <returns>Instance of <see cref="DbContext" />.</returns>
         public TDbContext GetOrCreateDbContext<TDbContext>() where TDbContext : DbContext
         {
-            EnsureEfUnitOfWorkExists();
+            var unitOfWork = EfUnitOfWorkExists()
+                                 ? (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork
+                                 : (IEfUnitOfWork)CreateUnitOfWork();
 
-            var currentUnitOfWork = ((IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork);
-            return currentUnitOfWork.DbContextContainer.GetContext<TDbContext>() ??
+            return unitOfWork.DbContextContainer.GetContext<TDbContext>() ??
                 new Func<TDbContext>(() =>
                 {
                     var context = _DbContextFactory.Create<TDbContext>();
-                    currentUnitOfWork.DbContextContainer.Add(context);
+                    unitOfWork.DbContextContainer.Add(context);
+
                     return context;
                 }).Invoke();
         }
@@ -221,8 +244,21 @@ namespace NContext.Extensions.EntityFramework
                 !AmbientContextManager.AmbientUnitOfWorkIsValid || 
                 !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
             {
-                CreateUnitOfWork();
+                var unitOfWork = CreateUnitOfWork();
+                // Disposing stuff!
             }
+        }
+
+        private Boolean EfUnitOfWorkExists()
+        {
+            if (!AmbientContextManager.AmbientExists ||
+                !AmbientContextManager.AmbientUnitOfWorkIsValid ||
+                !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
+            {
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

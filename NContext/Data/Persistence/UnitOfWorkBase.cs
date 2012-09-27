@@ -24,9 +24,10 @@ namespace NContext.Data.Persistence
     using System.Threading;
     using System.Transactions;
 
+    using Microsoft.FSharp.Core;
+
     using NContext.Common;
     using NContext.ErrorHandling.Errors;
-    using NContext.Extensions;
 
     using LocalizedPersistenceError = NContext.ErrorHandling.Errors.Localization.NContextPersistenceError;
 
@@ -50,49 +51,42 @@ namespace NContext.Data.Persistence
 
         private readonly PersistenceOptions _PersistenceOptions;
 
-        private volatile Boolean _IsCommitted;
+        private volatile TransactionStatus _Status;
 
-        private volatile Boolean _IsCommitting;
+        private Lazy<Transaction> _CommittableTransaction;
 
         private Boolean _IsDisposed;
-
-        private Lazy<Transaction> _ThreadSafeTransaction;
 
         #endregion
 
         protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager)
-            : this(ambientContextManager, () => null, null, null)
+            : this(ambientContextManager, null, new PersistenceOptions())
         {
         }
 
         protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, PersistenceOptions persistenceOptions)
-            : this(ambientContextManager, () => null, null, persistenceOptions)
+            : this(ambientContextManager, null, persistenceOptions)
         {
         }
 
-        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, Func<Transaction> transactionFactory, UnitOfWorkBase parent)
-            : this(ambientContextManager, transactionFactory, parent, null)
+        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent)
+            : this(ambientContextManager, parent, new PersistenceOptions())
         {
         }
 
-        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, Func<Transaction> transactionFactory, PersistenceOptions persistenceOptions)
-            : this(ambientContextManager, transactionFactory, null, persistenceOptions)
+        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
         {
-        }
-
-        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, Func<Transaction> transactionFactory, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
-        {
-            if (transactionFactory == null)
-            {
-                throw new ArgumentNullException("ambientContextManager");
-            }
-
             _Id = Guid.NewGuid();
-            _ScopeThread = Thread.CurrentThread;
             _AmbientContextManager = ambientContextManager;
-            _TransactionFactory = new Lazy<Transaction>(transactionFactory);
             _Parent = parent;
-            _PersistenceOptions = persistenceOptions ?? PersistenceOptions.Default;
+            _PersistenceOptions = persistenceOptions;
+            _ScopeThread = Thread.CurrentThread;
+            _Status = TransactionStatus.InDoubt;
+            _TransactionFactory =
+                new Lazy<Transaction>(
+                    _Parent == null
+                        ? (Func<Transaction>)(() => new CommittableTransaction())
+                        : (Func<Transaction>)(() => _Parent.ScopeTransaction));
         }
 
         /// <summary>
@@ -124,19 +118,15 @@ namespace NContext.Data.Persistence
             }
         }
 
-        public Thread ScopeThread
+        /// <summary>
+        /// Gets the thread in which the <see cref="UnitOfWorkBase"/> instance was created.
+        /// </summary>
+        /// <value>The scope thread.</value>
+        protected Thread ScopeThread
         {
             get
             {
                 return _ScopeThread;
-            }
-        }
-
-        public Transaction ScopeTransaction
-        {
-            get
-            {
-                return _TransactionFactory.Value;
             }
         }
 
@@ -152,14 +142,22 @@ namespace NContext.Data.Persistence
             }
         }
 
-        /// <summary>
-        /// Gets the thread-safe transaction to use during <see cref="Commit"/>.
-        /// </summary>
-        protected Transaction ThreadSafeTransaction
+        protected internal Transaction ScopeTransaction
         {
             get
             {
-                return _ThreadSafeTransaction == null ? null : _ThreadSafeTransaction.Value;
+                return _TransactionFactory.Value;
+            }
+        }
+
+        /// <summary>
+        /// Gets the thread-safe transaction to use during <see cref="Commit"/>.
+        /// </summary>
+        protected Transaction CommittableTransaction
+        {
+            get
+            {
+                return _CommittableTransaction == null ? null : _CommittableTransaction.Value;
             }
         }
 
@@ -171,27 +169,19 @@ namespace NContext.Data.Persistence
             }
         }
 
-        public Boolean IsCommitted
+        /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        /// <value>The status.</value>
+        public TransactionStatus Status
         {
             get
             {
-                return _IsCommitted;
+                return _Status;
             }
             protected set
             {
-                _IsCommitted = value;
-            }
-        }
-
-        public Boolean IsCommitting
-        {
-            get
-            {
-                return _IsCommitting;
-            }
-            protected set
-            {
-                _IsCommitting = value;
+                _Status = value;
             }
         }
 
@@ -202,7 +192,7 @@ namespace NContext.Data.Persistence
                 return _PersistenceOptions;
             }
         }
-
+        
         /// <summary>
         /// Rollback the transaction (if applicable).
         /// </summary>
@@ -217,66 +207,73 @@ namespace NContext.Data.Persistence
         /// <returns>
         /// The IResponseTransferObject{Boolean}.
         /// </returns>
-        protected abstract IResponseTransferObject<Boolean> CommitTransaction(TransactionScope transactionScope);
+        protected abstract IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope);
 
         #region Implementation of IUnitOfWork
 
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
-        /// <returns></returns>
-        /// <remarks></remarks>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when <see cref="UnitOfWorkBase.IsCommitted"/> equals true.
-        /// </exception>
-        public IResponseTransferObject<Boolean> Commit()
+        /// <returns>IResponseTransferObject{Boolean}.</returns>
+        /// <exception cref="System.InvalidOperationException"></exception>
+        public IResponseTransferObject<Unit> Commit()
         {
-            if (IsCommitting)
+            if (Status == TransactionStatus.Active)
             {
                 throw new InvalidOperationException(String.Format(LocalizedPersistenceError.UnitOfWorkCommitting, Id));
             }
 
-            if (IsCommitted)
+            if (Status == TransactionStatus.Committed)
             {
                 throw new InvalidOperationException(String.Format(LocalizedPersistenceError.UnitOfWorkCommitted, Id));
             }
             
             if (!AmbientContextManager.CanCommitUnitOfWork(this))
             {
-                return new ServiceResponse<Boolean>(NContextPersistenceError.UnitOfWorkNonCommittable(Id));
+                return new ServiceResponse<Unit>(NContextPersistenceError.UnitOfWorkNonCommittable(Id));
+            }
+            
+            if (ScopeTransaction == null)
+            {
+                return new ServiceResponse<Unit>(NContextPersistenceError.ScopeTransactionIsNull());
             }
 
-            if (ScopeTransaction != null && ScopeThread != Thread.CurrentThread)
-            {
-                // UnitOfWork is being committed on a different thread.
-                _ThreadSafeTransaction = new Lazy<Transaction>(() => ScopeTransaction.DependentClone(DependentCloneOption.BlockCommitUntilComplete));
-            }
-            else if (ScopeTransaction != null)
+            // TODO: (DG) Refactor this below. Maybe it should only happen if Parent IS null?
+            TransactionScope transactionScope = null;
+            if (Parent == null && ScopeThread == Thread.CurrentThread)
             {
                 // Use the existing CommittableTransaction.
-                _ThreadSafeTransaction = new Lazy<Transaction>(() => ScopeTransaction);
+                _CommittableTransaction = new Lazy<Transaction>(() => ScopeTransaction);
+                transactionScope = new TransactionScope(CommittableTransaction, PersistenceOptions.TransactionTimeOut);
             }
-            else
+            else if (ScopeThread != Thread.CurrentThread)
             {
-                return new ServiceResponse<Boolean>(NContextPersistenceError.ScopeTransactionIsNull());
+                // UnitOfWork is being committed on a different thread.
+                _CommittableTransaction = new Lazy<Transaction>(() => ScopeTransaction.DependentClone(DependentCloneOption.BlockCommitUntilComplete));
+                transactionScope = new TransactionScope(CommittableTransaction, PersistenceOptions.TransactionTimeOut);
             }
 
-            _IsCommitting = true;
-            
-            var transactionScope = ThreadSafeTransaction == null
-                                       ? new TransactionScope(TransactionScopeOption.Suppress)
-                                       : new TransactionScope(ThreadSafeTransaction, PersistenceOptions.TransactionTimeOut);
+            if (Parent == null && Transaction.Current != null)
+            {
+                Transaction transaction = Transaction.Current;
+                transaction.TransactionCompleted +=
+                    (sender, args) =>
+                        {
+                            Console.WriteLine(
+                                "Transaction {0} has {1}.",
+                                args.Transaction.TransactionInformation.LocalIdentifier,
+                                args.Transaction.TransactionInformation.Status);
+                        };
+            }
+
+            _Status = TransactionStatus.Active;
 
             return CommitTransaction(transactionScope)
-                       .Run(_ =>
-                           {
-                               _IsCommitting = false;
-                               _IsCommitted = true;
-                           })
+                       .Catch(_ => { _Status = TransactionStatus.Aborted; })
                        .Let(_ =>
                            {
-                               // If currentTransaction is a DependentTransaction, make sure to call Complete()
-                               var threadSafeTransaction = ThreadSafeTransaction as DependentTransaction;
+                               _Status = TransactionStatus.Committed;
+                               var threadSafeTransaction = CommittableTransaction as DependentTransaction;
                                if (threadSafeTransaction != null)
                                {
                                    threadSafeTransaction.Complete();
@@ -289,9 +286,8 @@ namespace NContext.Data.Persistence
         #region Implementation of IDisposable
 
         /// <summary>
-        /// Releases unmanaged resources and performs other cleanup operations before the <see cref="UnitOfWorkBase"/> is reclaimed by garbage collection.
+        /// Finalizes an instance of the <see cref="UnitOfWorkBase" /> class.
         /// </summary>
-        /// <remarks></remarks>
         ~UnitOfWorkBase()
         {
             Dispose(false);

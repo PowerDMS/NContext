@@ -41,7 +41,7 @@ namespace NContext.Data.Persistence
             _AmbientContextManager = new Lazy<AmbientContextManagerBase>(factoryMethod);
         }
 
-        protected AmbientContextManagerBase AmbientContextManager
+        protected internal AmbientContextManagerBase AmbientContextManager
         {
             get
             {
