@@ -273,10 +273,13 @@ namespace NContext.Data.Persistence
                        .Let(_ =>
                            {
                                _Status = TransactionStatus.Committed;
-                               var threadSafeTransaction = CommittableTransaction as DependentTransaction;
-                               if (threadSafeTransaction != null)
+                               if (CommittableTransaction is DependentTransaction)
                                {
-                                   threadSafeTransaction.Complete();
+                                   (CommittableTransaction as DependentTransaction).Complete();
+                               }
+                               else if (CommittableTransaction is CommittableTransaction)
+                               {
+                                   (CommittableTransaction as CommittableTransaction).Commit();
                                }
                            });
         }
