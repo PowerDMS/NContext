@@ -37,6 +37,16 @@ namespace NContext.Extensions.EntityFramework
         where TEntity : class, IEntity
     {
         /// <summary>
+        /// Occurs when the instance is currently disposing its managed resources.
+        /// </summary>
+        event EventHandler Disposing;
+
+        /// <summary>
+        /// Occurs when the instance has been disposed.
+        /// </summary>
+        event EventHandler Disposed;
+
+        /// <summary>
         /// Adds an instance of <typeparamref name="TEntity"/> to the unit of work
         /// to be persisted and inserted by the repository.
         /// </summary>
@@ -59,10 +69,17 @@ namespace NContext.Extensions.EntityFramework
         IQueryable<TEntity> AllMatching(SpecificationBase<TEntity> specification);
 
         /// <summary>
-        /// Attaches a detached entity.
+        /// Attaches the specified entity to the context underlying the set. That is, the entity is placed into the context in the
+        /// Unchanged state, just as if it had been read from the database.
         /// </summary>
-        /// <param name="entity">The entity instance to attach to the repository.</param>
+        /// <param name="entity">The entity instance to attach back to the repository.</param>
         void Attach(TEntity entity);
+
+        /// <summary>
+        /// Detaches the specified entity from the underlying <see cref="System.Data.Objects.ObjectContext"/>.
+        /// </summary>
+        /// <param name="entity">The entity to detach.</param>
+        void Detach(TEntity entity);
 
         /// <summary>
         /// Finds an entity with the given primary key values. If an entity with the given primary key values exists in the context, 

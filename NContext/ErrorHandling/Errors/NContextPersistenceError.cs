@@ -22,9 +22,11 @@ namespace NContext.ErrorHandling.Errors
 {
     using System;
     using System.Net;
+    using System.Transactions;
 
     using NContext.Common;
     using NContext.Data.Persistence;
+    using NContext.Extensions;
 
     public class NContextPersistenceError : ErrorBase
     {
@@ -69,6 +71,18 @@ namespace NContext.ErrorHandling.Errors
         public static NContextPersistenceError CommitFailed(Guid unitOfWorkId, String transactionIdentifier, AggregateException exceptions = null)
         {
             return new NContextPersistenceError("CommitFailed", unitOfWorkId, transactionIdentifier, exceptions != null ? exceptions.ToString() : String.Empty);
+        }
+
+        /// <summary>
+        /// IUnitOfWork instance Id: {0} with transaction Id: {1} has failed to commit due to the following exception(s): {2}
+        /// </summary>
+        /// <param name="unitOfWorkId">The unit of work id.</param>
+        /// <param name="transactionIdentifier">The transaction identifier.</param>
+        /// <param name="exception">The exception.</param>
+        /// <returns>NContextPersistenceError.</returns>
+        public static NContextPersistenceError CommitFailed(Guid unitOfWorkId, String transactionIdentifier, TransactionAbortedException exception)
+        {
+            return new NContextPersistenceError("CommitFailed", unitOfWorkId, transactionIdentifier, exception.ToErrors().ToMessage());
         }
 
         /// <summary>

@@ -24,6 +24,7 @@ namespace NContext.Extensions.EntityFramework
     using System.Collections;
     using System.Collections.Generic;
     using System.Data.Entity;
+    using System.Data.Entity.Infrastructure;
     using System.Data.Entity.Validation;
     using System.Linq;
     using System.Linq.Expressions;
@@ -55,6 +56,10 @@ namespace NContext.Extensions.EntityFramework
         }
 
         #region Implementation of IEfGenericRepository<TEntity>
+
+        public event EventHandler Disposing;
+
+        public event EventHandler Disposed;
 
         /// <summary>
         /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
@@ -92,6 +97,15 @@ namespace NContext.Extensions.EntityFramework
         public void Attach(TEntity entity)
         {
             _Context.Set<TEntity>().Attach(entity);
+        }
+
+        /// <summary>
+        /// Detaches the specified entity from the underlying <see cref="System.Data.Objects.ObjectContext"/>.
+        /// </summary>
+        /// <param name="entity">The entity to detach.</param>
+        public void Detach(TEntity entity)
+        {
+            ((IObjectContextAdapter)_Context).ObjectContext.Detach(entity);
         }
 
         /// <summary>
@@ -315,9 +329,19 @@ namespace NContext.Extensions.EntityFramework
             if (disposeManagedResources)
             {
                 // TODO: (DG) If not part of a unit of work, dispose the _Context? Can the rep exist outside a UoW? Not currently.
+                var disposingHandler = Disposing;
+                if (disposingHandler != null)
+                {
+                    disposingHandler(this, EventArgs.Empty);
+                }
             }
 
             IsDisposed = true;
+            var disposedHandler = Disposed;
+            if (disposedHandler != null)
+            {
+                disposedHandler(this, EventArgs.Empty);
+            }
         }
 
         #endregion

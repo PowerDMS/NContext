@@ -166,7 +166,7 @@ namespace NContext.Data.Persistence
                 }
                 catch (Exception exception)
                 {
-                    return new ServiceResponse<Unit>(exception.ToError());
+                    return new ServiceResponse<Unit>(exception.ToErrors());
                 }
             }
 
@@ -204,7 +204,7 @@ namespace NContext.Data.Persistence
                             catch (Exception exception)
                             {
                                 state.Break();
-                                commitExceptions.Enqueue(exception.ToError());
+                                exception.ToErrors().ForEach(commitExceptions.Enqueue);
 
                                 // TODO: (DG) Logging ...
                             }

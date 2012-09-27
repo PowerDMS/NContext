@@ -126,6 +126,7 @@
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ErrorBaseExtensions.cs" />
+    <Compile Include="Extensions\ErrorExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectIQueryableExtensions.cs" />

@@ -28,6 +28,7 @@ namespace NContext.Data.Persistence
 
     using NContext.Common;
     using NContext.ErrorHandling.Errors;
+    using NContext.Extensions;
 
     using LocalizedPersistenceError = NContext.ErrorHandling.Errors.Localization.NContextPersistenceError;
 
@@ -43,7 +44,7 @@ namespace NContext.Data.Persistence
 
         private readonly AmbientContextManagerBase _AmbientContextManager;
 
-        private readonly Lazy<Transaction> _TransactionFactory;
+        private readonly Lazy<Transaction> _ScopeTransactionFactory;
 
         private readonly Thread _ScopeThread;
 
@@ -53,7 +54,7 @@ namespace NContext.Data.Persistence
 
         private volatile TransactionStatus _Status;
 
-        private Lazy<Transaction> _CommittableTransaction;
+        private Lazy<Transaction> _CommittableTransactionFactory;
 
         private Boolean _IsDisposed;
 
@@ -82,7 +83,7 @@ namespace NContext.Data.Persistence
             _PersistenceOptions = persistenceOptions;
             _ScopeThread = Thread.CurrentThread;
             _Status = TransactionStatus.InDoubt;
-            _TransactionFactory =
+            _ScopeTransactionFactory =
                 new Lazy<Transaction>(
                     _Parent == null
                         ? (Func<Transaction>)(() => new CommittableTransaction())
@@ -146,7 +147,7 @@ namespace NContext.Data.Persistence
         {
             get
             {
-                return _TransactionFactory.Value;
+                return _ScopeTransactionFactory.Value;
             }
         }
 
@@ -157,7 +158,7 @@ namespace NContext.Data.Persistence
         {
             get
             {
-                return _CommittableTransaction == null ? null : _CommittableTransaction.Value;
+                return _CommittableTransactionFactory == null ? null : _CommittableTransactionFactory.Value;
             }
         }
 
@@ -243,13 +244,13 @@ namespace NContext.Data.Persistence
             if (Parent == null && ScopeThread == Thread.CurrentThread)
             {
                 // Use the existing CommittableTransaction.
-                _CommittableTransaction = new Lazy<Transaction>(() => ScopeTransaction);
+                _CommittableTransactionFactory = new Lazy<Transaction>(() => ScopeTransaction);
                 transactionScope = new TransactionScope(CommittableTransaction, PersistenceOptions.TransactionTimeOut);
             }
             else if (ScopeThread != Thread.CurrentThread)
             {
                 // UnitOfWork is being committed on a different thread.
-                _CommittableTransaction = new Lazy<Transaction>(() => ScopeTransaction.DependentClone(DependentCloneOption.BlockCommitUntilComplete));
+                _CommittableTransactionFactory = new Lazy<Transaction>(() => ScopeTransaction.DependentClone(DependentCloneOption.BlockCommitUntilComplete));
                 transactionScope = new TransactionScope(CommittableTransaction, PersistenceOptions.TransactionTimeOut);
             }
 
@@ -270,17 +271,35 @@ namespace NContext.Data.Persistence
 
             return CommitTransaction(transactionScope)
                        .Catch(_ => { _Status = TransactionStatus.Aborted; })
-                       .Let(_ =>
+                       .Bind(_ =>
                            {
                                _Status = TransactionStatus.Committed;
                                if (CommittableTransaction is DependentTransaction)
                                {
-                                   (CommittableTransaction as DependentTransaction).Complete();
+                                   if (transactionScope != null)
+                                   {
+                                       transactionScope.Complete();
+                                       transactionScope.Dispose();
+                                   }
+
+                                   var dependentTransaction = CommittableTransaction as DependentTransaction;
+                                   dependentTransaction.Complete();
+                                   dependentTransaction.Dispose();
                                }
                                else if (CommittableTransaction is CommittableTransaction)
                                {
-                                   (CommittableTransaction as CommittableTransaction).Commit();
+                                   try
+                                   {
+                                       (CommittableTransaction as CommittableTransaction).Commit();
+                                   }
+                                   catch (TransactionAbortedException abortedException)
+                                   {
+                                       return NContextPersistenceError.CommitFailed(Id, CommittableTransaction.TransactionInformation.LocalIdentifier, abortedException)
+                                                                      .ToServiceResponse();
+                                   }
                                }
+
+                               return new ServiceResponse<Unit>(default(Unit));
                            });
         }
 

@@ -39,6 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Error.cs" />
+    <Compile Include="Extensions\HierarchicalDataExtensions.cs" />
+    <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\IMaybeIEnumerableExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectIEnumerableExtensions.cs" />
     <Compile Include="IResponseTransferObject.cs" />

@@ -32,14 +32,26 @@ namespace NContext.Extensions
     /// </summary>
     public static class ExceptionExtensions
     {
+
         /// <summary>
         /// Returns an error representing the exception.
         /// </summary>
         /// <param name="exception">The exception.</param>
         /// <returns>Error instance.</returns>
-        public static Error ToError(this Exception exception)
+        public static IEnumerable<Error> ToErrors(this Exception exception)
         {
-            return new Error(exception.GetType().Name, new[] { exception.Message }, HttpStatusCode.InternalServerError.ToString());
+            return exception.FromHierarchy(e => e.InnerException)
+                            .Select(ToError);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="IEnumerable{Exception}" /> as an enumerable of <see cref="Error" />.
+        /// </summary>
+        /// <param name="exceptions">The exceptions.</param>
+        /// <returns>IEnumerable{Error}.</returns>
+        public static IEnumerable<Error> ToErrors(this IEnumerable<Exception> exceptions)
+        {
+            return exceptions.SelectMany(ToErrors);
         }
 
         /// <summary>
@@ -49,7 +61,13 @@ namespace NContext.Extensions
         /// <returns>IEnumerable{Error}.</returns>
         public static IEnumerable<Error> ToErrors(this AggregateException aggregateException)
         {
-            return aggregateException.InnerExceptions.Select(ToError);
+            return new List<Error>().AddC(aggregateException.ToError())
+                                    .AddRangeC(aggregateException.InnerExceptions.ToErrors());
+        }
+
+        private static Error ToError(this Exception exception)
+        {
+            return new Error(exception.GetType().Name, new[] { exception.Message }, HttpStatusCode.InternalServerError.ToString());
         }
     }
 }
