@@ -142,7 +142,7 @@ namespace NContext.Extensions.EntityFramework
             Console.Write(
                 new StringBuilder()
                     .AppendFormat("EfUnitOfWork: {0}", Id).AppendLine()
-                    .AppendFormat("\tType: {0}", CommittableTransaction == null ? String.Empty : CommittableTransaction.GetType().ToString()).AppendLine()
+                    .AppendFormat("\tType: {0}", CurrentTransaction == null ? String.Empty : CurrentTransaction.GetType().ToString()).AppendLine()
                     .AppendFormat("\tScope Thread: {0}", ScopeThread.ManagedThreadId).AppendLine()
                     .AppendFormat("\tCommit Thread: {0}", Thread.CurrentThread.ManagedThreadId).AppendLine()
                     .AppendFormat("\tTransaction LocalId: {0}", Transaction.Current.TransactionInformation.LocalIdentifier).AppendLine()

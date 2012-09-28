@@ -135,7 +135,7 @@ namespace NContext.Data.Persistence
                             Console.WriteLine(
                                 "CompositeUnitOfWork: {0}; Type: {1}; Origin Thread: {2}; Commit Thread: {3}; Transaction: {4}",
                                 Id,
-                                CommittableTransaction.GetType(),
+                                CurrentTransaction.GetType(),
                                 ScopeThread.ManagedThreadId,
                                 System.Threading.Thread.CurrentThread.ManagedThreadId,
                                 Transaction.Current.TransactionInformation.LocalIdentifier);

@@ -30,7 +30,7 @@ namespace NContext.Data.Persistence
     {
         private TimeSpan _TransactionTimeOut;
 
-        private UInt16 _MaxDegreeOfParallelism;
+        private Int32 _MaxDegreeOfParallelism;
 
         private IsolationLevel _IsolationLevel;
 
@@ -47,7 +47,7 @@ namespace NContext.Data.Persistence
         /// Initializes a new instance of the <see cref="T:System.Object" /> class.
         /// </summary>
         /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
-        public PersistenceOptions(UInt16 maxDegreeOfParallelism)
+        public PersistenceOptions(Int32 maxDegreeOfParallelism)
             : this(TransactionManager.DefaultTimeout, maxDegreeOfParallelism, IsolationLevel.Serializable)
         {
         }
@@ -66,7 +66,7 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <param name="transactionTimeOut">The transaction time out.</param>
         /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
-        public PersistenceOptions(TimeSpan transactionTimeOut, UInt16 maxDegreeOfParallelism)
+        public PersistenceOptions(TimeSpan transactionTimeOut, Int32 maxDegreeOfParallelism)
             : this(transactionTimeOut, maxDegreeOfParallelism, IsolationLevel.Serializable)
         {
         }
@@ -76,7 +76,7 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
         /// <param name="isolationLevel">The isolation level.</param>
-        public PersistenceOptions(UInt16 maxDegreeOfParallelism, IsolationLevel isolationLevel)
+        public PersistenceOptions(Int32 maxDegreeOfParallelism, IsolationLevel isolationLevel)
             : this(TransactionManager.DefaultTimeout, maxDegreeOfParallelism, isolationLevel)
         {
         }
@@ -87,7 +87,7 @@ namespace NContext.Data.Persistence
         /// <param name="transactionTimeOut">The transaction time out.</param>
         /// <param name="maxDegreeOfParallelism">The max degree of parallelism.</param>
         /// <param name="isolationLevel">The isolation level.</param>
-        public PersistenceOptions(TimeSpan transactionTimeOut, UInt16 maxDegreeOfParallelism, IsolationLevel isolationLevel)
+        public PersistenceOptions(TimeSpan transactionTimeOut, Int32 maxDegreeOfParallelism, IsolationLevel isolationLevel)
         {
             _TransactionTimeOut = transactionTimeOut;
             _MaxDegreeOfParallelism = maxDegreeOfParallelism;
@@ -98,11 +98,11 @@ namespace NContext.Data.Persistence
         /// Gets or sets the max degree of parallelism.
         /// </summary>
         /// <value>The max degree of parallelism.</value>
-        public UInt16 MaxDegreeOfParallelism
+        public Int32 MaxDegreeOfParallelism
         {
             get
             {
-                return _MaxDegreeOfParallelism == 0 ? (UInt16)1 : _MaxDegreeOfParallelism;
+                return _MaxDegreeOfParallelism == 0 ? 1 : _MaxDegreeOfParallelism;
             }
             set
             {

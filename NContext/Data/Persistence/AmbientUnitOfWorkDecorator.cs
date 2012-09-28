@@ -34,7 +34,7 @@ namespace NContext.Data.Persistence
 
         private readonly UnitOfWorkBase _UnitOfWork;
 
-        private Int32 _ActiveSessions;
+        private Int32 _SessionCount;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace NContext.Data.Persistence
         /// <remarks></remarks>
         public AmbientUnitOfWorkDecorator(UnitOfWorkBase unitOfWork)
         {
-            _ActiveSessions = 1;
+            _SessionCount = 1;
             _UnitOfWork = unitOfWork;
         }
         
@@ -70,7 +70,7 @@ namespace NContext.Data.Persistence
         {
             get
             {
-                return _ActiveSessions == 1;
+                return SessionCount == 1;
             }
         }
 
@@ -83,7 +83,15 @@ namespace NContext.Data.Persistence
         {
             get
             {
-                return _ActiveSessions <= 1;
+                return SessionCount <= 1;
+            }
+        }
+
+        internal Int32 SessionCount
+        {
+            get
+            {
+                return _SessionCount;
             }
         }
 
@@ -98,7 +106,7 @@ namespace NContext.Data.Persistence
         /// <remarks></remarks>
         protected internal void Decrement()
         {
-            _ActiveSessions--;
+            _SessionCount = SessionCount - 1;
         }
 
         /// <summary>
@@ -107,7 +115,7 @@ namespace NContext.Data.Persistence
         /// <remarks></remarks>
         protected internal void Increment()
         {
-            _ActiveSessions++;
+            _SessionCount = SessionCount + 1;
         }
 
         #region Implementation of IEquatable<IUnitOfWork>

@@ -24,8 +24,7 @@ namespace NContext.Data.Persistence
     using System.Transactions;
 
     /// <summary>
-    /// Defines a <see cref="System.Transactions"/> persistence abstraction that allows composition of
-    /// infrastructural components to be part of.
+    /// Defines a <see cref="System.Transactions"/> general persistence abstraction for <see cref="CompositeUnitOfWork"/>.
     /// </summary>
     public class PersistenceFactory : PersistenceFactoryBase, IPersistenceFactory
     {
@@ -93,26 +92,23 @@ namespace NContext.Data.Persistence
 
         private IUnitOfWork GetRequiredUnitOfWork()
         {
-            UnitOfWorkBase unitOfWork;
-            if (!AmbientContextManager.AmbientExists)
+            if (!AmbientContextManager.AmbientExists || !AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
             {
                 return GetRequiredNewUnitOfWork();
             }
 
-            if (!AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
-            {
-                var currentCompositeUnitOfWork = (CompositeUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
-                unitOfWork = new CompositeUnitOfWork(AmbientContextManager, currentCompositeUnitOfWork, _PersistenceOptions);
-                currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
-                AmbientContextManager.AddUnitOfWork(unitOfWork);
-            }
-            else
-            {
-                unitOfWork = AmbientContextManager.Ambient.UnitOfWork;
-                AmbientContextManager.RetainAmbient();
-            }
+            // TODO: (DG) If ambient is a Composite do we retain or add to it?
+            //if ()
+            //{
+            //    var currentCompositeUnitOfWork = (CompositeUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+            //    unitOfWork = new CompositeUnitOfWork(AmbientContextManager, currentCompositeUnitOfWork, _PersistenceOptions);
+            //    currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
+            //    AmbientContextManager.AddUnitOfWork(unitOfWork);
+            //}
 
-            return unitOfWork;
+            AmbientContextManager.RetainAmbient();
+
+            return AmbientContextManager.Ambient.UnitOfWork;
         }
 
         private IUnitOfWork GetRequiredNewUnitOfWork()

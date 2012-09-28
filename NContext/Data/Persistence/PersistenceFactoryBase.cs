@@ -22,16 +22,19 @@ namespace NContext.Data.Persistence
 {
     using System;
     using System.Transactions;
-    using System.Web;
 
+    /// <summary>
+    /// Defines a general abstraction for creating further datastore-specific implementations - 
+    /// responsible for managing the creation and retainment of existing ambient <see cref="IUnitOfWork"/> instances.
+    /// </summary>
     public abstract class PersistenceFactoryBase
     {
         private readonly Lazy<AmbientContextManagerBase> _AmbientContextManager;
 
-        protected PersistenceFactoryBase() : this(null)
-        {
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PersistenceFactoryBase" /> class.
+        /// </summary>
+        /// <param name="contextManagerFactory">The context manager factory.</param>
         protected PersistenceFactoryBase(IAmbientContextManagerFactory contextManagerFactory)
         {
             var factoryMethod = contextManagerFactory == null
@@ -41,6 +44,10 @@ namespace NContext.Data.Persistence
             _AmbientContextManager = new Lazy<AmbientContextManagerBase>(factoryMethod);
         }
 
+        /// <summary>
+        /// Gets the ambient context manager.
+        /// </summary>
+        /// <value>The ambient context manager.</value>
         protected internal AmbientContextManagerBase AmbientContextManager
         {
             get
@@ -49,6 +56,13 @@ namespace NContext.Data.Persistence
             }
         }
 
+        /// <summary>
+        /// Creates the unit of work.
+        /// </summary>
+        /// <param name="transactionScopeOption">The <see cref="TransactionScopeOption"/>.</param>
+        /// <returns>IUnitOfWork.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public virtual IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
             switch (transactionScopeOption)
@@ -66,15 +80,12 @@ namespace NContext.Data.Persistence
         }
 
         /// <summary>
-        /// Creates the default transaction manager. Local Default:
-        /// <see cref="PerRequestAmbientContextManager"/> if HttpContext exists; otherwise <see cref="ThreadLocalAmbientContextManager" />.
+        /// Creates the default transaction manager. Local Default: <see cref="ThreadLocalAmbientContextManager" />.
         /// </summary>
         /// <returns>AmbientContextManagerBase.</returns>
         protected virtual AmbientContextManagerBase CreateDefaultAmbientContextManager()
         {
-            return HttpContext.Current != null
-                ? (AmbientContextManagerBase)new PerRequestAmbientContextManager()
-                : (AmbientContextManagerBase)new ThreadLocalAmbientContextManager();
+            return new ThreadLocalAmbientContextManager();
         }
     }
 }
