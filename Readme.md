@@ -25,8 +25,8 @@ Current efforts are underway to bring NContext to a production-ready state. This
 includes specification tests and an efficient build and deployment strategy.  To 
 accomplish this, I have set up the following environments for the community to use:
 
-**CI NuGet Package Source:** *https://nuget.wakingventure.com*  return
-**CI Symbol Source Server:** *http://symbolsource.wakingventure.com*
+**CI NuGet Package Source:** *https://nuget.wakingventure.com*  
+**CI Symbol Source Server:** *http://symbolsource.wakingventure.com*  
 
 NContext versioning is still being determined. The core libraries (NContext.dll & 
 NContext.Common.dll) will be released as 2.0.0. Ideally all extensions will be 
