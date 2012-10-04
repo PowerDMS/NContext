@@ -17,3 +17,19 @@ API.
 NContext is dependency-injection container agnostic. Ninject and Unity support
 has been added with the intentions of supporting all popular containers in the
 near future.
+
+Continuous Delivery
+-------------------
+
+Current efforts are underway to bring NContext to a production-ready state. This 
+includes specification tests and an efficient build and deployment strategy.  To 
+accomplish this, I have set up the following environments for the community to use:
+
+**CI NuGet Package Source:** *https://nuget.wakingventure.com*  
+**CI Symbol Source Server:** *http://symbolsource.wakingventure.com*  
+
+NContext versioning is still being determined. The core libraries (NContext.dll & 
+NContext.Common.dll) will be released as 2.0.0. Ideally all extensions will be 
+independently versioned, however, the current build process does not reflect this. 
+This will be addressed in future builds as updating NuGet references is currently a 
+pain since each build packages a new NuGet release for every .nuspec.
