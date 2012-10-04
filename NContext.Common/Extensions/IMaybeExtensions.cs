@@ -29,34 +29,58 @@ namespace NContext.Common
     public static class IMaybeExtensions
     {
         /// <summary>
-        /// Selects the specified maybe.
+        /// TODO: (DG) fill...
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult">The type of the result.</typeparam>
-        /// <param name="maybe">The maybe.</param>
-        /// <param name="selectFunction">The selectManyFunction function.</param>
-        /// <returns>IMaybe{<typeparamref name="TResult" />}.</returns>
-        public static IMaybe<TResult> Select<T, TResult>(this IMaybe<T> maybe, Func<T, IMaybe<TResult>> selectFunction)
+        /// <param name="instance">The maybe <typeparamref name="T"/> instance.</param>
+        /// <param name="selectFunc">The selectFunc function.</param>
+        /// <returns><see cref="IMaybe{TResult}"/>.</returns>
+        public static IMaybe<TResult> Select<T, TResult>(this IMaybe<T> instance, Func<T, IMaybe<TResult>> selectFunc)
             where T : IEnumerable
             where TResult : IEnumerable
         {
-            return maybe.Bind(selectFunction);
+            return instance.Bind(selectFunc);
         }
 
         /// <summary>
-        /// Wraps the object in a <see cref="IMaybe{T}"/>
+        /// Returns a new <see cref="IResponseTransferObject{T}"/>. If <paramref name="instance"/> is <see cref="Nothing{t}"/>, then 
+        /// the <paramref name="isNothingToErrorBindingFunc"/> is invoked to return a <see cref="IResponseTransferObject{T}"/> with 
+        /// errors.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="instance">The <see cref="IMaybe{T}"/> instance.</param>
+        /// <param name="isNothingToErrorBindingFunc">The function to invoke if <paramref name="instance"/> is <see cref="Nothing{T}"/>.</param>
+        /// <returns>IResponseTransferObject{T}.</returns>
+        /// <exception cref="System.ArgumentNullException">instance</exception>
+        public static IResponseTransferObject<T> ToServiceResponse<T>(this IMaybe<T> instance, Func<Error> isNothingToErrorBindingFunc)
+        {
+            if (instance == null) throw new ArgumentNullException("instance");
+
+            if (isNothingToErrorBindingFunc == null) throw new ArgumentNullException("isNothingToErrorBindingFunc");
+
+            if (instance.IsJust)
+            {
+                return new ServiceResponse<T>(instance.FromMaybe(default(T)));
+            }
+
+            return new ServiceResponse<T>(isNothingToErrorBindingFunc.Invoke());
+        }
+
+        /// <summary>
+        /// Returns the instance as a <see cref="IMaybe{T}"/>
         /// </summary>
         /// <typeparam name="T">The type of the object to wrap</typeparam>
-        /// <param name="obj">The obj.</param>
+        /// <param name="instance">The instance.</param>
         /// <returns><see cref="IMaybe{T}"/></returns>
-        public static IMaybe<T> ToMaybe<T>(this T obj)
+        public static IMaybe<T> ToMaybe<T>(this T instance)
         {
-            if (obj == null)
+            if (instance == null)
             {
                 return new Nothing<T>();
             }
 
-            return new Just<T>(obj);
+            return new Just<T>(instance);
         }
     }
 }

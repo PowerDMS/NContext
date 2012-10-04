@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfoShared.cs" company="Waking Venture, Inc.">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="StateExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,19 +18,34 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System.Reflection;
+namespace NContext.Common
+{
 
-[assembly: AssemblyCompany("Waking Venture Inc.")]
-[assembly: AssemblyProduct("NContext")]
-[assembly: AssemblyCopyright("Copyright © Waking Venture Inc. 2012")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+#if !WINDOWS_PHONE && !NET40
 
-#if DEBUG
-[assembly: AssemblyConfiguration("Debug")]
-#else
-[assembly: AssemblyConfiguration("Release")]
+    using System;
+    using System.Linq;
+
+    public static class StateExtensions
+    {
+        public static IStatefulResponseTransferObject<T> WithState<T>(this IResponseTransferObject<T> responseTransferObject)
+        {
+            return responseTransferObject.Errors.Any()
+                       ? new StatefulServiceResponse<T>(responseTransferObject.Errors)
+                       : new StatefulServiceResponse<T>(responseTransferObject.Data);
+        }
+
+        public static IStatefulResponseTransferObject<T2> Bind<T, T2>(this IStatefulResponseTransferObject<T> responseTransferObject, Func<T, dynamic, IStatefulResponseTransferObject<T2>> bindingFunction)
+        {
+            if (responseTransferObject.Errors.Any())
+            {
+                return new StatefulServiceResponse<T2>(responseTransferObject.Errors);
+            }
+
+            return bindingFunction.Invoke(responseTransferObject.Data, responseTransferObject.State);
+        }
+    }
+
 #endif
 
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0 Alpha")]
+}

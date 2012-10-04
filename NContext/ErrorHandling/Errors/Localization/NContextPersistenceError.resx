@@ -120,6 +120,9 @@
   <data name="CommitFailed" xml:space="preserve">
     <value>IUnitOfWork instance Id: {0} with transaction Id: {1} has failed to commit due to the following exception(s): {2}</value>
   </data>
+  <data name="CompositeUnitOfWorkWithinDifferentAmbientType" xml:space="preserve">
+    <value>Cannot create a CompositeUnitOfWork within an existing ambient of type {0}. Use TransactionScopeOption.RequiresNew.</value>
+  </data>
   <data name="ConcurrencyUnsupported" xml:space="preserve">
     <value>The active ambient context manager of type {0} does not support parallel commits per transaction. To use this manager, PersistenceOptions.MaxDegreeOfParallelism cannot be more than one.</value>
   </data>

@@ -21,7 +21,6 @@
 namespace NContext.Extensions.ValueInjecter
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
 
     using NContext.Common;
@@ -34,7 +33,7 @@ namespace NContext.Extensions.ValueInjecter
     public static class IResponseTransferObjectExtensions
     {
         /// <summary>
-        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/> using <see cref="LoopValueInjection"/>.
+        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/> using <see cref="LoopValueInjection"/>.
         /// </summary>
         /// <typeparam name="TTarget">The type of the dto.</typeparam>
         /// <param name="response">The response.</param>
@@ -47,7 +46,7 @@ namespace NContext.Extensions.ValueInjecter
         }
 
         /// <summary>
-        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/>
+        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/>
         /// using the specified <typeparamref name="TValueInjection"/>.
         /// </summary>
         /// <typeparam name="TTarget">The type of the dto.</typeparam>
@@ -63,7 +62,7 @@ namespace NContext.Extensions.ValueInjecter
         }
 
         /// <summary>
-        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/> using <see cref="LoopValueInjection"/>.
+        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/> using <see cref="LoopValueInjection"/>.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TTarget">The type of the dto.</typeparam>
@@ -77,7 +76,7 @@ namespace NContext.Extensions.ValueInjecter
         }
 
         /// <summary>
-        /// Translates this instance to a <see cref="ServiceResponse{TDto}"/>
+        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/>
         /// using the specified <typeparamref name="TValueInjection"/>.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>

@@ -4,25 +4,25 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Framework Condition=" '$(Framework)' == '' ">net45</Framework>
     <ProjectGuid>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NContext.Common</RootNamespace>
     <AssemblyName>NContext.Common</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
   </PropertyGroup>
+  <!--
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WINDOWS_PHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NContext.Common.xml</DocumentationFile>
@@ -36,6 +36,70 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\NContext.Common.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  -->
+  <PropertyGroup Condition=" '$(Framework)' == 'net40' ">
+    <!-- #############################################   DEBUG   ################################################ -->
+    <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
+    <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET40</DefineConstants>
+    <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
+    <PlatformTarget Condition=" '$(Configuration)' == 'Debug' ">$(Platform)</PlatformTarget>
+    <!-- ######################################################################################################## -->
+    <!-- ############################################   RELEASE   ############################################### -->
+    <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
+    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET40</DefineConstants>
+    <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
+    <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
+    <!-- ######################################################################################################## -->
+    <DocumentationFile>bin\$(Configuration)\$(Framework)\NContext.Common.xml</DocumentationFile>
+    <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile3</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Framework)' == 'net45' ">
+    <!-- #############################################   DEBUG   ################################################ -->
+    <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
+    <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET45</DefineConstants>
+    <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
+    <PlatformTarget Condition=" '$(Configuration)' == 'Debug' ">$(Platform)</PlatformTarget>
+    <!-- ######################################################################################################## -->
+    <!-- ############################################   RELEASE   ############################################### -->
+    <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
+    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET45</DefineConstants>
+    <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
+    <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
+    <!-- ######################################################################################################## -->
+    <DocumentationFile>bin\$(Configuration)\$(Framework)\NContext.Common.xml</DocumentationFile>
+    <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile23</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Framework)' == 'sl3-wp' ">
+    <!-- #############################################   DEBUG   ################################################ -->
+    <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
+    <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;WINDOWS_PHONE</DefineConstants>
+    <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
+    <PlatformTarget Condition=" '$(Configuration)' == 'Debug' ">$(Platform)</PlatformTarget>
+    <!-- ######################################################################################################## -->
+    <!-- ############################################   RELEASE   ############################################### -->
+    <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
+    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;WINDOWS_PHONE</DefineConstants>
+    <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
+    <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
+    <!-- ######################################################################################################## -->
+    <DocumentationFile>bin\$(Configuration)\$(Framework)\NContext.Common.xml</DocumentationFile>
+    <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
+    <WarningLevel>4</WarningLevel>
+    <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Error.cs" />
@@ -54,8 +118,17 @@
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="ValidationError.cs" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(Framework)' == 'net45' ">
+    <Compile Include="IStatefulResponseTransferObject.cs" />
+    <Compile Include="StateExtensions.cs" />
+    <Compile Include="StatefulServiceResponse.cs" />
+  </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Contracts">
+    <Reference Include="Microsoft.Contracts" Condition=" '$(Framework)' == 'net40' Or '$(Framework)' == 'net45' ">
+      <HintPath>..\..\..\Program Files (x86)\Microsoft\Contracts\PublicAssemblies\v3.5\Microsoft.Contracts.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.Contracts" Condition=" '$(Framework)' == 'sl3-wp' ">
       <HintPath>..\..\..\Program Files (x86)\Microsoft\Contracts\PublicAssemblies\WindowsPhone71\Microsoft.Contracts.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -64,7 +137,9 @@
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
   </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
+  <Target Name="AfterBuild">
+    <MSBuild Condition=" '$(Framework)' != 'net40' And '$(Framework)' != 'sl3-wp' " Projects="$(MSBuildProjectFile)" Properties="Framework=net40" RunEachTargetSeparately="true" />
+    <MSBuild Condition=" '$(Framework)' != 'sl3-wp' And '$(Framework)' != 'net40' " Projects="$(MSBuildProjectFile)" Properties="Framework=sl3-wp" RunEachTargetSeparately="true" />
+  </Target>
 </Project>

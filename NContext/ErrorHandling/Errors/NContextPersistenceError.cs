@@ -42,6 +42,16 @@ namespace NContext.ErrorHandling.Errors
         }
 
         /// <summary>
+        /// Cannot create a CompositeUnitOfWork within an existing ambient of type {0}. Use TransactionScopeOption.RequiresNew.
+        /// </summary>
+        /// <param name="unitOfWorkType">Type of the ambient <see cref="IUnitOfWork"/>.</param>
+        /// <returns>NContextPersistenceError.</returns>
+        public static NContextPersistenceError CompositeUnitOfWorkWithinDifferentAmbientType(Type unitOfWorkType)
+        {
+            return new NContextPersistenceError("CompositeUnitOfWorkWithinDifferentAmbientType", unitOfWorkType.Name);
+        }
+
+        /// <summary>
         /// ScopeTransaction cannot be null. This is due to an invalid "Func&lt;Transaction&gt; transactionFactory"
         /// parameter being supplied to the UnitOfWorkBase constructor.
         /// </summary>

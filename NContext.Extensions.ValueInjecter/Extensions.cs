@@ -21,76 +21,26 @@
 namespace NContext.Extensions.ValueInjecter
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-
-    using Omu.ValueInjecter;
 
     /// <summary>
-    /// Defines a static class for providing IEnumerable type extension methods.
+    /// Defines extension methods for ValueInjecter.
     /// </summary>
     /// <remarks></remarks>
     public static class Extensions
     {
         /// <summary>
-        /// Injects value from <paramref name="source"/> to <paramref name="target"/>.
+        /// Returns a new <see cref="IFluentValueInjector{T}"/> instance using <paramref name="source"/>
+        /// as the source object for value injection.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target">The target.</param>
-        /// <param name="source">The source.</param>
-        /// <returns>Instance of <typeparamref name="T"/>.</returns>
-        /// <remarks></remarks>
-        public static T InjectInto<T>(this Object target, Object source) where T : class
+        /// <typeparam name="T">Source type.</typeparam>
+        /// <param name="source">The source instance.</param>
+        /// <returns>IFluentValueInjector{T}.</returns>
+        /// <exception cref="System.ArgumentNullException">source</exception>
+        public static IFluentValueInjector<T> Inject<T>(this T source)
         {
-            return target.InjectInto<T, LoopValueInjection>(source);
-        }
+            if (source == null) throw new ArgumentNullException("source");
 
-        /// <summary>
-        /// Injects value from <paramref name="source"/> to <paramref name="target"/> 
-        /// using the specified <see cref="ValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <param name="target">The target.</param>
-        /// <param name="source">The source.</param>
-        /// <returns>Instance of <typeparamref name="T"/>.</returns>
-        /// <remarks></remarks>
-        public static T InjectInto<T, TValueInjection>(this Object target, Object source)
-            where T : class
-            where TValueInjection : class, IValueInjection, new()
-        {
-            return target.InjectFrom<TValueInjection>(source) as T;
-        }
-
-        /// <summary>
-        /// Projects an <see cref="IEnumerable&lt;Object&gt;"/> into an enumerable of the specified type <typeparamref name="T"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of object to inject the projection into.</typeparam>
-        /// <param name="projections">The projections.</param>
-        /// <returns><see cref="IEnumerable&lt;T&gt;"/> instance.</returns>
-        /// <remarks>
-        /// This extension method is useful when executing query projections of anonymous types into custom DTOs.
-        /// </remarks>
-        public static IEnumerable<T> InjectInto<T>(this IEnumerable<Object> projections)
-            where T : class, new()
-        {
-            return projections.InjectInto<T, LoopValueInjection>();
-        }
-
-        /// <summary>
-        /// Projects an <see cref="IEnumerable{Object}"/> into an enumerable of the specified 
-        /// type <typeparamref name="T"/> using the specified <see cref="IValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="T">Type of object to inject the projection into.</typeparam>
-        /// <typeparam name="TValueInjection">The type of the injection implementation to use.</typeparam>
-        /// <param name="projections">The projections.</param>
-        /// <returns><see cref="IEnumerable&lt;T&gt;"/> instance.</returns>
-        /// <remarks>This extension method is useful when executing query projections of anonymous types into custom DTOs.</remarks>
-        public static IEnumerable<T> InjectInto<T, TValueInjection>(this IEnumerable<Object> projections) 
-            where T : class, new()
-            where TValueInjection : IValueInjection, new()
-        {
-            return projections.ToList().Select(o => StaticValueInjecter.InjectFrom<TValueInjection>(Activator.CreateInstance<T>(), o)).Cast<T>();
+            return new FluentValueInjector<T>(source);
         }
     }
 }

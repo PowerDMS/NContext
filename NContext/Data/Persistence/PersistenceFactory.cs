@@ -23,6 +23,10 @@ namespace NContext.Data.Persistence
     using System;
     using System.Transactions;
 
+    using NContext.ErrorHandling;
+    using NContext.ErrorHandling.Errors;
+    using NContext.Extensions;
+
     /// <summary>
     /// Defines a <see cref="System.Transactions"/> general persistence abstraction for <see cref="CompositeUnitOfWork"/>.
     /// </summary>
@@ -74,7 +78,11 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <param name="transactionScopeOption">The transaction scope option.</param>
         /// <returns>IUnitOfWork.</returns>
-        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        /// <exception cref="InvalidOperationException">
+        /// Thrown when an attempt to create a new <see cref="CompositeUnitOfWork"/> within an 
+        /// existing ambient <see cref="IUnitOfWork"/> of a different type.
+        /// </exception>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when an invalid <see cref="TransactionScopeOption"/> is specified.</exception>
         public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
         {
             switch (transactionScopeOption)
@@ -92,9 +100,15 @@ namespace NContext.Data.Persistence
 
         private IUnitOfWork GetRequiredUnitOfWork()
         {
-            if (!AmbientContextManager.AmbientExists || !AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
+            if (!AmbientContextManager.AmbientExists)
             {
                 return GetRequiredNewUnitOfWork();
+            }
+
+            if (!AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
+            {
+                throw NContextPersistenceError.CompositeUnitOfWorkWithinDifferentAmbientType(AmbientContextManager.Ambient.UnitOfWork.GetType())
+                                              .ToException<InvalidOperationException>();
             }
 
             // TODO: (DG) If ambient is a Composite do we retain or add to it?

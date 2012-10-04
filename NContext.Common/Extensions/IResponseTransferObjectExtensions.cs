@@ -111,7 +111,7 @@ namespace NContext.Common
         }
         
         /// <summary>
-        /// Invokes the specified action if <see cref="IResponseTransferObject{T}.Data" /> exists with no <see cref="IResponseTransferObject{T}.Errors" /> present.
+        /// Invokes the specified action if no <see cref="IResponseTransferObject{T}.Errors" /> exist.
         /// Returns the current <see cref="IResponseTransferObject{T}" /> instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>

@@ -1,6 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageCaching.cs">
-//   Copyright (c) 2012
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IStatefulResponseTransferObject.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -16,23 +16,18 @@
 //   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
-//
-// <summary>
-//   Defines a contract from managing the cache provider.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-using System;
-using System.Runtime.Caching;
-
-using NContext.Configuration;
-
-namespace NContext.Caching
+namespace NContext.Common
 {
-    /// <summary>
-    /// Defines a contract for managing the application's cache provider.
-    /// </summary>
-    public interface IManagePersistence : IApplicationComponent
+
+#if !WINDOWS_PHONE && !NET40
+
+    public interface IStatefulResponseTransferObject<T> : IResponseTransferObject<T>
     {
+        dynamic State { get; }
     }
+
+#endif
+
 }

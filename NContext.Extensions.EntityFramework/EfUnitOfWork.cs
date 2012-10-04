@@ -150,6 +150,19 @@ namespace NContext.Extensions.EntityFramework
 
             foreach (var context in DbContextContainer.Contexts)
             {
+                if (context.Configuration.ValidateOnSaveEnabled)
+                {
+                    try
+                    {
+                        context.SaveChanges();
+                        continue;
+                    }
+                    catch (DbEntityValidationException exception)
+                    {
+                        return new EfServiceResponse<Unit>(exception.EntityValidationErrors);
+                    }
+                }
+
                 context.SaveChanges();
             }
 
