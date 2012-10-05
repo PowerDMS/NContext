@@ -21,7 +21,7 @@
 namespace NContext.Common
 {
 
-#if NET45
+#if NET45 || SILVERLIGHT40
 
     public interface IStatefulResponseTransferObject<T> : IResponseTransferObject<T>
     {

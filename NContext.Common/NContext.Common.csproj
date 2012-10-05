@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Framework Condition=" '$(Framework)' == '' ">net40</Framework>
+    <Framework Condition=" '$(Framework)' == '' ">portable-net4+sl4+wp7</Framework>
     <ProjectGuid>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -25,41 +25,18 @@
   </PropertyGroup>
   
   <!-- ***********************************************************************************************************
-       * .NET 4.0
+       * .NET 4.5 + Silverlight 4
        *********************************************************************************************************** -->
-  <PropertyGroup Condition=" '$(Framework)' == 'net40' ">
+  <PropertyGroup Condition=" '$(Framework)' == 'portable-net45+sl4' ">
     <!-- ==============================================   DEBUG   ================================================ -->
     <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
     <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET40</DefineConstants>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET45;SILVERLIGHT40</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
     <PlatformTarget Condition=" '$(Configuration)' == 'Debug DLL and Web' ">$(Platform)</PlatformTarget>
     <!-- =============================================   RELEASE   =============================================== -->
     <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET40</DefineConstants>
-    <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
-    <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
-    <!-- ========================================================================================================= -->
-    <DocumentationFile>bin\$(Configuration)\$(Framework)\NContext.Common.xml</DocumentationFile>
-    <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
-    <WarningLevel>4</WarningLevel>
-    <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
-  </PropertyGroup>
-  
-  <!-- ***********************************************************************************************************
-       * .NET 4.5
-       *********************************************************************************************************** -->
-  <PropertyGroup Condition=" '$(Framework)' == 'net45' ">
-    <!-- ==============================================   DEBUG   ================================================ -->
-    <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
-    <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET45</DefineConstants>
-    <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
-    <PlatformTarget Condition=" '$(Configuration)' == 'Debug DLL and Web' ">$(Platform)</PlatformTarget>
-    <!-- =============================================   RELEASE   =============================================== -->
-    <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET45</DefineConstants>
+    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET45;SILVERLIGHT40</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
     <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
     <!-- ========================================================================================================= -->
@@ -71,18 +48,18 @@
   </PropertyGroup>
   
   <!-- ***********************************************************************************************************
-       * Windows Phone 7
+       * .NET 4.0 + Silverlight 4 + Windows Phone 7
        *********************************************************************************************************** -->
-  <PropertyGroup Condition=" '$(Framework)' == 'sl3-wp' ">
+  <PropertyGroup Condition=" '$(Framework)' == 'portable-net4+sl4+wp7' ">
     <!-- ==============================================   DEBUG   ================================================ -->
     <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
     <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET40;SILVERLIGHT40;WINDOWS_PHONE7</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
     <PlatformTarget Condition=" '$(Configuration)' == 'Debug DLL and Web' ">$(Platform)</PlatformTarget>
     <!-- =============================================   RELEASE   =============================================== -->
     <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET40;SILVERLIGHT40;WINDOWS_PHONE7</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
     <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
     <!-- ========================================================================================================= -->
@@ -110,7 +87,7 @@
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="ValidationError.cs" />
   </ItemGroup>
-  <ItemGroup Condition=" '$(Framework)' == 'net45' ">
+  <ItemGroup Condition=" '$(Framework)' == 'portable-net45+sl4' ">
     <Compile Include="IStatefulResponseTransferObject.cs" />
     <Compile Include="StateExtensions.cs" />
     <Compile Include="StatefulServiceResponse.cs" />
@@ -143,7 +120,6 @@
   <Import Condition=" '$(NCrunch)' == '' " Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 
   <Target Name="AfterBuild" Condition=" '$(NCrunch)' == '' ">
-    <MSBuild Condition=" '$(Framework)' != 'net40' And '$(Framework)' != 'sl3-wp' " Projects="$(MSBuildProjectFile)" Properties="Framework=net40" RunEachTargetSeparately="true" />
-    <MSBuild Condition=" '$(Framework)' != 'sl3-wp' And '$(Framework)' != 'net40' " Projects="$(MSBuildProjectFile)" Properties="Framework=sl3-wp" RunEachTargetSeparately="true" />
+    <MSBuild Condition=" '$(Framework)' != 'portable-net45+sl4' " Projects="$(MSBuildProjectFile)" Properties="Framework=portable-net45+sl4" RunEachTargetSeparately="true" />
   </Target>
 </Project>
