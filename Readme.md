@@ -18,6 +18,10 @@ NContext is dependency-injection container agnostic. Ninject and Unity support
 has been added with the intentions of supporting all popular containers in the
 near future.
 
+Project Management
+------------------
+**Trello:** *https://trello.com/b/xqQg5bfC*  
+
 Continuous Delivery
 -------------------
 
