@@ -17,12 +17,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
-
-  <!-- ================ NCrunch Pre Override ================== -->
-  <PropertyGroup Condition=" '$(Configuration)' == 'ncrunch' ">
-    <Configuration>Debug</Configuration> <!-- Reset $(Configuration) -->
-    <NCrunch>true</NCrunch>
-  </PropertyGroup>
   
   <!-- ***********************************************************************************************************
        * .NET 4.5 + Silverlight 4
@@ -68,7 +62,28 @@
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
-  </PropertyGroup>
+  </PropertyGroup>  
+  
+  <!-- =============== NCrunch Override ================== -->
+  <Choose>
+    <When Condition=" '$(NCrunch)' == '1' ">
+      <PropertyGroup>
+        <ProjectTypeGuids></ProjectTypeGuids>
+        <TargetFrameworkProfile></TargetFrameworkProfile>
+      </PropertyGroup>
+      <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Runtime.Serialization" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <!-- =================================================== -->
   
   <ItemGroup>
     <Compile Include="Error.cs" />
@@ -93,30 +108,7 @@
     <Compile Include="StatefulServiceResponse.cs" />
   </ItemGroup>
 
-  <!-- =============== NCrunch Post Override ================== -->
-  <Choose>
-    <When Condition=" '$(NCrunch)' == '' ">
-    </When>
-    <Otherwise>
-      <PropertyGroup>
-        <ProjectTypeGuids></ProjectTypeGuids>
-        <TargetFrameworkProfile></TargetFrameworkProfile>
-      </PropertyGroup>
-      <ItemGroup>
-        <Reference Include="System" />
-        <Reference Include="System.Core" />
-        <Reference Include="System.Xml.Linq" />
-        <Reference Include="System.Data.DataSetExtensions" />
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="System.Data" />
-        <Reference Include="System.Xml" />
-        <Reference Include="System.Runtime.Serialization" />
-      </ItemGroup>
-    </Otherwise>
-  </Choose>
-  <Import Condition=" '$(NCrunch)' == 'true' " Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- ======================================================== -->
-
+  <Import Condition=" '$(NCrunch)' == '1' " Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Condition=" '$(NCrunch)' == '' " Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
 
   <Target Name="AfterBuild" Condition=" '$(NCrunch)' == '' ">
