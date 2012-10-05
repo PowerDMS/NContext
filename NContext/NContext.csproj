@@ -191,12 +191,10 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NContext.Common\NContext.Common.csproj">
-      <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
+      <Project>{2ec085ce-bf81-46ed-a2d7-8cd0b9afdec2}</Project>
       <Name>NContext.Common</Name>
-      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildProjectDirectory)\..\ncontext.versioning.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
