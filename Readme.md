@@ -1,6 +1,5 @@
 NContext
 ========
-
 NContext is an application composition framework for .NET 4.0.
 
 This project is an on-going architectural research effort. It borrows many
@@ -20,11 +19,13 @@ near future.
 
 Project Management
 ------------------
+Feel free to comment and vote on ideas or features you'd like to see incorporated
+into NContext.
+
 **Trello:** *https://trello.com/b/xqQg5bfC*  
 
 Continuous Delivery
 -------------------
-
 Current efforts are underway to bring NContext to a production-ready state. This 
 includes specification tests and an efficient build and deployment strategy.  To 
 accomplish this, I have set up the following environments for the community to use:
