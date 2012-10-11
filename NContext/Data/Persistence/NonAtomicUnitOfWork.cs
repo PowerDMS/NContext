@@ -33,7 +33,6 @@ namespace NContext.Data.Persistence
         public NonAtomicUnitOfWork(AmbientContextManagerBase ambientContextManager)
             : base(ambientContextManager)
         {
-            Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} created.", Id));
         }
 
         #region Overrides of UnitOfWorkBase
@@ -62,7 +61,6 @@ namespace NContext.Data.Persistence
 
         protected override void DisposeManagedResources()
         {
-            Debug.WriteLine(String.Format("NonAtomicUnitOfWork: {0} disposed.", Id));
         }
 
         #endregion

@@ -22,7 +22,6 @@ namespace NContext.Data.Persistence
 {
     using System;
     using System.Collections.Generic;
-    using System.Diagnostics;
     using System.Transactions;
 
     /// <summary>
@@ -78,7 +77,6 @@ namespace NContext.Data.Persistence
         public virtual void AddUnitOfWork(UnitOfWorkBase unitOfWork)
         {
             AmbientUnitsOfWork.Push(new AmbientUnitOfWorkDecorator(unitOfWork));
-            Debug.WriteLine("Ambient Pushed");
         }
 
         /// <summary>
@@ -133,12 +131,10 @@ namespace NContext.Data.Persistence
                     if (ambientIsDisposable)
                     {
                         AmbientUnitsOfWork.Pop();
-                        Debug.WriteLine("Ambient Popped");
                     }
                     else
                     {
                         Ambient.Decrement();
-                        Debug.WriteLine("Ambient Decremented");
                     }
                 }
 
@@ -161,7 +157,6 @@ namespace NContext.Data.Persistence
         public virtual void RetainAmbient()
         {
             Ambient.Increment();
-            Debug.WriteLine("Ambient Incremented");
         }
     }
 }

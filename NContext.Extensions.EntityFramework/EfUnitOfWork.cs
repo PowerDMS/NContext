@@ -23,10 +23,7 @@ namespace NContext.Extensions.EntityFramework
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Validation;
-    using System.Diagnostics;
     using System.Linq;
-    using System.Text;
-    using System.Threading;
     using System.Transactions;
 
     using Microsoft.FSharp.Core;
@@ -70,8 +67,6 @@ namespace NContext.Extensions.EntityFramework
             }
 
             _DbContextContianer = dbContextContainer;
-
-            Debug.WriteLine(String.Format("EfUnitOfWork: {0} created.", Id));
         }
 
         #region Overrides of UnitOfWorkBase
@@ -89,10 +84,6 @@ namespace NContext.Extensions.EntityFramework
                 {
                     using (transactionScope)
                     {
-#if DEBUG
-                        // TODO: (DG) Remove this block
-                        Debug.WriteLine(String.Format("-----  Transaction: {0}  -----", Transaction.Current.TransactionInformation.LocalIdentifier));
-#endif
                         return CommitTransactionInternal()
                                    .Catch(errors =>
                                        {
@@ -100,16 +91,9 @@ namespace NContext.Extensions.EntityFramework
                                            // If NContext exception vs error handling IS Exception-based, don't rollback here; just throw;
                                            Rollback();
                                            // throw new NContextPersistenceException(errors);
-#if DEBUG
-                                           Console.WriteLine(String.Format("----- Transaction: {0} is Rolling Back -----", Transaction.Current != null ? Transaction.Current.TransactionInformation.LocalIdentifier : String.Empty));
-#endif
                                        })
                                    .Let(_ =>
                                        {
-#if DEBUG
-                                           Console.WriteLine("Transaction {0} - Complete() is about to be called.", Transaction.Current.TransactionInformation.LocalIdentifier);
-                                           Console.WriteLine("----- Transaction End -----");
-#endif
                                            transactionScope.Complete();
                                        });
                     }
@@ -134,20 +118,10 @@ namespace NContext.Extensions.EntityFramework
         /// </remarks>
         public override void Rollback()
         {
-            Debug.WriteLine(String.Format("EfUoW: {0} is rolling back.", Id));
         }
 
         private IResponseTransferObject<Unit> CommitTransactionInternal()
         {
-            Console.Write(
-                new StringBuilder()
-                    .AppendFormat("EfUnitOfWork: {0}", Id).AppendLine()
-                    .AppendFormat("\tType: {0}", CurrentTransaction == null ? String.Empty : CurrentTransaction.GetType().ToString()).AppendLine()
-                    .AppendFormat("\tScope Thread: {0}", ScopeThread.ManagedThreadId).AppendLine()
-                    .AppendFormat("\tCommit Thread: {0}", Thread.CurrentThread.ManagedThreadId).AppendLine()
-                    .AppendFormat("\tTransaction LocalId: {0}", Transaction.Current.TransactionInformation.LocalIdentifier).AppendLine()
-                    .AppendFormat("\tTransaction GlobalId: {0}", Transaction.Current.TransactionInformation.DistributedIdentifier).AppendLine());
-
             foreach (var context in DbContextContainer.Contexts)
             {
                 if (context.Configuration.ValidateOnSaveEnabled)
@@ -201,8 +175,6 @@ namespace NContext.Extensions.EntityFramework
         protected override void DisposeManagedResources()
         {
             DbContextContainer.Dispose();
-            
-            Debug.WriteLine(String.Format("EfUnitOfWork: {0} disposed.", Id));
         }
 
         #endregion

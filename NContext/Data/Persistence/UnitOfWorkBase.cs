@@ -253,19 +253,6 @@ namespace NContext.Data.Persistence
                 transactionScope = new TransactionScope(CurrentTransaction, PersistenceOptions.TransactionTimeOut);
             }
 
-            if (Parent == null && Transaction.Current != null)
-            {
-                Transaction transaction = Transaction.Current;
-                transaction.TransactionCompleted +=
-                    (sender, args) =>
-                        {
-                            Console.WriteLine(
-                                "Transaction {0} has {1}.",
-                                args.Transaction.TransactionInformation.LocalIdentifier,
-                                args.Transaction.TransactionInformation.Status);
-                        };
-            }
-
             _Status = TransactionStatus.Active;
 
             return CommitTransaction(transactionScope)
