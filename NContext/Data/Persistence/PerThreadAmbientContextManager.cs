@@ -1,5 +1,5 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PerRequestAmbientContextManager.cs" company="Waking Venture, Inc.">
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PerThreadAmbientContextManager.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -22,27 +22,17 @@ namespace NContext.Data.Persistence
 {
     using System;
     using System.Collections.Generic;
-    using System.Web;
+    using System.Threading;
 
-    /// <summary>
-    /// Defines an ambient-context manager for web applications. Each web request 
-    /// will maintain its own <see cref="AmbientUnitOfWorkDecorator"/> stack.
+    /// <summary> 
+    /// Defines an ambient-context manager for per-thread storage. Each thread will 
+    /// maintain its own <see cref="AmbientUnitOfWorkDecorator"/> stack.
     /// </summary>
-    public class PerRequestAmbientContextManager : AmbientContextManagerBase
+    /// <remarks></remarks>
+    public class PerThreadAmbientContextManager : AmbientContextManagerBase
     {
-        protected const String AmbientUnitsOfWorkKey = @"AmbientUnitsOfWork";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PerRequestAmbientContextManager" /> class.
-        /// </summary>
-        /// <exception cref="System.ApplicationException"></exception>
-        public PerRequestAmbientContextManager()
-        {
-            if (String.IsNullOrWhiteSpace(HttpRuntime.AppDomainAppVirtualPath))
-            {
-                throw new ApplicationException("PerRequestAmbientContextManager can only be used in a web application.");
-            }
-        }
+        private readonly ThreadLocal<Stack<AmbientUnitOfWorkDecorator>> _AmbientUnitsOfWork =
+            new ThreadLocal<Stack<AmbientUnitOfWorkDecorator>>(() => new Stack<AmbientUnitOfWorkDecorator>());
 
         /// <summary>
         /// Gets whether the ambient context exists.
@@ -52,9 +42,7 @@ namespace NContext.Data.Persistence
         {
             get
             {
-                return HttpContext.Current != null && 
-                       HttpContext.Current.Items.Contains(AmbientUnitsOfWorkKey) && 
-                       AmbientUnitsOfWork.Count > 0;
+                return _AmbientUnitsOfWork.IsValueCreated && _AmbientUnitsOfWork.Value.Count > 0;
             }
         }
 
@@ -74,23 +62,11 @@ namespace NContext.Data.Persistence
         /// Gets the ambient units of work.
         /// </summary>
         /// <value>The ambient units of work.</value>
-        /// <exception cref="System.InvalidOperationException"></exception>
         protected override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
         {
             get
             {
-                if (HttpContext.Current == null)
-                {
-                    throw new InvalidOperationException("Cannot retrieve ambient units of work without an active HttpContext.");
-                }
-
-                var ambientUnitsOfWork = HttpContext.Current.Items[AmbientUnitsOfWorkKey] as Stack<AmbientUnitOfWorkDecorator>;
-                if (ambientUnitsOfWork == null)
-                {
-                    HttpContext.Current.Items[AmbientUnitsOfWorkKey] = ambientUnitsOfWork = new Stack<AmbientUnitOfWorkDecorator>();
-                }
-
-                return ambientUnitsOfWork;
+                return _AmbientUnitsOfWork.Value;
             }
         }
     }

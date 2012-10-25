@@ -74,27 +74,28 @@ namespace NContext.Extensions.EntityFramework
 
         /// <summary>
         /// <para>
-        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.RequiresNew"/>, 
-        /// then a new instance of <see cref="EfUnitOfWork"/> is created along with a new <see cref="DbContextContainer"/>.
+        /// If <paramref name="transactionScopeOption" /> equals <see cref="TransactionScopeOption.RequiresNew" />,
+        /// then a new instance of <see cref="EfUnitOfWork" /> is created along with a new <see cref="DbContextContainer" />.
         /// </para>
         /// <para>
-        /// If <paramref name="transactionScopeOption"/> equals <see cref="TransactionScopeOption.Required"/>, then 
-        /// if an ambient unit of work exists <see cref="AmbientUnitOfWorkDecorator"/> if one exists, else we create a
-        /// new <see cref="EfUnitOfWork"/> and <see cref="DbContextContainer"/> which becomes the ambient unit of work.
+        /// If <paramref name="transactionScopeOption" /> equals <see cref="TransactionScopeOption.Required" />, then
+        /// if an ambient unit of work exists <see cref="AmbientUnitOfWorkDecorator" /> if one exists, else we create a
+        /// new <see cref="EfUnitOfWork" /> and <see cref="DbContextContainer" /> which becomes the ambient unit of work.
         /// </para>
-        /// <para>The default transaction scope is <see cref="TransactionScopeOption.Required"/>.</para>
+        /// <para>The default transaction scope is <see cref="TransactionScopeOption.Required" />.</para>
         /// </summary>
         /// <param name="transactionScopeOption">The transaction scope option.</param>
-        /// <returns>Instance of <see cref="EfUnitOfWork"/>.</returns>
-        /// <remarks></remarks>
-        public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
+        /// <param name="transactionOptions">The transaction options.</param>
+        /// <returns>Instance of <see cref="EfUnitOfWork" />.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">transactionScopeOption</exception>
+        public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption, TransactionOptions transactionOptions)
         {
             switch (transactionScopeOption)
             {
                 case TransactionScopeOption.Required:
-                    return GetRequiredUnitOfWork();
+                    return GetRequiredUnitOfWork(transactionOptions);
                 case TransactionScopeOption.RequiresNew:
-                    return GetRequiredNewUnitOfWork();
+                    return GetRequiredNewUnitOfWork(transactionOptions);
                 case TransactionScopeOption.Suppress:
                     return base.CreateUnitOfWork(transactionScopeOption);
                 default:
@@ -102,11 +103,11 @@ namespace NContext.Extensions.EntityFramework
             }
         }
 
-        private IUnitOfWork GetRequiredUnitOfWork()
+        private IUnitOfWork GetRequiredUnitOfWork(TransactionOptions transactionOptions)
         {
             if (!AmbientContextManager.AmbientExists || !AmbientContextManager.AmbientUnitOfWorkIsValid)
             {
-                return GetRequiredNewUnitOfWork();
+                return GetRequiredNewUnitOfWork(transactionOptions);
             }
 
             /* First check if the ambient is a CompositeUnitOfWork and add to its collection.
@@ -127,7 +128,7 @@ namespace NContext.Extensions.EntityFramework
             // Current ambient is not Entity Framework.
             if (!AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
             {
-                return GetRequiredNewUnitOfWork();
+                return GetRequiredNewUnitOfWork(transactionOptions);
             }
             
             // Current ambient implements IEfUnitOfWork so let's simply retain it by incrementing the ambient session count.
@@ -136,7 +137,7 @@ namespace NContext.Extensions.EntityFramework
             return AmbientContextManager.Ambient.UnitOfWork;
         }
 
-        private IUnitOfWork GetRequiredNewUnitOfWork()
+        private IUnitOfWork GetRequiredNewUnitOfWork(TransactionOptions transactionOptions)
         {
             var unitOfWork = new EfUnitOfWork(AmbientContextManager, new DbContextContainer());
             AmbientContextManager.AddUnitOfWork(unitOfWork);

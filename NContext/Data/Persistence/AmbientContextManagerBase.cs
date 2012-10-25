@@ -63,7 +63,7 @@ namespace NContext.Data.Persistence
         /// Gets whether the <see cref="AmbientContextManagerBase"/> instance supports concurrency. This is 
         /// required if you set <see cref="PersistenceOptions.MaxDegreeOfParallelism"/> greater than one.
         /// </summary>
-        protected internal abstract Boolean SupportsConcurrency { get; }
+        protected internal abstract Boolean IsThreadSafe { get; }
 
         /// <summary>
         /// Gets the ambient units of work.
@@ -91,7 +91,7 @@ namespace NContext.Data.Persistence
         ///         <c>true</c> if the <paramref name="unitOfWork"/> does not belong to a <see cref="CompositeUnitOfWork"/>; otherwise <c>false</c>
         ///     AmbientExists -
         ///         <c>true</c> if an ambient exists within a given scope; otherwise <c>false</c>
-        ///         (ie. per-thread <see cref="ThreadLocalAmbientContextManager"/> or per-request <see cref="PerRequestAmbientContextManager"/>)
+        ///         (ie. per-thread <see cref="PerThreadAmbientContextManager"/> or per-request <see cref="PerRequestAmbientContextManager"/>)
         ///     Ambient.IsCommittable
         ///         true if there is only a single active session on the ambient context; otherwise, false
         /// </para>

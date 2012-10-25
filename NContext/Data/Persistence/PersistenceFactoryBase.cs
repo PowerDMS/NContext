@@ -59,33 +59,41 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Creates the unit of work.
         /// </summary>
-        /// <param name="transactionScopeOption">The <see cref="TransactionScopeOption"/>.</param>
-        /// <returns>IUnitOfWork.</returns>
-        /// <exception cref="System.NotSupportedException"></exception>
-        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-        public virtual IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
+        /// <returns>IUnitOfWork instance.</returns>
+        public virtual IUnitOfWork CreateUnitOfWork()
         {
-            switch (transactionScopeOption)
-            {
-                case TransactionScopeOption.Required:
-                case TransactionScopeOption.RequiresNew:
-                    throw new NotSupportedException("PersistenceFactoryBase does not support TransactionScopeOption.Required or TransactionScopeOption.RequiresNew.");
-                case TransactionScopeOption.Suppress:
-                    var unitOfWork = new NonAtomicUnitOfWork(AmbientContextManager);
-                    AmbientContextManager.AddUnitOfWork(null);
-                    return unitOfWork;
-                default:
-                    throw new ArgumentOutOfRangeException("transactionScopeOption");
-            }
+            return CreateUnitOfWork(TransactionScopeOption.Required);
         }
 
         /// <summary>
-        /// Creates the default transaction manager. Local Default: <see cref="ThreadLocalAmbientContextManager" />.
+        /// Creates the unit of work.
+        /// </summary>
+        /// <param name="transactionScopeOption">The <see cref="TransactionScopeOption"/>.</param>
+        /// <returns>IUnitOfWork instance.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        public virtual IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption)
+        {
+            return CreateUnitOfWork(transactionScopeOption, new TransactionOptions());
+        }
+
+        /// <summary>
+        /// Creates the unit of work.
+        /// </summary>
+        /// <param name="transactionScopeOption">The <see cref="TransactionScopeOption" />.</param>
+        /// <param name="transactionOptions">The transaction options.</param>
+        /// <returns>IUnitOfWork instance.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        public abstract IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption, TransactionOptions transactionOptions);
+
+        /// <summary>
+        /// Creates the default transaction manager. Local Default: <see cref="PerThreadAmbientContextManager" />.
         /// </summary>
         /// <returns>AmbientContextManagerBase.</returns>
         protected virtual AmbientContextManagerBase CreateDefaultAmbientContextManager()
         {
-            return new ThreadLocalAmbientContextManager();
+            return new PerThreadAmbientContextManager();
         }
     }
 }

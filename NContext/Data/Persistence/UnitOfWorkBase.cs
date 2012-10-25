@@ -38,8 +38,6 @@ namespace NContext.Data.Persistence
     /// <remarks></remarks>
     public abstract class UnitOfWorkBase : IUnitOfWork
     {
-        #region Fields
-
         private readonly Guid _Id;
 
         private readonly AmbientContextManagerBase _AmbientContextManager;
@@ -50,56 +48,44 @@ namespace NContext.Data.Persistence
 
         private readonly UnitOfWorkBase _Parent;
 
-        private readonly PersistenceOptions _PersistenceOptions;
-
         private volatile TransactionStatus _Status;
 
         private Lazy<Transaction> _CurrentTransactionFactory;
 
         private Boolean _IsDisposed;
 
-        #endregion
+        private TransactionOptions _TransactionOptions;
 
         protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager)
-            : this(ambientContextManager, null, new PersistenceOptions())
+            : this(ambientContextManager, null, new TransactionOptions())
         {
         }
 
-        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, PersistenceOptions persistenceOptions)
-            : this(ambientContextManager, null, persistenceOptions)
+        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, TransactionOptions transactionOptions)
+            : this(ambientContextManager, null, transactionOptions)
         {
         }
 
         protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent)
-            : this(ambientContextManager, parent, new PersistenceOptions())
+            : this(ambientContextManager, parent, new TransactionOptions())
         {
         }
 
-        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
+        protected UnitOfWorkBase(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, TransactionOptions transactionOptions)
         {
+            ValidateTransactionOptions(parent, transactionOptions);
+
             _Id = Guid.NewGuid();
             _AmbientContextManager = ambientContextManager;
             _Parent = parent;
-            _PersistenceOptions = persistenceOptions;
+            _TransactionOptions = transactionOptions;
             _ScopeThread = Thread.CurrentThread;
             _Status = TransactionStatus.InDoubt;
             _ScopeTransactionFactory =
                 new Lazy<Transaction>(
                     _Parent == null
-                        ? (Func<Transaction>)(() => new CommittableTransaction())
+                        ? (Func<Transaction>)(() => new CommittableTransaction(TransactionOptions))
                         : (Func<Transaction>)(() => _Parent.ScopeTransaction));
-        }
-
-        /// <summary>
-        /// Gets the identity for the unit of work instance.
-        /// </summary>
-        /// <remarks></remarks>
-        public Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
         }
 
         /// <summary>
@@ -186,14 +172,6 @@ namespace NContext.Data.Persistence
             }
         }
 
-        protected PersistenceOptions PersistenceOptions
-        {
-            get
-            {
-                return _PersistenceOptions;
-            }
-        }
-        
         /// <summary>
         /// Rollback the transaction (if applicable).
         /// </summary>
@@ -210,7 +188,81 @@ namespace NContext.Data.Persistence
         /// </returns>
         protected abstract IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope);
 
+        private void ValidateTransactionOptions(UnitOfWorkBase parent, TransactionOptions transactionOptions)
+        {
+            if (transactionOptions.Timeout < TimeSpan.Zero)
+            {
+                throw new ArgumentOutOfRangeException("transactionOptions.Timeout");
+            }
+
+            if (parent != null && !transactionOptions.IsolationLevel.Equals(parent.TransactionOptions.IsolationLevel))
+            {
+                throw new ArgumentException("When using nested units of work, all nested scopes must be configured to use exactly the same isolation level if they want to join the ambient transaction.");
+            }
+
+            if (parent != null && transactionOptions.Timeout < parent.TransactionOptions.Timeout)
+            {
+                ResetTransactionOptions(parent, transactionOptions);
+            }
+        }
+
+        private void ResetTransactionOptions(UnitOfWorkBase parent, TransactionOptions transactionOptions)
+        {
+            var parentScope = parent;
+            while (parentScope != null)
+            {
+                parentScope.TransactionOptions = transactionOptions;
+                parentScope = parent.Parent;
+            }
+        }
+
         #region Implementation of IUnitOfWork
+
+        /// <summary>
+        /// Gets the identity for the unit of work instance.
+        /// </summary>
+        /// <remarks></remarks>
+        public Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+        }
+
+        /// <summary>
+        /// Gets the additional information about the transaction.
+        /// </summary>
+        /// <value>The transaction information.</value>
+        public TransactionInformation TransactionInformation
+        {
+            get
+            {
+                if (_IsDisposed)
+                {
+                    throw new ObjectDisposedException("UnitOfWorkBase");
+                }
+
+                if (Status != TransactionStatus.Active)
+                {
+                    return null;
+                }
+
+                return CurrentTransaction.TransactionInformation;
+            }
+        }
+
+        public TransactionOptions TransactionOptions
+        {
+            get
+            {
+                return _TransactionOptions;
+            }
+            private set
+            {
+                _TransactionOptions = value;
+            }
+        }
 
         /// <summary>
         /// Commits the changes to the database.
@@ -228,12 +280,12 @@ namespace NContext.Data.Persistence
             {
                 throw new InvalidOperationException(String.Format(LocalizedPersistenceError.UnitOfWorkCommitted, Id));
             }
-            
+
             if (!AmbientContextManager.CanCommitUnitOfWork(this))
             {
                 return NContextPersistenceError.UnitOfWorkNonCommittable(Id).ToServiceResponse();
             }
-            
+
             if (ScopeTransaction == null)
             {
                 return NContextPersistenceError.ScopeTransactionIsNull().ToServiceResponse();
@@ -244,13 +296,13 @@ namespace NContext.Data.Persistence
             {
                 // Use the existing CurrentTransaction.
                 _CurrentTransactionFactory = new Lazy<Transaction>(() => ScopeTransaction);
-                transactionScope = new TransactionScope(CurrentTransaction, PersistenceOptions.TransactionTimeOut);
+                transactionScope = new TransactionScope(CurrentTransaction, TransactionOptions.Timeout);
             }
             else if (ScopeThread != Thread.CurrentThread)
             {
                 // UnitOfWork is being committed on a different thread.
                 _CurrentTransactionFactory = new Lazy<Transaction>(() => ScopeTransaction.DependentClone(DependentCloneOption.BlockCommitUntilComplete));
-                transactionScope = new TransactionScope(CurrentTransaction, PersistenceOptions.TransactionTimeOut);
+                transactionScope = new TransactionScope(CurrentTransaction, TransactionOptions.Timeout);
             }
 
             _Status = TransactionStatus.Active;

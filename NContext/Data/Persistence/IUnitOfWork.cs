@@ -21,6 +21,7 @@
 namespace NContext.Data.Persistence
 {
     using System;
+    using System.Transactions;
 
     using Microsoft.FSharp.Core;
 
@@ -37,6 +38,18 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <remarks></remarks>
         Guid Id { get; }
+
+        /// <summary>
+        /// Gets additional information about the transaction.
+        /// </summary>
+        /// <value>The transaction information.</value>
+        TransactionInformation TransactionInformation { get; }
+
+        /// <summary>
+        /// Gets the additional information that specifies transaction behaviors.
+        /// </summary>
+        /// <value>The transaction options.</value>
+        TransactionOptions TransactionOptions { get; }
 
         /// <summary>
         /// Commits the changes to the database.

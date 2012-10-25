@@ -23,7 +23,6 @@ namespace NContext.Data.Persistence
     using System;
     using System.Transactions;
 
-    using NContext.ErrorHandling;
     using NContext.ErrorHandling.Errors;
     using NContext.Extensions;
 
@@ -39,7 +38,7 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <remarks></remarks>
         public PersistenceFactory()
-            : this(null, new PersistenceOptions())
+            : this(null, null)
         {
         }
 
@@ -48,7 +47,7 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <param name="contextManagerFactory">The context manager factory.</param>
         public PersistenceFactory(IAmbientContextManagerFactory contextManagerFactory)
-            : this(contextManagerFactory, new PersistenceOptions())
+            : this(contextManagerFactory, null)
         {
         }
 
@@ -70,39 +69,69 @@ namespace NContext.Data.Persistence
         public PersistenceFactory(IAmbientContextManagerFactory contextManagerFactory, PersistenceOptions persistenceOptions)
             : base(contextManagerFactory)
         {
-            _PersistenceOptions = persistenceOptions;
+            _PersistenceOptions = persistenceOptions ?? new PersistenceOptions();
+        }
+
+        /// <summary>
+        /// Gets the transactional persistence options that will govern any <see cref="IUnitOfWork"/> created by this instance.
+        /// </summary>
+        /// <value>The <see cref="PersistenceOptions"/>.</value>
+        public PersistenceOptions Options
+        {
+            get
+            {
+                return _PersistenceOptions;
+            }
         }
 
         /// <summary>
         /// Creates the unit of work.
         /// </summary>
-        /// <param name="transactionScopeOption">The transaction scope option.</param>
-        /// <returns>IUnitOfWork.</returns>
-        /// <exception cref="InvalidOperationException">
-        /// Thrown when an attempt to create a new <see cref="CompositeUnitOfWork"/> within an 
-        /// existing ambient <see cref="IUnitOfWork"/> of a different type.
-        /// </exception>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when an invalid <see cref="TransactionScopeOption"/> is specified.</exception>
-        public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required)
+        /// <returns>IUnitOfWork instance.</returns>
+        public override IUnitOfWork CreateUnitOfWork()
         {
+            return CreateUnitOfWork(TransactionScopeOption.Required);
+        }
+
+        /// <summary>
+        /// Creates the unit of work.
+        /// </summary>
+        /// <param name="transactionScopeOption">The <see cref="TransactionScopeOption"/>.</param>
+        /// <returns>IUnitOfWork instance.</returns>
+        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="System.ArgumentOutOfRangeException"></exception>
+        public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption)
+        {
+            return CreateUnitOfWork(transactionScopeOption, Options.TransactionOptions);
+        }
+        
+        /// <summary>
+        /// Creates an <see cref="IUnitOfWork" /> instance.
+        /// </summary>
+        /// <param name="transactionScopeOption">The transaction scope option.</param>
+        /// <param name="transactionOptions">The transaction options.</param>
+        /// <returns>IUnitOfWork instance.</returns>
+        public override IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption, TransactionOptions transactionOptions)
+        {
+            var persistenceOptions = GetUnitOfWorkPersistenceOptions(transactionOptions);
             switch (transactionScopeOption)
             {
                 case TransactionScopeOption.Required:
-                    return GetRequiredUnitOfWork();
+                    return GetRequiredUnitOfWork(persistenceOptions);
                 case TransactionScopeOption.RequiresNew:
-                    return GetRequiredNewUnitOfWork();
+                    return GetRequiredNewUnitOfWork(persistenceOptions);
                 case TransactionScopeOption.Suppress:
-                    return base.CreateUnitOfWork(transactionScopeOption);
+                    throw new NotImplementedException("Suppress is currently not supported and in development.");
                 default:
                     throw new ArgumentOutOfRangeException("transactionScopeOption");
             }
         }
 
-        private IUnitOfWork GetRequiredUnitOfWork()
+        private IUnitOfWork GetRequiredUnitOfWork(PersistenceOptions persistenceOptions)
         {
             if (!AmbientContextManager.AmbientExists)
             {
-                return GetRequiredNewUnitOfWork();
+                return GetRequiredNewUnitOfWork(persistenceOptions);
             }
 
             if (!AmbientContextManager.Ambient.IsTypeOf<CompositeUnitOfWork>())
@@ -125,12 +154,22 @@ namespace NContext.Data.Persistence
             return AmbientContextManager.Ambient.UnitOfWork;
         }
 
-        private IUnitOfWork GetRequiredNewUnitOfWork()
+        private IUnitOfWork GetRequiredNewUnitOfWork(PersistenceOptions persistenceOptions)
         {
-            UnitOfWorkBase unitOfWork = new CompositeUnitOfWork(AmbientContextManager, _PersistenceOptions);
+            UnitOfWorkBase unitOfWork = new CompositeUnitOfWork(AmbientContextManager, persistenceOptions);
             AmbientContextManager.AddUnitOfWork(unitOfWork);
 
             return unitOfWork;
+        }
+
+        private PersistenceOptions GetUnitOfWorkPersistenceOptions(TransactionOptions transactionOptions)
+        {
+            if (!transactionOptions.Equals(Options.TransactionOptions))
+            {
+                return new PersistenceOptions(transactionOptions.Timeout, transactionOptions.IsolationLevel, Options.MaxDegreeOfParallelism);
+            }
+
+            return Options;
         }
     }
 }

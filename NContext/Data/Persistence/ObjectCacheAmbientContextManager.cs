@@ -68,7 +68,7 @@ namespace NContext.Data.Persistence
         ///   <c>true</c>, however, this should only be used in scenarios where only one 
         ///   active session or user is using the application (ie. a desktop application)
         /// </returns>
-        protected internal override Boolean SupportsConcurrency
+        protected internal override Boolean IsThreadSafe
         {
             get
             {

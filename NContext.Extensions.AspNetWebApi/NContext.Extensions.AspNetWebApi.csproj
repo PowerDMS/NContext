@@ -70,6 +70,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authorization\WebApiAuthorizationAttribute.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
+    <Compile Include="Formatters\BsonMediaTypeFormatter.cs" />
+    <Compile Include="Formatters\MediaTypeConstants.cs" />
     <Compile Include="Handlers\XHttpMethodOverrideMessageHandler.cs" />
     <Compile Include="JsonNetExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,7 +88,6 @@
     <Compile Include="Configuration\WebApiConfiguration.cs" />
     <Compile Include="Configuration\WebApiConfigurationBuilder.cs" />
     <Compile Include="Configuration\WebApiManager.cs" />
-    <Compile Include="Filters\ResponseTransferObjectActionFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -101,7 +103,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Formatters\" />
+    <Folder Include="Filters\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

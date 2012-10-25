@@ -30,7 +30,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     using NContext.Extensions.AspNetWebApi.Routing;
 
     /// <summary>
-    /// Defines an application-level manager for configuring WCF service routes.
+    /// Defines an application component manager for configuring ASP.NET Web API.
     /// </summary>
     public class WebApiManager : IManageWebApi
     {
@@ -45,11 +45,10 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         private Boolean _IsConfigured;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiManager"/> class.
-        /// Prevents a default instance of the <see cref="WebApiManager"/> class from being created.
+        /// Initializes a new instance of the <see cref="WebApiManager" /> class.
         /// </summary>
-        /// <param name="webApiConfiguration">The routing configuration.</param>
-        /// <remarks></remarks>
+        /// <param name="webApiConfiguration">The Web API configuration.</param>
+        /// <exception cref="System.ArgumentNullException">webApiConfiguration</exception>
         public WebApiManager(WebApiConfiguration webApiConfiguration)
         {
             if (webApiConfiguration == null)
@@ -85,7 +84,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         }
 
         /// <summary>
-        /// Gets the service routes registered.
+        /// Gets the Web API HTTP service routes registered.
         /// </summary>
         /// <remarks></remarks>
         public ICollection<Route> HttpRoutes
@@ -131,10 +130,10 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         }
 
         /// <summary>
-        /// Registers the service route.
+        /// Registers the HTTP service route.
         /// </summary>
         /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
+        /// <param name="routeTemplate">The route URI template.</param>
         /// <param name="defaults">The defaults.</param>
         /// <param name="constraints">The constraints.</param>
         /// <remarks></remarks>

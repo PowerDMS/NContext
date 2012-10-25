@@ -30,8 +30,22 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Creates an <see cref="IUnitOfWork"/> instance.
         /// </summary>
+        /// <returns>IUnitOfWork instance.</returns>
+        IUnitOfWork CreateUnitOfWork();
+
+        /// <summary>
+        /// Creates an <see cref="IUnitOfWork"/> instance.
+        /// </summary>
         /// <param name="transactionScopeOption">The transaction scope option.</param>
         /// <returns>IUnitOfWork instance.</returns>
-        IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption = TransactionScopeOption.Required);
+        IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption);
+
+        /// <summary>
+        /// Creates an <see cref="IUnitOfWork" /> instance.
+        /// </summary>
+        /// <param name="transactionScopeOption">The transaction scope option.</param>
+        /// <param name="transactionOptions">The transaction options.</param>
+        /// <returns>IUnitOfWork instance.</returns>
+        IUnitOfWork CreateUnitOfWork(TransactionScopeOption transactionScopeOption, TransactionOptions transactionOptions);
     }
 }

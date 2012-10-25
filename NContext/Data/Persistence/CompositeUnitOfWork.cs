@@ -33,8 +33,14 @@ namespace NContext.Data.Persistence
     using NContext.ErrorHandling.Errors;
     using NContext.Extensions;
 
+    /// <summary>
+    /// Defines a persistence-agnostic unit of work container for transactional polyglot persistence 
+    /// support. All units of work must simply work against <see cref="System.Transactions"/>.
+    /// </summary>
     public class CompositeUnitOfWork : UnitOfWorkBase
     {
+        private readonly PersistenceOptions _PersistenceOptions;
+
         private readonly HashSet<UnitOfWorkBase> _UnitsOfWork = new HashSet<UnitOfWorkBase>();
 
         /// <summary>
@@ -67,8 +73,9 @@ namespace NContext.Data.Persistence
         }
 
         protected internal CompositeUnitOfWork(AmbientContextManagerBase ambientContextManager, UnitOfWorkBase parent, PersistenceOptions persistenceOptions)
-            : base(ambientContextManager, parent, persistenceOptions)
+            : base(ambientContextManager, parent, persistenceOptions.TransactionOptions)
         {
+            _PersistenceOptions = persistenceOptions;
         }
 
         protected HashSet<UnitOfWorkBase> UnitsOfWork
@@ -100,7 +107,7 @@ namespace NContext.Data.Persistence
         public override void Rollback()
         {
             UnitsOfWork.AsParallel()
-                       .WithDegreeOfParallelism(PersistenceOptions.MaxDegreeOfParallelism)
+                       .WithDegreeOfParallelism(_PersistenceOptions.MaxDegreeOfParallelism)
                        .ForAll(uow => uow.Rollback());
         }
 
@@ -108,7 +115,7 @@ namespace NContext.Data.Persistence
         {
             using (transactionScope)
             {
-                return (PersistenceOptions.MaxDegreeOfParallelism == 1 ? CommitChildren() : CommitChildrenParallel())
+                return (_PersistenceOptions.MaxDegreeOfParallelism == 1 ? CommitChildren() : CommitChildrenParallel())
                     .Catch(errors =>
                         {
                             Rollback();
@@ -145,7 +152,7 @@ namespace NContext.Data.Persistence
 
         private IResponseTransferObject<Unit> CommitChildrenParallel()
         {
-            if (!AmbientContextManager.SupportsConcurrency)
+            if (!AmbientContextManager.IsThreadSafe)
             {
                 return NContextPersistenceError.ConcurrencyUnsupported(AmbientContextManager.GetType()).ToServiceResponse();
             }
@@ -156,7 +163,7 @@ namespace NContext.Data.Persistence
                     UnitsOfWork,
                     new ParallelOptions
                         {
-                            MaxDegreeOfParallelism = PersistenceOptions.MaxDegreeOfParallelism
+                            MaxDegreeOfParallelism = _PersistenceOptions.MaxDegreeOfParallelism
                         },
                     (unitOfWork, state) =>
                         {
@@ -188,7 +195,7 @@ namespace NContext.Data.Persistence
         protected override void DisposeManagedResources()
         {
             UnitsOfWork.AsParallel()
-                       .WithDegreeOfParallelism(PersistenceOptions.MaxDegreeOfParallelism)
+                       .WithDegreeOfParallelism(_PersistenceOptions.MaxDegreeOfParallelism)
                        .ForAll(uow => uow.Dispose());
         }
     }

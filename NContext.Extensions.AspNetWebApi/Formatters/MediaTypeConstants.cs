@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ThreadLocalAmbientContextManager.cs" company="Waking Venture, Inc.">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MediaTypeConstants.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,55 +18,52 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Data.Persistence
+namespace NContext.Extensions.AspNetWebApi.Formatters
 {
     using System;
-    using System.Collections.Generic;
-    using System.Threading;
+    using System.Net.Http.Headers;
 
-    /// <summary> 
-    /// Defines an ambient-context manager for per-thread storage. Each thread will 
-    /// maintain its own <see cref="AmbientUnitOfWorkDecorator"/> stack.
+    /// <summary>
+    /// Defines <see cref="MediaTypeHeaderValue"/> constants.
     /// </summary>
-    /// <remarks></remarks>
-    public class ThreadLocalAmbientContextManager : AmbientContextManagerBase
+    public class MediaTypeConstants
     {
-        private static readonly ThreadLocal<Stack<AmbientUnitOfWorkDecorator>> _AmbientUnitsOfWork =
-            new ThreadLocal<Stack<AmbientUnitOfWorkDecorator>>(() => new Stack<AmbientUnitOfWorkDecorator>());
+        private static readonly MediaTypeHeaderValue _ApplicationBsonMediaType = new MediaTypeHeaderValue("application/bson");
+
+        private static readonly MediaTypeHeaderValue _ApplicationJsonMediaType = new MediaTypeHeaderValue("application/json");
+
+        private static readonly MediaTypeHeaderValue _TextJsonMediaType = new MediaTypeHeaderValue("text/json");
 
         /// <summary>
-        /// Gets whether the ambient context exists.
+        /// Gets the BSON <see cref="MediaTypeHeaderValue"/> for: 'application/json'
         /// </summary>
-        /// <value>The ambient exists.</value>
-        public override Boolean AmbientExists
+        public static MediaTypeHeaderValue ApplicationJsonMediaType
         {
             get
             {
-                return _AmbientUnitsOfWork.IsValueCreated && _AmbientUnitsOfWork.Value.Count > 0;
+                return (MediaTypeHeaderValue)((ICloneable)_ApplicationJsonMediaType).Clone();
             }
         }
 
         /// <summary>
-        /// Gets whether the <see cref="AmbientContextManagerBase"/> instance supports concurrency. This is 
-        /// required if you set <see cref="PersistenceOptions.MaxDegreeOfParallelism"/> greater than one.
+        /// Gets the BSON <see cref="MediaTypeHeaderValue"/> for: 'text/json'
         /// </summary>
-        protected internal override Boolean SupportsConcurrency
+        public static MediaTypeHeaderValue TextJsonMediaType
         {
             get
             {
-                return false;
+                return (MediaTypeHeaderValue)((ICloneable)_TextJsonMediaType).Clone();
             }
         }
 
         /// <summary>
-        /// Gets the ambient units of work.
+        /// Gets the BSON <see cref="MediaTypeHeaderValue"/> for: 'application/bson'
         /// </summary>
-        /// <value>The ambient units of work.</value>
-        protected override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
+        public static MediaTypeHeaderValue ApplicationBsonMediaType
         {
             get
             {
-                return _AmbientUnitsOfWork.Value;
+                return (MediaTypeHeaderValue)((ICloneable)_ApplicationBsonMediaType).Clone();
             }
         }
     }

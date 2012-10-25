@@ -45,6 +45,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NContext.xml</DocumentationFile>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -104,8 +105,8 @@
     <Compile Include="Data\Persistence\PerRequestAmbientContextManager.cs" />
     <Compile Include="Data\Persistence\PersistenceFactoryBase.cs" />
     <Compile Include="Data\Persistence\PersistenceOptions.cs" />
-    <Compile Include="Data\Persistence\ThreadLocalAmbientContextManager.cs" />
-    <Compile Include="Data\Persistence\ThreadLocalAmbientContextManagerFactory.cs" />
+    <Compile Include="Data\Persistence\PerThreadAmbientContextManager.cs" />
+    <Compile Include="Data\Persistence\PerThreadAmbientContextManagerFactory.cs" />
     <Compile Include="Data\Specifications\AdHocSpecification.cs" />
     <Compile Include="Data\Specifications\AndSpecification.cs" />
     <Compile Include="Data\Specifications\CompositeSpecification.cs" />

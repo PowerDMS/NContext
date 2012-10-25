@@ -27,23 +27,24 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     using NContext.Extensions.AspNetWebApi.Routing;
 
     /// <summary>
-    /// Defines interface contract which encapsulates logic for creating ASP.NET Web API service routes.
+    /// Defines an application component manager for configuring ASP.NET Web API.
     /// </summary>
     public interface IManageWebApi : IApplicationComponent
     {
         /// <summary>
-        /// Gets the service routes registered.
+        /// Gets the Web API HTTP service routes registered.
         /// </summary>
         /// <remarks></remarks>
         ICollection<Route> HttpRoutes { get; }
 
         /// <summary>
-        /// Registers the Web API route.
+        /// Registers the HTTP service route.
         /// </summary>
         /// <param name="routeName">Name of the route.</param>
-        /// <param name="routeTemplate">The route template.</param>
+        /// <param name="routeTemplate">The route URI template.</param>
         /// <param name="defaults">The defaults.</param>
         /// <param name="constraints">The constraints.</param>
+        /// <remarks></remarks>
         void RegisterHttpRoute(String routeName, String routeTemplate, Object defaults = null, Object constraints = null);
     }
 }

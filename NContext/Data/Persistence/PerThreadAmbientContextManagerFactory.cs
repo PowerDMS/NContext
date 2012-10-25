@@ -1,5 +1,5 @@
 // --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ThreadLocalAmbientContextManagerFactory.cs" company="Waking Venture, Inc.">
+// <copyright file="PerThreadAmbientContextManagerFactory.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,11 +20,11 @@
 
 namespace NContext.Data.Persistence
 {
-    public sealed class ThreadLocalAmbientContextManagerFactory : IAmbientContextManagerFactory
+    public sealed class PerThreadAmbientContextManagerFactory : IAmbientContextManagerFactory
     {
         public AmbientContextManagerBase Create()
         {
-            return new ThreadLocalAmbientContextManager();
+            return new PerThreadAmbientContextManager();
         }
     }
 }
