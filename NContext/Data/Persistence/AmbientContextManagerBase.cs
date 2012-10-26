@@ -68,7 +68,7 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Gets the ambient units of work.
         /// </summary>
-        protected abstract Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork { get; }
+        protected internal abstract Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork { get; }
 
         /// <summary>
         /// Adds the unit of work to the stack; thus making it the new ambient context.

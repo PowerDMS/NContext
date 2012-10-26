@@ -31,7 +31,7 @@ namespace NContext.Data.Persistence
     /// <remarks></remarks>
     public class PerThreadAmbientContextManager : AmbientContextManagerBase
     {
-        private readonly ThreadLocal<Stack<AmbientUnitOfWorkDecorator>> _AmbientUnitsOfWork =
+        private static ThreadLocal<Stack<AmbientUnitOfWorkDecorator>> _AmbientUnitsOfWork =
             new ThreadLocal<Stack<AmbientUnitOfWorkDecorator>>(() => new Stack<AmbientUnitOfWorkDecorator>());
 
         /// <summary>
@@ -62,7 +62,7 @@ namespace NContext.Data.Persistence
         /// Gets the ambient units of work.
         /// </summary>
         /// <value>The ambient units of work.</value>
-        protected override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
+        protected internal override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
         {
             get
             {

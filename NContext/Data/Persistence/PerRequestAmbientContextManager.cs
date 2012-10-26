@@ -75,7 +75,7 @@ namespace NContext.Data.Persistence
         /// </summary>
         /// <value>The ambient units of work.</value>
         /// <exception cref="System.InvalidOperationException"></exception>
-        protected override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
+        protected internal override Stack<AmbientUnitOfWorkDecorator> AmbientUnitsOfWork
         {
             get
             {
