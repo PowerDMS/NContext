@@ -70,6 +70,7 @@
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
+      <HintPath>..\packages\FSharp.Core.4.0.0\lib\FSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -81,8 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\CacheConfiguration.cs" />
-    <Compile Include="Configuration\ApplicationComponentConfigurationBase.cs" />
-    <Compile Include="Configuration\ApplicationComponentConfigurationBuilder.cs" />
+    <Compile Include="Configuration\ApplicationComponentConfigurationBuilderBase.cs" />
+    <Compile Include="Configuration\ApplicationComponentBuilder.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBuilder.cs" />
     <Compile Include="Caching\CacheConfigurationBuilder.cs" />

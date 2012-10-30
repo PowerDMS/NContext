@@ -28,7 +28,7 @@ namespace NContext.Extensions.Unity
     /// Defines a configuration class to build the application's <see cref="UnityManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class UnityConfigurationBuilder : ApplicationComponentConfigurationBase
+    public class UnityConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private String _ContainerName;
 

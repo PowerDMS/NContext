@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationComponentConfigurationBase.cs" company="Waking Venture, Inc.">
+// <copyright file="ApplicationComponentConfigurationBuilderBase.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,16 +27,16 @@ namespace NContext.Configuration
     /// can in turn be used with an <see cref="ApplicationConfigurationBuilder"/>.
     /// </summary>
     /// <remarks></remarks>
-    public abstract class ApplicationComponentConfigurationBase
+    public abstract class ApplicationComponentConfigurationBuilderBase
     {
         private readonly ApplicationConfigurationBuilder _ApplicationConfigurationBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBase"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBuilderBase"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        protected ApplicationComponentConfigurationBase(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        protected ApplicationComponentConfigurationBuilderBase(ApplicationConfigurationBuilder applicationConfigurationBuilder)
         {
             if (applicationConfigurationBuilder == null)
             {
@@ -47,17 +47,17 @@ namespace NContext.Configuration
         }
 
         /// <summary>
-        /// Performs an implicit conversion from <see cref="ApplicationComponentConfigurationBase"/> 
+        /// Performs an implicit conversion from <see cref="ApplicationComponentConfigurationBuilderBase"/> 
         /// to <see cref="ApplicationConfiguration"/>.
         /// </summary>
-        /// <param name="componentConfiguration">The configuration builder section.</param>
+        /// <param name="componentConfigurationBuilder">The configuration builder section.</param>
         /// <returns>The result of the conversion.</returns>
         /// <remarks></remarks>
-        public static implicit operator ApplicationConfiguration(ApplicationComponentConfigurationBase componentConfiguration)
+        public static implicit operator ApplicationConfiguration(ApplicationComponentConfigurationBuilderBase componentConfigurationBuilder)
         {
-            componentConfiguration.Setup();
+            componentConfigurationBuilder.Setup();
 
-            return componentConfiguration.Builder;
+            return componentConfigurationBuilder.Builder;
         }
 
         /// <summary>
@@ -76,8 +76,8 @@ namespace NContext.Configuration
         /// Registers the component with the <see cref="ApplicationConfigurationBase" />.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
-        /// <returns>ApplicationComponentConfigurationBuilder.</returns>
-        public ApplicationComponentConfigurationBuilder RegisterComponent<TApplicationComponent>()
+        /// <returns>ApplicationComponentBuilder.</returns>
+        public ApplicationComponentBuilder RegisterComponent<TApplicationComponent>()
             where TApplicationComponent : class, IApplicationComponent
         {
             Setup();

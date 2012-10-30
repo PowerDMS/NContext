@@ -1,5 +1,5 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageWebApi.cs" company="Waking Venture, Inc.">
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IConfigureHttpRouting.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,18 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Configuration
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
-    using System;
-    using System.Collections.Generic;
-
-    using NContext.Configuration;
-    using NContext.Extensions.AspNetWebApi.Routing;
+    using System.ComponentModel.Composition;
 
     /// <summary>
-    /// Defines an application component manager for configuring ASP.NET Web API.
+    /// Defines an HTTP routing configuration extensibility point for ASP.NET Web API. Allows 
+    /// for routing configuration to be done outside the hosting application.
     /// </summary>
-    public interface IManageWebApi : IApplicationComponent
+    [InheritedExport]
+    public interface IConfigureHttpRouting
     {
+        /// <summary>
+        /// Configures the specified HTTP routing manager.
+        /// </summary>
+        /// <param name="httpRoutingManager">The HTTP routing manager.</param>
+        void Configure(IManageHttpRouting httpRoutingManager);
     }
 }

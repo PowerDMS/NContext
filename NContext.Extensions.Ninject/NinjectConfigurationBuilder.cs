@@ -28,7 +28,7 @@ namespace NContext.Extensions.Ninject
     using global::Ninject;
     using global::Ninject.Modules;
 
-    public class NinjectConfigurationBuilder : ApplicationComponentConfigurationBase
+    public class NinjectConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private Func<IKernel> _KernelFactory; 
 
@@ -37,7 +37,7 @@ namespace NContext.Extensions.Ninject
         private Func<INinjectSettings> _NinjectSettings;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBase"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBuilderBase"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>

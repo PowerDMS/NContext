@@ -15,9 +15,11 @@
       <dependency id="NContext" version="[$version$,)" />
       <dependency id="CommonServiceLocator" version="1.0" />
       <dependency id="EntityFramework" version="4.3.1" />
+      <dependency id="FSharp.Core" version="4.0.0" />
     </dependencies>
   </metadata>
   <files>
+    <file src="..\NContext\bin\$Configuration$\FSharp.Core.*" target="lib\net40\" />
     <file src="..\NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net40\" />
     <file src="..\NContext.Extensions.EntityFramework\**\*.cs" target="src" />
   </files>

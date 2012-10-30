@@ -29,7 +29,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     /// <summary>
     /// Defines a component configuration class for service routing.
     /// </summary>
-    public class WebApiConfigurationBuilder : ApplicationComponentConfigurationBase
+    public class WebApiConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private Action<HttpConfiguration> _AspNetHttpConfigurationDelegate;
 
@@ -38,7 +38,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         private Boolean _IsConfigured;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBase"/> class.
+        /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBuilderBase"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>

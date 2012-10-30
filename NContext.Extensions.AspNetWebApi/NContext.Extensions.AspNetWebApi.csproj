@@ -81,8 +81,9 @@
     <Compile Include="Authentication\AuthenticationMessageHandler.cs" />
     <Compile Include="Authentication\IProvideRequestAuthentication.cs" />
     <Compile Include="Authorization\IProvideResourceAuthorization.cs" />
-    <Compile Include="Configuration\IConfigureWebApi.cs" />
     <Compile Include="Configuration\IManageWebApi.cs" />
+    <Compile Include="Configuration\IManageHttpRouting.cs" />
+    <Compile Include="Routing\IConfigureHttpRouting.cs" />
     <Compile Include="Routing\IRunWhenAWebApiRouteIsMapped.cs" />
     <Compile Include="Routing\Route.cs" />
     <Compile Include="Configuration\WebApiConfiguration.cs" />

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConfigureWebApi.cs" company="Waking Venture, Inc.">
+// <copyright file="IManageHttpRouting.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,20 +18,30 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Configuration
+namespace NContext.Extensions.AspNetWebApi.Routing
 {
-    using System.ComponentModel.Composition;
+    using System;
+    using System.Web.Http;
 
     /// <summary>
-    /// Defines a role-interface used by the <see cref="IManageWebApi"/> to register service routes.
+    /// Defines HTTP routing management for ASP.NET Web API.
     /// </summary>
-    [InheritedExport(typeof(IConfigureWebApi))]
-    public interface IConfigureWebApi
+    public interface IManageHttpRouting
     {
         /// <summary>
-        /// Creates the WCF service routes.
+        /// Gets the Web API HTTP route collection.
         /// </summary>
-        /// <param name="webApiManager">The routing manager.</param>
-        void Configure(IManageWebApi webApiManager);
+        /// <remarks></remarks>
+        HttpRouteCollection Routes { get; }
+        
+        /// <summary>
+        /// Registers the HTTP service route.
+        /// </summary>
+        /// <param name="routeName">Unique route name.</param>
+        /// <param name="routeTemplate">The route URI template.</param>
+        /// <param name="defaults">The default values for parameter binding.</param>
+        /// <param name="constraints">The constraints to be used in route.</param>
+        /// <remarks></remarks>
+        void RegisterHttpRoute(String routeName, String routeTemplate, Object defaults = null, Object constraints = null);
     }
 }

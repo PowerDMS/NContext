@@ -34,8 +34,8 @@ namespace NContext.Configuration
         private static readonly ApplicationConfiguration _ApplicationConfiguration =
             new ApplicationConfiguration();
 
-        private static readonly Dictionary<Type, ApplicationComponentConfigurationBuilder> _Components =
-            new Dictionary<Type, ApplicationComponentConfigurationBuilder>();
+        private static readonly Dictionary<Type, ApplicationComponentBuilder> _Components =
+            new Dictionary<Type, ApplicationComponentBuilder>();
         
         /// <summary>
         /// Gets the application configuration.
@@ -65,7 +65,7 @@ namespace NContext.Configuration
         /// Composes the application for web environments. This will use the <see cref="HttpRuntime.BinDirectory"/> for runtime composition.
         /// </summary>
         /// <param name="fileNameConstraints">The file name constraints.</param>
-        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder ComposeForWeb(params Predicate<String>[] fileNameConstraints)
         {
@@ -84,7 +84,7 @@ namespace NContext.Configuration
         /// or <see cref="AppDomain.CurrentDomain"/> BaseDirectory for runtime composition.
         /// </summary>
         /// <param name="fileNameConstraints">The file name constraints.</param>
-        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder ComposeWith(params Predicate<String>[] fileNameConstraints)
         {
@@ -103,7 +103,7 @@ namespace NContext.Configuration
         /// </summary>
         /// <param name="directories">The directories.</param>
         /// <param name="fileNameConstraints">The file name constraints.</param>
-        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder ComposeWith(IEnumerable<String> directories, params Predicate<String>[] fileNameConstraints)
         {
@@ -116,18 +116,18 @@ namespace NContext.Configuration
         /// Registers the component with the <see cref="ApplicationConfigurationBuilder"/> components enumerator.
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
-        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public ApplicationComponentConfigurationBuilder RegisterComponent<TApplicationComponent>()
+        public ApplicationComponentBuilder RegisterComponent<TApplicationComponent>()
             where TApplicationComponent : class, IApplicationComponent
         {
-            ApplicationComponentConfigurationBuilder section;
+            ApplicationComponentBuilder section;
             if (_Components.TryGetValue(typeof(TApplicationComponent), out section))
             {
                 return section;
             }
 
-            var componentConfigurationBuilder = (ApplicationComponentConfigurationBuilder)Activator.CreateInstance(typeof(ApplicationComponentConfigurationBuilder), this);
+            var componentConfigurationBuilder = (ApplicationComponentBuilder)Activator.CreateInstance(typeof(ApplicationComponentBuilder), this);
             _Components.Add(typeof(TApplicationComponent), componentConfigurationBuilder);
 
             return componentConfigurationBuilder;
@@ -138,7 +138,7 @@ namespace NContext.Configuration
         /// </summary>
         /// <typeparam name="TApplicationComponent">The type of the application component.</typeparam>
         /// <param name="componentFactory">The component factory.</param>
-        /// <returns>Current <see cref="ApplicationComponentConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder RegisterComponent<TApplicationComponent>(Func<TApplicationComponent> componentFactory)
             where TApplicationComponent : class, IApplicationComponent

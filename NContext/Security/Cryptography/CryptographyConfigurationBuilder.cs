@@ -28,7 +28,7 @@ namespace NContext.Security.Cryptography
     /// <summary>
     /// Defines a configuration class to build the application's <see cref="CryptographyManager"/>.
     /// </summary>
-    public class CryptographyConfigurationBuilder : ApplicationComponentConfigurationBase
+    public class CryptographyConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private Type _DefaultHashAlgorithm;
 
@@ -110,8 +110,6 @@ namespace NContext.Security.Cryptography
             return this;
         }
 
-        #region Implementation of ApplicationComponentConfigurationBase
-
         /// <summary>
         /// Sets the application's cryptography manager using 
         /// the configuration created from this instance.
@@ -131,7 +129,5 @@ namespace NContext.Security.Cryptography
                                _KeyedHashProviderFactory,
                                _SymmetricEncryptionProviderFactory)));
         }
-
-        #endregion
     }
 }

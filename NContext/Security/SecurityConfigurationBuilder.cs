@@ -30,7 +30,7 @@ namespace NContext.Security
     /// Defines a configuration class to build the application's <see cref="SecurityManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class SecurityConfigurationBuilder : ApplicationComponentConfigurationBase
+    public class SecurityConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private DateTimeOffset _TokenAbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration;
 

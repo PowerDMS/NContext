@@ -29,7 +29,7 @@ namespace NContext.Caching
     /// Defines a configuration class to build the application's <see cref="CacheManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class CacheConfigurationBuilder : ApplicationComponentConfigurationBase
+    public class CacheConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
         #region Fields
 
