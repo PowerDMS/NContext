@@ -34,7 +34,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
     {
         /// <summary>
         /// Returns a new <see cref="HttpResponseMessage"/> with the <see cref="HttpResponseMessage.Content"/> set to <paramref name="responseContent"/>. If 
-        /// <paramref name="responseContent"/> contains an error, it will attempt to parse the <see cref="Error.ErrorCode"/> as a <see cref="HttpStatusCode"/> 
+        /// <paramref name="responseContent"/> contains an error, it will attempt to parse the <see cref="Error.ErrorCode"/> as an <see cref="HttpStatusCode"/> 
         /// and assign it to the response message.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -61,6 +61,43 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
             }
 
             return httpRequestMessage.CreateResponse(statusCode, responseContent);
+        }
+
+        /// <summary>
+        /// Invokes the specified <paramref name="responseBuilder" /> action if <paramref name="responseContent" /> does not contain an error - returning the configured <see cref="HttpResponseMessage" />.
+        /// If <paramref name="responseContent" /> contains errors, the returned response with contain the error content and will attempt to parse the <see cref="Error.ErrorCode" /> as an
+        /// <see cref="HttpStatusCode" /> and assign it to the response message.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="responseContent">The <see cref="IResponseTransferObject{t}" /> used to build the <see cref="HttpResponseMessage" />.</param>
+        /// <param name="httpRequestMessage">The active <see cref="HttpRequestMessage" />.</param>
+        /// <param name="responseBuilder">The response builder method to invoke when no errors exist.</param>
+        /// <returns>HttpResponseMessage instance.</returns>
+        /// <exception cref="System.ArgumentNullException">responseContent</exception>
+        public static HttpResponseMessage ToHttpResponseMessage<T>(this IResponseTransferObject<T> responseContent, HttpRequestMessage httpRequestMessage, Action<T, HttpResponseMessage> responseBuilder)
+        {
+            if (responseContent == null)
+            {
+                throw new ArgumentNullException("responseContent");
+            }
+
+            if (httpRequestMessage == null)
+            {
+                throw new ArgumentNullException("httpRequestMessage");
+            }
+            
+            if (responseContent.Errors.Any())
+            {
+                var statusCode = HttpStatusCode.BadRequest;
+                Enum.TryParse<HttpStatusCode>(responseContent.Errors.First().ErrorCode, true, out statusCode);
+
+                return httpRequestMessage.CreateResponse(statusCode, responseContent);
+            }
+
+            var response = httpRequestMessage.CreateResponse();
+            responseBuilder.Invoke(responseContent.Data, response);
+
+            return response;
         }
     }
 }

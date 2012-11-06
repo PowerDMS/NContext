@@ -32,7 +32,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// <summary>
         /// Configures the specified HTTP routing manager.
         /// </summary>
-        /// <param name="httpRoutingManager">The HTTP routing manager.</param>
-        void Configure(IManageHttpRouting httpRoutingManager);
+        /// <param name="routingManager">The HTTP routing manager.</param>
+        void Configure(IManageHttpRouting routingManager);
     }
 }
