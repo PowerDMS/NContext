@@ -38,7 +38,10 @@ namespace NContext.Extensions.ValueInjecter
         /// <exception cref="System.ArgumentNullException">source</exception>
         public static IFluentValueInjector<T> Inject<T>(this T source)
         {
-            if (source == null) throw new ArgumentNullException("source");
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
 
             return new FluentValueInjector<T>(source);
         }

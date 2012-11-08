@@ -62,6 +62,9 @@ namespace NContext.ErrorHandling
             SetErrorMessage(localizationKey, errorMessageParameters);
         }
 
+        private ErrorBase()
+        {}
+
         /// <summary>
         /// Performs an implicit conversion from <see cref="NContext.ErrorHandling.ErrorBase"/> to <see cref="Error"/>.
         /// </summary>
@@ -97,19 +100,13 @@ namespace NContext.ErrorHandling
         /// <remarks></remarks>
         public HttpStatusCode HttpStatusCode { get; private set; }
 
-        private void SetErrorMessage(String localizationKey, params Object[] errorMessageParameters)
+        /// <summary>
+        /// Returns a default <see cref="Error"/> instance.
+        /// </summary>
+        /// <returns>Error instance.</returns>
+        public static Error NullObject()
         {
-            String errorMessage = GetLocalizedErrorMessage(localizationKey) ?? String.Empty;
-            if (!String.IsNullOrWhiteSpace(errorMessage))
-            {
-                var formatters = Extensions.StringExtensions.MinimumFormatParametersRequired(errorMessage);
-                if (formatters > 0)
-                {
-                    errorMessage = String.Format(errorMessage, errorMessageParameters);
-                }
-            }
-
-            Message = errorMessage;
+            return new Error(String.Empty, Enumerable.Empty<String>(), HttpStatusCode.BadRequest.ToString());
         }
 
         protected virtual String GetLocalizedErrorMessage(String localizationKey)
@@ -128,11 +125,11 @@ namespace NContext.ErrorHandling
              * */
             var assembly = Assembly.GetAssembly(errorType);
             var resourceBaseName = assembly
-                    .GetManifestResourceNames()
-                    .FirstOrDefault(res => res.IndexOf(errorType.Name, StringComparison.OrdinalIgnoreCase) >= 0)
-                    .ToMaybe()
-                    .Bind(resName => Regex.Replace(resName, String.Format("(?<=.*{0})(?:\\..*)?\\.resources", errorType.Name), String.Empty).ToMaybe())
-                    .FromMaybe(String.Empty);
+                .GetManifestResourceNames()
+                .FirstOrDefault(res => res.IndexOf(errorType.Name, StringComparison.OrdinalIgnoreCase) >= 0)
+                .ToMaybe()
+                .Bind(resName => Regex.Replace(resName, String.Format("(?<=.*{0})(?:\\..*)?\\.resources", errorType.Name), String.Empty).ToMaybe())
+                .FromMaybe(String.Empty);
 
             try
             {
@@ -148,6 +145,21 @@ namespace NContext.ErrorHandling
             }
 
             return message;
+        }
+
+        private void SetErrorMessage(String localizationKey, params Object[] errorMessageParameters)
+        {
+            String errorMessage = GetLocalizedErrorMessage(localizationKey) ?? String.Empty;
+            if (!String.IsNullOrWhiteSpace(errorMessage))
+            {
+                var formatters = Extensions.StringExtensions.MinimumFormatParametersRequired(errorMessage);
+                if (formatters > 0)
+                {
+                    errorMessage = String.Format(errorMessage, errorMessageParameters);
+                }
+            }
+
+            Message = errorMessage;
         }
     }
 }

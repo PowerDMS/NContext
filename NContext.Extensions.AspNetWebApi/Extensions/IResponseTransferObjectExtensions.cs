@@ -42,7 +42,10 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         /// <param name="httpRequestMessage">The active <see cref="HttpRequestMessage"/>.</param>
         /// <param name="nonErrorHttpStatusCode">The <see cref="HttpStatusCode"/> to set if <paramref name="responseContent"/> has no errors.</param>
         /// <returns>HttpResponseMessage instance.</returns>
-        public static HttpResponseMessage ToHttpResponseMessage<T>(this IResponseTransferObject<T> responseContent, HttpRequestMessage httpRequestMessage, HttpStatusCode nonErrorHttpStatusCode = HttpStatusCode.OK)
+        public static HttpResponseMessage ToHttpResponseMessage<T>(
+            this IResponseTransferObject<T> responseContent, 
+            HttpRequestMessage httpRequestMessage, 
+            HttpStatusCode nonErrorHttpStatusCode = HttpStatusCode.OK)
         {
             if (responseContent == null)
             {
@@ -74,7 +77,10 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         /// <param name="responseBuilder">The response builder method to invoke when no errors exist.</param>
         /// <returns>HttpResponseMessage instance.</returns>
         /// <exception cref="System.ArgumentNullException">responseContent</exception>
-        public static HttpResponseMessage ToHttpResponseMessage<T>(this IResponseTransferObject<T> responseContent, HttpRequestMessage httpRequestMessage, Action<T, HttpResponseMessage> responseBuilder)
+        public static HttpResponseMessage ToHttpResponseMessage<T>(
+            this IResponseTransferObject<T> responseContent, 
+            HttpRequestMessage httpRequestMessage, 
+            Action<T, HttpResponseMessage> responseBuilder)
         {
             if (responseContent == null)
             {
