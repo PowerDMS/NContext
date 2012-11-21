@@ -104,8 +104,9 @@ namespace NContext.Extensions.Ninject
 
             var serviceLocator = new NinjectServiceLocator(_Kernel);
             ServiceLocator.SetLocatorProvider(() => serviceLocator);
-            
+
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IKernel>(_Kernel);
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageNinject>(this);
             _Kernel.Bind<CompositionContainer>().ToConstant(applicationConfiguration.CompositionContainer).InSingletonScope();
 
             applicationConfiguration.CompositionContainer

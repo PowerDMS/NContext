@@ -21,6 +21,7 @@
 namespace NContext.Security
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.IdentityModel.Tokens;
     using System.Runtime.Caching;
     using System.Security.Principal;
@@ -195,6 +196,7 @@ namespace NContext.Security
         {
             if (!_IsConfigured)
             {
+                applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageSecurity>(this);
                 _IsConfigured = true;
             }
         }

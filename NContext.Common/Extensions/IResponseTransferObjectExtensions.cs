@@ -100,7 +100,38 @@ namespace NContext.Common
         /// <param name="responseTransferObject">The response transfer object.</param>
         /// <param name="continueWithFunction">The continue with function.</param>
         /// <returns>If errors exist, returns the instance of IResponseTransferObject{T} returned by <paramref name="continueWithFunction" />, else returns current instance.</returns>
-        public static IResponseTransferObject<T2> CatchAndContinue<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<Error>, IResponseTransferObject<T2>> continueWithFunction)
+        public static IResponseTransferObject<T2> CatchAndFmap<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<Error>, T2> continueWithFunction)
+        {
+            if (responseTransferObject.Errors.Any())
+            {
+                T2 result = continueWithFunction.Invoke(responseTransferObject.Errors);
+                try
+                {
+                    return Activator.CreateInstance(
+                        responseTransferObject.GetType()
+                                              .GetGenericTypeDefinition()
+                                              .MakeGenericType(typeof(T2)),
+                        result) as IResponseTransferObject<T2>;
+                }
+                catch (TargetInvocationException)
+                {
+                    // No contructor found that supported IEnumerable<T>! Return default.
+                    return new ServiceResponse<T2>(result);
+                }
+            }
+
+            return new ServiceResponse<T2>(responseTransferObject.Errors);
+        }
+
+        /// <summary>
+        /// Invokes the specified function if there are any errors - allows you to re-direct control flow with a new <typeparamref name="T" /> value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T2">The type of the t2.</typeparam>
+        /// <param name="responseTransferObject">The response transfer object.</param>
+        /// <param name="continueWithFunction">The continue with function.</param>
+        /// <returns>If errors exist, returns the instance of IResponseTransferObject{T} returned by <paramref name="continueWithFunction" />, else returns current instance.</returns>
+        public static IResponseTransferObject<T2> CatchAndBind<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<Error>, IResponseTransferObject<T2>> continueWithFunction)
         {
             if (responseTransferObject.Errors.Any())
             {

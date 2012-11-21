@@ -22,6 +22,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Web.Http;
     using System.Web.Http.SelfHost;
@@ -188,6 +189,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         {
             if (IsConfigured) return;
 
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageWebApi>(this);
             CompositionContainer = applicationConfiguration.CompositionContainer;
             if (!WebApiConfiguration.IsSelfHosted)
             {

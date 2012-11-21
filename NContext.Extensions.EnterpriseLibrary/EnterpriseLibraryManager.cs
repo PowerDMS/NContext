@@ -21,6 +21,7 @@
 namespace NContext.Extensions.EnterpriseLibrary
 {
     using System;
+    using System.ComponentModel.Composition;
 
     using Microsoft.Practices.EnterpriseLibrary.Common.Configuration.ContainerModel;
 
@@ -80,6 +81,12 @@ namespace NContext.Extensions.EnterpriseLibrary
 
         public void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
+            if (IsConfigured)
+            {
+                return;
+            }
+
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageEnterpriseLibrary>(this);
             _IsConfigured = true;
         }
 

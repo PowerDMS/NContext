@@ -165,6 +165,7 @@ namespace NContext.Configuration
                 }
 
                 _CompositionContainer.ComposeExportedValue<CompositionContainer>(_CompositionContainer);
+                _CompositionContainer.ComposeExportedValue<ApplicationConfigurationBase>(this);
 
                 var postComponentConfigurationActions = _CompositionContainer.GetExports<IRunWhenComponentConfigurationIsComplete>();
                 Components.ForEach(component =>

@@ -104,6 +104,7 @@ namespace NContext.Extensions.Unity
 
             SetServiceLocator();
                 
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageUnity>(this);
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IUnityContainer>(_Container);
             _Container.RegisterInstance<CompositionContainer>(applicationConfiguration.CompositionContainer);
 

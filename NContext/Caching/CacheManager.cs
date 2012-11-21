@@ -21,6 +21,7 @@
 namespace NContext.Caching
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.Runtime.Caching;
 
     using NContext.Configuration;
@@ -122,6 +123,7 @@ namespace NContext.Caching
         {
             if (!_IsConfigured)
             {
+                applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageCaching>(this);
                 _IsConfigured = true;
             }
         }

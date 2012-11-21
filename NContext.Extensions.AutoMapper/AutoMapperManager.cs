@@ -21,6 +21,7 @@
 namespace NContext.Extensions.AutoMapper
 {
     using System;
+    using System.ComponentModel.Composition;
 
     using global::AutoMapper;
     using global::AutoMapper.Mappers;
@@ -106,6 +107,7 @@ namespace NContext.Extensions.AutoMapper
                 return;
             }
 
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageAutoMapper>(this);
             var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExports<IConfigureAutoMapper>();
             mappingConfigurations.ForEach(mappingConfiguration => mappingConfiguration.Value.Configure(Configuration));
 

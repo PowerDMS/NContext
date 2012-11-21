@@ -21,6 +21,7 @@
 namespace NContext.Security.Cryptography
 {
     using System;
+    using System.ComponentModel.Composition;
     using System.Security.Cryptography;
 
     using NContext.Configuration;
@@ -170,6 +171,8 @@ namespace NContext.Security.Cryptography
         {
             if (!_IsConfigured)
             {
+                applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageCryptography>(this);
+
                 _DefaultHashAlgorithm = _CryptographyConfiguration.DefaultHashAlgorithm;
                 _DefaultKeyedHashAlgorithm = _CryptographyConfiguration.DefaultKeyedHashAlgorithm;
                 _DefaultSymmetricAlgorithm = _CryptographyConfiguration.DefaultSymmetricAlgorithm;
