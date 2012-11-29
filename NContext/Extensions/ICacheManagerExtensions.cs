@@ -38,9 +38,9 @@ namespace NContext.Extensions
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="instance">The instance.</param>
         /// <returns>Boolean.</returns>
-        public static Boolean AddOrUpdateItem(this IManageCaching cacheManager, Guid cacheEntryKey, Object instance)
+        public static void AddOrUpdateItem(this IManageCaching cacheManager, Guid cacheEntryKey, Object instance)
         {
-            return cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance);
+            cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance);
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace NContext.Extensions
         /// <param name="instance">The instance.</param>
         /// <param name="cacheItemPolicy">The cache item policy.</param>
         /// <returns>Boolean.</returns>
-        public static Boolean AddOrUpdateItem<TObject>(this IManageCaching cacheManager, Guid cacheEntryKey, TObject instance, CacheItemPolicy cacheItemPolicy)
+        public static void AddOrUpdateItem<TObject>(this IManageCaching cacheManager, Guid cacheEntryKey, TObject instance, CacheItemPolicy cacheItemPolicy)
         {
-            return cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance, cacheItemPolicy);
+            cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance, cacheItemPolicy);
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace NContext.Extensions
         /// <param name="instance">The instance.</param>
         /// <param name="cacheItemPolicy">The cache item policy.</param>
         /// <returns>Boolean.</returns>
-        public static Boolean AddOrUpdateItem(this IManageCaching cacheManager, Guid cacheEntryKey, Object instance, CacheItemPolicy cacheItemPolicy)
+        public static void AddOrUpdateItem(this IManageCaching cacheManager, Guid cacheEntryKey, Object instance, CacheItemPolicy cacheItemPolicy)
         {
-            return cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance, cacheItemPolicy);
+            cacheManager.AddOrUpdateItem(cacheEntryKey.ToString(), instance, cacheItemPolicy);
         }
     }
 }

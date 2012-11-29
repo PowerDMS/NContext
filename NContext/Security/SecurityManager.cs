@@ -148,10 +148,7 @@ namespace NContext.Security
                 throw new ArgumentNullException("principal");
             }
 
-            if (!CacheManager.AddOrUpdateItem(token.Value, principal, _AuthenticationCachePolicy))
-            {
-                // TODO: (DG) Log internal? Could not update cache entry.
-            }
+            CacheManager.AddOrUpdateItem(token.Value, principal, _AuthenticationCachePolicy);
         }
 
         /// <summary>

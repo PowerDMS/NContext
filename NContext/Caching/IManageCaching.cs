@@ -30,17 +30,11 @@ namespace NContext.Caching
     /// </summary>
     public interface IManageCaching : IApplicationComponent
     {
-        #region Properties
-
         /// <summary>
         /// Gets the cache provider.
         /// </summary>
         /// <remarks></remarks>
         ObjectCache Provider { get; }
-
-        #endregion
-
-        #region Indexers
 
         /// <summary>
         /// Returns the item identified by the provided key.
@@ -56,32 +50,28 @@ namespace NContext.Caching
             get;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Adds or updates the specified instance to the cache.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object to cache.</typeparam>
+        /// <typeparam name="T">The type of the object to cache.</typeparam>
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="instance">The object instance.</param>
         /// <param name="regionName">Name of the region.</param>
         /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
         /// <remarks></remarks>
-        Boolean AddOrUpdateItem<TObject>(String cacheEntryKey, TObject instance, String regionName = null);
+        void AddOrUpdateItem<T>(String cacheEntryKey, T instance, String regionName = null);
 
         /// <summary>
         /// Adds or updates the specified instance to the cache.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object to cache.</typeparam>
+        /// <typeparam name="T">The type of the object to cache.</typeparam>
         /// <param name="cacheEntryKey">The cache enty key.</param>
         /// <param name="instance">The object instance.</param>
         /// <param name="cacheItemPolicy">The cache item policy.</param>
         /// <param name="regionName">Name of the region.</param>
         /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
         /// <remarks></remarks>
-        Boolean AddOrUpdateItem<TObject>(String cacheEntryKey, TObject instance, CacheItemPolicy cacheItemPolicy, String regionName = null);
+        void AddOrUpdateItem<T>(String cacheEntryKey, T instance, CacheItemPolicy cacheItemPolicy, String regionName = null);
 
         /// <summary>
         /// Returns true if key refers to item current stored in cache
@@ -102,21 +92,21 @@ namespace NContext.Caching
         /// <summary>
         /// Gets the cache item associated with the specified key.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
-        /// <param name="cacheEntryKey">The cache entry key.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns><typeparamref name="TObject"/> instance if found in the cache, else null.</returns>
-        /// <remarks></remarks>
-        TObject Get<TObject>(String cacheEntryKey, String regionName = null) where TObject : class;
-
-        /// <summary>
-        /// Gets the cache item associated with the specified key.
-        /// </summary>
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="regionName">Name of the region.</param>
         /// <returns>Object instance if found in the cache, else null.</returns>
         /// <remarks></remarks>
         Object Get(String cacheEntryKey, String regionName = null);
+
+        /// <summary>
+        /// Gets the cache item associated with the specified key.
+        /// </summary>
+        /// <typeparam name="T">The type of the object.</typeparam>
+        /// <param name="cacheEntryKey">The cache entry key.</param>
+        /// <param name="regionName">Name of the region.</param>
+        /// <returns><typeparamref name="T"/> instance if found in the cache, else null.</returns>
+        /// <remarks></remarks>
+        T Get<T>(String cacheEntryKey, String regionName = null) where T : class;
 
         /// <summary>
         /// Gets the number of items in cache.
@@ -133,7 +123,5 @@ namespace NContext.Caching
         /// <param name="regionName">Name of the region.</param>
         /// <remarks></remarks>
         void Remove(String cacheEntryKey, String regionName = null);
-
-        #endregion
     }
 }

@@ -32,15 +32,9 @@ namespace NContext.Caching
     /// </summary>
     public class CacheManager : IManageCaching
     {
-        #region Fields
-
         private readonly CacheConfiguration _CacheConfiguration;
 
         private Boolean _IsConfigured;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheManager"/> class.
@@ -56,10 +50,6 @@ namespace NContext.Caching
 
             _CacheConfiguration = cacheConfiguration;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// Gets the cache provider.
@@ -89,10 +79,6 @@ namespace NContext.Caching
             }
         }
 
-        #endregion
-
-        #region Indexers
-
         /// <summary>
         /// Returns the item identified by the provided key.
         /// </summary>
@@ -110,10 +96,6 @@ namespace NContext.Caching
             }
         }
 
-        #endregion
-
-        #region Implementation of IApplicationComponent
-
         /// <summary>
         /// Configures the component instance.
         /// </summary>
@@ -121,55 +103,47 @@ namespace NContext.Caching
         /// <remarks></remarks>
         public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
-            if (!_IsConfigured)
+            if (_IsConfigured)
             {
-                applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageCaching>(this);
-                _IsConfigured = true;
+                return;
             }
+
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageCaching>(this);
+            _IsConfigured = true;
         }
-
-        #endregion
-
-        #region Implementation of IManageCaching
 
         /// <summary>
         /// Adds or updates the specified instance to the cache.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object to cache.</typeparam>
+        /// <typeparam name="T">The type of the object to cache.</typeparam>
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="instance">The object instance.</param>
         /// <param name="regionName">Name of the region.</param>
         /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
         /// <remarks></remarks>
-        public Boolean AddOrUpdateItem<TObject>(String cacheEntryKey, TObject instance, String regionName = null)
+        public void AddOrUpdateItem<T>(String cacheEntryKey, T instance, String regionName = null)
         {
-            return AddOrUpdateItem<TObject>(cacheEntryKey, instance, GetDefaultCacheItemPolicy(), regionName);
+            AddOrUpdateItem<T>(cacheEntryKey, instance, null, regionName);
         }
 
         /// <summary>
         /// Adds or updates the specified instance to the cache.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object to cache.</typeparam>
+        /// <typeparam name="T">The type of the object to cache.</typeparam>
         /// <param name="cacheEntryKey">The cache enty key.</param>
         /// <param name="instance">The object instance.</param>
         /// <param name="cacheItemPolicy">The cache item policy.</param>
         /// <param name="regionName">Name of the region.</param>
         /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
         /// <remarks></remarks>
-        public Boolean AddOrUpdateItem<TObject>(String cacheEntryKey, TObject instance, CacheItemPolicy cacheItemPolicy, String regionName = null)
+        public void AddOrUpdateItem<T>(String cacheEntryKey, T instance, CacheItemPolicy cacheItemPolicy, String regionName = null)
         {
             if (String.IsNullOrWhiteSpace(cacheEntryKey))
             {
                 throw new ArgumentNullException("cacheEntryKey");
             }
 
-            if (instance == null)
-            {
-                throw new ArgumentNullException("instance");
-            }
-
-            Remove(cacheEntryKey);
-            return Provider.Add(cacheEntryKey, instance, cacheItemPolicy ?? GetDefaultCacheItemPolicy(), regionName);
+            Provider.Set(cacheEntryKey, instance, cacheItemPolicy ?? GetDefaultCacheItemPolicy(), regionName);
         }
 
         /// <summary>
@@ -198,26 +172,26 @@ namespace NContext.Caching
         /// <summary>
         /// Gets the cache item associated with the specified key.
         /// </summary>
-        /// <typeparam name="TObject">The type of the object.</typeparam>
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="regionName">Name of the region.</param>
-        /// <returns><typeparamref name="TObject"/> instance if found in the cache, else null.</returns>
+        /// <returns>Object instance if found in the cache, else null.</returns>
         /// <remarks></remarks>
-        public TObject Get<TObject>(String cacheEntryKey, String regionName) where TObject : class
+        public Object Get(String cacheEntryKey, String regionName = null)
         {
-            return Provider.Get<TObject>(cacheEntryKey, regionName);
+            return Provider.Get(cacheEntryKey, regionName);
         }
 
         /// <summary>
         /// Gets the cache item associated with the specified key.
         /// </summary>
+        /// <typeparam name="T">The type of the object.</typeparam>
         /// <param name="cacheEntryKey">The cache entry key.</param>
         /// <param name="regionName">Name of the region.</param>
-        /// <returns>Object instance if found in the cache, else null.</returns>
+        /// <returns><typeparamref name="T"/> instance if found in the cache, else null.</returns>
         /// <remarks></remarks>
-        public Object Get(String cacheEntryKey, String regionName)
+        public T Get<T>(String cacheEntryKey, String regionName = null) where T : class
         {
-            return Provider.Get(cacheEntryKey, regionName);
+            return Provider.Get<T>(cacheEntryKey, regionName);
         }
 
         /// <summary>
@@ -253,7 +227,5 @@ namespace NContext.Caching
                     SlidingExpiration = _CacheConfiguration.SlidingExpiration
                 };
         }
-
-        #endregion
     }
 }

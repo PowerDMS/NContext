@@ -33,12 +33,22 @@ namespace NContext.Extensions
         /// <summary>
         /// Returns a new <see cref="IResponseTransferObject{T}"/> with the specified <paramref name="error"/>.
         /// </summary>
-        /// <typeparam name="T">Type of IResponseTransferObject.</typeparam>
         /// <param name="error">The error.</param>
         /// <returns>IResponseTransferObject{T}.</returns>
         public static IResponseTransferObject<Unit> ToServiceResponse(this ErrorBase error)
         {
             return new ServiceResponse<Unit>(error);
+        }
+
+        /// <summary>
+        /// Returns a new <see cref="IResponseTransferObject{T}"/> with the specified <paramref name="error"/>.
+        /// </summary>
+        /// <typeparam name="T">Type of IResponseTransferObject.</typeparam>
+        /// <param name="error">The error.</param>
+        /// <returns>IResponseTransferObject{T}.</returns>
+        public static IResponseTransferObject<T> ToServiceResponse<T>(this ErrorBase error)
+        {
+            return new ServiceResponse<T>(error);
         }
     }
 }
