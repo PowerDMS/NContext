@@ -38,6 +38,8 @@ namespace NContext.Extensions.EntityFramework
 
         private Boolean _IsDisposed;
 
+        private Boolean _IsDisposing;
+
         protected internal DbContextContainer()
         {
             _Id = Guid.NewGuid();
@@ -60,6 +62,22 @@ namespace NContext.Extensions.EntityFramework
             }
         }
 
+        public Boolean IsDisposing
+        {
+            get
+            {
+                return _IsDisposing;
+            }
+        }
+
+        public Boolean IsDisposed
+        {
+            get
+            {
+                return _IsDisposed;
+            }
+        }
+
         public void Add(DbContext dbContext)
         {
             if (Contains(dbContext.GetType().Name))
@@ -78,6 +96,11 @@ namespace NContext.Extensions.EntityFramework
         public Boolean Contains(String key)
         {
             return _Contexts.ContainsKey(key);
+        }
+
+        public Boolean Contains(DbContext dbContext)
+        {
+            return _Contexts.ContainsKey(dbContext.GetType().Name);
         }
 
         /// <summary>
@@ -120,14 +143,17 @@ namespace NContext.Extensions.EntityFramework
 
         private void Dispose(Boolean disposeManagedResources)
         {
-            if (_IsDisposed) return;
+            if (IsDisposed) return;
 
             if (disposeManagedResources)
             {
+                _IsDisposing = true;
                 foreach (var dbContext in Contexts)
                 {
                     dbContext.Dispose();
                 }
+
+                _IsDisposing = false;
             }
 
             _IsDisposed = true;

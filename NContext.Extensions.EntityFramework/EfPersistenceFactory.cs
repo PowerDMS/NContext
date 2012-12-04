@@ -22,7 +22,11 @@ namespace NContext.Extensions.EntityFramework
 {
     using System;
     using System.Data.Entity;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
     using System.Transactions;
+
+    using Castle.DynamicProxy;
 
     using NContext.Data.Persistence;
 
@@ -33,6 +37,8 @@ namespace NContext.Extensions.EntityFramework
     {
         private readonly IDbContextFactory _DbContextFactory;
 
+        private readonly static Lazy<ProxyGenerator> _ProxyGenerator = new Lazy<ProxyGenerator>(() => new ProxyGenerator());
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="EfPersistenceFactory" /> class.
         /// </summary>
@@ -68,6 +74,14 @@ namespace NContext.Extensions.EntityFramework
             : base(contextManagerFactory)
         {
             _DbContextFactory = dbContextFactory ?? new ServiceLocatorDbContextFactory();
+        }
+
+        protected static ProxyGenerator ProxyGenerator
+        {
+            get
+            {
+                return _ProxyGenerator.Value;
+            }
         }
 
         #region Overrides of PersistenceFactoryBase
@@ -117,9 +131,18 @@ namespace NContext.Extensions.EntityFramework
             var ambient = AmbientContextManager.Ambient;
             if (ambient.IsTypeOf<CompositeUnitOfWork>())
             {
+                UnitOfWorkBase unitOfWork;
                 var currentCompositeUnitOfWork = (CompositeUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
-                var unitOfWork = new EfUnitOfWork(AmbientContextManager, new DbContextContainer(), currentCompositeUnitOfWork);
-                currentCompositeUnitOfWork.AddUnitOfWork(unitOfWork);
+                if (currentCompositeUnitOfWork.ContainsType<IEfUnitOfWork>())
+                {
+                    unitOfWork = currentCompositeUnitOfWork.Single(uow => uow.GetType().Implements<IEfUnitOfWork>());
+                }
+                else
+                {
+                    unitOfWork = new EfUnitOfWork(AmbientContextManager, new DbContextContainer(), currentCompositeUnitOfWork);
+                    currentCompositeUnitOfWork.Add(unitOfWork);
+                }
+
                 AmbientContextManager.AddUnitOfWork(unitOfWork);
 
                 return unitOfWork;
@@ -157,7 +180,9 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>() where TEntity : class, IEntity
         {
-            return new EfGenericRepository<TEntity>(GetOrCreateDbContext());
+            Contract.Assert(EfUnitOfWorkExists());
+
+            return new EfGenericRepository<TEntity>(GetOrCreateDbContextForUnitOfWork("default"));
         }
 
         /// <summary>
@@ -171,7 +196,9 @@ namespace NContext.Extensions.EntityFramework
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
-            return new EfGenericRepository<TEntity>(GetOrCreateDbContext<TDbContext>());
+            Contract.Assert(EfUnitOfWorkExists());
+
+            return new EfGenericRepository<TEntity>(GetOrCreateDbContextForUnitOfWork<TDbContext>());
         }
 
         /// <summary>
@@ -184,9 +211,11 @@ namespace NContext.Extensions.EntityFramework
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredDbContextNameForServiceLocation)
             where TEntity : class, IEntity
         {
-            return new EfGenericRepository<TEntity>(GetOrCreateDbContext(registeredDbContextNameForServiceLocation));
-        }
+            Contract.Assert(EfUnitOfWorkExists());
 
+            return new EfGenericRepository<TEntity>(GetOrCreateDbContextForUnitOfWork(registeredDbContextNameForServiceLocation));
+        }
+        
         /// <summary>
         /// Gets the default context from the ambient <see cref="IEfUnitOfWork"/> if one exists, else it tries to create a new context via service location.
         /// </summary>
@@ -206,16 +235,12 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public DbContext GetOrCreateDbContext(String registeredNameForServiceLocation)
         {
-            EnsureEfUnitOfWorkExists();
+            if (!EfUnitOfWorkExists())
+            {
+                return _DbContextFactory.Create(registeredNameForServiceLocation);
+            }
 
-            var currentUnitOfWork = (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
-            return currentUnitOfWork.DbContextContainer.GetContext(registeredNameForServiceLocation) ??
-                   new Func<DbContext>(() =>
-                       {
-                           var context = _DbContextFactory.Create(registeredNameForServiceLocation);
-                           currentUnitOfWork.DbContextContainer.Add(registeredNameForServiceLocation, context);
-                           return context;
-                       }).Invoke();
+            return CreateDbContextProxy(GetOrCreateDbContextForUnitOfWork(registeredNameForServiceLocation));
         }
 
         /// <summary>
@@ -225,29 +250,56 @@ namespace NContext.Extensions.EntityFramework
         /// <returns>Instance of <see cref="DbContext" />.</returns>
         public TDbContext GetOrCreateDbContext<TDbContext>() where TDbContext : DbContext
         {
-            var unitOfWork = EfUnitOfWorkExists()
-                                 ? (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork
-                                 : (IEfUnitOfWork)CreateUnitOfWork();
+            if (!EfUnitOfWorkExists())
+            {
+                return _DbContextFactory.Create<TDbContext>();
+            }
 
-            return unitOfWork.DbContextContainer.GetContext<TDbContext>() ??
-                new Func<TDbContext>(() =>
-                {
-                    var context = _DbContextFactory.Create<TDbContext>();
-                    unitOfWork.DbContextContainer.Add(context);
-
-                    return context;
-                }).Invoke();
+            return CreateDbContextProxy(GetOrCreateDbContextForUnitOfWork<TDbContext>());
         }
 
-        private void EnsureEfUnitOfWorkExists()
+        private DbContext GetOrCreateDbContextForUnitOfWork(String registeredNameForServiceLocation)
         {
-            if (!AmbientContextManager.AmbientExists || 
-                !AmbientContextManager.AmbientUnitOfWorkIsValid || 
-                !AmbientContextManager.Ambient.IsTypeOf<IEfUnitOfWork>())
-            {
-                var unitOfWork = CreateUnitOfWork();
-                // Disposing stuff!
-            }
+            var unitOfWork = (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+            return unitOfWork.DbContextContainer.GetContext(registeredNameForServiceLocation) ??
+                   new Func<DbContext>(
+                       () =>
+                           {
+                               var context = _DbContextFactory.Create(registeredNameForServiceLocation);
+                               unitOfWork.DbContextContainer.Add(registeredNameForServiceLocation, context);
+
+                               return context;
+                           }).Invoke();
+        }
+
+        private TDbContext GetOrCreateDbContextForUnitOfWork<TDbContext>() where TDbContext : DbContext
+        {
+            var unitOfWork = (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+            return unitOfWork.DbContextContainer.GetContext<TDbContext>() ?? 
+                new Func<TDbContext>(
+                    () =>
+                        {
+                            var context = _DbContextFactory.Create<TDbContext>();
+                            unitOfWork.DbContextContainer.Add(context);
+
+                            return context;
+                        }).Invoke();
+        }
+
+        private TDbContext CreateDbContextProxy<TDbContext>(TDbContext context) where TDbContext : DbContext
+        {
+            var contextProxy = ProxyGenerator.CreateClassProxyWithTarget(
+                context, new ProxyGenerationOptions(new DbContextProxyGenerationHook()), new DisposeInterceptor());
+
+            var disposableMixin =
+                (((IProxyTargetAccessor)contextProxy)
+                    .GetInterceptors()
+                    .Single(interceptor => interceptor is DisposeInterceptor)) as IDisposableMixin;
+
+            var unitOfWork = (IEfUnitOfWork)AmbientContextManager.Ambient.UnitOfWork;
+            disposableMixin.SetDisposePredicate(() => unitOfWork.DbContextContainer.IsDisposing);
+
+            return contextProxy;
         }
 
         private Boolean EfUnitOfWorkExists()

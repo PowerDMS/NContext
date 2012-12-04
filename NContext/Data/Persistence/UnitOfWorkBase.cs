@@ -36,7 +36,7 @@ namespace NContext.Data.Persistence
     /// Defines a common abstraction for transactional unit of work persistence.
     /// </summary>
     /// <remarks></remarks>
-    public abstract class UnitOfWorkBase : IUnitOfWork
+    public abstract class UnitOfWorkBase : IUnitOfWork, IEquatable<UnitOfWorkBase>
     {
         private readonly Guid _Id;
 
@@ -89,6 +89,34 @@ namespace NContext.Data.Persistence
         }
 
         /// <summary>
+        /// Gets the parent <see cref="UnitOfWorkBase"/>. Usually a <see cref="CompositeUnitOfWork"/>.
+        /// </summary>
+        /// <remarks></remarks>
+        public UnitOfWorkBase Parent
+        {
+            get
+            {
+                return _Parent;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the status.
+        /// </summary>
+        /// <value>The status.</value>
+        public TransactionStatus Status
+        {
+            get
+            {
+                return _Status;
+            }
+            protected set
+            {
+                _Status = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether this instance is disposed.
         /// </summary>
         /// <value><c>true</c> if this instance is disposed; otherwise, <c>false</c>.</value>
@@ -117,18 +145,6 @@ namespace NContext.Data.Persistence
             }
         }
 
-        /// <summary>
-        /// Gets the parent <see cref="UnitOfWorkBase"/>. Usually a <see cref="CompositeUnitOfWork"/>.
-        /// </summary>
-        /// <remarks></remarks>
-        public UnitOfWorkBase Parent
-        {
-            get
-            {
-                return _Parent;
-            }
-        }
-
         protected internal Transaction ScopeTransaction
         {
             get
@@ -153,22 +169,6 @@ namespace NContext.Data.Persistence
             get
             {
                 return _AmbientContextManager;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the status.
-        /// </summary>
-        /// <value>The status.</value>
-        public TransactionStatus Status
-        {
-            get
-            {
-                return _Status;
-            }
-            protected set
-            {
-                _Status = value;
             }
         }
 
@@ -382,6 +382,50 @@ namespace NContext.Data.Persistence
         }
 
         protected abstract void DisposeManagedResources();
+
+        #endregion
+
+        #region Implementation of IEquatable
+
+        public Boolean Equals(UnitOfWorkBase other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return _Id.Equals(other._Id);
+        }
+
+        public override Boolean Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((UnitOfWorkBase)obj);
+        }
+
+        public override Int32 GetHashCode()
+        {
+            return _Id.GetHashCode();
+        }
 
         #endregion
     }

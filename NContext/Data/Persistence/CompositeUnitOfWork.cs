@@ -21,6 +21,7 @@
 namespace NContext.Data.Persistence
 {
     using System;
+    using System.Collections;
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
@@ -37,11 +38,11 @@ namespace NContext.Data.Persistence
     /// Defines a persistence-agnostic unit of work container for transactional polyglot persistence 
     /// support. All units of work must simply work against <see cref="System.Transactions"/>.
     /// </summary>
-    public class CompositeUnitOfWork : UnitOfWorkBase
+    public class CompositeUnitOfWork : UnitOfWorkBase, ICollection<UnitOfWorkBase>
     {
         private readonly PersistenceOptions _PersistenceOptions;
 
-        private readonly HashSet<UnitOfWorkBase> _UnitsOfWork = new HashSet<UnitOfWorkBase>();
+        private readonly ISet<UnitOfWorkBase> _UnitsOfWork = new HashSet<UnitOfWorkBase>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeUnitOfWork" /> class.
@@ -78,27 +79,12 @@ namespace NContext.Data.Persistence
             _PersistenceOptions = persistenceOptions;
         }
 
-        protected HashSet<UnitOfWorkBase> UnitsOfWork
+        protected ISet<UnitOfWorkBase> UnitsOfWork
         {
             get
             {
                 return _UnitsOfWork;
             }
-        }
-
-        /// <summary>
-        /// Adds the unit of work.
-        /// </summary>
-        /// <param name="unitOfWork">The unit of work.</param>
-        /// <remarks></remarks>
-        public void AddUnitOfWork(UnitOfWorkBase unitOfWork)
-        {
-            if (UnitsOfWork.Any(uow => uow.Id == unitOfWork.Id))
-            {
-                return;
-            }
-
-            UnitsOfWork.Add(unitOfWork);
         }
 
         /// <summary>
@@ -109,6 +95,15 @@ namespace NContext.Data.Persistence
             UnitsOfWork.AsParallel()
                        .WithDegreeOfParallelism(_PersistenceOptions.MaxDegreeOfParallelism)
                        .ForAll(uow => uow.Rollback());
+        }
+
+        /// <summary>
+        /// Determines whether this instance contains a specific type of <see cref="IUnitOfWork"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public Boolean ContainsType<T>() where T : IUnitOfWork
+        {
+            return UnitsOfWork.Any(uow => uow.GetType().Implements<T>());
         }
 
         protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
@@ -198,5 +193,70 @@ namespace NContext.Data.Persistence
                        .WithDegreeOfParallelism(_PersistenceOptions.MaxDegreeOfParallelism)
                        .ForAll(uow => uow.Dispose());
         }
+
+        #region Implementation of ICollection
+
+        public IEnumerator<UnitOfWorkBase> GetEnumerator()
+        {
+            return _UnitsOfWork.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
+        public void Add(UnitOfWorkBase unitOfWork)
+        {
+            if (unitOfWork == null)
+            {
+                throw new ArgumentNullException("unitOfWork");
+            }
+
+            if (UnitsOfWork.Contains(unitOfWork))
+            {
+                return;
+            }
+
+            UnitsOfWork.Add(unitOfWork);
+        }
+
+        public void Clear()
+        {
+            UnitsOfWork.Clear();
+        }
+
+        public Boolean Contains(UnitOfWorkBase unitOfWork)
+        {
+            return UnitsOfWork.Contains(unitOfWork);
+        }
+
+        public void CopyTo(UnitOfWorkBase[] array, Int32 arrayIndex)
+        {
+            UnitsOfWork.CopyTo(array, arrayIndex);
+        }
+
+        public Boolean Remove(UnitOfWorkBase unitOfWork)
+        {
+            return UnitsOfWork.Remove(unitOfWork);
+        }
+
+        public Int32 Count
+        {
+            get
+            {
+                return UnitsOfWork.Count;
+            }
+        }
+
+        public Boolean IsReadOnly
+        {
+            get
+            {
+                return UnitsOfWork.IsReadOnly;
+            }
+        }
+
+        #endregion
     }
 }

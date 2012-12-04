@@ -38,11 +38,17 @@ namespace NContext.Extensions.EntityFramework
         /// </summary>
         IEnumerable<DbContext> Contexts { get; }
 
+        Boolean IsDisposing { get; }
+
+        Boolean IsDisposed { get; }
+
         void Add(DbContext dbContext);
 
         void Add(String key, DbContext dbContext);
 
         Boolean Contains(String key);
+
+        Boolean Contains(DbContext dbContext);
 
         /// <summary>
         /// Gets or creates the <typeparamref name="TContext"/> context.
