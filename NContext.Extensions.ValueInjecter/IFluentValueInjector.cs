@@ -21,7 +21,6 @@
 namespace NContext.Extensions.ValueInjecter
 {
     using System;
-    using System.Linq.Expressions;
 
     using Omu.ValueInjecter;
 
@@ -45,7 +44,7 @@ namespace NContext.Extensions.ValueInjecter
         /// </summary>
         /// <typeparam name="T2">The type of target to return.</typeparam>
         /// <returns><typeparamref name="T2"/> instance.</returns>
-        T2 Into<T2>(Expression<Func<T, Object>> mapper) where T2 : class, new();
+        T2 Into<T2>(Object mapper) where T2 : class, new();
 
         /// <summary>
         /// Returns <paramref name="targetInstance" />; injecting the source <typeparamref name="T" /> using the configured
@@ -65,7 +64,7 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="targetInstance">The target instance.</param>
         /// <param name="mapper">The mapper.</param>
         /// <returns><typeparamref name="T2" /> instance.</returns>
-        T2 Into<T2>(T2 targetInstance, Expression<Func<T, Object>> mapper);
+        T2 Into<T2>(T2 targetInstance, Object mapper);
 
         /// <summary>
         /// Configures the type of <see cref="IValueInjection"/> to use with this injector. 

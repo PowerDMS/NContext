@@ -21,7 +21,7 @@
 namespace NContext.Extensions.ValueInjecter
 {
     using System;
-    using System.Linq.Expressions;
+    using System.ComponentModel;
     using System.Reflection;
 
     using NContext.Common;
@@ -69,7 +69,7 @@ namespace NContext.Extensions.ValueInjecter
         /// </summary>
         /// <typeparam name="T2">The type of target to return.</typeparam>
         /// <returns><typeparamref name="T2"/> instance.</returns>
-        public T2 Into<T2>(Expression<Func<T, Object>> mapper) where T2 : class, new()
+        public T2 Into<T2>(Object mapper) where T2 : class, new()
         {
             return Into<T2>(Activator.CreateInstance<T2>(), mapper);
         }
@@ -95,34 +95,21 @@ namespace NContext.Extensions.ValueInjecter
         /// <param name="targetInstance">The target instance.</param>
         /// <param name="mapper">The mapper.</param>
         /// <returns><typeparamref name="T2" /> instance.</returns>
-        public T2 Into<T2>(T2 targetInstance, Expression<Func<T, Object>> mapper)
+        public T2 Into<T2>(T2 targetInstance, Object mapper)
         {
             if (targetInstance == null) throw new ArgumentNullException("targetInstance");
 
             targetInstance.InjectFrom(_ValueInjection.Value, _Source);
-            if (mapper == null)
-            {
-                return targetInstance;
-            }
 
-            var objectMap = mapper.Body as NewExpression;
-            if (objectMap == null)
+            if (mapper != null)
             {
-                throw new ArgumentException("The specified mapper object is not valid. Please consult the documentation on how to use Into(_, mapper).", "mapper");
-            }
-
-            for (var memberIndex = 0; memberIndex < objectMap.Members.Count; memberIndex++)
-            {
-                var index = memberIndex;
-                ((MemberExpression)objectMap.Arguments[memberIndex])
-                    .ToMaybe()
-                    .Bind(memberExp => typeof(T).GetProperty(memberExp.Member.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase).ToMaybe())
-                    .Bind(propInfo => propInfo.GetValue(_Source, null).ToMaybe())
-                    .Let(sourceMemberValue =>
-                        {
-                            typeof(T2).GetProperty(objectMap.Members[index].Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase)
-                                      .SetValue(targetInstance, sourceMemberValue, null);
-                        });
+                foreach (PropertyDescriptor descriptor in TypeDescriptor.GetProperties(mapper))
+                {
+                    PropertyDescriptor propertyDescriptor = descriptor;
+                    typeof(T2).GetProperty(descriptor.Name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.IgnoreCase)
+                              .ToMaybe()
+                              .Let(propertyInfo => propertyInfo.SetValue(targetInstance, propertyDescriptor.GetValue(mapper), null));
+                }
             }
 
             return targetInstance;
