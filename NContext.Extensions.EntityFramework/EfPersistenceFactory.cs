@@ -22,6 +22,7 @@ namespace NContext.Extensions.EntityFramework
 {
     using System;
     using System.Data.Entity;
+    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Transactions;
 
@@ -233,7 +234,7 @@ namespace NContext.Extensions.EntityFramework
                 return _DbContextFactory.Create(registeredNameForServiceLocation);
             }
 
-            return CreateDbContextProxy(GetOrCreateDbContextForUnitOfWork(registeredNameForServiceLocation));
+            return GetOrCreateDbContextForUnitOfWork(registeredNameForServiceLocation);
         }
 
         /// <summary>
@@ -248,7 +249,7 @@ namespace NContext.Extensions.EntityFramework
                 return _DbContextFactory.Create<TDbContext>();
             }
 
-            return CreateDbContextProxy(GetOrCreateDbContextForUnitOfWork<TDbContext>());
+            return GetOrCreateDbContextForUnitOfWork<TDbContext>();
         }
 
         private DbContext GetOrCreateDbContextForUnitOfWork(String registeredNameForServiceLocation)
@@ -258,7 +259,7 @@ namespace NContext.Extensions.EntityFramework
                    new Func<DbContext>(
                        () =>
                            {
-                               var context = _DbContextFactory.Create(registeredNameForServiceLocation);
+                               var context = CreateDbContextProxy(_DbContextFactory.Create(registeredNameForServiceLocation));
                                unitOfWork.DbContextContainer.Add(registeredNameForServiceLocation, context);
 
                                return context;
@@ -272,7 +273,7 @@ namespace NContext.Extensions.EntityFramework
                 new Func<TDbContext>(
                     () =>
                         {
-                            var context = _DbContextFactory.Create<TDbContext>();
+                            var context = CreateDbContextProxy(_DbContextFactory.Create<TDbContext>());
                             unitOfWork.DbContextContainer.Add(context);
 
                             return context;
@@ -281,6 +282,8 @@ namespace NContext.Extensions.EntityFramework
 
         private TDbContext CreateDbContextProxy<TDbContext>(TDbContext context) where TDbContext : DbContext
         {
+            Contract.Requires(context != null);
+
             var contextProxy = ProxyGenerator.CreateClassProxyWithTarget(
                 context.GetType(),
                 context, 
