@@ -282,7 +282,7 @@ namespace NContext.Extensions.EntityFramework
         private TDbContext CreateDbContextProxy<TDbContext>(TDbContext context) where TDbContext : DbContext
         {
             var contextProxy = ProxyGenerator.CreateClassProxyWithTarget(
-                typeof(TDbContext),
+                context.GetType(),
                 context, 
                 new ProxyGenerationOptions(new DbContextProxyGenerationHook()), 
                 new Object[] { context.Database.Connection.ConnectionString },
