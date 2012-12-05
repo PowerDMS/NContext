@@ -56,11 +56,7 @@ namespace NContext.Extensions.EntityFramework
         }
 
         #region Implementation of IEfGenericRepository<TEntity>
-
-        public event EventHandler Disposing;
-
-        public event EventHandler Disposed;
-
+        
         /// <summary>
         /// Adds a transient instance of <typeparamref cref="TEntity"/> to the unit of work
         /// to be persisted and inserted by the repository.
@@ -321,27 +317,14 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         protected virtual void Dispose(Boolean disposeManagedResources)
         {
-            if (IsDisposed)
-            {
-                return;
-            }
+            if (IsDisposed) return;
 
             if (disposeManagedResources)
             {
-                // TODO: (DG) If not part of a unit of work, dispose the _Context? Can the rep exist outside a UoW? Not currently.
-                var disposingHandler = Disposing;
-                if (disposingHandler != null)
-                {
-                    disposingHandler(this, EventArgs.Empty);
-                }
+                _Context.Dispose();
             }
 
             IsDisposed = true;
-            var disposedHandler = Disposed;
-            if (disposedHandler != null)
-            {
-                disposedHandler(this, EventArgs.Empty);
-            }
         }
 
         #endregion

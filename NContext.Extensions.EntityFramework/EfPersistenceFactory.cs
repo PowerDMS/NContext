@@ -22,7 +22,6 @@ namespace NContext.Extensions.EntityFramework
 {
     using System;
     using System.Data.Entity;
-    using System.Diagnostics.Contracts;
     using System.Linq;
     using System.Transactions;
 
@@ -180,9 +179,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>() where TEntity : class, IEntity
         {
-            Contract.Assert(EfUnitOfWorkExists());
-
-            return new EfGenericRepository<TEntity>(GetOrCreateDbContextForUnitOfWork("default"));
+            return new EfGenericRepository<TEntity>(GetOrCreateDbContext());
         }
 
         /// <summary>
@@ -196,9 +193,7 @@ namespace NContext.Extensions.EntityFramework
             where TEntity : class, IEntity
             where TDbContext : DbContext
         {
-            Contract.Assert(EfUnitOfWorkExists());
-
-            return new EfGenericRepository<TEntity>(GetOrCreateDbContextForUnitOfWork<TDbContext>());
+            return new EfGenericRepository<TEntity>(GetOrCreateDbContext<TDbContext>());
         }
 
         /// <summary>
@@ -211,9 +206,7 @@ namespace NContext.Extensions.EntityFramework
         public IEfGenericRepository<TEntity> CreateRepository<TEntity>(String registeredDbContextNameForServiceLocation)
             where TEntity : class, IEntity
         {
-            Contract.Assert(EfUnitOfWorkExists());
-
-            return new EfGenericRepository<TEntity>(GetOrCreateDbContextForUnitOfWork(registeredDbContextNameForServiceLocation));
+            return new EfGenericRepository<TEntity>(GetOrCreateDbContext(registeredDbContextNameForServiceLocation));
         }
         
         /// <summary>
@@ -235,7 +228,7 @@ namespace NContext.Extensions.EntityFramework
         /// <remarks></remarks>
         public DbContext GetOrCreateDbContext(String registeredNameForServiceLocation)
         {
-            if (!EfUnitOfWorkExists())
+            if (!AmbientEfUnitOfWorkExists())
             {
                 return _DbContextFactory.Create(registeredNameForServiceLocation);
             }
@@ -250,7 +243,7 @@ namespace NContext.Extensions.EntityFramework
         /// <returns>Instance of <see cref="DbContext" />.</returns>
         public TDbContext GetOrCreateDbContext<TDbContext>() where TDbContext : DbContext
         {
-            if (!EfUnitOfWorkExists())
+            if (!AmbientEfUnitOfWorkExists())
             {
                 return _DbContextFactory.Create<TDbContext>();
             }
@@ -289,7 +282,11 @@ namespace NContext.Extensions.EntityFramework
         private TDbContext CreateDbContextProxy<TDbContext>(TDbContext context) where TDbContext : DbContext
         {
             var contextProxy = ProxyGenerator.CreateClassProxyWithTarget(
-                context, new ProxyGenerationOptions(new DbContextProxyGenerationHook()), new DisposeInterceptor());
+                typeof(TDbContext),
+                context, 
+                new ProxyGenerationOptions(new DbContextProxyGenerationHook()), 
+                new Object[] { context.Database.Connection.ConnectionString },
+                new DisposeInterceptor()) as TDbContext;
 
             var disposableMixin =
                 (((IProxyTargetAccessor)contextProxy)
@@ -302,7 +299,7 @@ namespace NContext.Extensions.EntityFramework
             return contextProxy;
         }
 
-        private Boolean EfUnitOfWorkExists()
+        private Boolean AmbientEfUnitOfWorkExists()
         {
             if (!AmbientContextManager.AmbientExists ||
                 !AmbientContextManager.AmbientUnitOfWorkIsValid ||

@@ -37,16 +37,6 @@ namespace NContext.Extensions.EntityFramework
         where TEntity : class, IEntity
     {
         /// <summary>
-        /// Occurs when the instance is currently disposing its managed resources.
-        /// </summary>
-        event EventHandler Disposing;
-
-        /// <summary>
-        /// Occurs when the instance has been disposed.
-        /// </summary>
-        event EventHandler Disposed;
-
-        /// <summary>
         /// Adds an instance of <typeparamref name="TEntity"/> to the unit of work
         /// to be persisted and inserted by the repository.
         /// </summary>
