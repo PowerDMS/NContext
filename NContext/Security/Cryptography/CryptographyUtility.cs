@@ -18,14 +18,14 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Utilities
-{
-    using System;
-    using System.Globalization;
-    using System.IO;
-    using System.Security.Cryptography;
-    using System.Text;
+using System;
+using System.Globalization;
+using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 
+namespace NContext.Security.Cryptography
+{
     // TODO: (DG) Clean up, get rid of un-desireables, refactor.
     public static class CryptographyUtility
     {
