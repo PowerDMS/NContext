@@ -28,8 +28,6 @@ namespace NContext.Data.Specifications
     /// <typeparam name="TEntity">Type of entity.</typeparam>
     public abstract class CompositeSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Properties
-
         /// <summary>
         /// Gets the left side specification for this composite element.
         /// </summary>
@@ -40,7 +38,5 @@ namespace NContext.Data.Specifications
         /// Gets the right side specification for this composite element.
         /// </summary>
         public abstract SpecificationBase<TEntity> RightSideSpecification { get; }
-
-        #endregion
     }
 }

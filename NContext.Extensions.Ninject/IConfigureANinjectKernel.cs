@@ -32,13 +32,6 @@ namespace NContext.Extensions.Ninject
     public interface IConfigureANinjectKernel
     {
         /// <summary>
-        /// Gets the priority in which to configure the container. Implementations will be run 
-        /// in ascending order based on priority, so a lower priority value will execute first.
-        /// </summary>
-        /// <remarks></remarks>
-        Int32 Priority { get; }
-
-        /// <summary>
         /// Configures the <see cref="IKernel"/> instance.
         /// </summary>
         /// <param name="kernel">The kernel.</param>

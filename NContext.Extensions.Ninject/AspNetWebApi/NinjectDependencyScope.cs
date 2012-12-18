@@ -48,14 +48,14 @@ namespace NContext.Extensions.Ninject.AspNetWebApi
         public Object GetService(Type serviceType)
         {
             var request = ResolutionRoot.CreateRequest(serviceType, null, new Parameter[0], true, true);
-            var bla = ResolutionRoot.Resolve(request).SingleOrDefault();
 
-            return bla;
+            return ResolutionRoot.Resolve(request).SingleOrDefault();;
         }
 
         public IEnumerable<Object> GetServices(Type serviceType)
         {
             var request = ResolutionRoot.CreateRequest(serviceType, null, new Parameter[0], true, true);
+
             return ResolutionRoot.Resolve(request).ToList();
         }
 

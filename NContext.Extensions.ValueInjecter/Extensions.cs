@@ -18,6 +18,8 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
+using NContext.Common;
+
 namespace NContext.Extensions.ValueInjecter
 {
     using System;

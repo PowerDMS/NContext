@@ -21,6 +21,7 @@
 namespace NContext.Extensions.ValueInjecter
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.Linq;
 
     using NContext.Common;
@@ -33,68 +34,60 @@ namespace NContext.Extensions.ValueInjecter
     public static class IResponseTransferObjectExtensions
     {
         /// <summary>
-        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/> using <see cref="LoopValueInjection"/>.
+        /// Translates the <see cref="IResponseTransferObject{TSource}"/> instance into an <see cref="IResponseTransferObject{TTarget}"/>
+        /// using <see name="LoopValueInjection"/> and the optionally-specified <paramref name="mapper"/>.
         /// </summary>
-        /// <typeparam name="TTarget">The type of the dto.</typeparam>
-        /// <param name="response">The response.</param>
-        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<TTarget> Translate<TTarget>(this IResponseTransferObject<Object> response)
-            where TTarget : class
+        /// <typeparam name="TSource">The type of source object.</typeparam>
+        /// <typeparam name="TTarget">The type of target object.</typeparam>
+        /// <param name="source">Source instance to translate.</param>
+        /// <param name="mapper">A custom anonymous object mapper used for post processing after value injection has taken place.</param>
+        /// <returns>Instance of <see cref="IResponseTransferObject{TTarget}"/>.</returns>
+        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget>(this IResponseTransferObject<TSource> source, Object mapper = null)
+            where TTarget : class, new()
         {
-            return response.Translate<Object, TTarget, LoopValueInjection>();
+            return source.Translate<TSource, TTarget, LoopValueInjection>(mapper);
         }
 
         /// <summary>
-        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/>
-        /// using the specified <typeparamref name="TValueInjection"/>.
+        /// Translates the <see cref="IResponseTransferObject{TSource}"/> instance into an <see cref="IResponseTransferObject{TTarget}"/>
+        /// using the specified <typeparamref name="TValueInjection"/> and custom <paramref name="mapper"/>.
         /// </summary>
-        /// <typeparam name="TTarget">The type of the dto.</typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <param name="response">The response.</param>
-        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<TTarget> Translate<TTarget, TValueInjection>(this IResponseTransferObject<Object> response)
-            where TTarget : class
+        /// <typeparam name="TSource">The type of source object.</typeparam>
+        /// <typeparam name="TTarget">The type of target object.</typeparam>
+        /// <typeparam name="TValueInjection">The type of <see cref="IValueInjection"/> to use.</typeparam>
+        /// <param name="source">Source instance to translate.</param>
+        /// <param name="mapper">A custom anonymous object mapper used for post processing after value injection has taken place.</param>
+        /// <returns>Instance of <see cref="IResponseTransferObject{TTarget}"/>.</returns>
+        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> source, Object mapper = null)
+            where TTarget : class, new()
             where TValueInjection : IValueInjection, new()
         {
-            return response.Translate<Object, TTarget, TValueInjection>();
+            return source.Translate(Activator.CreateInstance<TTarget>(), Activator.CreateInstance<TValueInjection>(), mapper);
         }
 
         /// <summary>
-        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/> using <see cref="LoopValueInjection"/>.
+        /// Translates the <see cref="IResponseTransferObject{TSource}"/> instance into an <see cref="IResponseTransferObject{TTarget}"/>
+        /// using the specified <typeparamref name="TValueInjection"/> and custom <paramref name="mapper"/>.
         /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TTarget">The type of the dto.</typeparam>
-        /// <param name="response">The response.</param>
-        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget>(this IResponseTransferObject<TSource> response)
-            where TTarget : class
-        {
-            return response.Translate<TSource, TTarget, LoopValueInjection>();
-        }
-
-        /// <summary>
-        /// Translates this instance to an <see cref="IResponseTransferObject{TTarget}"/>
-        /// using the specified <typeparamref name="TValueInjection"/>.
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TTarget">The type of the dto.</typeparam>
-        /// <typeparam name="TValueInjection">The type of the value injection.</typeparam>
-        /// <param name="response">The response.</param>
-        /// <returns>Instance of <see cref="ServiceResponse{TDto}"/>.</returns>
-        /// <remarks></remarks>
-        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> response)
-            where TTarget : class
+        /// <typeparam name="TSource">The type of source object.</typeparam>
+        /// <typeparam name="TTarget">The type of target object.</typeparam>
+        /// <typeparam name="TValueInjection">The type of <see cref="IValueInjection"/> to use.</typeparam>
+        /// <param name="source">Source instance to translate.</param>
+        /// <param name="target">Target instance to inject into.</param>
+        /// <param name="valueInjection"><see cref="IValueInjection"/> instance to use. Default is <see cref="LoopValueInjection"/>.</param>
+        /// <param name="mapper">A custom anonymous object mapper used for post processing after value injection has taken place.</param>
+        /// <returns>Instance of <see cref="IResponseTransferObject{TTarget}"/>.</returns>
+        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> source, TTarget target, TValueInjection valueInjection, Object mapper)
             where TValueInjection : IValueInjection, new()
         {
-            if (response.Errors.Any())
+            Contract.Requires(source != null);
+
+            if (source.Errors.Any())
             {
-                return new ServiceResponse<TTarget>(response.Errors);
+                return new ServiceResponse<TTarget>(source.Errors);
             }
 
-            return new ServiceResponse<TTarget>(Activator.CreateInstance<TTarget>().InjectFrom<TTarget, TValueInjection>(response.Data));
+            return new ServiceResponse<TTarget>(source.Data.Inject().Using(valueInjection).Into(target, mapper));
         }
     }
 }

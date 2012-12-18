@@ -31,10 +31,10 @@ namespace NContext.Extensions
     public static class ErrorBaseExtensions
     {
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T}"/> with the specified <paramref name="error"/>.
+        /// Returns a new <see cref="IResponseTransferObject{Unit}"/> with the specified <paramref name="error"/>.
         /// </summary>
         /// <param name="error">The error.</param>
-        /// <returns>IResponseTransferObject{T}.</returns>
+        /// <returns>IResponseTransferObject{Unit}.</returns>
         public static IResponseTransferObject<Unit> ToServiceResponse(this ErrorBase error)
         {
             return new ServiceResponse<Unit>(error);

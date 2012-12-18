@@ -32,10 +32,28 @@ namespace NContext.Data.Specifications
     /// <remarks></remarks>
     public abstract class SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Operator Overrides
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="SpecificationBase{TEntity}" /> to <see cref="Expression{Func{TEntity, Boolean}}" />.
+        /// </summary>
+        /// <param name="specification">The specification.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator Expression<Func<TEntity, Boolean>>(SpecificationBase<TEntity> specification)
+        {
+            return specification.IsSatisfiedBy();
+        }
 
         /// <summary>
-        ///  And operator
+        /// Performs an implicit conversion from <see cref="SpecificationBase{TEntity}" /> to <see cref="Func{TEntity, Boolean}" />.
+        /// </summary>
+        /// <param name="specification">The specification.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator Func<TEntity, Boolean>(SpecificationBase<TEntity> specification)
+        {
+            return specification.IsSatisfiedBy().Compile();
+        }
+
+        /// <summary>
+        /// And operator
         /// </summary>
         /// <param name="leftSideSpecification">left operand in this AND operation</param>
         /// <param name="rightSideSpecification">right operand in this AND operation</param>
@@ -86,16 +104,10 @@ namespace NContext.Data.Specifications
             return true;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
         /// <returns>Expression that evaluates whether the specification satifies the expression.</returns>
         public abstract Expression<Func<TEntity, Boolean>> IsSatisfiedBy();
-
-        #endregion
     }
 }

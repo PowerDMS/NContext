@@ -23,8 +23,6 @@ namespace NContext.Extensions.Ninject
     using System;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
-    using System.Linq;
-
     using Microsoft.Practices.ServiceLocation;
 
     using NContext.Configuration;
@@ -111,7 +109,6 @@ namespace NContext.Extensions.Ninject
 
             applicationConfiguration.CompositionContainer
                                     .GetExportedValues<IConfigureANinjectKernel>()
-                                    .OrderBy(configurable => configurable.Priority)
                                     .ForEach(configurable => configurable.ConfigureKernel(_Kernel));
 
             _IsConfigured = true;

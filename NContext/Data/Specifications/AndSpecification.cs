@@ -31,15 +31,9 @@ namespace NContext.Data.Specifications
     /// <typeparam name="TEntity">Type of entity that check this specification</typeparam>
     public sealed class AndSpecification<TEntity> : CompositeSpecification<TEntity> where TEntity : class, IEntity
     {
-        #region Fields
-
         private readonly SpecificationBase<TEntity> _LeftSideSpecification;
 
         private readonly SpecificationBase<TEntity> _RightSideSpecification;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AndSpecification&lt;TEntity&gt;"/> class.
@@ -63,10 +57,6 @@ namespace NContext.Data.Specifications
             _RightSideSpecification = rightSide;
         }
 
-        #endregion
-
-        #region Properties
-        
         /// <summary>
         /// Left side specification
         /// </summary>
@@ -83,10 +73,6 @@ namespace NContext.Data.Specifications
             get { return _RightSideSpecification; }
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
@@ -98,7 +84,5 @@ namespace NContext.Data.Specifications
 
             return left.And(right);
         }
-
-        #endregion
     }
 }

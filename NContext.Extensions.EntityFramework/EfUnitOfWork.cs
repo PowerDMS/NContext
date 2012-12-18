@@ -129,15 +129,20 @@ namespace NContext.Extensions.EntityFramework
                     try
                     {
                         context.SaveChanges();
-                        continue;
                     }
-                    catch (DbEntityValidationException exception)
+                    catch (InvalidOperationException ioe)
                     {
-                        return new EfServiceResponse<Unit>(exception.EntityValidationErrors);
+                        return new ServiceResponse<Unit>(ioe.ToErrors());
+                    }
+                    catch (DbEntityValidationException eve)
+                    {
+                        return new EfServiceResponse<Unit>(eve.EntityValidationErrors);
                     }
                 }
-
-                context.SaveChanges();
+                else
+                {
+                    context.SaveChanges();
+                }
             }
 
             return new ServiceResponse<Unit>(default(Unit));

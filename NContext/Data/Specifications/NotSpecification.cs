@@ -32,13 +32,7 @@ namespace NContext.Data.Specifications
     /// <typeparam name="TEntity">Type of element for this specificaiton</typeparam>
     public sealed class NotSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Fields
-
         private readonly Expression<Func<TEntity, Boolean>> _OriginalCriteria;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotSpecification&lt;TEntity&gt;"/> class.
@@ -70,10 +64,6 @@ namespace NContext.Data.Specifications
             _OriginalCriteria = originalSpecification;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
@@ -82,7 +72,5 @@ namespace NContext.Data.Specifications
         {
             return Expression.Lambda<Func<TEntity, Boolean>>(Expression.Not(_OriginalCriteria.Body), _OriginalCriteria.Parameters.Single());
         }
-
-        #endregion
     }
 }

@@ -24,6 +24,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.Linq;
     using System.Web.Http;
     using System.Web.Http.SelfHost;
 
@@ -199,10 +200,10 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
                 }
             }
 
-            var routingConfigurations = _CompositionContainer.GetExports<IConfigureHttpRouting>();
+            var routingConfigurations = _CompositionContainer.GetExportedValues<IConfigureHttpRouting>().OrderBy(c => c.Priority);
             foreach (var routingConfiguration in routingConfigurations)
             {
-                routingConfiguration.Value.Configure(this);
+                routingConfiguration.Configure(this);
             }
 
             CreateRoutes();

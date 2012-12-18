@@ -60,7 +60,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
             HttpStatusCode statusCode = nonErrorHttpStatusCode;
             if (responseContent.Errors.Any())
             {
-                Enum.TryParse<HttpStatusCode>(responseContent.Errors.First().ErrorCode, true, out statusCode);
+                Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out statusCode);
             }
 
             return httpRequestMessage.CreateResponse(statusCode, responseContent);
@@ -94,8 +94,11 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
             
             if (responseContent.Errors.Any())
             {
-                var statusCode = HttpStatusCode.BadRequest;
-                Enum.TryParse<HttpStatusCode>(responseContent.Errors.First().ErrorCode, true, out statusCode);
+                HttpStatusCode statusCode;
+                if (!Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out statusCode))
+                {
+                    statusCode = HttpStatusCode.BadRequest;
+                }
 
                 return httpRequestMessage.CreateResponse(statusCode, responseContent);
             }

@@ -32,8 +32,6 @@ namespace NContext.Data.Specifications
     /// <remarks></remarks>
     public sealed class TrueSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Methods
-
         /// <summary>
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
@@ -45,7 +43,5 @@ namespace NContext.Data.Specifications
 
             return trueExpression;
         }
-
-        #endregion
     }
 }

@@ -28,6 +28,10 @@ namespace NContext.Extensions.Ninject.AspNetWebApi
     {
         private readonly IKernel _Kernel;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NinjectDependencyResolver" /> class.
+        /// </summary>
+        /// <param name="kernel">The kernel.</param>
         public NinjectDependencyResolver(IKernel kernel) : base(kernel)
         {
             _Kernel = kernel;

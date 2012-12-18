@@ -31,13 +31,7 @@ namespace NContext.Data.Specifications
     /// <typeparam name = "TEntity">Type of entity that check this specification</typeparam>
     public sealed class AdHocSpecification<TEntity> : SpecificationBase<TEntity> where TEntity : class, IEntity
     {
-        #region Fields
-
         private readonly Expression<Func<TEntity, Boolean>> _MatchingCriteria;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AdHocSpecification{TEntity}"/> class.
@@ -54,10 +48,6 @@ namespace NContext.Data.Specifications
             _MatchingCriteria = matchingCriteria;
         }
 
-        #endregion
-
-        #region Methods
-
         /// <summary>
         /// Returns a boolean expression which determines whether the specification is satisfied.
         /// </summary>
@@ -66,7 +56,5 @@ namespace NContext.Data.Specifications
         {
             return _MatchingCriteria;
         }
-
-        #endregion
     }
 }
