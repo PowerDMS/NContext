@@ -36,6 +36,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\FSharp.Core.4.0.0\lib\FSharp.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -70,7 +74,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authorization\WebApiAuthorizationAttribute.cs" />
+    <Compile Include="ErrorHandling\AuthenticationError.cs" />
     <Compile Include="ErrorHandling\HttpParameterValidationError.cs" />
+    <Compile Include="ErrorHandling\Localization\AuthenticationError.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AuthenticationError.resx</DependentUpon>
+    </Compile>
     <Compile Include="ErrorHandling\Localization\HttpParameterValidationError.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -111,6 +121,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ErrorHandling\Localization\AuthenticationError.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthenticationError.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="ErrorHandling\Localization\HttpParameterValidationError.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>HttpParameterValidationError.Designer.cs</LastGenOutput>

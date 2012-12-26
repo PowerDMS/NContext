@@ -17,7 +17,6 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
-  
   <!-- ***********************************************************************************************************
        * .NET 4.5 + Silverlight 4
        *********************************************************************************************************** -->
@@ -40,7 +39,6 @@
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkProfile>Profile23</TargetFrameworkProfile>
   </PropertyGroup>
-  
   <!-- ***********************************************************************************************************
        * .NET 4.0 + Silverlight 4 + Windows Phone 7
        *********************************************************************************************************** -->
@@ -62,14 +60,15 @@
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
-  </PropertyGroup>  
-  
+  </PropertyGroup>
   <!-- =============== NCrunch Override ================== -->
   <Choose>
     <When Condition=" '$(NCrunch)' == '1' ">
       <PropertyGroup>
-        <ProjectTypeGuids></ProjectTypeGuids>
-        <TargetFrameworkProfile></TargetFrameworkProfile>
+        <ProjectTypeGuids>
+        </ProjectTypeGuids>
+        <TargetFrameworkProfile>
+        </TargetFrameworkProfile>
       </PropertyGroup>
       <ItemGroup>
         <Reference Include="System" />
@@ -84,7 +83,6 @@
     </When>
   </Choose>
   <!-- =================================================== -->
-  
   <ItemGroup>
     <Compile Include="Error.cs" />
     <Compile Include="Extensions\HierarchicalDataExtensions.cs" />
@@ -107,10 +105,8 @@
     <Compile Include="StateExtensions.cs" />
     <Compile Include="StatefulServiceResponse.cs" />
   </ItemGroup>
-
   <Import Condition=" '$(NCrunch)' == '1' " Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Condition=" '$(NCrunch)' == '' " Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-
   <Target Name="AfterBuild" Condition=" '$(NCrunch)' == '' ">
     <MSBuild Condition=" '$(Framework)' != 'portable-net45+sl4' " Projects="$(MSBuildProjectFile)" Properties="Framework=portable-net45+sl4" RunEachTargetSeparately="true" />
   </Target>

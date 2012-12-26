@@ -27,8 +27,9 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web.Http.Filters;
-
+    using Microsoft.FSharp.Core;
     using NContext.Common;
+    using NContext.Extensions.AspNetWebApi.ErrorHandling;
 
     /// <summary>
     /// Defines an <see cref="ActionFilterAttribute"/> for authentication.
@@ -57,18 +58,15 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return _AuthenticationProviders
-                .FirstOrDefault(provider => provider.CanAuthenticate(request)).ToMaybe()
-                .Bind(provider => provider.Authenticate(request).ToMaybe())
-                .Bind(principal =>
-                    {
-                        Thread.CurrentPrincipal = principal;
-                        return base.SendAsync(request, cancellationToken).ToMaybe();
-                    })
-                .FromMaybe(Task<HttpResponseMessage>.Factory.StartNew(
-                           () =>
-                           {
-                               return new HttpResponseMessage(HttpStatusCode.Unauthorized);
-                           }));
+                .FirstOrDefault(provider => provider.CanAuthenticate(request)).ToMaybe().ToServiceResponse(() => AuthenticationError.ProviderNotFound())
+                .Bind(provider => provider.Authenticate(request)
+                                          .Fmap(principal =>
+                                              {
+                                                  Thread.CurrentPrincipal = principal;
+                                                  return base.SendAsync(request, cancellationToken);
+                                              }))
+                .CatchAndFmap(errors => Task<HttpResponseMessage>.Factory.StartNew(() => request.CreateResponse(HttpStatusCode.Unauthorized, new ServiceResponse<Unit>(errors))))
+                .FromEither();
         }
     }
 }

@@ -23,6 +23,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     using System;
     using System.Net.Http;
     using System.Security.Principal;
+    using NContext.Common;
 
     /// <summary>
     /// Defines a provider role for request authentication.
@@ -43,6 +44,6 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// <param name="requestMessage">The request message.</param>
         /// <returns>Instance of <see cref="IPrincipal"/>.</returns>
         /// <remarks></remarks>
-        IPrincipal Authenticate(HttpRequestMessage requestMessage);
+        IResponseTransferObject<IPrincipal> Authenticate(HttpRequestMessage requestMessage);
     }
 }

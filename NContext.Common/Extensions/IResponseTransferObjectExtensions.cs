@@ -159,6 +159,15 @@ namespace NContext.Common
             return responseTransferObject;
         }
 
+        /// <summary>
+        /// If <seealso cref="IResponseTransferObject{T}.Errors" /> exist, returns a new <see cref="IResponseTransferObject{T2}" /> instance with the current
+        /// <seealso cref="IResponseTransferObject{T}.Errors" />. Else, binds the <seealso cref="IResponseTransferObject{T}.Data" /> into the specified <paramref name="mappingFunction" />.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}" /> to return.</typeparam>
+        /// <param name="responseTransferObject">The response transfer object.</param>
+        /// <param name="mappingFunction">The mapping function.</param>
+        /// <returns>Instance of <see cref="IResponseTransferObject{T2}" />.</returns>
         public static IResponseTransferObject<T2> Fmap<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<T, T2> mappingFunction)
         {
             if (responseTransferObject.Errors.Any())
@@ -208,6 +217,22 @@ namespace NContext.Common
             action.Invoke(responseTransferObject.Data);
 
             return responseTransferObject;
+        }
+
+        /// <summary>
+        /// If there are any <see cref="IResponseTransferObject{T}.Errors"/>, then this returns default(T), else <see cref="IResponseTransferObject{T}.Data"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="responseTransferObject">The response transfer object.</param>
+        /// <returns>T instance.</returns>
+        public static T FromEither<T>(this IResponseTransferObject<T> responseTransferObject)
+        {
+            if (responseTransferObject.Errors.Any())
+            {
+                return default(T);
+            }
+
+            return responseTransferObject.Data;
         }
     }
 }
