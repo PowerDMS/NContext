@@ -20,6 +20,7 @@
 
 namespace NContext.Extensions.AspNetWebApi.Authentication
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -67,8 +68,31 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                                                   Thread.CurrentPrincipal = principal;
                                                   return base.SendAsync(request, cancellationToken);
                                               }))
-                .CatchAndFmap(errors => Task<HttpResponseMessage>.Factory.StartNew(() => request.CreateResponse(HttpStatusCode.Unauthorized, new ServiceResponse<Unit>(errors))))
+                .CatchAndContinue(errors =>
+                    {
+                        var completionSource = new TaskCompletionSource<HttpResponseMessage>();
+                        completionSource.SetResult(
+                            request.CreateResponse(
+                                errors.MaybeFirst()
+                                      .Bind(GetHttpStatusCodeFromError)
+                                      .FromMaybe(HttpStatusCode.Unauthorized), new ServiceResponse<Unit>(errors)));
+
+                        return new ServiceResponse<Task<HttpResponseMessage>>(completionSource.Task);
+                    })
                 .FromRight();
+        }
+
+        private IMaybe<HttpStatusCode> GetHttpStatusCodeFromError(Error error)
+        {
+            if (error == null) return new Nothing<HttpStatusCode>();
+
+            HttpStatusCode statusCode;
+            if (String.IsNullOrWhiteSpace(error.ErrorCode) || !Enum.TryParse(error.ErrorCode, true, out statusCode))
+            {
+                return new Nothing<HttpStatusCode>();
+            }
+
+            return statusCode.ToMaybe();
         }
     }
 }

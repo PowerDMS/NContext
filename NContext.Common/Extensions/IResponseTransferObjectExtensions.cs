@@ -25,6 +25,9 @@ namespace NContext.Common
     using System.Linq;
     using System.Reflection;
 
+    /// <summary>
+    /// Defines extension methods for <see cref="IResponseTransferObject{T}"/>.
+    /// </summary>
     public static class IResponseTransferObjectExtensions
     {
         /// <summary>
@@ -40,19 +43,7 @@ namespace NContext.Common
         {
             if (responseTransferObject.Errors.Any())
             {
-                try
-                {
-                    return Activator.CreateInstance(
-                        responseTransferObject.GetType()
-                                              .GetGenericTypeDefinition()
-                                              .MakeGenericType(typeof(T2)), 
-                        responseTransferObject.Errors) as IResponseTransferObject<T2>;
-                }
-                catch (TargetInvocationException)
-                {
-                    // No contructor found that supported Error. Return default.
-                    return new ServiceResponse<T2>(responseTransferObject.Errors);
-                }
+                return CreateGenericServiceResponse<T, T2>(responseTransferObject, responseTransferObject.Errors);
             }
 
             return bindingFunction.Invoke(responseTransferObject.Data);
@@ -91,56 +82,26 @@ namespace NContext.Common
 
             return responseTransferObject;
         }
-
-        /// <summary>
-        /// Invokes the specified function if there are any errors - allows you to re-direct control flow with a new <typeparamref name="T" /> value.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="T2">The type of the t2.</typeparam>
-        /// <param name="responseTransferObject">The response transfer object.</param>
-        /// <param name="continueWithFunction">The continue with function.</param>
-        /// <returns>If errors exist, returns the instance of IResponseTransferObject{T} returned by <paramref name="continueWithFunction" />, else returns current instance.</returns>
-        public static IResponseTransferObject<T2> CatchAndFmap<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<Error>, T2> continueWithFunction)
-        {
-            if (responseTransferObject.Errors.Any())
-            {
-                T2 result = continueWithFunction.Invoke(responseTransferObject.Errors);
-                try
-                {
-                    return Activator.CreateInstance(
-                        responseTransferObject.GetType()
-                                              .GetGenericTypeDefinition()
-                                              .MakeGenericType(typeof(T2)),
-                        result) as IResponseTransferObject<T2>;
-                }
-                catch (TargetInvocationException)
-                {
-                    // No contructor found that supported IEnumerable<T>! Return default.
-                    return new ServiceResponse<T2>(result);
-                }
-            }
-
-            return new ServiceResponse<T2>(responseTransferObject.Errors);
-        }
-
-        /// <summary>
-        /// Invokes the specified function if there are any errors - allows you to re-direct control flow with a new <typeparamref name="T" /> value.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <typeparam name="T2">The type of the t2.</typeparam>
-        /// <param name="responseTransferObject">The response transfer object.</param>
-        /// <param name="continueWithFunction">The continue with function.</param>
-        /// <returns>If errors exist, returns the instance of IResponseTransferObject{T} returned by <paramref name="continueWithFunction" />, else returns current instance.</returns>
-        public static IResponseTransferObject<T2> CatchAndBind<T, T2>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<Error>, IResponseTransferObject<T2>> continueWithFunction)
-        {
-            if (responseTransferObject.Errors.Any())
-            {
-                return continueWithFunction.Invoke(responseTransferObject.Errors);
-            }
-
-            return new ServiceResponse<T2>(responseTransferObject.Errors);
-        }
         
+        /// <summary>
+        /// Invokes the specified function if there are any errors - allows you to re-direct control flow with a new <typeparamref name="T" /> value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="responseTransferObject">The response transfer object.</param>
+        /// <param name="continueWithFunction">The continue with function.</param>
+        /// <returns>If errors exist, returns the instance of IResponseTransferObject{T} returned by <paramref name="continueWithFunction" />, else returns current instance.</returns>
+        public static IResponseTransferObject<T> CatchAndContinue<T>(this IResponseTransferObject<T> responseTransferObject, Func<IEnumerable<Error>, T> continueWithFunction)
+        {
+            if (responseTransferObject.Errors.Any())
+            {
+                T result = continueWithFunction.Invoke(responseTransferObject.Errors);
+
+                return CreateGenericServiceResponse<T>(responseTransferObject, result);
+            }
+
+            return responseTransferObject;
+        }
+
         /// <summary>
         /// Invokes the specified action if no <see cref="IResponseTransferObject{T}.Errors" /> exist.
         /// Returns the current <see cref="IResponseTransferObject{T}" /> instance.
@@ -172,36 +133,12 @@ namespace NContext.Common
         {
             if (responseTransferObject.Errors.Any())
             {
-                try
-                {
-                    return
-                        Activator.CreateInstance(
-                            responseTransferObject.GetType()
-                                                  .GetGenericTypeDefinition()
-                                                  .MakeGenericType(typeof(T2)),
-                            responseTransferObject.Errors) as IResponseTransferObject<T2>;
-                }
-                catch (TargetInvocationException)
-                {
-                    // No contructor found that supported Errors! Return default.
-                    return new ServiceResponse<T2>(responseTransferObject.Errors);
-                }
+                return CreateGenericServiceResponse<T, T2>(responseTransferObject, responseTransferObject.Errors);
             }
 
             T2 result = mappingFunction.Invoke(responseTransferObject.Data);
-            try
-            {
-                return Activator.CreateInstance(
-                    responseTransferObject.GetType()
-                                          .GetGenericTypeDefinition()
-                                          .MakeGenericType(typeof(T2)),
-                    result) as IResponseTransferObject<T2>;
-            }
-            catch (TargetInvocationException)
-            {
-                // No contructor found that supported IEnumerable<T>! Return default.
-                return new ServiceResponse<T2>(result);
-            }
+
+            return CreateGenericServiceResponse(responseTransferObject, result);
         }
 
         /// <summary>
@@ -217,6 +154,72 @@ namespace NContext.Common
             action.Invoke(responseTransferObject.Data);
 
             return responseTransferObject;
+        }
+        
+        private static IResponseTransferObject<T> CreateGenericServiceResponse<T>(IResponseTransferObject<T> originalResponse, T data)
+        {
+            if (originalResponse is ServiceResponse<T>)
+            {
+                return new ServiceResponse<T>(data);
+            }
+
+            try
+            {
+                return Activator.CreateInstance(
+                    originalResponse.GetType()
+                                    .GetGenericTypeDefinition()
+                                    .MakeGenericType(typeof(T)),
+                    data) as IResponseTransferObject<T>;
+            }
+            catch (TargetInvocationException)
+            {
+                // No contructor found that supported IEnumerable<T>! Return default.
+                return new ServiceResponse<T>(data);
+            }
+        }
+
+        private static IResponseTransferObject<T2> CreateGenericServiceResponse<T, T2>(IResponseTransferObject<T> originalResponse, T2 data)
+        {
+            if (originalResponse is ServiceResponse<T>)
+            {
+                return new ServiceResponse<T2>(data);
+            }
+
+            try
+            {
+                return Activator.CreateInstance(
+                    originalResponse.GetType()
+                                    .GetGenericTypeDefinition()
+                                    .MakeGenericType(typeof(T)),
+                    data) as IResponseTransferObject<T2>;
+            }
+            catch (TargetInvocationException)
+            {
+                // No contructor found that supported IEnumerable<T>! Return default.
+                return new ServiceResponse<T2>(data);
+            }
+        }
+
+        private static IResponseTransferObject<T2> CreateGenericServiceResponse<T, T2>(IResponseTransferObject<T> originalResponse, IEnumerable<Error> errors)
+        {
+            if (originalResponse is ServiceResponse<T>)
+            {
+                return new ServiceResponse<T2>(errors);
+            }
+
+            try
+            {
+                return Activator.CreateInstance(
+                    originalResponse.GetType()
+                                    .GetGenericTypeDefinition()
+                                    .MakeGenericType(typeof(T)),
+                    errors) as IResponseTransferObject<T2>;
+            }
+            catch (TargetInvocationException)
+            {
+                // No contructor found that supported IEnumerable<T>! Return default.
+                return new ServiceResponse<T2>(errors);
+            }
         }
 
         /// <summary>

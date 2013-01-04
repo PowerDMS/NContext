@@ -21,15 +21,15 @@
        * .NET 4.5 + Silverlight 4
        *********************************************************************************************************** -->
   <PropertyGroup Condition=" '$(Framework)' == 'portable-net45+sl4' ">
+    <CustomConstants>NET45;SILVERLIGHT40</CustomConstants>
+    <DefineConstants>$(DefineConstants);$(CustomConstants)</DefineConstants>
     <!-- ==============================================   DEBUG   ================================================ -->
     <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
     <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET45;SILVERLIGHT40</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
     <PlatformTarget Condition=" '$(Configuration)' == 'Debug DLL and Web' ">$(Platform)</PlatformTarget>
     <!-- =============================================   RELEASE   =============================================== -->
     <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET45;SILVERLIGHT40</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
     <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
     <!-- ========================================================================================================= -->
@@ -43,15 +43,15 @@
        * .NET 4.0 + Silverlight 4 + Windows Phone 7
        *********************************************************************************************************** -->
   <PropertyGroup Condition=" '$(Framework)' == 'portable-net4+sl4+wp7' ">
+    <CustomConstants>NET40;SILVERLIGHT40;WINDOWS_PHONE7</CustomConstants>
+    <DefineConstants>$(DefineConstants);$(CustomConstants)</DefineConstants>
     <!-- ==============================================   DEBUG   ================================================ -->
     <DebugSymbols Condition=" '$(Configuration)' == 'Debug' ">true</DebugSymbols>
     <DebugType Condition=" '$(Configuration)' == 'Debug' ">full</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Debug' ">TRACE;DEBUG;NET40;SILVERLIGHT40;WINDOWS_PHONE7</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Debug' ">false</Optimize>
     <PlatformTarget Condition=" '$(Configuration)' == 'Debug DLL and Web' ">$(Platform)</PlatformTarget>
     <!-- =============================================   RELEASE   =============================================== -->
     <DebugType Condition=" '$(Configuration)' == 'Release' ">pdbonly</DebugType>
-    <DefineConstants Condition=" '$(Configuration)' == 'Release' ">TRACE;NET40;SILVERLIGHT40;WINDOWS_PHONE7</DefineConstants>
     <Optimize Condition=" '$(Configuration)' == 'Release' ">true</Optimize>
     <CodeAnalysisRuleSet Condition=" '$(Configuration)' == 'Release' ">AllRules.ruleset</CodeAnalysisRuleSet>
     <!-- ========================================================================================================= -->
@@ -60,6 +60,9 @@
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
     <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <!-- =============== NCrunch Override ================== -->
   <Choose>
