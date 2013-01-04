@@ -18,7 +18,7 @@
         /// <returns>AuthenticationError.</returns>
         public static AuthenticationError ProviderNotFound()
         {
-            return new AuthenticationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.InternalServerError);
+            return new AuthenticationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.Unauthorized);
         }
     }
 }

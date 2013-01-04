@@ -227,9 +227,29 @@ namespace NContext.Common
         /// <returns>T instance.</returns>
         public static T FromEither<T>(this IResponseTransferObject<T> responseTransferObject)
         {
+            if (!responseTransferObject.Errors.Any())
+            {
+                return responseTransferObject.Data;
+            }
+
+            return default(T);
+        }
+
+        public static IEnumerable<Error> FromLeft<T>(this IResponseTransferObject<T> responseTransferObject)
+        {
+            if (!responseTransferObject.Errors.Any())
+            {
+                throw new InvalidOperationException("There is nothing to return from left of either - Errors or Data.");
+            }
+
+            return responseTransferObject.Errors;
+        }
+
+        public static T FromRight<T>(this IResponseTransferObject<T> responseTransferObject)
+        {
             if (responseTransferObject.Errors.Any())
             {
-                return default(T);
+                throw new InvalidOperationException("Cannot return right of either when left (errors) exist.");
             }
 
             return responseTransferObject.Data;

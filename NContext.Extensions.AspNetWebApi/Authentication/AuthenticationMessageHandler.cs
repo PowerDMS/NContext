@@ -58,7 +58,9 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return _AuthenticationProviders
-                .FirstOrDefault(provider => provider.CanAuthenticate(request)).ToMaybe().ToServiceResponse(() => AuthenticationError.ProviderNotFound())
+                .FirstOrDefault(provider => provider.CanAuthenticate(request))
+                .ToMaybe()
+                .ToServiceResponse(() => AuthenticationError.ProviderNotFound())
                 .Bind(provider => provider.Authenticate(request)
                                           .Fmap(principal =>
                                               {
@@ -66,7 +68,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                                                   return base.SendAsync(request, cancellationToken);
                                               }))
                 .CatchAndFmap(errors => Task<HttpResponseMessage>.Factory.StartNew(() => request.CreateResponse(HttpStatusCode.Unauthorized, new ServiceResponse<Unit>(errors))))
-                .FromEither();
+                .FromRight();
         }
     }
 }
