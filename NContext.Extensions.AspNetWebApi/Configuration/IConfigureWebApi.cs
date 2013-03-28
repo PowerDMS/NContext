@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageWebApi.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IConfigureWebApi.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2013 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -20,32 +20,19 @@
 
 namespace NContext.Extensions.AspNetWebApi.Configuration
 {
-    using System.Collections.Generic;
+    using System.ComponentModel.Composition;
     using System.Web.Http;
-    using System.Web.Http.Routing;
-    using System.Web.Http.SelfHost;
-
-    using NContext.Configuration;
 
     /// <summary>
-    /// Defines an application component manager for configuring ASP.NET Web API.
+    /// Defines an extensibility point for configuring <see cref="HttpConfiguration"/>.
     /// </summary>
-    public interface IManageWebApi : IApplicationComponent
+    [InheritedExport]
+    public interface IConfigureWebApi
     {
         /// <summary>
-        /// Gets the Web API HTTP service routes registered.
+        /// Called by NContext to support Web API configuration.
         /// </summary>
-        /// <remarks></remarks>
-        IEnumerable<IHttpRoute> Routes { get; }
-
-        /// <summary>
-        /// Gets the <see cref="HttpConfiguration"/> instance used to configure Web API.
-        /// </summary>
-        HttpConfiguration HttpConfiguration { get; }
-
-        /// <summary>
-        /// Gets the <see cref="HttpSelfHostServer"/> instance if used with <see cref="WebApiConfigurationBuilder.ConfigureForSelfHosting"/>
-        /// </summary>
-        HttpSelfHostServer SelfHostServer { get; }
+        /// <param name="configuration"></param>
+        void Configure(HttpConfiguration configuration);
     }
 }

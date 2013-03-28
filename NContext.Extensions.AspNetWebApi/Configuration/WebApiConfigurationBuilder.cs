@@ -50,10 +50,20 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// <summary>
         /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
         /// </summary>
+        /// <returns>Current <see cref="WebApiConfigurationBuilder"/> instance.</returns>
+        /// <remarks></remarks>
+        public ApplicationConfigurationBuilder ConfigureForIIS()
+        {
+            return ConfigureForIIS(null);
+        }
+
+        /// <summary>
+        /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
+        /// </summary>
         /// <param name="configurationDelegate">The configuration delegate.</param>
         /// <returns>Current <see cref="WebApiConfigurationBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public ApplicationConfigurationBuilder ConfigureForAspNet(Action<HttpConfiguration> configurationDelegate)
+        public ApplicationConfigurationBuilder ConfigureForIIS(Action<HttpConfiguration> configurationDelegate)
         {
             _AspNetHttpConfigurationDelegate = configurationDelegate;
             Setup();

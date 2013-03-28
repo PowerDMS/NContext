@@ -21,7 +21,8 @@
 namespace NContext.Extensions.AspNetWebApi.Routing
 {
     using System;
-    using System.Web.Http;
+    using System.Collections.Generic;
+    using System.Web.Http.Routing;
 
     /// <summary>
     /// Defines HTTP routing management for ASP.NET Web API.
@@ -32,7 +33,7 @@ namespace NContext.Extensions.AspNetWebApi.Routing
         /// Gets the Web API HTTP route collection.
         /// </summary>
         /// <remarks></remarks>
-        HttpRouteCollection Routes { get; }
+        IEnumerable<IHttpRoute> Routes { get; }
         
         /// <summary>
         /// Registers the HTTP service route.

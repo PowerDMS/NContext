@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Authorization\WebApiAuthorizationAttribute.cs" />
+    <Compile Include="Configuration\IConfigureWebApi.cs" />
     <Compile Include="ErrorHandling\AuthenticationError.cs" />
     <Compile Include="ErrorHandling\HttpParameterValidationError.cs" />
     <Compile Include="ErrorHandling\Localization\AuthenticationError.Designer.cs">

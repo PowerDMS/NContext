@@ -71,7 +71,7 @@ namespace NContext.Configuration
         {
             if (HttpContext.Current == null)
             {
-                throw new InvalidOperationException("HttpContext is null. This method can only me used within a web application.");
+                throw new InvalidOperationException("HttpContext is null. This method can only be used within a web application.");
             }
 
             ComposeWith(new[] { HttpRuntime.BinDirectory }, fileNameConstraints);

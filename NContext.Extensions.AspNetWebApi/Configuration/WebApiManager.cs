@@ -26,6 +26,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
     using System.Web.Http;
+    using System.Web.Http.Routing;
     using System.Web.Http.SelfHost;
 
     using NContext.Configuration;
@@ -89,13 +90,31 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// Gets the Web API HTTP service routes registered.
         /// </summary>
         /// <remarks></remarks>
-        public HttpRouteCollection Routes
+        public IEnumerable<IHttpRoute> Routes
         {
             get
             {
                 return WebApiConfiguration.IsSelfHosted
-                           ? SelfHostServer.Configuration.Routes
-                           : GlobalConfiguration.Configuration.Routes;
+                           ? SelfHostServer.Configuration.Routes.AsEnumerable()
+                           : GlobalConfiguration.Configuration.Routes.AsEnumerable();
+            }
+        }
+
+        public HttpConfiguration HttpConfiguration
+        {
+            get
+            {
+                return _WebApiConfiguration.IsSelfHosted
+                           ? _WebApiConfiguration.HttpSelfHostConfiguration
+                           : GlobalConfiguration.Configuration;
+            }
+        }
+
+        public HttpSelfHostServer SelfHostServer
+        {
+            get
+            {
+                return _SelfHostServer == null ? null : _SelfHostServer.Value;
             }
         }
 
@@ -114,14 +133,6 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
             set
             {
                 _CompositionContainer = value;
-            }
-        }
-
-        protected HttpSelfHostServer SelfHostServer
-        {
-            get
-            {
-                return _SelfHostServer.Value;
             }
         }
 
@@ -144,6 +155,40 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         public virtual void RegisterHttpRoute(String routeName, String routeTemplate, Object defaults = null, Object constraints = null)
         {
             _HttpRoutes.Value.Add(new Route(routeName, routeTemplate, defaults, constraints));
+        }
+
+        /// <summary>
+        /// Configures the component instance.
+        /// </summary>
+        /// <param name="applicationConfiguration">The application configuration.</param>
+        /// <remarks></remarks>
+        public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
+        {
+            if (IsConfigured) return;
+
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageWebApi>(this);
+            CompositionContainer = applicationConfiguration.CompositionContainer;
+            
+            var webApiConfigurations = _CompositionContainer.GetExportedValues<IConfigureWebApi>();
+            if (!WebApiConfiguration.IsSelfHosted && WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
+            {
+                WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(HttpConfiguration);
+            }
+
+            foreach (var webApiConfiguration in webApiConfigurations)
+            {
+                webApiConfiguration.Configure(HttpConfiguration);
+            }
+
+            var routingConfigurations = _CompositionContainer.GetExportedValues<IConfigureHttpRouting>().OrderBy(c => c.Priority);
+            foreach (var routingConfiguration in routingConfigurations)
+            {
+                routingConfiguration.Configure(this);
+            }
+
+            CreateRoutes();
+            
+            IsConfigured = true;
         }
 
         /// <summary>
@@ -179,36 +224,6 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
                         serviceRouteCreatedActions.ForEach(createdAction => createdAction.Value.Run(route));
                     });
             }
-        }
-
-        /// <summary>
-        /// Configures the component instance.
-        /// </summary>
-        /// <param name="applicationConfiguration">The application configuration.</param>
-        /// <remarks></remarks>
-        public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
-        {
-            if (IsConfigured) return;
-
-            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageWebApi>(this);
-            CompositionContainer = applicationConfiguration.CompositionContainer;
-            if (!WebApiConfiguration.IsSelfHosted)
-            {
-                if (WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
-                {
-                    WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(GlobalConfiguration.Configuration);
-                }
-            }
-
-            var routingConfigurations = _CompositionContainer.GetExportedValues<IConfigureHttpRouting>().OrderBy(c => c.Priority);
-            foreach (var routingConfiguration in routingConfigurations)
-            {
-                routingConfiguration.Configure(this);
-            }
-
-            CreateRoutes();
-
-            IsConfigured = true;
         }
     }
 }
