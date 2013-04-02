@@ -21,7 +21,6 @@
 namespace NContext.Security
 {
     using System;
-    using System.Runtime.Caching;
 
     using NContext.Caching;
     using NContext.Configuration;
@@ -32,11 +31,7 @@ namespace NContext.Security
     /// <remarks></remarks>
     public class SecurityConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
-        private DateTimeOffset _TokenAbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration;
-
-        private TimeSpan _TokenSlidingExpiration = ObjectCache.NoSlidingExpiration;
-
-        private TimeSpan _TokenInitialLifespan = new TimeSpan(0, 1, 0, 0);
+        private SecurityTokenExpirationPolicy _SecurityTokenExpirationPolicy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityConfigurationBuilder"/> class.
@@ -46,21 +41,12 @@ namespace NContext.Security
         public SecurityConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
+            _SecurityTokenExpirationPolicy = new SecurityTokenExpirationPolicy();
         }
 
-        /// <summary>
-        /// Sets the default cache configuration settings for security token expiration.
-        /// </summary>
-        /// <param name="tokenAbsoluteExpiration">The token absolute expiration.</param>
-        /// <param name="tokenInitialLifespan">The token initial lifespan.</param>
-        /// <param name="tokenSlidingExpiration">The token sliding expiration.</param>
-        /// <returns>This <see cref="SecurityConfigurationBuilder"/> instance.</returns>
-        /// <remarks></remarks>
-        public SecurityConfigurationBuilder SetDefaults(DateTimeOffset tokenAbsoluteExpiration, TimeSpan tokenInitialLifespan, TimeSpan tokenSlidingExpiration)
+        public SecurityConfigurationBuilder SetTokenExpirationPolicy(TimeSpan expiration, Boolean isAbsolute = false)
         {
-            _TokenAbsoluteExpiration = tokenAbsoluteExpiration;
-            _TokenSlidingExpiration = tokenSlidingExpiration;
-            _TokenInitialLifespan = tokenInitialLifespan;
+            _SecurityTokenExpirationPolicy = new SecurityTokenExpirationPolicy(expiration, isAbsolute);
 
             return this;
         }
@@ -73,13 +59,14 @@ namespace NContext.Security
         protected override void Setup()
         {
             var cachingManager = Builder.ApplicationConfiguration.GetComponent<IManageCaching>();
+            if (cachingManager == null)
+            {
+                throw new Exception("SecurityManager has a dependency on IManageCaching which doesn't exist in configuration.");
+            }
 
-            Builder.ApplicationConfiguration
-                   .RegisterComponent<IManageSecurity>(
-                    () =>
-                    new SecurityManager(
-                        cachingManager,
-                        new SecurityConfiguration(_TokenAbsoluteExpiration, _TokenSlidingExpiration, _TokenInitialLifespan)));
+            Builder.ApplicationConfiguration.RegisterComponent<IManageSecurity>(
+                () =>
+                new SecurityManager(cachingManager, new SecurityConfiguration(_SecurityTokenExpirationPolicy)));
         }
     }
 }

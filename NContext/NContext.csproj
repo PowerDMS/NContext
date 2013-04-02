@@ -162,6 +162,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\SecurityTokenExpirationPolicy.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Security\Cryptography\CryptographyUtility.cs" />
   </ItemGroup>

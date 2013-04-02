@@ -39,7 +39,7 @@ namespace NContext.Security
     {
         private readonly IManageCaching _CacheManager;
 
-        private readonly CacheItemPolicy _AuthenticationCachePolicy;
+        private readonly SecurityConfiguration _SecurityConfiguration;
 
         private Boolean _IsConfigured;
 
@@ -62,14 +62,7 @@ namespace NContext.Security
             }
 
             _CacheManager = cachingManager;
-            _AuthenticationCachePolicy = new CacheItemPolicy
-            {
-                AbsoluteExpiration =
-                    securityConfiguration.TokenAbsoluteExpiration == ObjectCache.InfiniteAbsoluteExpiration
-                        ? ObjectCache.InfiniteAbsoluteExpiration
-                        : DateTimeOffset.Now.Add(securityConfiguration.TokenInitialLifespan),
-                SlidingExpiration = securityConfiguration.TokenSlidingExpiration
-            };
+            _SecurityConfiguration = securityConfiguration;
         }
 
         /// <summary>
@@ -148,7 +141,7 @@ namespace NContext.Security
                 throw new ArgumentNullException("principal");
             }
 
-            CacheManager.AddOrUpdateItem(token.Value, principal, _AuthenticationCachePolicy);
+            CacheManager.AddOrUpdateItem(token.Value, principal, CreateExpirationPolicy());
         }
 
         /// <summary>
@@ -196,6 +189,24 @@ namespace NContext.Security
                 applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageSecurity>(this);
                 _IsConfigured = true;
             }
+        }
+
+        private CacheItemPolicy CreateExpirationPolicy()
+        {
+            return new CacheItemPolicy
+            {
+                AbsoluteExpiration =
+                    _SecurityConfiguration.TokenExpirationPolicy.Expires && 
+                    _SecurityConfiguration.TokenExpirationPolicy.IsAbsolute
+                        ? DateTimeOffset.Now.Add(_SecurityConfiguration.TokenExpirationPolicy.ExpirationTime)
+                        : DateTimeOffset.MaxValue,
+
+                SlidingExpiration = 
+                    _SecurityConfiguration.TokenExpirationPolicy.Expires &&
+                    !_SecurityConfiguration.TokenExpirationPolicy.IsAbsolute
+                        ? _SecurityConfiguration.TokenExpirationPolicy.ExpirationTime
+                        : TimeSpan.Zero
+            };
         }
     }
 }

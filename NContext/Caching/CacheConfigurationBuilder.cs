@@ -31,8 +31,6 @@ namespace NContext.Caching
     /// <remarks></remarks>
     public class CacheConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
     {
-        #region Fields
-
         private Lazy<ObjectCache> _Provider;
 
         private String _RegionName;
@@ -40,10 +38,6 @@ namespace NContext.Caching
         private DateTimeOffset _AbsoluteExpiration;
 
         private TimeSpan _SlidingExpiration;
-
-        #endregion
-
-        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheConfigurationBuilder"/> class.
@@ -57,10 +51,6 @@ namespace NContext.Caching
             _AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration;
             _SlidingExpiration = ObjectCache.NoSlidingExpiration;
         }
-
-        #endregion
-
-        #region Methods
 
         /// <summary>
         /// Sets the cache provider.
@@ -116,7 +106,5 @@ namespace NContext.Caching
                        new CacheManager(
                            new CacheConfiguration(_Provider, _RegionName, _AbsoluteExpiration, _SlidingExpiration)));
         }
-
-        #endregion
     }
 }
