@@ -156,7 +156,6 @@
     <Compile Include="Security\SecurityConfigurationBuilder.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
-    <Compile Include="Extensions\ICacheManagerExtensions.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />
     <Compile Include="Extensions\ObjectCacheExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

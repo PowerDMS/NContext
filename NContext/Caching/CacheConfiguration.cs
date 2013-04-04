@@ -21,6 +21,7 @@
 namespace NContext.Caching
 {
     using System;
+    using System.Collections.Generic;
     using System.Runtime.Caching;
 
     /// <summary>
@@ -28,88 +29,24 @@ namespace NContext.Caching
     /// </summary>
     public class CacheConfiguration
     {
-        #region Fields
-
-        private readonly Lazy<ObjectCache> _Provider;
-
-        private readonly String _RegionName;
-
-        private readonly DateTimeOffset _AbsoluteExpiration;
-
-        private readonly TimeSpan _SlidingExpiration;
-
-        #endregion
-
-        #region Constructors
+        private readonly IDictionary<String, Lazy<ObjectCache>> _Providers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheConfiguration"/> class.
         /// </summary>
-        /// <param name="provider">The provider.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <param name="absoluteExpiration">The absolute expiration.</param>
-        /// <param name="slidingExpiration">The sliding expiration.</param>
-        /// <remarks></remarks>
-        public CacheConfiguration(Lazy<ObjectCache> provider, String regionName, DateTimeOffset absoluteExpiration, TimeSpan slidingExpiration)
+        /// <param name="providers">The cache providers.</param>
+        public CacheConfiguration(IDictionary<String, Lazy<ObjectCache>> providers)
         {
-            _Provider = provider;
-            _RegionName = regionName;
-            _AbsoluteExpiration = absoluteExpiration;
-            _SlidingExpiration = slidingExpiration;
-        }
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets the provider.
-        /// </summary>
-        /// <remarks></remarks>
-        public Lazy<ObjectCache> Provider
-        {
-            get
-            {
-                return _Provider;
-            }
+            _Providers = providers;
         }
 
         /// <summary>
-        /// Gets the name of the region.
+        /// Gets the cache providers.
         /// </summary>
-        /// <remarks></remarks>
-        public String RegionName
+        /// <value>The providers.</value>
+        public IDictionary<String, Lazy<ObjectCache>> Providers
         {
-            get
-            {
-                return _RegionName;
-            }
+            get { return _Providers; }
         }
-
-        /// <summary>
-        /// Gets the absolute expiration.
-        /// </summary>
-        /// <remarks></remarks>
-        public DateTimeOffset AbsoluteExpiration
-        {
-            get
-            {
-                return _AbsoluteExpiration;
-            }
-        }
-
-        /// <summary>
-        /// Gets the sliding expiration.
-        /// </summary>
-        /// <remarks></remarks>
-        public TimeSpan SlidingExpiration
-        {
-            get
-            {
-                return _SlidingExpiration;
-            }
-        }
-
-        #endregion
     }
 }

@@ -29,6 +29,7 @@ namespace NContext.Security
     using NContext.Caching;
     using NContext.Common;
     using NContext.Configuration;
+    using NContext.Extensions;
 
     /// <summary>
     /// Defines a manager class which implements logic for application security-related operations.
@@ -37,7 +38,7 @@ namespace NContext.Security
     [ApplicationComponentDependency(typeof(IManageCaching))]
     public class SecurityManager : IManageSecurity
     {
-        private readonly IManageCaching _CacheManager;
+        private readonly ObjectCache _CacheProvider;
 
         private readonly SecurityConfiguration _SecurityConfiguration;
 
@@ -46,12 +47,12 @@ namespace NContext.Security
         /// <summary>
         /// Initializes a new instance of the <see cref="SecurityManager"/> class.
         /// </summary>
-        /// <param name="cachingManager">The caching manager.</param>
+        /// <param name="cacheProvider">The caching manager.</param>
         /// <param name="securityConfiguration">The security configuration.</param>
         /// <remarks></remarks>
-        public SecurityManager(IManageCaching cachingManager, SecurityConfiguration securityConfiguration)
+        public SecurityManager(ObjectCache cacheProvider, SecurityConfiguration securityConfiguration)
         {
-            if (cachingManager == null)
+            if (cacheProvider == null)
             {
                 throw new Exception("SecurityManager has a dependency on an instance of IManageCaching.");
             }
@@ -61,7 +62,7 @@ namespace NContext.Security
                 throw new ArgumentNullException("securityConfiguration");
             }
 
-            _CacheManager = cachingManager;
+            _CacheProvider = cacheProvider;
             _SecurityConfiguration = securityConfiguration;
         }
 
@@ -81,11 +82,15 @@ namespace NContext.Security
             }
         }
 
-        protected IManageCaching CacheManager
+        /// <summary>
+        /// Gets the provider used to cache the <see cref="IToken"/> and <see cref="IPrincipal"/>.
+        /// </summary>
+        /// <value>The cache provider.</value>
+        protected ObjectCache CacheProvider
         {
             get
             {
-                return _CacheManager;
+                return _CacheProvider;
             }
         }
 
@@ -141,7 +146,7 @@ namespace NContext.Security
                 throw new ArgumentNullException("principal");
             }
 
-            CacheManager.AddOrUpdateItem(token.Value, principal, CreateExpirationPolicy());
+            CacheProvider.Set(token.Value, principal, CreateExpirationPolicy());
         }
 
         /// <summary>
@@ -151,7 +156,7 @@ namespace NContext.Security
         /// <remarks></remarks>
         public virtual void ExpirePrincipal(IToken token)
         {
-            CacheManager.Remove(token.Value);
+            CacheProvider.Remove(token.Value);
         }
 
         /// <summary>
@@ -174,7 +179,7 @@ namespace NContext.Security
         /// <remarks></remarks>
         public virtual TPrincipal GetPrincipal<TPrincipal>(IToken token) where TPrincipal : class, IPrincipal
         {
-            return CacheManager.Get<TPrincipal>(token.Value);
+            return CacheProvider.Get<TPrincipal>(token.Value);
         }
 
         /// <summary>

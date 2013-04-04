@@ -21,11 +21,12 @@
 namespace NContext.Caching
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel.Composition;
+    using System.Linq;
     using System.Runtime.Caching;
 
     using NContext.Configuration;
-    using NContext.Extensions;
 
     /// <summary>
     /// Defines a default <see cref="IManageCaching"/> implementation.
@@ -52,14 +53,14 @@ namespace NContext.Caching
         }
 
         /// <summary>
-        /// Gets the cache provider.
+        /// Gets the cache providers.
         /// </summary>
         /// <remarks></remarks>
-        public ObjectCache Provider
+        public IEnumerable<ObjectCache> Providers
         {
             get
             {
-                return _CacheConfiguration.Provider.Value;
+                return _CacheConfiguration.Providers.Values.Select(provider => provider.Value);
             }
         }
 
@@ -80,23 +81,6 @@ namespace NContext.Caching
         }
 
         /// <summary>
-        /// Returns the item identified by the provided key.
-        /// </summary>
-        /// <param name="cacheEntryKey">The cache entry key to retrieve.</param>
-        /// <param name="regionName">The cache region.</param>
-        /// <exception cref="T:System.ArgumentNullException">Provided key is null</exception>
-        /// <exception cref="T:System.ArgumentException">Provided key is an empty string</exception>
-        /// <remarks>The CacheManager can be configured to use different storage mechanisms in which to store the cache items.
-        /// Each of these storage mechanisms can throw exceptions particular to their own implementations.</remarks>
-        public Object this[String cacheEntryKey, String regionName = null]
-        {
-            get
-            {
-                return Get(cacheEntryKey, regionName);
-            }
-        }
-
-        /// <summary>
         /// Configures the component instance.
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
@@ -113,119 +97,19 @@ namespace NContext.Caching
         }
 
         /// <summary>
-        /// Adds or updates the specified instance to the cache.
+        /// Gets the provider by unique name.
         /// </summary>
-        /// <typeparam name="T">The type of the object to cache.</typeparam>
-        /// <param name="cacheEntryKey">The cache entry key.</param>
-        /// <param name="instance">The object instance.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
-        /// <remarks></remarks>
-        public void AddOrUpdateItem<T>(String cacheEntryKey, T instance, String regionName = null)
+        /// <param name="providerName">Name of the provider.</param>
+        /// <returns>ObjectCache.</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">providerName;There is no cache provider registered with name:  + providerName</exception>
+        public ObjectCache GetProvider(String providerName)
         {
-            AddOrUpdateItem<T>(cacheEntryKey, instance, null, regionName);
-        }
-
-        /// <summary>
-        /// Adds or updates the specified instance to the cache.
-        /// </summary>
-        /// <typeparam name="T">The type of the object to cache.</typeparam>
-        /// <param name="cacheEntryKey">The cache enty key.</param>
-        /// <param name="instance">The object instance.</param>
-        /// <param name="cacheItemPolicy">The cache item policy.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns>True, if the instance has successfully been added to the cache, else false.</returns>
-        /// <remarks></remarks>
-        public void AddOrUpdateItem<T>(String cacheEntryKey, T instance, CacheItemPolicy cacheItemPolicy, String regionName = null)
-        {
-            if (String.IsNullOrWhiteSpace(cacheEntryKey))
+            if (!_CacheConfiguration.Providers.ContainsKey(providerName))
             {
-                throw new ArgumentNullException("cacheEntryKey");
+                throw new ArgumentOutOfRangeException("providerName", "There is no cache provider registered with name: " + providerName);
             }
 
-            Provider.Set(cacheEntryKey, instance, cacheItemPolicy ?? GetDefaultCacheItemPolicy(), regionName);
-        }
-
-        /// <summary>
-        /// Returns true if key refers to item current stored in cache
-        /// </summary>
-        /// <param name="cacheEntryKey">The cache entry key.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns>True if item referenced by key is in the cache</returns>
-        /// <remarks></remarks>
-        public Boolean Contains(String cacheEntryKey, String regionName = null)
-        {
-            return Provider.Contains(cacheEntryKey, regionName);
-        }
-
-        /// <summary>
-        /// Removes all items from the cache. If an error occurs during the removal, the cache is left unchanged.
-        /// </summary>
-        /// <param name="regionName">Name of the region.</param>
-        /// <remarks>The CacheManager can be configured to use different storage mechanisms in which to store the CacheItems.
-        /// Each of these storage mechanisms can throw exceptions particular to their own implementations.</remarks>
-        public void Flush(String regionName = null)
-        {
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Gets the cache item associated with the specified key.
-        /// </summary>
-        /// <param name="cacheEntryKey">The cache entry key.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns>Object instance if found in the cache, else null.</returns>
-        /// <remarks></remarks>
-        public Object Get(String cacheEntryKey, String regionName = null)
-        {
-            return Provider.Get(cacheEntryKey, regionName);
-        }
-
-        /// <summary>
-        /// Gets the cache item associated with the specified key.
-        /// </summary>
-        /// <typeparam name="T">The type of the object.</typeparam>
-        /// <param name="cacheEntryKey">The cache entry key.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns><typeparamref name="T"/> instance if found in the cache, else null.</returns>
-        /// <remarks></remarks>
-        public T Get<T>(String cacheEntryKey, String regionName = null) where T : class
-        {
-            return Provider.Get<T>(cacheEntryKey, regionName);
-        }
-
-        /// <summary>
-        /// Gets the number of items in cache.
-        /// </summary>
-        /// <param name="regionName">Name of the region.</param>
-        /// <returns>Total amount of items in cache.</returns>
-        /// <remarks></remarks>
-        public Int64 GetCount(String regionName = null)
-        {
-            return Provider.GetCount(regionName);
-        }
-
-        /// <summary>
-        /// Removes the cache item associated with the specified cache entry key.
-        /// </summary>
-        /// <param name="cacheEntryKey">The cache entry key.</param>
-        /// <param name="regionName">Name of the region.</param>
-        /// <remarks></remarks>
-        public void Remove(String cacheEntryKey, String regionName = null)
-        {
-            if (Provider.Contains(cacheEntryKey, regionName))
-            {
-                Provider.Remove(cacheEntryKey, regionName);
-            }
-        }
-
-        private CacheItemPolicy GetDefaultCacheItemPolicy()
-        {
-            return new CacheItemPolicy
-                {
-                    AbsoluteExpiration = _CacheConfiguration.AbsoluteExpiration,
-                    SlidingExpiration = _CacheConfiguration.SlidingExpiration
-                };
+            return _CacheConfiguration.Providers[providerName].Value;
         }
     }
 }
