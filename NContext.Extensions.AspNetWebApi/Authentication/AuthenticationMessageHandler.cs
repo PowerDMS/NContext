@@ -27,6 +27,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Web;
     using System.Web.Http.Filters;
     using Microsoft.FSharp.Core;
     using NContext.Common;
@@ -58,6 +59,17 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// <param name="request">The HTTP request message to send to the server.</param><param name="cancellationToken">A cancellation token to cancel operation.</param><exception cref="T:System.ArgumentNullException">The <paramref name="request"/> was null.</exception>
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
+            /* If HttpContext.Current.User is authenticated, then return immediately.
+             * This is typically the case when the application / IIS is configured to use
+             * Windows integration with or without impersonation.
+             * */
+            if (HttpContext.Current != null && 
+                HttpContext.Current.User != null && 
+                HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                return base.SendAsync(request, cancellationToken);
+            }
+
             return _AuthenticationProviders
                 .FirstOrDefault(provider => provider.CanAuthenticate(request))
                 .ToMaybe()
@@ -65,7 +77,14 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                 .Bind(provider => provider.Authenticate(request)
                                           .Fmap(principal =>
                                               {
+                                                  // If we're hosted within IIS, set the HttpContext.Current.User
+                                                  if (HttpContext.Current != null)
+                                                  {
+                                                      HttpContext.Current.User = principal;
+                                                  }
+
                                                   Thread.CurrentPrincipal = principal;
+
                                                   return base.SendAsync(request, cancellationToken);
                                               }))
                 .CatchAndContinue(errors =>
