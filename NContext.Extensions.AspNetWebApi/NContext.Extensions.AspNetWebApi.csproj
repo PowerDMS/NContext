@@ -91,6 +91,7 @@
     <Compile Include="Filters\HttpParameterBindingValidationActionFilterAttribute.cs" />
     <Compile Include="Formatters\BsonMediaTypeFormatter.cs" />
     <Compile Include="Formatters\MediaTypeConstants.cs" />
+    <Compile Include="Handlers\ExecutionContextMessageHandler.cs" />
     <Compile Include="Handlers\XHttpMethodOverrideMessageHandler.cs" />
     <Compile Include="JsonNetExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
