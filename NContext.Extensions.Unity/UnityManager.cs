@@ -24,7 +24,6 @@ namespace NContext.Extensions.Unity
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
-
     using Microsoft.Practices.ServiceLocation;
     using Microsoft.Practices.Unity;
 
