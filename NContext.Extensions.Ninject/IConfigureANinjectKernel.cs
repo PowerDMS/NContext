@@ -37,5 +37,11 @@ namespace NContext.Extensions.Ninject
         /// <param name="kernel">The kernel.</param>
         /// <remarks></remarks>
         void ConfigureKernel(IKernel kernel);
+
+        /// <summary>
+        /// Get's the priority used to configure the <see cref="IKernel"/>. Lower 
+        /// priority will cause implementations to execute first.
+        /// </summary>
+        Int32 Priority { get; }
     }
 }

@@ -80,7 +80,8 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         public static HttpResponseMessage ToHttpResponseMessage<T>(
             this IResponseTransferObject<T> responseContent, 
             HttpRequestMessage httpRequestMessage, 
-            Action<T, HttpResponseMessage> responseBuilder)
+            Action<T, HttpResponseMessage> responseBuilder,
+            Boolean setResponseContent = true)
         {
             if (responseContent == null)
             {
@@ -103,7 +104,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 return httpRequestMessage.CreateResponse(statusCode, responseContent);
             }
 
-            var response = httpRequestMessage.CreateResponse();
+            var response = setResponseContent ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent) : httpRequestMessage.CreateResponse();
             responseBuilder.Invoke(responseContent.Data, response);
 
             return response;
