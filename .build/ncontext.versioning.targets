@@ -9,11 +9,11 @@
     <AssemblyInfoFile>$(MSBuildProjectDirectory)\..\AssemblyInfoShared.cs</AssemblyInfoFile>
     <AssemblyVersion>$(NContextMajorVersion).$(NContextMinorVersion).$(NContextPatchVersion)</AssemblyVersion>
     
-    <TeamCityBuildNumber>$(AssemblyVersion)-alpha+$(BuildNumber).sha.$(BuildVcsNumber)</TeamCityBuildNumber>
+    <TeamCityBuildNumber>$(AssemblyVersion)-$(TeamCityBuildConfiguration)+$(BuildNumber).sha.$(BuildVcsNumber)</TeamCityBuildNumber>
 
-    <NuGetPackageVersion Condition=" $(TeamCityBuildConfiguration) == 'ci' ">$(AssemblyVersion)-build$(BuildNumber)</NuGetPackageVersion>
-    <NuGetPackageVersion Condition=" $(TeamCityBuildConfiguraiton) == 'prerelease' ">$(AssemblyVersion)-alpha$(BuildNumber)</NuGetPackageVersion>
-    <NuGetPackageVersion Condition=" $(TeamCityBuildConfiguraiton) == 'release' ">$(AssemblyVersion)</NuGetPackageVersion>
+    <NuGetPackageVersion Condition=" $(TeamCityBuildConfiguration) == 'build' ">$(AssemblyVersion)-build$(BuildNumber)</NuGetPackageVersion>
+    <NuGetPackageVersion Condition=" $(TeamCityBuildConfiguration) == 'alpha' ">$(AssemblyVersion)-alpha$(BuildNumber)</NuGetPackageVersion>
+    <NuGetPackageVersion Condition=" $(TeamCityBuildConfiguration) == 'release' ">$(AssemblyVersion)</NuGetPackageVersion>
   </PropertyGroup>
   
 
