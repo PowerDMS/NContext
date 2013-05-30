@@ -13,7 +13,7 @@
     <tags>NContext</tags>
     <dependencies>
       <dependency id="NContext.Common" version="[$version$,)" />
-      <dependency id="ValueInjecter" version="2.3.3" />
+      <dependency id="ValueInjecter" version="[2.3.3,)" />
     </dependencies>
   </metadata>
   <files>

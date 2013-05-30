@@ -13,7 +13,7 @@
     <tags>NContext</tags>
     <dependencies>
       <dependency id="NContext.Common" version="[$version$,)" />
-      <dependency id="AutoMapper" version="2.1.265" />
+      <dependency id="AutoMapper" version="[2.2.1,)" />
     </dependencies>
   </metadata>
   <files>
