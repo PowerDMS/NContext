@@ -125,6 +125,7 @@
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
     <Compile Include="ErrorHandling\Errors\Localization\NContextPersistenceError.Designer.cs" />
     <Compile Include="ErrorHandling\Errors\NContextPersistenceError.cs" />
+    <Compile Include="EventHandling\EventManager.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ErrorBaseExtensions.cs" />
