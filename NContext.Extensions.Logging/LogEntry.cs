@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageWebApi.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="LogEntry.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2013 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,34 +18,36 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Configuration
+namespace NContext.Extensions.Logging
 {
-    using System.Collections.Generic;
-    using System.Web.Http;
-    using System.Web.Http.Routing;
-    using System.Web.Http.SelfHost;
+    using System;
 
-    using NContext.Configuration;
-
-    /// <summary>
-    /// Defines an application component manager for configuring ASP.NET Web API.
-    /// </summary>
-    public interface IManageWebApi : IApplicationComponent
+    public class LogEntry
     {
-        /// <summary>
-        /// Gets the Web API HTTP service routes registered.
-        /// </summary>
-        /// <remarks></remarks>
-        IEnumerable<IHttpRoute> Routes { get; }
+        private readonly String _Type;
+        private readonly int _Data;
+        private readonly DateTimeOffset _OccurredOn;
 
-        /// <summary>
-        /// Gets the <see cref="HttpConfiguration"/> instance used to configure Web API.
-        /// </summary>
-        HttpConfiguration HttpConfiguration { get; }
+        public LogEntry(string type, int data)
+        {
+            _OccurredOn = DateTimeOffset.UtcNow;
+            _Type = type;
+            _Data = data;
+        }
 
-        /// <summary>
-        /// Gets the <see cref="HttpSelfHostServer"/> instance if used with <see cref="WebApiManagerBuilder.ConfigureForSelfHosting"/>
-        /// </summary>
-        HttpSelfHostServer SelfHostServer { get; }
+        public String Type
+        {
+            get { return _Type; }
+        }
+
+        public DateTimeOffset OccurredOn
+        {
+            get { return _OccurredOn; }
+        }
+
+        public int Data
+        {
+            get { return _Data; }
+        }
     }
 }

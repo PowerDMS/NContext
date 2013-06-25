@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnityConfigurationBuilder.cs" company="Waking Venture, Inc.">
+// <copyright file="UnityManagerBuilder.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,7 @@ namespace NContext.Extensions.Unity
     /// Defines a configuration class to build the application's <see cref="UnityManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class UnityConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
+    public class UnityManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private String _ContainerName;
 
@@ -37,11 +37,11 @@ namespace NContext.Extensions.Unity
         private String _ConfigurationSectionName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UnityConfigurationBuilder"/> class.
+        /// Initializes a new instance of the <see cref="UnityManagerBuilder"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public UnityConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public UnityManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
         }
@@ -50,9 +50,9 @@ namespace NContext.Extensions.Unity
         /// Sets the name of the container.
         /// </summary>
         /// <param name="unityContainerName">Name of the unity container.</param>
-        /// <returns>This <see cref="UnityConfigurationBuilder"/> instance.</returns>
+        /// <returns>This <see cref="UnityManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public UnityConfigurationBuilder SetContainerName(String unityContainerName)
+        public UnityManagerBuilder SetContainerName(String unityContainerName)
         {
             _ContainerName = unityContainerName;
 
@@ -64,9 +64,9 @@ namespace NContext.Extensions.Unity
         /// </summary>
         /// <param name="configurationFileName">Name of the unity configuration file.</param>
         /// <param name="configurationSectionName">Name of the configuration section. Default is 'unity'.</param>
-        /// <returns>This <see cref="UnityConfigurationBuilder"/> instance.</returns>
+        /// <returns>This <see cref="UnityManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public UnityConfigurationBuilder SetConfigurationFile(String configurationFileName, String configurationSectionName = "unity")
+        public UnityManagerBuilder SetConfigurationFile(String configurationFileName, String configurationSectionName = "unity")
         {
             _ConfigurationFileName = String.IsNullOrWhiteSpace(configurationFileName)
                                          ? String.Empty

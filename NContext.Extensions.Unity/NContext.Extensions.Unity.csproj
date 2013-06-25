@@ -68,7 +68,7 @@
     <Compile Include="IManageUnity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnityConfiguration.cs" />
-    <Compile Include="UnityConfigurationBuilder.cs" />
+    <Compile Include="UnityManagerBuilder.cs" />
     <Compile Include="UnityContainerFactory.cs" />
     <Compile Include="UnityManager.cs" />
   </ItemGroup>

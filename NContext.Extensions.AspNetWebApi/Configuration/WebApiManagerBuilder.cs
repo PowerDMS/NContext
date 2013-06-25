@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WebApiConfigurationBuilder.cs" company="Waking Venture, Inc.">
+// <copyright file="WebApiManagerBuilder.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,7 +29,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
     /// <summary>
     /// Defines a component configuration class for service routing.
     /// </summary>
-    public class WebApiConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
+    public class WebApiManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private Action<HttpConfiguration> _AspNetHttpConfigurationDelegate;
 
@@ -42,7 +42,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public WebApiConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public WebApiManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
         }
@@ -50,7 +50,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// <summary>
         /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
         /// </summary>
-        /// <returns>Current <see cref="WebApiConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="WebApiManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder ConfigureForIIS()
         {
@@ -61,7 +61,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
         /// </summary>
         /// <param name="configurationDelegate">The configuration delegate.</param>
-        /// <returns>Current <see cref="WebApiConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="WebApiManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder ConfigureForIIS(Action<HttpConfiguration> configurationDelegate)
         {
@@ -75,7 +75,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// Sets the <see cref="HttpSelfHostConfiguration" /> instance to be used when self-hosting the API, externally from ASP.NET.
         /// </summary>
         /// <param name="configurationDelegate">The configuration delegate.</param>
-        /// <returns>Current <see cref="WebApiConfigurationBuilder" /> instance.</returns>
+        /// <returns>Current <see cref="WebApiManagerBuilder" /> instance.</returns>
         public ApplicationConfigurationBuilder ConfigureForSelfHosting(Func<HttpSelfHostConfiguration> configurationDelegate)
         {
             _HttpSelfHostConfigurationFactory = new Lazy<HttpSelfHostConfiguration>(configurationDelegate);

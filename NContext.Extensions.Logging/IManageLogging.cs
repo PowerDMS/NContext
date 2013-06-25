@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageWebApi.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="IManageLogging.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2013 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,34 +18,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Configuration
+namespace NContext.Extensions.Logging
 {
     using System.Collections.Generic;
-    using System.Web.Http;
-    using System.Web.Http.Routing;
-    using System.Web.Http.SelfHost;
-
     using NContext.Configuration;
+    using NContext.Extensions.Logging.Targets;
 
     /// <summary>
-    /// Defines an application component manager for configuring ASP.NET Web API.
+    /// Defines a log manager application component.
     /// </summary>
-    public interface IManageWebApi : IApplicationComponent
+    public interface IManageLogging : IApplicationComponent
     {
         /// <summary>
-        /// Gets the Web API HTTP service routes registered.
+        /// Gets the targets.
         /// </summary>
-        /// <remarks></remarks>
-        IEnumerable<IHttpRoute> Routes { get; }
+        /// <value>The targets.</value>
+        ISet<ILogTarget> Targets { get; }
 
         /// <summary>
-        /// Gets the <see cref="HttpConfiguration"/> instance used to configure Web API.
+        /// Logs the specified log entry.
         /// </summary>
-        HttpConfiguration HttpConfiguration { get; }
-
-        /// <summary>
-        /// Gets the <see cref="HttpSelfHostServer"/> instance if used with <see cref="WebApiManagerBuilder.ConfigureForSelfHosting"/>
-        /// </summary>
-        HttpSelfHostServer SelfHostServer { get; }
+        /// <param name="logEntry">The log entry.</param>
+        void Log(LogEntry logEntry);
     }
 }
