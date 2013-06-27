@@ -70,7 +70,7 @@ namespace NContext.Configuration
         /// <summary>
         /// Gets the application composition container.
         /// </summary>
-        public virtual CompositionContainer CompositionContainer
+        public CompositionContainer CompositionContainer
         {
             get
             {

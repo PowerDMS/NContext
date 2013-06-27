@@ -50,7 +50,7 @@ namespace NContext.Extensions.Logging
 
             _Broadcast = new BroadcastBlock<LogEntry>(
                 logEntry => 
-                    new LogEntry(logEntry.Type, logEntry.Data),
+                    logEntry.Clone(),
                     new ExecutionDataflowBlockOptions
                         {
                             MaxDegreeOfParallelism = loggingConfiguration.MaxDegreeOfParallelism <= 0 
