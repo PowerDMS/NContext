@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NContext.Extensions.Logging</id>
+    <version>0.0.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Waking Venture Inc.</owners>
+    <copyright>Waking Venture Inc.</copyright>
+    <description>[to fill]</description>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>http://ncontext.wakingventure.com</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>NContext</tags>
+    <dependencies>
+      <dependency id="NContext" version="[$version$,)" />
+      <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.9,)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\NContext.Extensions.Logging\bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net45\" />
+    <file src="..\NContext.Extensions.Logging\**\*.cs" target="src" />
+  </files>
+</package>

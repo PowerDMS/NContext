@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NinjectConfigurationBuilder.cs" company="Waking Venture, Inc.">
+// <copyright file="NinjectManagerBuilder.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,7 @@ namespace NContext.Extensions.Ninject
     using global::Ninject;
     using global::Ninject.Modules;
 
-    public class NinjectConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
+    public class NinjectManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private Func<IKernel> _KernelFactory; 
 
@@ -41,7 +41,7 @@ namespace NContext.Extensions.Ninject
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public NinjectConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public NinjectManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
             _KernelFactory = () => new StandardKernel();
@@ -55,9 +55,9 @@ namespace NContext.Extensions.Ninject
         /// required <seealso cref="INinjectSettings"/> and/or <seealso cref="INinjectModule"/>s.
         /// </summary>
         /// <param name="kernelFactory">The <see cref="IKernel"/> factory.</param>
-        /// <returns>This <see cref="NinjectConfigurationBuilder"/> instance.</returns>
+        /// <returns>This <see cref="NinjectManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public NinjectConfigurationBuilder SetKernel(Func<IKernel> kernelFactory)
+        public NinjectManagerBuilder SetKernel(Func<IKernel> kernelFactory)
         {
             _KernelFactory = kernelFactory;
 
@@ -68,9 +68,9 @@ namespace NContext.Extensions.Ninject
         /// Sets the modules to load into the <see cref="IKernel"/>.
         /// </summary>
         /// <param name="moduleFactory">The module factory.</param>
-        /// <returns>This <see cref="NinjectConfigurationBuilder"/> instance.</returns>
+        /// <returns>This <see cref="NinjectManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public NinjectConfigurationBuilder SetModules(Func<IEnumerable<INinjectModule>> moduleFactory)
+        public NinjectManagerBuilder SetModules(Func<IEnumerable<INinjectModule>> moduleFactory)
         {
             _ModuleFactory = moduleFactory;
 
@@ -81,9 +81,9 @@ namespace NContext.Extensions.Ninject
         /// Sets the <see cref="INinjectSettings"/> used by the <see cref="IKernel"/>.
         /// </summary>
         /// <param name="settingsFactory">The <see cref="INinjectSettings"/> instance.</param>
-        /// <returns>This <see cref="NinjectConfigurationBuilder"/> instance.</returns>
+        /// <returns>This <see cref="NinjectManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public NinjectConfigurationBuilder SetSettings(Func<INinjectSettings> settingsFactory)
+        public NinjectManagerBuilder SetSettings(Func<INinjectSettings> settingsFactory)
         {
             _NinjectSettings = settingsFactory;
 

@@ -21,25 +21,27 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{4FDB19A9-243F-49B6-9F9D-3732515A632A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
 	ProjectSection(SolutionItems) = preProject
 		NuGet\NContext.Common.nuspec = NuGet\NContext.Common.nuspec
 		NuGet\NContext.Extensions.AspNetWebApi.nuspec = NuGet\NContext.Extensions.AspNetWebApi.nuspec
 		NuGet\NContext.Extensions.AutoMapper.nuspec = NuGet\NContext.Extensions.AutoMapper.nuspec
 		NuGet\NContext.Extensions.EnterpriseLibrary.nuspec = NuGet\NContext.Extensions.EnterpriseLibrary.nuspec
 		NuGet\NContext.Extensions.EntityFramework.nuspec = NuGet\NContext.Extensions.EntityFramework.nuspec
+		.nuget\NContext.Extensions.Logging.nuspec = .nuget\NContext.Extensions.Logging.nuspec
 		NuGet\NContext.Extensions.Ninject.nuspec = NuGet\NContext.Extensions.Ninject.nuspec
 		NuGet\NContext.Extensions.Unity.nuspec = NuGet\NContext.Extensions.Unity.nuspec
 		NuGet\NContext.Extensions.ValueInjecter.nuspec = NuGet\NContext.Extensions.ValueInjecter.nuspec
 		NuGet\NContext.nuspec = NuGet\NContext.nuspec
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{7737B376-DAD7-4F46-A4EE-F38B21E3D790}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7737B376-DAD7-4F46-A4EE-F38B21E3D790}"
 	ProjectSection(SolutionItems) = preProject
+		.build\continuousdeployment.build = .build\continuousdeployment.build
 		ncontext.versioning.targets = ncontext.versioning.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging", "NContext.Extensions.Logging\NContext.Extensions.Logging.csproj", "{151F413D-DFCC-4064-BC5A-AC51E5D343CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,6 +85,10 @@ Global
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97682107-3B66-4615-9350-F75FFE9510C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -95,8 +101,7 @@ Global
 		{0EAFD594-5631-4C33-A5F2-BDA64E103421} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{97682107-3B66-4615-9350-F75FFE9510C8} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
-		{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0} = {4FDB19A9-243F-49B6-9F9D-3732515A632A}
-		{7737B376-DAD7-4F46-A4EE-F38B21E3D790} = {4FDB19A9-243F-49B6-9F9D-3732515A632A}
+		{151F413D-DFCC-4064-BC5A-AC51E5D343CA} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35

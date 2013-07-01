@@ -137,7 +137,23 @@ namespace NContext.Configuration
         public void RegisterComponent<TApplicationComponent>(Func<IApplicationComponent> componentFactory)
             where TApplicationComponent : IApplicationComponent
         {
-            _Components.Add(new RegisteredApplicationComponent(typeof(TApplicationComponent), new Lazy<IApplicationComponent>(componentFactory)));
+            RegisterComponent(typeof(TApplicationComponent), componentFactory);
+        }
+
+        /// <summary>
+        /// Registers an application component.
+        /// </summary>
+        /// <param name="componentType">Type of the application component.</param>
+        /// <param name="componentFactory">The component factory.</param>
+        /// <exception cref="System.Exception"></exception>
+        public void RegisterComponent(Type componentType, Func<IApplicationComponent> componentFactory)
+        {
+            if (!componentType.Implements<IApplicationComponent>())
+            {
+                throw new Exception(String.Format("{0} does not implement IApplicationComponent", componentType.Name));
+            }
+
+            _Components.Add(new RegisteredApplicationComponent(componentType, new Lazy<IApplicationComponent>(componentFactory)));
         }
 
         /// <summary>
