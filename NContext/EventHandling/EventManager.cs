@@ -26,115 +26,92 @@ namespace NContext.EventHandling
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
-    using System.Threading;
+    using System.Threading.Tasks;
+
     using NContext.Configuration;
     using NContext.Extensions;
 
-    public class EventManager : IApplicationComponent
+    public class EventManager : IManageEvents
     {
-        private readonly IDictionary<Type, IEnumerable<Type>> _AsyncCache;
-        private readonly IActivationProvider _ActivationProvider;
-        private CompositionContainer _CompositionContainer;
+        readonly IDictionary<Type, IEnumerable<Type>> _EventHandlerCache;
 
+        readonly IActivationProvider _ActivationProvider;
+
+        CompositionContainer _CompositionContainer;
+
+        Boolean _IsConfigured;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventManager"/> class.
+        /// </summary>
+        /// <param name="activationProvider">The activation provider.</param>
         public EventManager(IActivationProvider activationProvider)
         {
-            _AsyncCache = new ConcurrentDictionary<Type, IEnumerable<Type>>();
+            _EventHandlerCache = new ConcurrentDictionary<Type, IEnumerable<Type>>();
             _ActivationProvider = activationProvider;
         }
 
-        public void Raise<TEvent>(TEvent @event)
+        public Task Raise<TEvent>(TEvent @event)
         {
-            IEnumerable<Type> asyncHandlerTypes;
-            if (_AsyncCache[typeof(TEvent)] != null)
+#if NET45
+            return Task.Run(() => RaiseEvent(@event));
+#else
+            return Task.Factory.StartNew(() => RaiseEvent(@event));
+#endif
+        }
+
+        private void RaiseEvent<TEvent>(TEvent @event)
+        {
+            IEnumerable<Type> handlerTypes;
+            if (_EventHandlerCache.ContainsKey(typeof(TEvent)))
             {
-                asyncHandlerTypes = _AsyncCache[typeof(TEvent)];
+                handlerTypes = _EventHandlerCache[typeof(TEvent)];
             }
             else
             {
-                _AsyncCache[typeof(TEvent)] = asyncHandlerTypes = _CompositionContainer.GetExportedTypes<IHandleAsync<TEvent>>();
+                _EventHandlerCache[typeof(TEvent)] = handlerTypes = _CompositionContainer.GetExportTypesThatImplement<IHandleEvent<TEvent>>().ToList();
             }
 
-            var cancellationTokenSource = new CancellationTokenSource();
-            var token = cancellationTokenSource.Token;
-            
-            asyncHandlerTypes
+            handlerTypes
                 .AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount)
-                .WithCancellation(token)
                 .ForAll(handlerType =>
                     {
-                        IHandle<TEvent> handler = _ActivationProvider.CreateInstance<TEvent>(handlerType);
                         try
                         {
-                            handler.Handle(@event);
+                            var handler = _ActivationProvider.CreateInstance<TEvent>(handlerType);
+
+                            try
+                            {
+                                handler.Handle(@event);
+                            }
+                            catch (Exception ex)
+                            {
+                                handler.HandleException(@event, ex);
+                            }
                         }
                         catch (Exception ex)
                         {
-                            handler.HandleException(@event, ex);
-                            cancellationAction.Invoke(@event, handler, ex);
                         }
                     });
-
-            _CompositionContainer
-                .GetExportedTypes<IHandle<TEvent>>()
-                .ForEach(
-                    handlerType =>
-                    RaiseEvent(@event, handlerType, (eventSource, handler, exception) => {handler.CancelEvent(eventSource, exception)}));
         }
 
-        private void RaiseEvent<TEvent>(TEvent @event, Type handlerType, Action<TEvent, IHandle<TEvent>, Exception> cancellationAction)
+        public Boolean IsConfigured
         {
-            var handler = _ActivationProvider.CreateInstance<TEvent>(handlerType);
-
-            try
-            {
-                handler.Handle(@event);
-            }
-            catch (Exception ex)
-            {
-                cancellationAction.Invoke(@event, handler, ex);
-            }
+            get { return _IsConfigured; }
         }
-
-        public Boolean IsConfigured { get; private set; }
 
         public void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
+            if (_IsConfigured)
+            {
+                return;
+            }
+
+            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageEvents>(this);
             _CompositionContainer = applicationConfiguration.CompositionContainer;
+
+            _IsConfigured = true;
         }
-    }
-
-    public class EventManagerBuilder : ApplicationComponentBuilder
-    {
-        public EventManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder) 
-            : base(applicationConfigurationBuilder)
-        {
-        }
-
-        public EventManagerBuilder SetActivationProvider(Func<IActivationProvider> activationProviderFactory)
-        {
-            
-        }
-    }
-
-    public interface IActivationProvider
-    {
-        IHandle<TEvent> CreateInstance<TEvent>(Type handler);
-    }
-
-    [InheritedExport]
-    public interface IHandle<TEvent>
-    {
-        void Handle(TEvent @event);
-
-        void HandleException(TEvent @event, Exception exception);
-    }
-
-    [InheritedExport]
-    public interface IHandleAsync<TEvent>
-    {
-        void Handle(TEvent @event);
-
-        void HandleException(TEvent @event, Exception exception, CancellationTokenSource cancellationTokenSource);
     }
 }

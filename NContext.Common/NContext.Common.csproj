@@ -4,7 +4,8 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Framework Condition=" '$(Framework)' == '' ">portable-net4+sl4+wp7</Framework>
+    <Framework Condition=" '$(Framework)' == '' ">portable-net45+sl4</Framework>
+    <DefineConstants></DefineConstants>
     <ProjectGuid>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -14,8 +15,10 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <!-- ***********************************************************************************************************
        * .NET 4.5 + Silverlight 4
@@ -37,6 +40,7 @@
     <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile23</TargetFrameworkProfile>
   </PropertyGroup>
   <!-- ***********************************************************************************************************
@@ -59,10 +63,8 @@
     <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile2</TargetFrameworkProfile>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-    <DefineConstants>TRACE;DEBUG</DefineConstants>
   </PropertyGroup>
   <!-- =============== NCrunch Override ================== -->
   <Choose>
@@ -111,6 +113,6 @@
   <Import Condition=" '$(NCrunch)' == '1' " Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Condition=" '$(NCrunch)' == '' " Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="AfterBuild" Condition=" '$(NCrunch)' == '' ">
-    <MSBuild Condition=" '$(Framework)' != 'portable-net45+sl4' " Projects="$(MSBuildProjectFile)" Properties="Framework=portable-net45+sl4" RunEachTargetSeparately="true" />
+    <MSBuild Condition=" '$(Framework)' != 'portable-net4+sl4+wp7' " Projects="$(MSBuildProjectFile)" Properties="Framework=portable-net4+sl4+wp7" RunEachTargetSeparately="true" />
   </Target>
 </Project>

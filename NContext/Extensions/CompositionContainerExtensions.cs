@@ -23,8 +23,6 @@ namespace NContext.Extensions
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Hosting;
-    using System.ComponentModel.Composition.Primitives;
-    using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
 
     /// <summary>
@@ -60,6 +58,7 @@ namespace NContext.Extensions
                             .Where(typePart => typePart.Implements<TExport>());
         }
 
+        /*
         public static IEnumerable<Type> GetExportedTypes<T>(this CompositionContainer container)
         {
             return container.Catalog
@@ -78,5 +77,6 @@ namespace NContext.Extensions
 
             return null;
         }
+        */
     }
 }

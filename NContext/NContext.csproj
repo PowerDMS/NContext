@@ -126,6 +126,10 @@
     <Compile Include="ErrorHandling\Errors\Localization\NContextPersistenceError.Designer.cs" />
     <Compile Include="ErrorHandling\Errors\NContextPersistenceError.cs" />
     <Compile Include="EventHandling\EventManager.cs" />
+    <Compile Include="EventHandling\EventManagerBuilder.cs" />
+    <Compile Include="EventHandling\IActivationProvider.cs" />
+    <Compile Include="EventHandling\IHandleEvent.cs" />
+    <Compile Include="EventHandling\IManageEvents.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ErrorBaseExtensions.cs" />
