@@ -1,25 +1,27 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NContext\NContext.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NET40-NContext\NContext.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Unity", "NContext.Extensions.Unity\NContext.Extensions.Unity.csproj", "{C6F06E82-728B-4CFD-86BE-CC5DFA815086}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Unity", "NET40-NContext.Extensions.Unity\NContext.Extensions.Unity.csproj", "{C6F06E82-728B-4CFD-86BE-CC5DFA815086}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityFramework", "NContext.Extensions.EntityFramework\NContext.Extensions.EntityFramework.csproj", "{C9F7B439-599F-404C-8203-A67AD5A3FEA9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityFramework", "NET40-NContext.Extensions.EntityFramework\NContext.Extensions.EntityFramework.csproj", "{C9F7B439-599F-404C-8203-A67AD5A3FEA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi", "NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNetWebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi", "NET40-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNetWebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NContext.Common\NContext.Common.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NET40-NContext.Common\NContext.Common.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AppFabric", "NContext.Extensions.AppFabric\NContext.Extensions.AppFabric.csproj", "{7866C121-AA98-41E8-B691-FF568DF6B728}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AppFabric", "NET40-NContext.Extensions.AppFabric\NContext.Extensions.AppFabric.csproj", "{7866C121-AA98-41E8-B691-FF568DF6B728}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.ValueInjecter", "NContext.Extensions.ValueInjecter\NContext.Extensions.ValueInjecter.csproj", "{0EAFD594-5631-4C33-A5F2-BDA64E103421}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.ValueInjecter", "NET40-NContext.Extensions.ValueInjecter\NContext.Extensions.ValueInjecter.csproj", "{0EAFD594-5631-4C33-A5F2-BDA64E103421}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject", "NContext.Extensions.Ninject\NContext.Extensions.Ninject.csproj", "{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject", "NET40-NContext.Extensions.Ninject\NContext.Extensions.Ninject.csproj", "{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NET40-NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging", "NET40-NContext.Extensions.Logging\NContext.Extensions.Logging.csproj", "{151F413D-DFCC-4064-BC5A-AC51E5D343CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
 	ProjectSection(SolutionItems) = preProject
@@ -40,8 +42,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7737B3
 		.build\continuousdeployment.build = .build\continuousdeployment.build
 		ncontext.versioning.targets = ncontext.versioning.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging", "NContext.Extensions.Logging\NContext.Extensions.Logging.csproj", "{151F413D-DFCC-4064-BC5A-AC51E5D343CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

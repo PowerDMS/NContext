@@ -17,7 +17,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.Logging\bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net45\" />
-    <file src="..\NContext.Extensions.Logging\**\*.cs" target="src" />
+    <file src="..\NET45-NContext.Extensions.Logging\bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net45\" />
+    <file src="..\NET45-NContext.Extensions.Logging\**\*.cs" target="src" />
   </files>
 </package>

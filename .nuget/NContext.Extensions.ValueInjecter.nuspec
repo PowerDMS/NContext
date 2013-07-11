@@ -17,7 +17,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.ValueInjecter\bin\$Configuration$\NContext.Extensions.ValueInjecter.*" target="lib\net40\" />
-    <file src="..\NContext.Extensions.ValueInjecter\**\*.cs" target="src" />
+    <file src="..\NET40-NContext.Extensions.ValueInjecter\bin\$Configuration$\NContext.Extensions.ValueInjecter.*" target="lib\net40\" />
+    <file src="..\NET40-NContext.Extensions.ValueInjecter\**\*.cs" target="src" />
   </files>
 </package>

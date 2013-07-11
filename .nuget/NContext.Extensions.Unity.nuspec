@@ -19,7 +19,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NContext.Extensions.Unity\bin\$Configuration$\NContext.Extensions.Unity.*" target="lib\net40\" />
-    <file src="..\NContext.Extensions.Unity\**\*.cs" target="src" />
+    <file src="..\NET40-NContext.Extensions.Unity\bin\$Configuration$\NContext.Extensions.Unity.*" target="lib\net40\" />
+    <file src="..\NET40-NContext.Extensions.Unity\**\*.cs" target="src" />
   </files>
 </package>

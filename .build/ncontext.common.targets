@@ -1,0 +1,21 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <!--Convert the target framework from "v4.0" to a number i.e. 40 or 401 etc.-->
+    <NetFrameworkVersionNum>$(TargetFrameworkVersion.Replace("v", "").Replace(".", ""))</NetFrameworkVersionNum>
+
+    <!--Add an extra 0 if the version number is 40 or 45 so it can be compared to 401-->
+    <NetFrameworkVersionNum Condition="$(NetFrameworkVersionNum.Length) &lt; 3">$(TargetFrameworkVersion.Replace("v", "").Replace(".", ""))0</NetFrameworkVersionNum>
+
+    <!--Don't define your own NET constants - this file will do it for you-->
+    <Error Condition=" $(DefineConstants.Contains('NET'))">Don't define your own NET constants</Error>
+
+    <!--Create a version to use with constants NET40, NET401 etc.-->
+    <NetFrameworkVersion Condition=" !$(DefineConstants.Contains(';NET')) ">$(TargetFrameworkVersion.Replace("v", "NET").Replace(".", ""))</NetFrameworkVersion>
+    <DefineConstants Condition=" !$(DefineConstants.Contains(';NET')) ">$(DefineConstants);$(NetFrameworkVersion)</DefineConstants>
+
+    <!--Define the OR_GREATER constants-->
+    <DefineConstants Condition="$(NetFrameworkVersionNum) &gt;= 400">$(DefineConstants);NET40_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$(NetFrameworkVersionNum) &gt;= 401">$(DefineConstants);NET401_OR_GREATER</DefineConstants>
+    <DefineConstants Condition="$(NetFrameworkVersionNum) &gt;= 450">$(DefineConstants);NET45_OR_GREATER</DefineConstants>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Framework Condition=" '$(Framework)' == '' ">portable-net45+sl4+wp8+win8</Framework>
+    <ProjectGuid>{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}</ProjectGuid>
+    <CustomConstants>SILVERLIGHT40;WINDOWS_PHONE8</CustomConstants>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NContext.Common</RootNamespace>
+    <AssemblyName>NContext.Common</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile154</TargetFrameworkProfile>
+    <DocumentationFile>bin\$(Configuration)\$(Framework)\NContext.Common.xml</DocumentationFile>
+    <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;$(CustomConstants)</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;$(CustomConstants)</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- =============== NCrunch Override ================== -->
+  <!-- NCrunch does not yet support PCL / Silverlight projects -->
+  <Choose>
+    <When Condition=" '$(NCrunch)' == '1' ">
+      <PropertyGroup>
+        <ProjectTypeGuids>
+        </ProjectTypeGuids>
+        <TargetFrameworkProfile>
+        </TargetFrameworkProfile>
+      </PropertyGroup>
+      <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Xml.Linq" />
+        <Reference Include="System.Data.DataSetExtensions" />
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Xml" />
+        <Reference Include="System.Runtime.Serialization" />
+      </ItemGroup>
+    </When>
+  </Choose>
+  <!-- =================================================== -->
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\NET40-NContext.Common\Error.cs">
+      <Link>Error.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\HierarchicalDataExtensions.cs">
+      <Link>Extensions\HierarchicalDataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IListExtensions.cs">
+      <Link>Extensions\IListExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IMaybeExtensions.cs">
+      <Link>Extensions\IMaybeExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IMaybeIEnumerableExtensions.cs">
+      <Link>Extensions\IMaybeIEnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectExtensions.cs">
+      <Link>Extensions\IResponseTransferObjectExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectIEnumerableExtensions.cs">
+      <Link>Extensions\IResponseTransferObjectIEnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\IMaybe.cs">
+      <Link>IMaybe.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\IResponseTransferObject.cs">
+      <Link>IResponseTransferObject.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\IToken.cs">
+      <Link>IToken.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Just.cs">
+      <Link>Just.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Nothing.cs">
+      <Link>Nothing.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\ServiceResponse.cs">
+      <Link>ServiceResponse.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\ValidationError.cs">
+      <Link>ValidationError.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="IStatefulResponseTransferObject.cs" />
+    <Compile Include="StateExtensions.cs" />
+    <Compile Include="StatefulServiceResponse.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <Import Condition=" '$(NCrunch)' == '1' " Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Condition=" '$(NCrunch)' == '' " Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.build\ncontext.common.targets" />
+</Project>
