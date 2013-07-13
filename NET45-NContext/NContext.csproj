@@ -244,6 +244,9 @@
     <Compile Include="..\NET40-NContext\Extensions\TypeExtensions.cs">
       <Link>Extensions\TypeExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext\Security\Cryptography\CryptographyConfiguration.cs">
       <Link>Security\Cryptography\CryptographyConfiguration.cs</Link>
     </Compile>
@@ -298,7 +301,6 @@
     <Compile Include="..\NET40-NContext\Utilities\AttributeUtility.cs">
       <Link>Utilities\AttributeUtility.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\NET40-NContext\ErrorHandling\Errors\Localization\NContextPersistenceError.resx">
@@ -316,7 +318,6 @@
       <Name>NContext.Common %28NET45\NContext.Common%29</Name>
     </ProjectReference>
   </ItemGroup>
-  
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.build\ncontext.common.targets" />
 </Project>

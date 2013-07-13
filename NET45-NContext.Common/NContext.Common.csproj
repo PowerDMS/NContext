@@ -97,13 +97,15 @@
     <Compile Include="..\NET40-NContext.Common\Nothing.cs">
       <Link>Nothing.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\ServiceResponse.cs">
       <Link>ServiceResponse.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Common\ValidationError.cs">
       <Link>ValidationError.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="IStatefulResponseTransferObject.cs" />
     <Compile Include="StateExtensions.cs" />
     <Compile Include="StatefulServiceResponse.cs" />

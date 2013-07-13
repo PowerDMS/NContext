@@ -149,6 +149,9 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\JsonNetExtensions.cs">
       <Link>JsonNetExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Routing\IConfigureHttpRouting.cs">
       <Link>Routing\IConfigureHttpRouting.cs</Link>
     </Compile>
@@ -158,7 +161,6 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Routing\Route.cs">
       <Link>Routing\Route.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\NET40-NContext.Extensions.AspNetWebApi\ErrorHandling\Localization\AuthenticationError.resx">

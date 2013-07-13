@@ -99,10 +99,12 @@
     <Compile Include="..\NET40-NContext.Extensions.EntityFramework\IEfUnitOfWork.cs">
       <Link>IEfUnitOfWork.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.EntityFramework\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Extensions.EntityFramework\ServiceLocatorDbContextFactory.cs">
       <Link>ServiceLocatorDbContextFactory.cs</Link>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
