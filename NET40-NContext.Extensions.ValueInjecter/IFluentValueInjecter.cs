@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IFluentValueInjector.cs" company="Waking Venture, Inc.">
+// <copyright file="IFluentValueInjecter.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -27,7 +27,7 @@ namespace NContext.Extensions.ValueInjecter
     /// <summary>
     /// Defines a fluent, composable way to use ValueInjecter.
     /// </summary>
-    public interface IFluentValueInjector<T>
+    public interface IFluentValueInjecter<T>
     {
         /// <summary>
         /// Returns a new instance of <typeparamref name="T2"/>; injecting the source <typeparamref name="T"/> using the 
@@ -70,14 +70,14 @@ namespace NContext.Extensions.ValueInjecter
         /// Configures the type of <see cref="IValueInjection"/> to use with this injector. 
         /// </summary>
         /// <typeparam name="TValueInjection">The type of <see cref="IValueInjection"/>.</typeparam>
-        /// <returns>Current <see cref="IFluentValueInjector{T}"/> instance.</returns>
-        IFluentValueInjector<T> Using<TValueInjection>() where TValueInjection : IValueInjection, new();
+        /// <returns>Current <see cref="IFluentValueInjecter{T}"/> instance.</returns>
+        IFluentValueInjecter<T> Using<TValueInjection>() where TValueInjection : IValueInjection, new();
 
         /// <summary>
         /// Configures the <see cref="IValueInjection"/> instance to use with this injector. 
         /// </summary>
         /// <typeparam name="TValueInjection">The type of <see cref="IValueInjection"/>.</typeparam>
-        /// <returns>Current <see cref="IFluentValueInjector{T}"/> instance.</returns>
-        IFluentValueInjector<T> Using<TValueInjection>(TValueInjection valueInjection) where TValueInjection : IValueInjection;
+        /// <returns>Current <see cref="IFluentValueInjecter{T}"/> instance.</returns>
+        IFluentValueInjecter<T> Using<TValueInjection>(TValueInjection valueInjection) where TValueInjection : IValueInjection;
     }
 }

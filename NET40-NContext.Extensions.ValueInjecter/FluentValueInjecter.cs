@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FluentValueInjector.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
+// <copyright file="FluentValueInjecter.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2013 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -21,7 +21,9 @@
 namespace NContext.Extensions.ValueInjecter
 {
     using System;
+    using System.Collections.Generic;
     using System.ComponentModel;
+    using System.Linq;
     using System.Reflection;
 
     using NContext.Common;
@@ -32,23 +34,27 @@ namespace NContext.Extensions.ValueInjecter
     /// Defines a fluent, composable way to use ValueInjecter.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class FluentValueInjector<T> : IFluentValueInjector<T>
+    public class FluentValueInjecter<T> : IFluentValueInjecter<T>
     {
         private readonly T _Source;
 
-        private Lazy<IValueInjection> _ValueInjection;
+        private readonly IEnumerable<Func<IValueInjection>> _ApplicationInjectionConventions;
 
+        private readonly ISet<Func<IValueInjection>> _ValueInjections;
+        
         /// <summary>
-        /// Initializes a new instance of the <see cref="FluentValueInjector{T}" /> class.
+        /// Initializes a new instance of the <see cref="FluentValueInjecter{T}" /> class.
         /// </summary>
         /// <param name="source">The source.</param>
+        /// <param name="applicationInjectionConventions">The application injection conventions.</param>
         /// <exception cref="System.ArgumentNullException">source</exception>
-        public FluentValueInjector(T source)
+        public FluentValueInjecter(T source, IEnumerable<Func<IValueInjection>> applicationInjectionConventions)
         {
             if (source == null) throw new ArgumentNullException("source");
 
             _Source = source;
-            _ValueInjection = new Lazy<IValueInjection>(() => new LoopValueInjection());
+            _ApplicationInjectionConventions = applicationInjectionConventions ?? Enumerable.Empty<Func<IValueInjection>>();
+            _ValueInjections = new HashSet<Func<IValueInjection>>();
         }
 
         /// <summary>
@@ -59,7 +65,7 @@ namespace NContext.Extensions.ValueInjecter
         /// <returns><typeparamref name="T2"/> instance.</returns>
         public T2 Into<T2>() where T2 : class, new()
         {
-            return Into<T2>(Activator.CreateInstance<T2>(), null);
+            return Into(Activator.CreateInstance<T2>(), null);
         }
 
         /// <summary>
@@ -71,7 +77,7 @@ namespace NContext.Extensions.ValueInjecter
         /// <returns><typeparamref name="T2"/> instance.</returns>
         public T2 Into<T2>(Object mapper) where T2 : class, new()
         {
-            return Into<T2>(Activator.CreateInstance<T2>(), mapper);
+            return Into(Activator.CreateInstance<T2>(), mapper);
         }
 
         /// <summary>
@@ -83,7 +89,7 @@ namespace NContext.Extensions.ValueInjecter
         /// <returns><typeparamref name="T2" /> instance.</returns>
         public T2 Into<T2>(T2 targetInstance)
         {
-            return Into<T2>(targetInstance, null);
+            return Into(targetInstance, null);
         }
 
         /// <summary>
@@ -99,7 +105,16 @@ namespace NContext.Extensions.ValueInjecter
         {
             if (targetInstance == null) throw new ArgumentNullException("targetInstance");
 
-            targetInstance.InjectFrom(_ValueInjection.Value, _Source);
+            if (!_ValueInjections.Any())
+            {
+                _ValueInjections.Add(() => new LoopValueInjection());
+            }
+
+            foreach (var valueInjection in _ValueInjections.Select(valueInjectionFactory => valueInjectionFactory.Invoke())
+                                                           .Concat(_ApplicationInjectionConventions.Select(valueInjectionFactory => valueInjectionFactory.Invoke())))
+            {
+                targetInstance.InjectFrom(valueInjection, _Source);
+            }
 
             if (mapper != null)
             {
@@ -119,10 +134,10 @@ namespace NContext.Extensions.ValueInjecter
         /// Configures the type of <see cref="IValueInjection"/> to use with this injector. 
         /// </summary>
         /// <typeparam name="TValueInjection">The type of <see cref="IValueInjection"/>.</typeparam>
-        /// <returns>Current <see cref="IFluentValueInjector{T}"/> instance.</returns>
-        public IFluentValueInjector<T> Using<TValueInjection>() where TValueInjection : IValueInjection, new()
+        /// <returns>Current <see cref="IFluentValueInjecter{T}"/> instance.</returns>
+        public IFluentValueInjecter<T> Using<TValueInjection>() where TValueInjection : IValueInjection, new()
         {
-            _ValueInjection = new Lazy<IValueInjection>(() => Activator.CreateInstance<TValueInjection>());
+            _ValueInjections.Add(() => Activator.CreateInstance<TValueInjection>());
 
             return this;
         }
@@ -131,10 +146,10 @@ namespace NContext.Extensions.ValueInjecter
         /// Configures the <see cref="IValueInjection"/> instance to use with this injector. 
         /// </summary>
         /// <typeparam name="TValueInjection">The type of <see cref="IValueInjection"/>.</typeparam>
-        /// <returns>Current <see cref="IFluentValueInjector{T}"/> instance.</returns>
-        public IFluentValueInjector<T> Using<TValueInjection>(TValueInjection valueInjection) where TValueInjection : IValueInjection
+        /// <returns>Current <see cref="IFluentValueInjecter{T}"/> instance.</returns>
+        public IFluentValueInjecter<T> Using<TValueInjection>(TValueInjection valueInjection) where TValueInjection : IValueInjection
         {
-            _ValueInjection = new Lazy<IValueInjection>(() => valueInjection);
+            _ValueInjections.Add(() => valueInjection);
 
             return this;
         }
