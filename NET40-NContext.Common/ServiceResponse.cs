@@ -21,6 +21,7 @@
 namespace NContext.Common
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
@@ -85,8 +86,16 @@ namespace NContext.Common
         /// <remarks></remarks>
         private ServiceResponse(T data, IEnumerable<Error> errors)
         {
-            Data = (data != null) ? data : default(T);
             Errors = errors ?? Enumerable.Empty<Error>();
+
+            if (data is IEnumerable)
+            {
+                Data = CreateMaterializedEnumerable(data);
+            }
+            else
+            {
+                Data = (data != null) ? data : default(T);
+            }
         }
         
         /// <summary>
@@ -158,6 +167,20 @@ namespace NContext.Common
             }
 
             return serviceResponse.Data != null;
+        }
+
+        private static T CreateMaterializedEnumerable<T>(T data)
+        {
+            var dataType = data.GetType();
+            if (typeof(ICollection).IsAssignableFrom(dataType))
+            {
+                return data;
+            }
+
+            var innerType = dataType.GetGenericArguments()[0];
+            var listType = typeof(List<>).MakeGenericType(innerType);
+
+            return (T)Activator.CreateInstance(listType, data);
         }
 
         #region Implementation of IDisposable
