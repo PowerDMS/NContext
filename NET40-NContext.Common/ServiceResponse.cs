@@ -169,10 +169,11 @@ namespace NContext.Common
             return serviceResponse.Data != null;
         }
 
-        private static T CreateMaterializedEnumerable<T>(T data)
+        private static T CreateMaterializedEnumerable(T data)
         {
             var dataType = data.GetType();
-            if (typeof(ICollection).IsAssignableFrom(dataType))
+
+            if ((!dataType.IsGenericTypeDefinition && !dataType.IsGenericType) || data is ICollection)
             {
                 return data;
             }

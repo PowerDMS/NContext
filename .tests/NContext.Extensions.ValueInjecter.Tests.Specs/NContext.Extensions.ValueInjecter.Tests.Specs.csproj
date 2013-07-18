@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{614A2628-7082-4D98-9B39-3E470FFBC6A6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NContext.Extensions.ValueInjecter.Tests.Specs</RootNamespace>
+    <AssemblyName>NContext.Extensions.ValueInjecter.Tests.Specs</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Machine.Specifications">
+      <HintPath>..\..\packages\Machine.Specifications.0.5.12\lib\net40\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications.Clr4">
+      <HintPath>..\..\packages\Machine.Specifications.0.5.12\lib\net40\Machine.Specifications.Clr4.dll</HintPath>
+    </Reference>
+    <Reference Include="Omu.ValueInjecter">
+      <HintPath>..\..\packages\valueinjecter.2.3.3\lib\net35\Omu.ValueInjecter.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Telerik.JustMock, Version=2013.2.626.0, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Program Files (x86)\Telerik\JustMock\Libraries\Telerik.JustMock.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientToUtcDateTimeConvention.cs" />
+    <Compile Include="DtoToEntityConvention.cs" />
+    <Compile Include="DummyBlogPost.cs" />
+    <Compile Include="DummyBlogPostDto.cs" />
+    <Compile Include="DummyBlogPostStatus.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="when_injecting_with_fluent_value_injecter.cs" />
+    <Compile Include="with_application_injection_conventions.cs" />
+    <Compile Include="with_a_custom_mapper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\NET40-NContext.Extensions.ValueInjecter\NContext.Extensions.ValueInjecter.csproj">
+      <Project>{0eafd594-5631-4c33-a5f2-bda64e103421}</Project>
+      <Name>NContext.Extensions.ValueInjecter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NET40-NContext\NContext.csproj">
+      <Project>{b5614b58-83c2-46be-9463-9e140519298e}</Project>
+      <Name>NContext %28NET40\NContext%29</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
