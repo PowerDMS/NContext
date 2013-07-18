@@ -13,7 +13,7 @@
     <tags>NContext</tags>
     <dependencies>
       <dependency id="NContext" version="[$version$,)" />
-      <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.9,)" />
+      <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.11,)" />
     </dependencies>
   </metadata>
   <files>
