@@ -131,4 +131,5 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Import Project="$(SolutionDir)\.build\ncontext.common.targets" />
 </Project>
