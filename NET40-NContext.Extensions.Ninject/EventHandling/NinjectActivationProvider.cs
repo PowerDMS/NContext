@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IHandleEvent.cs" company="Waking Venture, Inc.">
+// <copyright file="NinjectActivationProvider.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,22 +18,40 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.EventHandling
+namespace NContext.Extensions.Ninject.EventHandling
 {
-    using System.ComponentModel.Composition;
+    using System;
+    using System.Linq;
+
+    using NContext.EventHandling;
+
+    using global::Ninject;
 
     /// <summary>
-    /// Defines an event handler for a specific type of event.
+    /// Defines an Ninject-based activation provider for event handling.
     /// </summary>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
-    [InheritedExport]
-    public interface IHandleEvent<in TEvent>
+    public class NinjectActivationProvider : IActivationProvider
     {
+        private readonly IKernel _Kernel;
+
         /// <summary>
-        /// Handles the specified event. This may be invoked on a different thread 
-        /// then the thread which raised the event.
+        /// Initializes a new instance of the <see cref="NinjectActivationProvider"/> class.
         /// </summary>
-        /// <param name="event">The event.</param>
-        void Handle(TEvent @event);
+        /// <param name="kernel">The kernel.</param>
+        public NinjectActivationProvider(IKernel kernel)
+        {
+            _Kernel = kernel;
+        }
+
+        /// <summary>
+        /// Creates the handler instance.
+        /// </summary>
+        /// <typeparam name="TEvent">The type of the event.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <returns>IHandleEvent{TEvent}.</returns>
+        public IHandleEvent<TEvent> CreateInstance<TEvent>(Type handler)
+        {
+            return _Kernel.Resolve(_Kernel.CreateRequest(handler, null, null, false, true)).SingleOrDefault() as IHandleEvent<TEvent>;
+        }
     }
 }

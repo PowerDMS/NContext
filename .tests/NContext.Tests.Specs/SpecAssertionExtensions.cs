@@ -26,12 +26,7 @@ namespace NContext.Tests.Specs
 
     public static class SpecAssertionExtensions
     {
-        public static Boolean ShouldOnlyContain<T>(this IEnumerable<T> enumerable, T value)
-        {
-            return enumerable.Any() && enumerable.All(item => item.Equals(value));
-        }
-
-        public static Boolean ShouldNotOnlyContain<T>(this IEnumerable<T> enumerable, T value)
+        public static Boolean ShouldNotContainOnly<T>(this IEnumerable<T> enumerable, T value)
         {
             return enumerable.Any() && !enumerable.All(item => item.Equals(value));
         }

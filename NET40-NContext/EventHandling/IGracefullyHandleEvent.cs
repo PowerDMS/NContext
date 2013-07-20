@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IHandleEvent.cs" company="Waking Venture, Inc.">
+// <copyright file="IGracefullyHandleEvent.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -20,20 +20,19 @@
 
 namespace NContext.EventHandling
 {
-    using System.ComponentModel.Composition;
+    using System;
 
     /// <summary>
     /// Defines an event handler for a specific type of event.
     /// </summary>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
-    [InheritedExport]
-    public interface IHandleEvent<in TEvent>
+    public interface IGracefullyHandleEvent<in TEvent> : IHandleEvent<TEvent>
     {
         /// <summary>
-        /// Handles the specified event. This may be invoked on a different thread 
-        /// then the thread which raised the event.
+        /// Invoked when an exception is thrown within execution of <see cref="IHandleEvent{T}.Handle"/>.
         /// </summary>
         /// <param name="event">The event.</param>
-        void Handle(TEvent @event);
+        /// <param name="exception">The exception.</param>
+        void HandleException(TEvent @event, Exception exception); 
     }
 }

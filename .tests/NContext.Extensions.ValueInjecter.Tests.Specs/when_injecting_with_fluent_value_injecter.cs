@@ -24,6 +24,8 @@ namespace NContext.Extensions.ValueInjecter.Tests.Specs
 
     using Machine.Specifications;
 
+    using NContext.Extensions.ValueInjecter.Configuration;
+
     using Telerik.JustMock;
 
     public class when_injecting_with_fluent_value_injecter

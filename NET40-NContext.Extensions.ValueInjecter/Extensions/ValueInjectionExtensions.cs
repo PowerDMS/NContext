@@ -1,6 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IManageEvents.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2013 Waking Venture, Inc.
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ValueInjectionExtensions.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,26 +18,35 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.EventHandling
+namespace NContext.Extensions.ValueInjecter.Extensions
 {
     using System;
-    using System.Threading.Tasks;
 
-    using NContext.Configuration;
+    using NContext.Extensions.ValueInjecter.Configuration;
 
     /// <summary>
-    /// Defines an application component for event handling.
+    /// Defines extension methods for ValueInjecter.
     /// </summary>
-    public interface IManageEvents : IApplicationComponent
+    /// <remarks></remarks>
+    public static class ValueInjectionExtensions
     {
         /// <summary>
-        /// Raises the specified event.
+        /// Returns a new <see cref="IFluentValueInjecter{T}"/> instance using <paramref name="source"/>
+        /// as the source object for value injection. Warning! This does not apply any application-wide 
+        /// conventions set <see cref="ValueInjecterManager.Conventions"/>.
         /// </summary>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
-        /// <param name="event">The event.</param>
-        /// <exception cref="AggregateException">Thrown if the <see cref="IActivationProvider"/> 
-        /// cannot create an instance of the handler.</exception>
-        /// <returns>Task.</returns>
-        Task Raise<TEvent>(TEvent @event);
+        /// <typeparam name="T">Source type.</typeparam>
+        /// <param name="source">The source instance.</param>
+        /// <returns>IFluentValueInjecter{T}.</returns>
+        /// <exception cref="System.ArgumentNullException">source</exception>
+        public static IFluentValueInjecter<T> Inject<T>(this T source)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException("source");
+            }
+
+            return new FluentValueInjecter<T>(source, ValueInjecterManager.Conventions);
+        }
     }
 }

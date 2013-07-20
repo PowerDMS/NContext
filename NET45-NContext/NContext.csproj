@@ -198,6 +198,9 @@
     <Compile Include="..\NET40-NContext\EventHandling\IActivationProvider.cs">
       <Link>EventHandling\IActivationProvider.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext\EventHandling\IGracefullyHandleEvent.cs">
+      <Link>EventHandling\IGracefullyHandleEvent.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext\EventHandling\IHandleEvent.cs">
       <Link>EventHandling\IHandleEvent.cs</Link>
     </Compile>
@@ -227,6 +230,9 @@
     </Compile>
     <Compile Include="..\NET40-NContext\Extensions\IMaybeIQueryableExtensions.cs">
       <Link>Extensions\IMaybeIQueryableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Extensions\IResponseTransferObjectEventExtensions.cs">
+      <Link>Extensions\IResponseTransferObjectEventExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Extensions\IResponseTransferObjectIQueryableExtensions.cs">
       <Link>Extensions\IResponseTransferObjectIQueryableExtensions.cs</Link>

@@ -75,6 +75,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Security" />
     <Reference Include="System.Transactions" />
@@ -130,12 +131,14 @@
     <Compile Include="EventHandling\IActivationProvider.cs" />
     <Compile Include="EventHandling\IHandleEvent.cs" />
     <Compile Include="EventHandling\IManageEvents.cs" />
+    <Compile Include="EventHandling\IGracefullyHandleEvent.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\ErrorBaseExtensions.cs" />
     <Compile Include="Extensions\ErrorExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectEventExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectIQueryableExtensions.cs" />
     <Compile Include="Extensions\ISetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

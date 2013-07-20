@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IHandleEvent.cs" company="Waking Venture, Inc.">
+// <copyright file="IResponseTransferObjectEventExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -17,23 +17,32 @@
 //   DEALINGS IN THE SOFTWARE.
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.EventHandling
+// 
+namespace NContext.Extensions
 {
-    using System.ComponentModel.Composition;
+    using NContext.Common;
+    using NContext.EventHandling;
 
     /// <summary>
-    /// Defines an event handler for a specific type of event.
+    /// Defines event handling extension methods for <see cref="IResponseTransferObject{T}"/>.
     /// </summary>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
-    [InheritedExport]
-    public interface IHandleEvent<in TEvent>
+    public static class IResponseTransferObjectEventExtensions
     {
         /// <summary>
-        /// Handles the specified event. This may be invoked on a different thread 
-        /// then the thread which raised the event.
+        /// Raises the specified event. Event handlers may be executed in parallel. All handlers 
+        /// are run even if one throws an exception. If an exception is thrown, this method returns
+        /// a new <see cref="ServiceResponse{T}"/> with errors representing the thrown exceptions.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TEvent">The type of the T event.</typeparam>
+        /// <param name="responseTransferObject">The response transfer object.</param>
         /// <param name="event">The event.</param>
-        void Handle(TEvent @event);
+        public static IResponseTransferObject<T> Raise<T, TEvent>(this IResponseTransferObject<T> responseTransferObject, TEvent @event)
+        {
+            return EventManager.RaiseEvent<TEvent>(@event)
+                               .ContinueWith(task => task.IsFaulted
+                                                         ? new ServiceResponse<T>(task.Exception.ToErrors())
+                                                         : responseTransferObject).Result;
+        }
     }
 }

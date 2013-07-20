@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IHandleEvent.cs" company="Waking Venture, Inc.">
+// <copyright file="UnityActivationProvider.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,22 +18,39 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.EventHandling
+namespace NContext.Extensions.Unity.EventHandling
 {
-    using System.ComponentModel.Composition;
+    using System;
+
+    using Microsoft.Practices.Unity;
+
+    using NContext.EventHandling;
 
     /// <summary>
-    /// Defines an event handler for a specific type of event.
+    /// Defines an Unity-based activation provider for event handling.
     /// </summary>
-    /// <typeparam name="TEvent">The type of the event.</typeparam>
-    [InheritedExport]
-    public interface IHandleEvent<in TEvent>
+    public class UnityActivationProvider : IActivationProvider
     {
+        private readonly IUnityContainer _Container;
+
         /// <summary>
-        /// Handles the specified event. This may be invoked on a different thread 
-        /// then the thread which raised the event.
+        /// Initializes a new instance of the <see cref="UnityActivationProvider"/> class.
         /// </summary>
-        /// <param name="event">The event.</param>
-        void Handle(TEvent @event);
+        /// <param name="container">The container.</param>
+        public UnityActivationProvider(IUnityContainer container)
+        {
+            _Container = container;
+        }
+
+        /// <summary>
+        /// Creates the handler instance.
+        /// </summary>
+        /// <typeparam name="TEvent">The type of the event.</typeparam>
+        /// <param name="handler">The handler.</param>
+        /// <returns>IHandleEvent{TEvent}.</returns>
+        public IHandleEvent<TEvent> CreateInstance<TEvent>(Type handler)
+        {
+            return _Container.Resolve(handler) as IHandleEvent<TEvent>;
+        }
     }
 }

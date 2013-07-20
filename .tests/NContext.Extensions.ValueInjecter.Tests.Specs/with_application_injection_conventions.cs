@@ -24,6 +24,8 @@ namespace NContext.Extensions.ValueInjecter.Tests.Specs
 
     using Machine.Specifications;
 
+    using NContext.Extensions.ValueInjecter.Configuration;
+
     using Omu.ValueInjecter;
 
     using Telerik.JustMock;

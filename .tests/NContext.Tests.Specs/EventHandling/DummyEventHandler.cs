@@ -30,11 +30,6 @@ namespace NContext.Tests.Specs.EventHandling
         {
             // Should be mocked.
         }
-
-        public void HandleException(DummyEvent @event, Exception exception)
-        {
-            // Should be mocked.
-        }
     }
 
     public class DummyEventHandler2 : IHandleEvent<DummyEvent>
@@ -43,14 +38,9 @@ namespace NContext.Tests.Specs.EventHandling
         {
             // Should be mocked.
         }
-
-        public void HandleException(DummyEvent @event, Exception exception)
-        {
-            // Should be mocked.
-        }
     }
 
-    public class DummyEventHandler3 : IHandleEvent<DummyEvent>
+    public class DummyEventHandler3 : IGracefullyHandleEvent<DummyEvent>
     {
         public void Handle(DummyEvent @event)
         {
@@ -63,7 +53,7 @@ namespace NContext.Tests.Specs.EventHandling
         }
     }
 
-    public class DummyEventHandler4 : IHandleEvent<DummyEvent>
+    public class DummyEventHandler4 : IGracefullyHandleEvent<DummyEvent>
     {
         public void Handle(DummyEvent @event)
         {

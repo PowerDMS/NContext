@@ -48,11 +48,11 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMapperManager.cs" />
-    <Compile Include="IConfigureAutoMapper.cs" />
-    <Compile Include="ObjectExtensions.cs" />
-    <Compile Include="IManageAutoMapper.cs" />
-    <Compile Include="IResponseTransferObjectExtensions.cs" />
+    <Compile Include="Configuration\AutoMapperManager.cs" />
+    <Compile Include="Configuration\IConfigureAutoMapper.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Configuration\IManageAutoMapper.cs" />
+    <Compile Include="Configuration\IResponseTransferObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

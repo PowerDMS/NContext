@@ -31,15 +31,23 @@ namespace NContext.EventHandling
     using NContext.Configuration;
     using NContext.Extensions;
 
+    /// <summary>
+    /// Defines an application component for event handling.
+    /// </summary>
     public class EventManager : IManageEvents
     {
-        readonly IDictionary<Type, IEnumerable<Type>> _EventHandlerCache;
+        private static readonly IDictionary<Type, IEnumerable<Type>> _EventHandlerCache;
 
-        readonly IActivationProvider _ActivationProvider;
+        private static IActivationProvider _ActivationProvider;
 
-        CompositionContainer _CompositionContainer;
+        private static CompositionContainer _CompositionContainer;
 
-        Boolean _IsConfigured;
+        private Boolean _IsConfigured;
+
+        static EventManager()
+        {
+            _EventHandlerCache = new ConcurrentDictionary<Type, IEnumerable<Type>>();
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EventManager"/> class.
@@ -47,20 +55,36 @@ namespace NContext.EventHandling
         /// <param name="activationProvider">The activation provider.</param>
         public EventManager(IActivationProvider activationProvider)
         {
-            _EventHandlerCache = new ConcurrentDictionary<Type, IEnumerable<Type>>();
             _ActivationProvider = activationProvider;
         }
 
+        /// <summary>
+        /// Raises the specified event.
+        /// </summary>
+        /// <typeparam name="TEvent">The type of the event.</typeparam>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
         public Task Raise<TEvent>(TEvent @event)
         {
+            return RaiseEvent(@event);
+        }
+
+        /// <summary>
+        /// Raises the specified event.
+        /// </summary>
+        /// <typeparam name="TEvent">The type of the event.</typeparam>
+        /// <param name="event">The event.</param>
+        /// <returns>Task.</returns>
+        public static Task RaiseEvent<TEvent>(TEvent @event)
+        {
 #if NET45_OR_GREATER
-            return Task.Run(() => RaiseEvent(@event));
+            return Task.Run(() => RaiseEventInternal(@event));
 #else
-            return Task.Factory.StartNew(() => RaiseEvent(@event));
+            return Task.Factory.StartNew(() => RaiseEventInternal(@event));
 #endif
         }
 
-        private void RaiseEvent<TEvent>(TEvent @event)
+        private static Task RaiseEventInternal<TEvent>(TEvent @event)
         {
             IEnumerable<Type> handlerTypes;
             if (_EventHandlerCache.ContainsKey(typeof(TEvent)))
@@ -72,6 +96,9 @@ namespace NContext.EventHandling
                 _EventHandlerCache[typeof(TEvent)] = handlerTypes = _CompositionContainer.GetExportTypesThatImplement<IHandleEvent<TEvent>>().ToList();
             }
 
+            var tcs = new TaskCompletionSource<Object>();
+            var exceptions = new ConcurrentQueue<Exception>();
+
             handlerTypes
                 .AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount)
@@ -80,6 +107,10 @@ namespace NContext.EventHandling
                         try
                         {
                             var handler = _ActivationProvider.CreateInstance<TEvent>(handlerType);
+                            if (handler == null)
+                            {
+                                throw new Exception(String.Format("Activation provider could not create an instance of event handler: {0}.", handlerType.Name));
+                            }
 
                             try
                             {
@@ -87,20 +118,46 @@ namespace NContext.EventHandling
                             }
                             catch (Exception ex)
                             {
-                                handler.HandleException(@event, ex);
+                                if (handler.GetType().Implements<IGracefullyHandleEvent<TEvent>>())
+                                {
+                                    ((IGracefullyHandleEvent<TEvent>)handler).HandleException(@event, ex);
+                                    return;
+                                }
+
+                                exceptions.Enqueue(ex);
                             }
                         }
                         catch (Exception ex)
                         {
+                            exceptions.Enqueue(ex);
                         }
                     });
+
+            if (exceptions.Any())
+            {
+                tcs.SetException(new AggregateException(exceptions));
+            }
+            else
+            {
+                tcs.SetResult(null);
+            }
+
+            return tcs.Task;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is configured.
+        /// </summary>
+        /// <value>The is configured.</value>
         public Boolean IsConfigured
         {
             get { return _IsConfigured; }
         }
 
+        /// <summary>
+        /// Configures the component instance. This method should set <see cref="IsConfigured" />.
+        /// </summary>
+        /// <param name="applicationConfiguration">The application configuration.</param>
         public void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (_IsConfigured)
