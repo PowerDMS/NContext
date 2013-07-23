@@ -65,4 +65,26 @@ namespace NContext.Tests.Specs.EventHandling
             // Should be mocked.
         }
     }
+
+    public class ConditionalHandler : IConditionallyHandleEvents
+    {
+        public Boolean CanHandle<TEvent>(TEvent @event)
+        {
+            // Should be mocked
+            return true;
+        }
+
+        public void Handle<TEvent>(TEvent @event)
+        {
+            // Should be mocked
+        }
+    }
+
+    public class ConventionHandler : IHandleEvents
+    {
+        public void Handle<TEvent>(TEvent @event)
+        {
+            
+        }
+    }
 }

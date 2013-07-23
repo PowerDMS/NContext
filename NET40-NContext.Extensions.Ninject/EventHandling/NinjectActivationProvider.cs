@@ -48,10 +48,10 @@ namespace NContext.Extensions.Ninject.EventHandling
         /// </summary>
         /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <param name="handler">The handler.</param>
-        /// <returns>IHandleEvent{TEvent}.</returns>
-        public IHandleEvent<TEvent> CreateInstance<TEvent>(Type handler)
+        /// <returns>IHandleEvents.</returns>
+        public IHandleEvents CreateInstance<TEvent>(Type handler)
         {
-            return _Kernel.Resolve(_Kernel.CreateRequest(handler, null, null, false, true)).SingleOrDefault() as IHandleEvent<TEvent>;
+            return _Kernel.Resolve(_Kernel.CreateRequest(handler, null, null, false, true)).SingleOrDefault() as IHandleEvents;
         }
     }
 }

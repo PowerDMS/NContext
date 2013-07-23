@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConditionallyHandleEvents.cs" company="Waking Venture, Inc.">
+// <copyright file="DummyApiController.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,29 +18,19 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.EventHandling
+namespace NContext.Extensions.AspNetWebApi.Tests.Specs
 {
     using System;
-    using System.ComponentModel.Composition;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Web.Http;
 
-    /// <summary>
-    /// Defines a conditional event-handler abstraction.
-    /// </summary>
-    [InheritedExport]
-    public interface IConditionallyHandleEvents : IHandleEvents
+    public class DummyApiController : ApiController
     {
-        /// <summary>
-        /// Determines whether this instance can handle the specified event.
-        /// </summary>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
-        /// <param name="event">The event.</param>
-        Boolean CanHandle<TEvent>(TEvent @event);
-
-        /// <summary>
-        /// Handles the specified event.
-        /// </summary>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
-        /// <param name="event">The event.</param>
-        void Handle<TEvent>(TEvent @event);
+        public HttpResponseMessage PostBlogPosts(Int32 blogId, IEnumerable<DummyBlogPost> blogPosts)
+        {
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
     }
 }

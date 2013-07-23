@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITextSanitizer.cs" company="Waking Venture, Inc.">
+// <copyright file="DummyBlogAuthor.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,12 +18,21 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Filters
+namespace NContext.Extensions.AspNetWebApi.Tests.Specs
 {
     using System;
+    using System.Collections.Generic;
 
-    public interface ITextSanitizer
+    public class DummyBlogAuthor
     {
-        String Sanitize(String textToSanitize);
+        public Guid AuthorId { get; set; }
+
+        public String FirstName { get; set; }
+
+        public String LastName { get; set; }
+
+        public String Email { get; set; }
+
+        public IEnumerable<DummyBlogPost> BlogPosts { get; set; }
     }
 }

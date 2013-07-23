@@ -28,6 +28,8 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
 
+    using NContext.Text;
+
     /// <summary>
     /// Defines an action filter that allows for auto-sanitization of formatter parameter bindings. (Request body content & DTOs)
     /// Supports complex object graphs with circular references and navigation properties.
@@ -48,7 +50,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
         public FormatterParameterBindingSanitizerFilter(ITextSanitizer textSanitizer, params HttpMethod[] filterMethods)
         {
             _TextSanitizer = textSanitizer;
-            _FilterMethods = filterMethods;
+            _FilterMethods = filterMethods == null || !filterMethods.Any() ? new[] { HttpMethod.Post, HttpMethod.Put, new HttpMethod("PATCH") } : filterMethods;
             _ObjectGraphSanitizer = new Lazy<ObjectGraphSanitizer>(() => new ObjectGraphSanitizer(_TextSanitizer));
         }
 

@@ -26,6 +26,7 @@ namespace NContext.EventHandling
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
+    using System.Reflection;
     using System.Threading.Tasks;
 
     using NContext.Configuration;
@@ -41,6 +42,8 @@ namespace NContext.EventHandling
         private static IActivationProvider _ActivationProvider;
 
         private static CompositionContainer _CompositionContainer;
+
+        private static IEnumerable<Type> _ConditionalEventHandlers;
 
         private Boolean _IsConfigured;
 
@@ -100,6 +103,7 @@ namespace NContext.EventHandling
             var exceptions = new ConcurrentQueue<Exception>();
 
             handlerTypes
+                .Concat(_ConditionalEventHandlers)
                 .AsParallel()
                 .WithDegreeOfParallelism(Environment.ProcessorCount)
                 .ForAll(handlerType =>
@@ -114,13 +118,25 @@ namespace NContext.EventHandling
 
                             try
                             {
-                                handler.Handle(@event);
+                                if (handlerType.Implements<IConditionallyHandleEvents>())
+                                {
+                                    var conditionalHandler = (IConditionallyHandleEvents)handler;
+                                    if (conditionalHandler.CanHandle(@event))
+                                    {
+                                        conditionalHandler.Handle(@event);
+                                    }
+                                }
+                                else
+                                {
+                                    ((IHandleEvent<TEvent>)handler).Handle(@event);
+                                }
                             }
                             catch (Exception ex)
                             {
                                 if (handler.GetType().Implements<IGracefullyHandleEvent<TEvent>>())
                                 {
                                     ((IGracefullyHandleEvent<TEvent>)handler).HandleException(@event, ex);
+
                                     return;
                                 }
 
@@ -167,6 +183,7 @@ namespace NContext.EventHandling
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageEvents>(this);
             _CompositionContainer = applicationConfiguration.CompositionContainer;
+            _ConditionalEventHandlers = _CompositionContainer.GetExportTypesThatImplement<IConditionallyHandleEvents>();
 
             _IsConfigured = true;
         }

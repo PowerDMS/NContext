@@ -198,11 +198,17 @@
     <Compile Include="..\NET40-NContext\EventHandling\IActivationProvider.cs">
       <Link>EventHandling\IActivationProvider.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext\EventHandling\IConditionallyHandleEvents.cs">
+      <Link>EventHandling\IConditionallyHandleEvents.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext\EventHandling\IGracefullyHandleEvent.cs">
       <Link>EventHandling\IGracefullyHandleEvent.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\EventHandling\IHandleEvent.cs">
       <Link>EventHandling\IHandleEvent.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\EventHandling\IHandleEvents.cs">
+      <Link>EventHandling\IHandleEvents.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\EventHandling\IManageEvents.cs">
       <Link>EventHandling\IManageEvents.cs</Link>
@@ -305,6 +311,9 @@
     </Compile>
     <Compile Include="..\NET40-NContext\Security\SecurityTokenExpirationPolicy.cs">
       <Link>Security\SecurityTokenExpirationPolicy.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Text\ITextSanitizer.cs">
+      <Link>Text\ITextSanitizer.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Utilities\AttributeUtility.cs">
       <Link>Utilities\AttributeUtility.cs</Link>

@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using System.Threading;
 
     using Machine.Specifications;
@@ -23,19 +24,39 @@
             {
                 _HandledThreadIds = new Collection<Int32>();
 
-                Func<Type, IHandleEvent<DummyEvent>> factory = handlerType =>
+                Func<Type, IHandleEvents> factory = handlerType =>
                     {
-                        var handler = Mock.Create<IHandleEvent<DummyEvent>>(c => c.CallConstructor(() => new DummyEventHandler()));
+                        if (handlerType.GetInterfaces().Any(it => it.IsGenericType && it.GetGenericTypeDefinition() == typeof(IHandleEvent<>)))
+                        {
+                            var handler = Mock.Create<IHandleEvent<DummyEvent>>(c => c.CallConstructor(() => new DummyEventHandler()));
 
-                        Mock.Arrange(() => handler.Handle(Arg.IsAny<DummyEvent>()))
-                            .DoInstead((DummyEvent e) =>
+                            Mock.Arrange(() => handler.Handle(Arg.IsAny<DummyEvent>()))
+                                .DoInstead((DummyEvent e) =>
+                                    {
+                                        Console.WriteLine("handled!");
+                                        _Result = e.EventParameter;
+                                        _HandledThreadIds.Add(Thread.CurrentThread.ManagedThreadId);
+                                    });
+
+                            return handler;
+                        }
+                        else
+                        {
+                            var handler = Mock.Create<IConditionallyHandleEvents>(c => c.CallConstructor(() => new ConditionalHandler()));
+
+                            Mock.Arrange(() => handler.CanHandle(Arg.IsAny<DummyEvent>()))
+                                .Returns((DummyEvent e) => e.EventParameter.Equals(12));
+
+                            Mock.Arrange(() => handler.Handle(Arg.IsAny<DummyEvent>()))
+                                .DoInstead((DummyEvent e) =>
                                 {
                                     Console.WriteLine("handled!");
                                     _Result = e.EventParameter;
                                     _HandledThreadIds.Add(Thread.CurrentThread.ManagedThreadId);
                                 });
 
-                        return handler;
+                            return handler;
+                        }
                     };
 
                 Mock.Arrange(() => ActivationProvider.CreateInstance<DummyEvent>(Arg.IsAny<Type>()))

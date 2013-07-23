@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IConditionallyHandleEvents.cs" company="Waking Venture, Inc.">
+// <copyright file="ITextSanitizer.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,29 +18,20 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.EventHandling
+namespace NContext.Text
 {
     using System;
-    using System.ComponentModel.Composition;
 
     /// <summary>
-    /// Defines a conditional event-handler abstraction.
+    /// Defines an abstraction to santize user-input strings.
     /// </summary>
-    [InheritedExport]
-    public interface IConditionallyHandleEvents : IHandleEvents
+    public interface ITextSanitizer
     {
         /// <summary>
-        /// Determines whether this instance can handle the specified event.
+        /// Sanitizes the specified text.
         /// </summary>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
-        /// <param name="event">The event.</param>
-        Boolean CanHandle<TEvent>(TEvent @event);
-
-        /// <summary>
-        /// Handles the specified event.
-        /// </summary>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
-        /// <param name="event">The event.</param>
-        void Handle<TEvent>(TEvent @event);
+        /// <param name="textToSanitize">The text to sanitize.</param>
+        /// <returns>String.</returns>
+        String Sanitize(String textToSanitize);
     }
 }

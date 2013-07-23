@@ -27,7 +27,7 @@ namespace NContext.EventHandling
     /// </summary>
     /// <typeparam name="TEvent">The type of the event.</typeparam>
     [InheritedExport]
-    public interface IHandleEvent<in TEvent>
+    public interface IHandleEvent<in TEvent> : IHandleEvents
     {
         /// <summary>
         /// Handles the specified event. This may be invoked on a different thread 

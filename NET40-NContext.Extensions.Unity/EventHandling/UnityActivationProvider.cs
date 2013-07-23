@@ -47,10 +47,10 @@ namespace NContext.Extensions.Unity.EventHandling
         /// </summary>
         /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <param name="handler">The handler.</param>
-        /// <returns>IHandleEvent{TEvent}.</returns>
-        public IHandleEvent<TEvent> CreateInstance<TEvent>(Type handler)
+        /// <returns>IHandleEvents.</returns>
+        public IHandleEvents CreateInstance<TEvent>(Type handler)
         {
-            return _Container.Resolve(handler) as IHandleEvent<TEvent>;
+            return _Container.Resolve(handler) as IHandleEvents;
         }
     }
 }
