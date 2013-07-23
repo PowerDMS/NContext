@@ -129,6 +129,7 @@
     <Compile Include="EventHandling\EventManager.cs" />
     <Compile Include="EventHandling\EventManagerBuilder.cs" />
     <Compile Include="EventHandling\IActivationProvider.cs" />
+    <Compile Include="EventHandling\IConditionallyHandleEvents.cs" />
     <Compile Include="EventHandling\IHandleEvent.cs" />
     <Compile Include="EventHandling\IManageEvents.cs" />
     <Compile Include="EventHandling\IGracefullyHandleEvent.cs" />
