@@ -55,6 +55,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Machine.Specifications.0.5.12\lib\net40\Machine.Specifications.Clr4.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\..\packages\AutoFixture.3.6.5\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -64,7 +67,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DummyData.cs" />
+    <Compile Include="DummyData2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="when_creating_a_ServiceResponse_with_enumerable_data.cs" />
+    <Compile Include="with_data_of_type_array.cs" />
+    <Compile Include="with_data_of_type_collection.cs" />
+    <Compile Include="with_data_of_type_list.cs" />
+    <Compile Include="with_data_of_type_WhereArrayIterator.cs" />
+    <Compile Include="with_data_of_type_WhereEnumerableIterator.cs" />
+    <Compile Include="with_data_of_type_WhereListIterator.cs" />
+    <Compile Include="with_data_of_type_WhereSelectArrayIterator.cs" />
+    <Compile Include="with_data_of_type_WhereSelectEnumerableIterator.cs" />
+    <Compile Include="with_data_of_type_WhereSelectListIterator.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NET40-NContext.Common\NContext.Common.csproj">

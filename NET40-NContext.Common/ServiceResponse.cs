@@ -178,7 +178,7 @@ namespace NContext.Common
                 return data;
             }
 
-            var innerType = dataType.GetGenericArguments()[0];
+            var innerType = dataType.GetGenericArguments().Last();
             var listType = typeof(List<>).MakeGenericType(innerType);
 
             return (T)Activator.CreateInstance(listType, data);
