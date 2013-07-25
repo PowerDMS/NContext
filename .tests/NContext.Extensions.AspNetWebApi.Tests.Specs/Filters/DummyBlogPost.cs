@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DummyBlogAuthor.cs" company="Waking Venture, Inc.">
+// <copyright file="DummyBlogPost.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,21 +18,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs
+namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
 {
     using System;
     using System.Collections.Generic;
 
-    public class DummyBlogAuthor
+    public class DummyBlogPost
     {
-        public Guid AuthorId { get; set; }
+        public Int32 BlogId { get; set; }
 
-        public String FirstName { get; set; }
+        public DummyBlogAuthor Author { get; set; }
 
-        public String LastName { get; set; }
+        public String Title { get; set; }
 
-        public String Email { get; set; }
+        public String Content { get; set; }
 
-        public IEnumerable<DummyBlogPost> BlogPosts { get; set; }
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? PublishedOn { get; set; }
+
+        public IEnumerable<String> Tags { get; set; }
+
+        public IDictionary<Int32, String> Comments { get; set; }
     }
 }

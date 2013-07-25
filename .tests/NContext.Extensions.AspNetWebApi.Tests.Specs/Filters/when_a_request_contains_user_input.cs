@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs
+namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
 {
     using System;
     using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs
     using System.Web.Http.Controllers;
     using System.Web.Http.Hosting;
     using System.Web.Http.Routing;
-    
+
     using Ploeh.AutoFixture;
 
     using Machine.Specifications;
@@ -39,28 +39,31 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs
 
     using Telerik.JustMock;
 
-    public class when_a_request_body_contains_data
+    public class when_a_request_contains_user_input
     {
-        const string _SanitizedResult = @"Sanitized!";
-
         Establish context = () =>
             {
                 var config = new HttpConfiguration();
                 var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost/api/blogs/5/posts");
-                var route = config.Routes.MapHttpRoute("DefaultApi", "api/blogs/{blogId}/posts");
+                var route = config.Routes.MapHttpRoute("DefaultApi", "api/blogs/{blogId}/author/{bloggerName}/posts");
                 var routeData = new HttpRouteData(route, new HttpRouteValueDictionary { { "blogs", "dummyapi" } });
+                var controller = new DummyApiController
+                    {
+                        ControllerContext = new HttpControllerContext(config, routeData, request)
+                            {
+                                ControllerDescriptor =
+                                    new HttpControllerDescriptor(config, "dummyapi", typeof(DummyApiController))
+                            },
+                        Request = request
+                    };
 
-                var controller = new DummyApiController();
-                controller.ControllerContext = new HttpControllerContext(config, routeData, request);
-                controller.ControllerContext.ControllerDescriptor = new HttpControllerDescriptor(config, "dummyapi", typeof(DummyApiController));
-                controller.Request = request;
                 controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
 
-                var fixture = new Fixture().Customize(new CompositeCustomization(new StaticStringCustomization("NContext")));
+                var fixture = new Fixture();
                 fixture.Behaviors.Remove(new ThrowingRecursionBehavior());
                 fixture.Behaviors.Add(new OmitOnRecursionBehavior());
 
-                _BlogPostsDto = fixture.CreateMany<DummyBlogPost>().ToList();
+                var blogPostsDto = fixture.CreateMany<DummyBlogPost>().ToList();
 
                 var actionDescriptor = 
                     new ReflectedHttpActionDescriptor(
@@ -69,38 +72,29 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs
 
                 _ActionContext = new HttpActionContext(controller.ControllerContext, actionDescriptor);
                 _ActionContext.ActionArguments.Add("blogId", 5);
-                _ActionContext.ActionArguments.Add("blogPosts", _BlogPostsDto);
+                _ActionContext.ActionArguments.Add("bloggerName", "danielgioulakis");
+                _ActionContext.ActionArguments.Add("blogPosts", blogPostsDto);
+                _ActionContext.ActionArguments.Add("publishAs", "DGDev");
+                _ActionContext.ActionArguments.Add("publishAll", true);
                 
                 var sanitizer = Mock.Create<ITextSanitizer>();
-                Mock.Arrange(() => sanitizer.Sanitize(Arg.AnyString))
-                    .Returns(_SanitizedResult);
+                Mock.Arrange(() => sanitizer.Sanitize(Arg.AnyString)).Returns(_SanitizedResult);
 
-                _Filter = new FormatterParameterBindingSanitizerFilter(sanitizer);
+                _Filter = Mock.Create<HttpParameterBindingSanitizerFilter>(c => c.CallConstructor(() => new HttpParameterBindingSanitizerFilter(sanitizer)));
+
+                Mock.Arrange(() => _Filter.OnActionExecuting(Arg.IsAny<HttpActionContext>())).CallOriginal();
+                Mock.NonPublic.Arrange<String>(_Filter, "SanitizeString", ArgExpr.IsAny<String>()).Returns(_SanitizedResult).Occurs(2);
+                Mock.NonPublic.Arrange(_Filter, "SanitizeObjectGraph", ArgExpr.IsAny<Object>()).OccursOnce();
             };
 
         Because of = () => _Filter.OnActionExecuting(_ActionContext);
 
-        It should_sanitize_the_posted_object = () => _BlogPostsDto.ToList()[0].Tags.ToList()[0].ShouldEqual(_SanitizedResult);
+        It should_sanitize_all_user_submitted_content = () => Mock.Assert(_Filter);
 
-        static IEnumerable<DummyBlogPost> _BlogPostsDto;
-
-        static FormatterParameterBindingSanitizerFilter _Filter;
+        static HttpParameterBindingSanitizerFilter _Filter;
 
         static HttpActionContext _ActionContext;
-    }
 
-    internal class StaticStringCustomization : ICustomization
-    {
-        private readonly string _Value;
-
-        public StaticStringCustomization(String value)
-        {
-            _Value = value;
-        }
-
-        public void Customize(IFixture fixture)
-        {
-            fixture.Customizations.Add(new StringGenerator(() => _Value));
-        }
+        const string _SanitizedResult = @"ncontext";
     }
 }

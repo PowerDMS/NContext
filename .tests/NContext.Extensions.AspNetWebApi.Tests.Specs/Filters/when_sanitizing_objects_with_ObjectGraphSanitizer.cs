@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DummyApiController.cs" company="Waking Venture, Inc.">
+// <copyright file="when_sanitizing_objects_with_ObjectGraphSanitizer.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,19 +18,38 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs
+namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
 {
     using System;
-    using System.Collections.Generic;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
 
-    public class DummyApiController : ApiController
+    using Machine.Specifications;
+
+    using NContext.Extensions.AspNetWebApi.Filters;
+    using NContext.Text;
+
+    public class when_sanitizing_objects_with_ObjectGraphSanitizer
     {
-        public HttpResponseMessage PostBlogPosts(Int32 blogId, IEnumerable<DummyBlogPost> blogPosts)
+        Establish context = () =>
+            {
+                _MaxDegreeOfParallelism = 1;
+                _Sanitizer = new Lazy<ObjectGraphSanitizer>(() => new ObjectGraphSanitizer(TextSanitizer, MaxDegreeOfParallelism));
+            };
+
+        protected static ITextSanitizer TextSanitizer { get; set; }
+
+        protected static Int32 MaxDegreeOfParallelism
         {
-            return Request.CreateResponse(HttpStatusCode.OK);
+            get { return _MaxDegreeOfParallelism; }
+            set { _MaxDegreeOfParallelism = value; }
         }
+
+        protected static void Sanitize(Object o)
+        {
+            _Sanitizer.Value.Sanitize(o);
+        }
+
+        static Lazy<ObjectGraphSanitizer> _Sanitizer;
+
+        static int _MaxDegreeOfParallelism;
     }
 }

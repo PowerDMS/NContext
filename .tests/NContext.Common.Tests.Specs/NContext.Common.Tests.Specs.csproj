@@ -71,9 +71,10 @@
     <Compile Include="DummyData2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="when_creating_a_ServiceResponse_with_enumerable_data.cs" />
-    <Compile Include="with_data_of_type_array.cs" />
-    <Compile Include="with_data_of_type_collection.cs" />
-    <Compile Include="with_data_of_type_list.cs" />
+    <Compile Include="with_data_of_type_Array.cs" />
+    <Compile Include="with_data_of_type_Collection.cs" />
+    <Compile Include="with_data_of_type_EnumerableQuery.cs" />
+    <Compile Include="with_data_of_type_List.cs" />
     <Compile Include="with_data_of_type_WhereArrayIterator.cs" />
     <Compile Include="with_data_of_type_WhereEnumerableIterator.cs" />
     <Compile Include="with_data_of_type_WhereListIterator.cs" />

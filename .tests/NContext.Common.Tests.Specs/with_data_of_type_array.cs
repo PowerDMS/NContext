@@ -6,7 +6,7 @@
 
     using Ploeh.AutoFixture;
 
-    public class with_data_of_type_array : when_creating_a_ServiceResponse_with_enumerable_data
+    public class with_data_of_type_Array : when_creating_a_ServiceResponse_with_enumerable_data
     {
         Establish context = () =>
             {

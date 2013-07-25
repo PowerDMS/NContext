@@ -132,8 +132,8 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Extensions\IResponseTransferObjectExtensions.cs">
       <Link>Extensions\IResponseTransferObjectExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Filters\FormatterParameterBindingSanitizerFilter.cs">
-      <Link>Filters\FormatterParameterBindingSanitizerFilter.cs</Link>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Filters\HttpParameterBindingSanitizerFilter.cs">
+      <Link>Filters\HttpParameterBindingSanitizerFilter.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Filters\HttpParameterBindingValidationActionFilterAttribute.cs">
       <Link>Filters\HttpParameterBindingValidationActionFilterAttribute.cs</Link>

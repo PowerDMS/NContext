@@ -107,7 +107,7 @@
       <DependentUpon>HttpParameterValidationError.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
-    <Compile Include="Filters\FormatterParameterBindingSanitizerFilter.cs" />
+    <Compile Include="Filters\HttpParameterBindingSanitizerFilter.cs" />
     <Compile Include="Filters\HttpParameterBindingValidationActionFilterAttribute.cs" />
     <Compile Include="Filters\ObjectGraphSanitizer.cs" />
     <Compile Include="Formatters\BsonMediaTypeFormatter.cs" />

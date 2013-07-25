@@ -73,11 +73,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DummyApiController.cs" />
-    <Compile Include="DummyBlogAuthor.cs" />
-    <Compile Include="DummyBlogPost.cs" />
+    <Compile Include="Filters\DummyApiController.cs" />
+    <Compile Include="Filters\DummyBlogAuthor.cs" />
+    <Compile Include="Filters\DummyBlogPost.cs" />
+    <Compile Include="Filters\with_an_enumerable_of_objects.cs" />
+    <Compile Include="Filters\with_an_enumerable_of_strings.cs" />
+    <Compile Include="Filters\with_a_complex_object.cs" />
+    <Compile Include="Filters\with_a_Dictionary_of_object_values.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="when_a_request_body_contains_data.cs" />
+    <Compile Include="Filters\when_a_request_contains_user_input.cs" />
+    <Compile Include="Filters\when_sanitizing_objects_with_ObjectGraphSanitizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NET45-NContext.Common\NContext.Common.csproj">
