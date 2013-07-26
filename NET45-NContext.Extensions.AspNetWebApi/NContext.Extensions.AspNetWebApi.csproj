@@ -159,6 +159,15 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\JsonNetExtensions.cs">
       <Link>JsonNetExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchOperation.cs">
+      <Link>Patching\PatchOperation.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchRequest.cs">
+      <Link>Patching\PatchRequest.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchResult.cs">
+      <Link>Patching\PatchResult.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>

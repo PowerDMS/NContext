@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="when_a_request_body_contains_data.cs" company="Waking Venture, Inc.">
+// <copyright file="when_a_request_contains_user_input.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -21,7 +21,6 @@
 namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
     using System.Reflection;

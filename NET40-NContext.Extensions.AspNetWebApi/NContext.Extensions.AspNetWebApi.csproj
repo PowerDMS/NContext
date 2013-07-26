@@ -115,6 +115,9 @@
     <Compile Include="Handlers\ExecutionContextMessageHandler.cs" />
     <Compile Include="Handlers\XHttpMethodOverrideMessageHandler.cs" />
     <Compile Include="JsonNetExtensions.cs" />
+    <Compile Include="Patching\PatchOperation.cs" />
+    <Compile Include="Patching\PatchRequest.cs" />
+    <Compile Include="Patching\PatchResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handlers\AcceptLanguageMessageHandler.cs" />
     <Compile Include="Authentication\ApiKeyAuthenticationProvider.cs" />

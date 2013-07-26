@@ -10,7 +10,7 @@
 
     using Telerik.JustMock;
 
-    public class with_an_enumerable_of_strings : when_sanitizing_objects_with_ObjectGraphSanitizer
+    public class with_an_enumerable_of_Object : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
             {
@@ -19,18 +19,21 @@
                 Mock.Arrange(() => TextSanitizer.Sanitize(Arg.AnyString))
                     .Returns(_SanitizedValue);
 
-                _Data = new Collection<string>
+                _Data = new Collection<Object>
                     {
+                        5,
                         "Daniel",
-                        "Gioulakis"
+                        null,
+                        "Gioulakis",
+                        ""
                     };
             };
 
         Because of = () => Sanitize(_Data);
 
-        It should_sanitize_the_enumerable = () => _Data.ShouldContainOnly(_SanitizedValue, _SanitizedValue);
+        It should_sanitize_the_strings = () => _Data.ShouldContainOnly(5, _SanitizedValue, null, _SanitizedValue, "");
 
-        static IEnumerable<string> _Data;
+        static IEnumerable<Object> _Data;
 
         const String _SanitizedValue = "ncontext";
     }

@@ -28,6 +28,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using System.Linq;
     using System.Reflection;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
 
     using NContext.Text;
 
@@ -90,7 +91,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                 var currentItemType = currentItem.PropertyInfo == null ? currentItem.Value.GetType() : currentItem.PropertyInfo.PropertyType;
                 if (!IsTerminalObject(currentItemType))
                 {
-                    if (!(currentItemType.IsGenericType))
+                    if (!(currentItemType.IsGenericType) && currentItemType.GetInterfaces().All(i => !i.IsGenericType))
                     {
                         Boolean propertyValueHasId;
 
@@ -119,7 +120,17 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     }
                     else if (IsDictionary(currentItemType))
                     {
-                        var valueType = currentItemType.GetGenericArguments()[1];
+                        var dictionaryInterface =
+                            currentItemType.IsGenericType &&
+                            currentItemType.GetGenericTypeDefinition() == typeof(IDictionary<,>)
+                                ? currentItemType
+                                : currentItemType.GetInterfaces()
+                                                 .Single(
+                                                     i =>
+                                                     i.IsGenericType &&
+                                                     i.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+
+                        var valueType = dictionaryInterface.GetGenericArguments().Last();
                         if ((valueType == typeof(String) || valueType == typeof(Object)) && !sanitizableNodes.Contains(currentItem, nodeEqualityComparer))
                         {
                             sanitizableNodes.Add(currentItem);
@@ -136,7 +147,12 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     }
                     else if (IsEnumerable(currentItemType))
                     {
-                        var genericArgument = currentItemType.GetGenericArguments()[0];
+                        var genericEnumerableInterface = 
+                            currentItemType.IsGenericType && currentItemType.GetGenericTypeDefinition() == typeof(IEnumerable<>)
+                            ? currentItemType
+                            : currentItemType.GetInterfaces().Single(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+
+                        var genericArgument = genericEnumerableInterface.GetGenericArguments().Single();
                         if ((genericArgument == typeof(String) || genericArgument == typeof(Object)) && !sanitizableNodes.Contains(currentItem, nodeEqualityComparer))
                         {
                             sanitizableNodes.Add(currentItem);
@@ -156,90 +172,91 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                 }
             }
 
-            sanitizableNodes.AsParallel()
-                            .WithDegreeOfParallelism(_MaxDegreeOfParallelism)
-                            .ForAll(node =>
+            Parallel.ForEach(
+                sanitizableNodes,
+                new ParallelOptions { MaxDegreeOfParallelism = _MaxDegreeOfParallelism },
+                node =>
+                {
+                    var nodeValueType = node.PropertyInfo == null
+                                            ? node.Value.GetType()
+                                            : node.PropertyInfo.PropertyType;
+
+                    if (IsTerminalObject(nodeValueType) && node.Parent != null && node.PropertyInfo != null)
+                    {
+#if NET40
+                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.Sanitize((String)node.Value), null);
+#elif NET45_OR_GREATER
+                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.Sanitize((String)node.Value));
+#endif
+                    }
+                    else if (IsDictionary(nodeValueType))
+                    {
+                        var dictionary = ((IDictionary)node.Value);
+                        var keyList = new List<Object>();
+
+                        var enumerator = dictionary.GetEnumerator();
+                        while (enumerator.MoveNext())
+                        {
+                            var entry = (DictionaryEntry) enumerator.Current;
+                            if (entry.Value == null)
+                            {
+                                continue;
+                            }
+
+                            var entryValueType = entry.Value.GetType();
+                            if (entryValueType == typeof(String) && !String.IsNullOrWhiteSpace(entry.Value as String))
+                            {
+                                keyList.Add(entry.Key);
+                            }
+                        }
+
+                        foreach (var key in keyList)
+                        {
+                            dictionary[key] = _TextSanitizer.Sanitize((String)dictionary[key]);
+                        }
+                    }
+                    else
+                    {
+                        if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<String> != null)
+                        {
+                            var enumerable = (IList<String>)node.Value;
+                            for (var j = 0; j < enumerable.Count; j++)
+                            {
+                                if (!String.IsNullOrWhiteSpace(enumerable[j]))
                                 {
-                                    var nodeValueType = node.PropertyInfo == null
-                                                            ? node.Value.GetType()
-                                                            : node.PropertyInfo.PropertyType;
-
-                                    if (IsTerminalObject(nodeValueType) && node.Parent != null && node.PropertyInfo != null)
-                                    {
-#if NET40
-                                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.Sanitize((String)node.Value), null);
-#elif NET45_OR_GREATER
-                                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.Sanitize((String)node.Value));
-#endif
-                                    }
-                                    else if (IsDictionary(nodeValueType))
-                                    {
-                                        var dictionary = ((IDictionary)node.Value);
-                                        var keyList = new List<Object>();
-
-                                        var enumerator = dictionary.GetEnumerator();
-                                        while (enumerator.MoveNext())
-                                        {
-                                            var entry = (DictionaryEntry) enumerator.Current;
-                                            if (entry.Value == null)
-                                            {
-                                                continue;
-                                            }
-
-                                            var entryValueType = entry.Value.GetType();
-                                            if (entryValueType == typeof(String) && !String.IsNullOrWhiteSpace(entry.Value as String))
-                                            {
-                                                keyList.Add(entry.Key);
-                                            }
-                                        }
-
-                                        foreach (var key in keyList)
-                                        {
-                                            dictionary[key] = _TextSanitizer.Sanitize((String)dictionary[key]);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<String> != null)
-                                        {
-                                            var enumerable = (IList<String>)node.Value;
-                                            for (var j = 0; j < enumerable.Count; j++)
-                                            {
-                                                if (!String.IsNullOrWhiteSpace(enumerable[j]))
-                                                {
-                                                    enumerable[j] = _TextSanitizer.Sanitize((String)enumerable[j]);
-                                                }
-                                            }
-                                        }
-                                        else if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<Object> != null)
-                                        {
-                                            var enumerable = (IList<Object>)node.Value;
-                                            for (var j = 0; j < enumerable.Count; j++)
-                                            {
-                                                if (enumerable[j] is String && !String.IsNullOrWhiteSpace(enumerable[j] as String))
-                                                {
-                                                    enumerable[j] = _TextSanitizer.Sanitize((String)enumerable[j]);
-                                                }
-                                            }
-                                        }
-                                        else if (node.Parent != null && node.PropertyInfo != null)
-                                        {
-                                            var sanitizedStringCollection = new Collection<String>();
-                                            ((IEnumerable<String>) node.Value)
-                                                .ForEach(
-                                                    value =>
-                                                    sanitizedStringCollection.Add(String.IsNullOrWhiteSpace(value)
-                                                                                      ? value
-                                                                                      : _TextSanitizer.Sanitize(value)));
+                                    enumerable[j] = _TextSanitizer.Sanitize((String)enumerable[j]);
+                                }
+                            }
+                        }
+                        else if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<Object> != null)
+                        {
+                            var enumerable = (IList<Object>)node.Value;
+                            for (var j = 0; j < enumerable.Count; j++)
+                            {
+                                if (enumerable[j] is String && !String.IsNullOrWhiteSpace(enumerable[j] as String))
+                                {
+                                    enumerable[j] = _TextSanitizer.Sanitize((String)enumerable[j]);
+                                }
+                            }
+                        }
+                        else if (node.Parent != null && node.PropertyInfo != null)
+                        {
+                            var sanitizedStringCollection = new Collection<String>();
+                            ((IEnumerable<String>) node.Value)
+                                .ForEach(
+                                    value =>
+                                    sanitizedStringCollection.Add(String.IsNullOrWhiteSpace(value)
+                                                                        ? value
+                                                                        : _TextSanitizer.Sanitize(value)));
 
 #if NET40
-                                            node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection, null);
+                            node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection, null);
 #elif NET45_OR_GREATER
-                                            node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection);
+                            node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection);
 #endif
-                                        }
-                                    }
-                                });
+                        }
+                    }
+                });
         }
 
         private Boolean IsDictionary(Type type)

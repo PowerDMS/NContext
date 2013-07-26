@@ -106,6 +106,9 @@
     <Compile Include="..\NET40-NContext.Common\ValidationError.cs">
       <Link>ValidationError.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\WritableAttribute.cs">
+      <Link>WritableAttribute.cs</Link>
+    </Compile>
     <Compile Include="IStatefulResponseTransferObject.cs" />
     <Compile Include="StateExtensions.cs" />
     <Compile Include="StatefulServiceResponse.cs" />

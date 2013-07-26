@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="when_sanitizing_objects_with_ObjectGraphSanitizer.cs" company="Waking Venture, Inc.">
+// <copyright file="WritableAttribute.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,38 +18,16 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
+namespace NContext.Common
 {
     using System;
 
-    using Machine.Specifications;
-
-    using NContext.Extensions.AspNetWebApi.Filters;
-    using NContext.Text;
-
-    public class when_sanitizing_objects_with_ObjectGraphSanitizer
+    /// <summary>
+    /// Defines an attribute which specifies whether a property is writable by the consumer.
+    /// This is typically used when patching DTO's or translation between DTOs -> Entities.
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
+    public class WritableAttribute : Attribute
     {
-        Establish context = () =>
-            {
-                _MaxDegreeOfParallelism = 1;
-                _Sanitizer = new Lazy<ObjectGraphSanitizer>(() => new ObjectGraphSanitizer(TextSanitizer, MaxDegreeOfParallelism));
-            };
-
-        protected static ITextSanitizer TextSanitizer { get; set; }
-
-        protected static Int32 MaxDegreeOfParallelism
-        {
-            get { return _MaxDegreeOfParallelism; }
-            set { _MaxDegreeOfParallelism = value; }
-        }
-
-        protected static void Sanitize(Object o)
-        {
-            _Sanitizer.Value.Sanitize(o);
-        }
-
-        static Lazy<ObjectGraphSanitizer> _Sanitizer;
-
-        static Int32 _MaxDegreeOfParallelism;
     }
 }

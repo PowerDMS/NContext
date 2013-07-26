@@ -10,30 +10,29 @@
 
     using Telerik.JustMock;
 
-    public class with_a_Dictionary_of_Object_values : when_sanitizing_objects_with_ObjectGraphSanitizer
+    public class with_a_Dictionary_of_String_values : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
-        {
-            TextSanitizer = Mock.Create<ITextSanitizer>();
+            {
+                TextSanitizer = Mock.Create<ITextSanitizer>();
 
-            Mock.Arrange(() => TextSanitizer.Sanitize(Arg.AnyString))
-                .Returns(_SanitizedValue);
+                Mock.Arrange(() => TextSanitizer.Sanitize(Arg.AnyString))
+                    .Returns(_SanitizedValue);
 
-            _Data = new Dictionary<String, Object>
+                _Data = new Dictionary<String, String>
                     {
-                        { "Id", 5 },
                         { "FirstName", "Daniel" },
                         { "MiddleName", null },
                         { "LastName", "Gioulakis" },
                         { "Notes", "" }
                     };
-        };
+            };
 
         Because of = () => Sanitize(_Data);
 
-        It should_sanitize_only_dictionary_string_values = () => _Data.Select(item => item.Value).ShouldContainOnly(5, _SanitizedValue, null, _SanitizedValue, "");
+        It should_sanitize_only_dictionary_values = () => _Data.Select(item => item.Value).ShouldContainOnly(_SanitizedValue, null, _SanitizedValue, "");
 
-        static IDictionary<String, Object> _Data;
+        static IDictionary<String, String> _Data;
 
         const String _SanitizedValue = "ncontext";
     }

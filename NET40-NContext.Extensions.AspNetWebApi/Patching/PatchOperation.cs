@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="when_sanitizing_objects_with_ObjectGraphSanitizer.cs" company="Waking Venture, Inc.">
+// <copyright file="PatchOperation.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -18,38 +18,61 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
+namespace NContext.Extensions.AspNetWebApi.Patching
 {
     using System;
+    using System.Linq.Expressions;
 
-    using Machine.Specifications;
-
-    using NContext.Extensions.AspNetWebApi.Filters;
-    using NContext.Text;
-
-    public class when_sanitizing_objects_with_ObjectGraphSanitizer
+    public class PatchOperation<TDto>
     {
-        Establish context = () =>
+        private readonly String _PropertyName;
+
+        private readonly Object _OldValue;
+
+        private readonly Object _NewValue;
+
+        public PatchOperation(String propertyName, Object oldValue, Object newValue)
+        {
+            _PropertyName = propertyName;
+            _OldValue = oldValue;
+            _NewValue = newValue;
+        }
+
+        public String PropertyName
+        {
+            get
             {
-                _MaxDegreeOfParallelism = 1;
-                _Sanitizer = new Lazy<ObjectGraphSanitizer>(() => new ObjectGraphSanitizer(TextSanitizer, MaxDegreeOfParallelism));
-            };
-
-        protected static ITextSanitizer TextSanitizer { get; set; }
-
-        protected static Int32 MaxDegreeOfParallelism
-        {
-            get { return _MaxDegreeOfParallelism; }
-            set { _MaxDegreeOfParallelism = value; }
+                return _PropertyName;
+            }
         }
 
-        protected static void Sanitize(Object o)
+        public Object OldValue
         {
-            _Sanitizer.Value.Sanitize(o);
+            get
+            {
+                return _OldValue;
+            }
         }
 
-        static Lazy<ObjectGraphSanitizer> _Sanitizer;
+        public Object NewValue
+        {
+            get
+            {
+                return _NewValue;
+            }
+        }
 
-        static Int32 _MaxDegreeOfParallelism;
+        public Boolean HasChangedTo(Object value)
+        {
+            return NewValue.Equals(value) && !OldValue.Equals(value);
+        }
+
+        public Boolean IsProperty<TProperty>(Expression<Func<TDto, TProperty>> propertyExpression)
+        {
+            return (propertyExpression.Body as MemberExpression)
+                .Member
+                .Name
+                .Equals(PropertyName, StringComparison.OrdinalIgnoreCase);
+        }
     }
 }
