@@ -35,7 +35,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
                 _Sanitizer = new Lazy<ObjectGraphSanitizer>(() => new ObjectGraphSanitizer(TextSanitizer, MaxDegreeOfParallelism));
             };
 
-        protected static ITextSanitizer TextSanitizer { get; set; }
+        protected static ISanitizeText TextSanitizer { get; set; }
 
         protected static Int32 MaxDegreeOfParallelism
         {

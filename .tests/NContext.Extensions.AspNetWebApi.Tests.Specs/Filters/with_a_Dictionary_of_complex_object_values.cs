@@ -13,9 +13,9 @@
     {
         Establish context = () =>
             {
-                TextSanitizer = Mock.Create<ITextSanitizer>();
+                TextSanitizer = Mock.Create<ISanitizeText>();
 
-                Mock.Arrange(() => TextSanitizer.Sanitize(Arg.AnyString))
+                Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
                     .Returns(_SanitizedValue);
 
                 _Data = new Dictionary<Int32, DummyBlogAuthor>

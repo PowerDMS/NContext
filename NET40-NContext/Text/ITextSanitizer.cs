@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ITextSanitizer.cs" company="Waking Venture, Inc.">
+// <copyright file="ISanitizeText.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -25,13 +25,20 @@ namespace NContext.Text
     /// <summary>
     /// Defines an abstraction to santize user-input strings.
     /// </summary>
-    public interface ITextSanitizer
+    public interface ISanitizeText
     {
         /// <summary>
         /// Sanitizes the specified text.
         /// </summary>
         /// <param name="textToSanitize">The text to sanitize.</param>
         /// <returns>String.</returns>
-        String Sanitize(String textToSanitize);
+        String SanitizeHtml(String textToSanitize);
+
+        /// <summary>
+        /// Sanitizes the specified text.
+        /// </summary>
+        /// <param name="textToSanitize">The text to sanitize.</param>
+        /// <returns>String.</returns>
+        String SanitizeHtmlFragment(String textToSanitize);
     }
 }

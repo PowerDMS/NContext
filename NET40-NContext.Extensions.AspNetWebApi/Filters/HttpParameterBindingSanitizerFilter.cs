@@ -35,7 +35,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     /// </summary>
     public class HttpParameterBindingSanitizerFilter : ActionFilterAttribute
     {
-        private readonly ITextSanitizer _TextSanitizer;
+        private readonly ISanitizeText _TextSanitizer;
 
         private readonly Int32 _MaxDegreeOfParallelism;
 
@@ -48,7 +48,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
         /// </summary>
         /// <param name="textSanitizer">The text sanitizer.</param>
         /// <param name="filterMethods">The filter methods.</param>
-        public HttpParameterBindingSanitizerFilter(ITextSanitizer textSanitizer, params HttpMethod[] filterMethods)
+        public HttpParameterBindingSanitizerFilter(ISanitizeText textSanitizer, params HttpMethod[] filterMethods)
             : this(textSanitizer, Environment.ProcessorCount, filterMethods)
         {}
 
@@ -58,7 +58,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
         /// <param name="textSanitizer">The text sanitizer.</param>
         /// <param name="maxDegreeOfParallelism">The max degree of parallelism to invoke sanitization.</param>
         /// <param name="filterMethods">The filter methods.</param>
-        public HttpParameterBindingSanitizerFilter(ITextSanitizer textSanitizer, Int32 maxDegreeOfParallelism, params HttpMethod[] filterMethods)
+        public HttpParameterBindingSanitizerFilter(ISanitizeText textSanitizer, Int32 maxDegreeOfParallelism, params HttpMethod[] filterMethods)
         {
             _TextSanitizer = textSanitizer;
             _MaxDegreeOfParallelism = maxDegreeOfParallelism <= 0 ? Environment.ProcessorCount : maxDegreeOfParallelism;
@@ -82,8 +82,11 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     {
                         if (parameterBinding.Descriptor.ParameterType == typeof(String))
                         {
-                            actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName] =
-                                SanitizeString((String)actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]);
+                            if (!String.IsNullOrWhiteSpace((String)actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]))
+                            {
+                                actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName] =
+                                    SanitizeString((String)actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]);
+                            }
                         }
                         else
                         {
@@ -94,7 +97,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
 
         protected virtual String SanitizeString(String textToSanitize)
         {
-            return _TextSanitizer.Sanitize(textToSanitize);
+            return _TextSanitizer.SanitizeHtmlFragment(textToSanitize);
         }
 
         protected virtual void SanitizeObjectGraph(Object objectToSanitize)

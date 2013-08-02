@@ -76,8 +76,8 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
                 _ActionContext.ActionArguments.Add("publishAs", "DGDev");
                 _ActionContext.ActionArguments.Add("publishAll", true);
                 
-                var sanitizer = Mock.Create<ITextSanitizer>();
-                Mock.Arrange(() => sanitizer.Sanitize(Arg.AnyString)).Returns(_SanitizedResult);
+                var sanitizer = Mock.Create<ISanitizeText>();
+                Mock.Arrange(() => sanitizer.SanitizeHtmlFragment(Arg.AnyString)).Returns(_SanitizedResult);
 
                 _Filter = Mock.Create<HttpParameterBindingSanitizerFilter>(c => c.CallConstructor(() => new HttpParameterBindingSanitizerFilter(sanitizer)));
 

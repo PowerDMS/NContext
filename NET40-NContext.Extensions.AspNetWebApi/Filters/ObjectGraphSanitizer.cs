@@ -37,7 +37,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     /// </summary>
     public class ObjectGraphSanitizer
     {
-        private readonly ITextSanitizer _TextSanitizer;
+        private readonly ISanitizeText _TextSanitizer;
 
         private readonly Int32 _MaxDegreeOfParallelism;
 
@@ -46,14 +46,14 @@ namespace NContext.Extensions.AspNetWebApi.Filters
         /// </summary>
         /// <param name="textSanitizer">The text sanitizer.</param>
         /// <param name="maxDegreeOfParallelism">The degree of parallelism to invoke sanitization.</param>
-        public ObjectGraphSanitizer(ITextSanitizer textSanitizer, Int32 maxDegreeOfParallelism)
+        public ObjectGraphSanitizer(ISanitizeText textSanitizer, Int32 maxDegreeOfParallelism)
         {
             _TextSanitizer = textSanitizer;
             _MaxDegreeOfParallelism = maxDegreeOfParallelism;
         }
 
         /// <summary>
-        /// Traverses the specified object graph looking for all strings to be sanitized by <see cref="ITextSanitizer"/>.
+        /// Traverses the specified object graph looking for all strings to be sanitized by <see cref="ISanitizeText"/>.
         /// </summary>
         /// <param name="objectToSanitize">The object to sanitize.</param>
         public void Sanitize(Object objectToSanitize)
@@ -184,9 +184,9 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     if (IsTerminalObject(nodeValueType) && node.Parent != null && node.PropertyInfo != null)
                     {
 #if NET40
-                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.Sanitize((String)node.Value), null);
+                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.SanitizeHtmlFragment((String)node.Value), null);
 #elif NET45_OR_GREATER
-                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.Sanitize((String)node.Value));
+                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.SanitizeHtmlFragment((String)node.Value));
 #endif
                     }
                     else if (IsDictionary(nodeValueType))
@@ -212,7 +212,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
 
                         foreach (var key in keyList)
                         {
-                            dictionary[key] = _TextSanitizer.Sanitize((String)dictionary[key]);
+                            dictionary[key] = _TextSanitizer.SanitizeHtmlFragment((String)dictionary[key]);
                         }
                     }
                     else
@@ -224,7 +224,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                             {
                                 if (!String.IsNullOrWhiteSpace(enumerable[j]))
                                 {
-                                    enumerable[j] = _TextSanitizer.Sanitize((String)enumerable[j]);
+                                    enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
                                 }
                             }
                         }
@@ -235,7 +235,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                             {
                                 if (enumerable[j] is String && !String.IsNullOrWhiteSpace(enumerable[j] as String))
                                 {
-                                    enumerable[j] = _TextSanitizer.Sanitize((String)enumerable[j]);
+                                    enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
                                 }
                             }
                         }
@@ -247,7 +247,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                     value =>
                                     sanitizedStringCollection.Add(String.IsNullOrWhiteSpace(value)
                                                                         ? value
-                                                                        : _TextSanitizer.Sanitize(value)));
+                                                                        : _TextSanitizer.SanitizeHtmlFragment(value)));
 
 #if NET40
                             node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection, null);
