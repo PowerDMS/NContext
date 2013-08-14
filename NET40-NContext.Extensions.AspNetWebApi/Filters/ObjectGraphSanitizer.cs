@@ -380,7 +380,10 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             {
                 unchecked
                 {
-                    return ((_Parent != null ? _Parent.GetHashCode() : 0)*397) ^ (_PropertyInfo != null ? _PropertyInfo.GetHashCode() : 0);
+                    var hashCode = (_Value != null ? _Value.GetHashCode() : 0);
+                    hashCode = (hashCode*397) ^ (_Parent != null ? _Parent.GetHashCode() : 0);
+                    hashCode = (hashCode*397) ^ (_PropertyInfo != null ? _PropertyInfo.GetHashCode() : 0);
+                    return hashCode;
                 }
             }
         }

@@ -27,7 +27,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
     using NContext.Extensions.AspNetWebApi.Filters;
     using NContext.Text;
 
-    public class when_sanitizing_objects_with_ObjectGraphSanitizer
+    public abstract class when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
             {
