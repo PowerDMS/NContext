@@ -39,6 +39,8 @@
     <DefineConstants>TRACE;$(CustomConstants)</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>bin\Release\NContext.Common.xml</DocumentationFile>
   </PropertyGroup>
   <!-- =============== NCrunch Override ================== -->
   <!-- NCrunch does not yet support PCL / Silverlight projects -->
