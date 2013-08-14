@@ -30,6 +30,8 @@
     <DefineConstants>DEBUG;TRACE;$(CustomConstants)</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>bin\Debug\NContext.Common.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
