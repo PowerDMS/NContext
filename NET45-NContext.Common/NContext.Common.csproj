@@ -38,6 +38,9 @@
     <OutputPath>bin\Release\</OutputPath>
     <DocumentationFile>bin\Release\NContext.Common.xml</DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
   <!-- =============== NCrunch Override ================== -->
   <!-- NCrunch does not yet support PCL / Silverlight projects -->
   <Choose>

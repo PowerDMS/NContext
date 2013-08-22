@@ -40,12 +40,12 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         /// <typeparam name="T"></typeparam>
         /// <param name="responseContent">The content contained in the HTTP response.</param>
         /// <param name="httpRequestMessage">The active <see cref="HttpRequestMessage"/>.</param>
-        /// <param name="nonErrorHttpStatusCode">The <see cref="HttpStatusCode"/> to set if <paramref name="responseContent"/> has no errors.</param>
+        /// <param name="statusCode">The <see cref="HttpStatusCode"/> to set if <paramref name="responseContent"/> has no errors.</param>
         /// <returns>HttpResponseMessage instance.</returns>
         public static HttpResponseMessage ToHttpResponseMessage<T>(
             this IResponseTransferObject<T> responseContent, 
             HttpRequestMessage httpRequestMessage, 
-            HttpStatusCode nonErrorHttpStatusCode = HttpStatusCode.OK)
+            HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             if (responseContent == null)
             {
@@ -57,10 +57,15 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 throw new ArgumentNullException("httpRequestMessage");
             }
 
-            HttpStatusCode statusCode = nonErrorHttpStatusCode;
             if (responseContent.Errors.Any())
             {
-                Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out statusCode);
+                HttpStatusCode errorStatusCode;
+                if (!Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out errorStatusCode))
+                {
+                    errorStatusCode = HttpStatusCode.BadRequest;
+                }
+
+                return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
 
             return httpRequestMessage.CreateResponse(statusCode, responseContent);
@@ -75,6 +80,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         /// <param name="responseContent">The <see cref="IResponseTransferObject{t}" /> used to build the <see cref="HttpResponseMessage" />.</param>
         /// <param name="httpRequestMessage">The active <see cref="HttpRequestMessage" />.</param>
         /// <param name="responseBuilder">The response builder method to invoke when no errors exist.</param>
+        /// <param name="setResponseContent">Determines whether to set the <param name="responseContent.Data"></param> as the response content.</param>
         /// <returns>HttpResponseMessage instance.</returns>
         /// <exception cref="System.ArgumentNullException">responseContent</exception>
         public static HttpResponseMessage ToHttpResponseMessage<T>(
@@ -95,13 +101,13 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
             
             if (responseContent.Errors.Any())
             {
-                HttpStatusCode statusCode;
-                if (!Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out statusCode))
+                HttpStatusCode errorStatusCode;
+                if (!Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out errorStatusCode))
                 {
-                    statusCode = HttpStatusCode.BadRequest;
+                    errorStatusCode = HttpStatusCode.BadRequest;
                 }
 
-                return httpRequestMessage.CreateResponse(statusCode, responseContent);
+                return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
 
             var response = setResponseContent ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent) : httpRequestMessage.CreateResponse();
