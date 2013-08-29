@@ -22,6 +22,7 @@ namespace NContext.Configuration
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Reflection;
     using System.Web;
 
@@ -90,7 +91,7 @@ namespace NContext.Configuration
         {
             var applicationLocation = Assembly.GetEntryAssembly() == null
                                           ? AppDomain.CurrentDomain.BaseDirectory
-                                          : Assembly.GetEntryAssembly().Location;
+                                          : Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
             ComposeWith(new[] { applicationLocation }, fileNameConstraints);
 

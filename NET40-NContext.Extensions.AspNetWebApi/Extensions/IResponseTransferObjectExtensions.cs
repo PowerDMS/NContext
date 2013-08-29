@@ -44,7 +44,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         /// <returns>HttpResponseMessage instance.</returns>
         public static HttpResponseMessage ToHttpResponseMessage<T>(
             this IResponseTransferObject<T> responseContent, 
-            HttpRequestMessage httpRequestMessage, 
+            HttpRequestMessage httpRequestMessage,
             HttpStatusCode statusCode = HttpStatusCode.OK)
         {
             if (responseContent == null)
@@ -68,7 +68,9 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
 
-            return httpRequestMessage.CreateResponse(statusCode, responseContent);
+            return ShouldSetResponseContent(statusCode)
+                       ? httpRequestMessage.CreateResponse(statusCode, responseContent)
+                       : httpRequestMessage.CreateResponse(statusCode);
         }
 
         /// <summary>
@@ -82,7 +84,6 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
         /// <param name="responseBuilder">The response builder method to invoke when no errors exist.</param>
         /// <param name="setResponseContent">Determines whether to set the <param name="responseContent.Data"></param> as the response content.</param>
         /// <returns>HttpResponseMessage instance.</returns>
-        /// <exception cref="System.ArgumentNullException">responseContent</exception>
         public static HttpResponseMessage ToHttpResponseMessage<T>(
             this IResponseTransferObject<T> responseContent, 
             HttpRequestMessage httpRequestMessage, 
@@ -110,10 +111,21 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
 
-            var response = setResponseContent ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent) : httpRequestMessage.CreateResponse();
+            var response = setResponseContent
+                               ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent)
+                               : httpRequestMessage.CreateResponse(HttpStatusCode.OK);
+
             responseBuilder.Invoke(responseContent.Data, response);
 
             return response;
+        }
+
+        private static Boolean ShouldSetResponseContent(HttpStatusCode statusCode)
+        {
+            return statusCode != HttpStatusCode.NoContent &&
+                   statusCode != HttpStatusCode.ResetContent &&
+                   statusCode != HttpStatusCode.NotModified &&
+                   statusCode != HttpStatusCode.Continue;
         }
     }
 }

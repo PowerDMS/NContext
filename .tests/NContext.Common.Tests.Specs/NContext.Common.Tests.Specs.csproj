@@ -83,17 +83,17 @@
     <Compile Include="with_data_of_type_WhereSelectListIterator.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NET40-NContext.Common\NContext.Common.csproj">
-      <Project>{2ec085ce-bf81-46ed-a2d7-8cd0b9afdec2}</Project>
-      <Name>NContext.Common %28NET40\NContext.Common%29</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\NET40-NContext\NContext.csproj">
-      <Project>{b5614b58-83c2-46be-9463-9e140519298e}</Project>
-      <Name>NContext %28NET40\NContext%29</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\..\NET45-NContext.Common\NContext.Common.csproj">
+      <Project>{e467d2f4-d6fe-4ef8-b959-8d6561fda63d}</Project>
+      <Name>NContext.Common %28NET45\NContext.Common%29</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\NET45-NContext\NContext.csproj">
+      <Project>{7fdac597-cc5c-443f-b474-d14b6eb3db48}</Project>
+      <Name>NContext %28NET45\NContext%29</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
