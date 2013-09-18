@@ -221,13 +221,13 @@ namespace NContext.Security.Cryptography
 
         private Byte[] Encrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            // TODO: IMPLEMENT!
+            // TODO: (DG) IMPLEMENT!
             throw new NotImplementedException();
         }
 
         private Byte[] Encrypt(Type symmetricAlgorithm, String protectedKeyFileName, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            // TODO: IMPLEMENT!
+            // TODO: (DG) IMPLEMENT!
             throw new NotImplementedException();
         }
 
