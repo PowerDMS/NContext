@@ -25,8 +25,6 @@ namespace NContext.Extensions.AutoMapper.Configuration
 
     using NContext.Common;
 
-    using Microsoft.Practices.ServiceLocation;
-
     using global::AutoMapper;
 
     /// <summary>
@@ -34,21 +32,6 @@ namespace NContext.Extensions.AutoMapper.Configuration
     /// </summary>
     public static class IResponseTransferObjectExtensions
     {
-        private static readonly Lazy<IMappingEngine> _MappingEngine;
-
-        static IResponseTransferObjectExtensions()
-        {
-            _MappingEngine = new Lazy<IMappingEngine>(
-                () =>
-                {
-                    return ServiceLocator.Current
-                        .GetInstance<IMappingEngine>()
-                        .ToMaybe()
-                        .Bind(mappingEngine => mappingEngine.ToMaybe())
-                        .FromMaybe(Mapper.Engine);
-                });
-        }
-
         /// <summary>
         /// Maps the <paramref name="responseTransferObject" /> to a new instance of <see cref="IResponseTransferObject{T2}" />
         /// using AutoMapper. If errors exist, then this will act similarly to Bind{T2}()
@@ -68,12 +51,7 @@ namespace NContext.Extensions.AutoMapper.Configuration
                 return new ServiceResponse<TTarget>(responseTransferObject.Errors);
             }
 
-            return new ServiceResponse<TTarget>(GetMapper().Map<TTarget>(responseTransferObject, mappingOperationOptions ?? (o => { })));
-        }
-
-        private static IMappingEngine GetMapper()
-        {
-            return _MappingEngine.Value;
+            return new ServiceResponse<TTarget>(Mapper.Map<TTarget>(responseTransferObject, mappingOperationOptions ?? (o => { })));
         }
     }
 }

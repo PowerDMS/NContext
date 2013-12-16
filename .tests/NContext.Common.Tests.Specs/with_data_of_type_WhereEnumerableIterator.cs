@@ -17,6 +17,6 @@
 
         Because of = () => CreateServiceResponse();
 
-        It should_materialize_the_data_to_a_concrete_list = () => ServiceResponse.Data.GetType().GetGenericTypeDefinition().ShouldEqual(typeof(List<>));
+        It should_have_the_same_underlying_data_type = () => ServiceResponse.Data.GetType().ShouldEqual(Data.GetType());
     }
 }

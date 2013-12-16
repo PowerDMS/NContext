@@ -173,7 +173,9 @@ namespace NContext.Common
         {
             var dataType = data.GetType();
 
-            if ((!dataType.IsGenericTypeDefinition && !dataType.IsGenericType) || data is ICollection)
+            if ((!dataType.IsGenericTypeDefinition && !dataType.IsGenericType) || 
+                data is ICollection ||
+                !IsIQueryable(dataType))
             {
                 return data;
             }
@@ -182,6 +184,15 @@ namespace NContext.Common
             var listType = typeof(List<>).MakeGenericType(innerType);
 
             return (T)Activator.CreateInstance(listType, data);
+        }
+
+        private static Boolean IsIQueryable(Type type)
+        {
+            if (type == null) return false;
+
+            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>)) || 
+                type.GetInterfaces()
+                    .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IQueryable<>));
         }
 
         #region Implementation of IDisposable

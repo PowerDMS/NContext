@@ -14,14 +14,12 @@
     <dependencies>
       <group targetFramework="net40">
         <dependency id="NContext" version="[$version$,)" />
-        <dependency id="CommonServiceLocator" version="[1.0,)" />
         <dependency id="Unity" version="[2.1.505.2]" />
       </group>
       <group targetFramework="net45">
         <dependency id="NContext" version="[$version$,)" />
-        <dependency id="CommonServiceLocator" version="[1.0,)" />
         <dependency id="Unity" version="[2.1.505.2]" />
-      </group>        
+      </group>
     </dependencies>
   </metadata>
   <files>

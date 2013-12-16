@@ -23,30 +23,10 @@ namespace NContext.Extensions.AutoMapper.Extensions
     using System;
     using System.Collections.Generic;
 
-    using NContext.Common;
-
-    using Microsoft.Practices.ServiceLocation;
-
     using global::AutoMapper;
 
     public static class ObjectExtensions
     {
-        private static readonly Lazy<IMappingEngine> _MappingEngine;
-
-        static ObjectExtensions()
-        {
-            // TODO: (DG) Service Locator as a provider should be abstracted! Not nice.
-            _MappingEngine = new Lazy<IMappingEngine>(
-                () =>
-                {
-                    return ServiceLocator.Current
-                        .GetInstance<IMappingEngine>()
-                        .ToMaybe()
-                        .Bind(mappingEngine => mappingEngine.ToMaybe())
-                        .FromMaybe(Mapper.Engine);
-                });
-        }
-
         /// <summary>
         /// Maps the specified instance to the target.
         /// </summary>
@@ -56,7 +36,7 @@ namespace NContext.Extensions.AutoMapper.Extensions
         /// <returns><typeparamref name="TTarget"/>.</returns>
         public static TTarget Map<TTarget>(this Object instance, Action<IMappingOperationOptions> mappingOperationOptions = null)
         {
-            return GetMapper().Map<TTarget>(instance, mappingOperationOptions ?? (o => { }));
+            return Mapper.Map<TTarget>(instance, mappingOperationOptions ?? (o => { }));
         }
 
         /// <summary>
@@ -68,12 +48,7 @@ namespace NContext.Extensions.AutoMapper.Extensions
         /// <returns><see cref="IEnumerable{TTarget}"/></returns>
         public static IEnumerable<TTarget> Map<TTarget>(this IEnumerable<Object> entities, Action<IMappingOperationOptions> mappingOperationOptions = null)
         {
-            return GetMapper().Map<IEnumerable<TTarget>>(entities, mappingOperationOptions ?? (o => { }));
-        }
-
-        private static IMappingEngine GetMapper()
-        {
-            return _MappingEngine.Value;
+            return Mapper.Map<IEnumerable<TTarget>>(entities, mappingOperationOptions ?? (o => { }));
         }
     }
 }

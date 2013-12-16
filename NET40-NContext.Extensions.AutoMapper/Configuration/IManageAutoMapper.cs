@@ -29,7 +29,6 @@ namespace NContext.Extensions.AutoMapper.Configuration
     /// </summary>
     public interface IManageAutoMapper : IApplicationComponent
     {
-        // TODO: (DG) Is this needed?
         IConfigurationProvider ConfigurationProvider { get; }
 
         /// <summary>

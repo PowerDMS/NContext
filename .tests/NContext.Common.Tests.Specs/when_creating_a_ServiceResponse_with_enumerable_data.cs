@@ -32,7 +32,7 @@ namespace NContext.Common.Tests.Specs
         Establish context =
             () =>
             _ServiceResponse =
-                new Lazy<IResponseTransferObject<IEnumerable<object>>>(() => new ServiceResponse<IEnumerable<object>>(Data));
+                new Lazy<IResponseTransferObject<IEnumerable<Object>>>(() => new ServiceResponse<IEnumerable<Object>>(Data));
 
         protected static void CreateServiceResponse()
         {

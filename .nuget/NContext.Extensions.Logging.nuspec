@@ -12,8 +12,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="[$version$,)" />
-      <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.11,)" />
+      <group targetFramework="net40">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.14,)" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.14,)" />
+      </group>
     </dependencies>
   </metadata>
   <files>

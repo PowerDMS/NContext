@@ -25,11 +25,7 @@ namespace NContext.Extensions.Ninject.Configuration
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
 
-    using Microsoft.Practices.ServiceLocation;
-
     using NContext.Configuration;
-
-    using NinjectAdapter;
 
     using global::Ninject;
 
@@ -101,9 +97,6 @@ namespace NContext.Extensions.Ninject.Configuration
             }
 
             _Kernel = _Configuration.CreateKernel();
-
-            var serviceLocator = new NinjectServiceLocator(_Kernel);
-            ServiceLocator.SetLocatorProvider(() => serviceLocator);
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IKernel>(_Kernel);
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageNinject>(this);

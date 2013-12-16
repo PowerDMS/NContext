@@ -26,7 +26,6 @@ namespace NContext.Extensions.AutoMapper.Configuration
     using NContext.Configuration;
 
     using global::AutoMapper;
-    using global::AutoMapper.Mappers;
 
     /// <summary>
     /// Defines an AutoMapper application component.
@@ -34,11 +33,11 @@ namespace NContext.Extensions.AutoMapper.Configuration
     /// <remarks></remarks>
     public class AutoMapperManager : IManageAutoMapper
     {
-        private static readonly Lazy<ConfigurationStore> _ConfigurationStore =
-            new Lazy<ConfigurationStore>(() => new ConfigurationStore(new TypeMapFactory(), MapperRegistry.AllMappers()));
+        private static readonly Lazy<IConfiguration> _ConfigurationStore =
+            new Lazy<IConfiguration>(() => Mapper.Configuration);
 
         private static readonly Lazy<IMappingEngine> _MappingEngine =
-            new Lazy<IMappingEngine>(() => new MappingEngine(_ConfigurationStore.Value));
+            new Lazy<IMappingEngine>(() => Mapper.Engine);
 
         private Boolean _IsConfigured;
 
@@ -50,7 +49,7 @@ namespace NContext.Extensions.AutoMapper.Configuration
         {
             get
             {
-                return _ConfigurationStore.Value;
+                return (IConfigurationProvider)_ConfigurationStore.Value;
             }
         }
 

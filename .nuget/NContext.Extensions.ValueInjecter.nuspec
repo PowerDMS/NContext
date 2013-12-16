@@ -12,8 +12,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="[$version$,)" />
-      <dependency id="ValueInjecter" version="[2.3.3,)" />
+      <group targetFramework="net40">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="ValueInjecter" version="[2.3.3,)" />
+      </group>
+      <group targetFramework="net45">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="ValueInjecter" version="[2.3.3,)" />
+      </group>      
     </dependencies>
   </metadata>
   <files>

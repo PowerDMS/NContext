@@ -121,9 +121,6 @@
     <Compile Include="..\NET40-NContext.Common\WritableAttribute.cs">
       <Link>WritableAttribute.cs</Link>
     </Compile>
-    <Compile Include="IStatefulResponseTransferObject.cs" />
-    <Compile Include="StateExtensions.cs" />
-    <Compile Include="StatefulServiceResponse.cs" />
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

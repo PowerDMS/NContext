@@ -12,12 +12,19 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="[$version$,)" />
-      <dependency id="CommonServiceLocator" version="[1.0,)" />
-      <dependency id="EntityFramework" version="[5.0.0,)" />
-      <dependency id="FSharp.Core" version="[4.0.0,)" />
-      <dependency id="Castle.Core" version="[3.2.0,)" />
-    </dependencies>
+	    <group targetFramework="net40">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="EntityFramework" version="[6.0.2,)" />
+        <dependency id="FSharp.Core" version="[4.0.0,)" />
+        <dependency id="Castle.Core" version="[3.2.2,)" />
+	    </group>
+	    <group targetFramework="net45">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="EntityFramework" version="[6.0.2,)" />
+        <dependency id="FSharp.Core" version="[4.0.0,)" />
+        <dependency id="Castle.Core" version="[3.2.2,)" />
+	    </group>
+    <dependencies>
   </metadata>
   <files>
     <file src="..\NET40-NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net40\" />

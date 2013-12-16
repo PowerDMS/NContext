@@ -73,7 +73,7 @@ namespace NContext.Extensions.EntityFramework
         public EfPersistenceFactory(IDbContextFactory dbContextFactory, IAmbientContextManagerFactory contextManagerFactory)
             : base(contextManagerFactory)
         {
-            _DbContextFactory = dbContextFactory ?? new ServiceLocatorDbContextFactory();
+            _DbContextFactory = dbContextFactory;
         }
 
         protected static ProxyGenerator ProxyGenerator

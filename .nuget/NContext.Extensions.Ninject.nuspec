@@ -12,10 +12,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <dependency id="NContext" version="[$version$,)" />
-      <dependency id="CommonServiceLocator" version="[1.0,)" />
-      <dependency id="CommonServiceLocator.NinjectAdapter" version="[1.0.0.0,)" />
-      <dependency id="Ninject" version="[3.0.1.10,)" />
+	    <group targetFramework="net40">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="Ninject" version="[3.0.1.10,)" />
+	    </group>
+	    <group targetFramework="net45">
+        <dependency id="NContext" version="[$version$,)" />
+        <dependency id="Ninject" version="[3.0.1.10,)" />
+	    </group>
     </dependencies>
   </metadata>
   <files>
