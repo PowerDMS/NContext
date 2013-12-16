@@ -12,7 +12,7 @@
         Establish context = () =>
             {
                 var fixture = new Fixture();
-                Data = fixture.CreateMany<DummyData>().ToList().Where(dd => dd.Id > 5);
+                Data = fixture.CreateMany<DummyData>().ToList().Where(dd => dd.Id > 10);
             };
 
         Because of = () => CreateServiceResponse();
