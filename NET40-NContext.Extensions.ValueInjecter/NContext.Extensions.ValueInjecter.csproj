@@ -59,11 +59,11 @@
   <ItemGroup>
     <ProjectReference Include="..\NET40-NContext.Common\NContext.Common.csproj">
       <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
-      <Name>NContext.Common %28NET40\NContext.Common%29</Name>
+      <Name>NContext.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\NET40-NContext\NContext.csproj">
       <Project>{b5614b58-83c2-46be-9463-9e140519298e}</Project>
-      <Name>NContext %28NET40\NContext%29</Name>
+      <Name>NContext</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
