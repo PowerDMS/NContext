@@ -120,10 +120,22 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                                      interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
 
                         var genericDictionaryValueType = genericDictionaryInterface.GetGenericArguments().Last();
-                        if ((genericDictionaryValueType == typeof(String) || 
-                             genericDictionaryValueType == typeof(Object)))
+                        if (genericDictionaryValueType == typeof(String))
                         {
                             sanitizableNodes.Add(currentItem);
+                        }
+                        else if (genericDictionaryValueType == typeof(Object))
+                        {
+                            sanitizableNodes.Add(currentItem);
+                            var dictionary = ((IDictionary)currentItem.Value);
+                            var enumerator = dictionary.GetEnumerator();
+                            while (enumerator.MoveNext())
+                            {
+                                if (enumerator.Value != null && !IsTerminalObject(enumerator.Value.GetType()))
+                                {
+                                    stack.Push(new Node(null, enumerator.Value, null));
+                                }
+                            }
                         }
                         else if (!IsTerminalObject(genericDictionaryValueType))
                         {
