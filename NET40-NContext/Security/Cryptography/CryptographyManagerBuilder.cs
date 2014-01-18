@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CryptographyConfigurationBuilder.cs" company="Waking Venture, Inc.">
+// <copyright file="CryptographyManagerBuilder.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -28,7 +28,7 @@ namespace NContext.Security.Cryptography
     /// <summary>
     /// Defines a configuration class to build the application's <see cref="CryptographyManager"/>.
     /// </summary>
-    public class CryptographyConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
+    public class CryptographyManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private Type _DefaultHashAlgorithm;
 
@@ -43,11 +43,11 @@ namespace NContext.Security.Cryptography
         private Func<IProvideSymmetricEncryption> _SymmetricEncryptionProviderFactory;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CryptographyConfigurationBuilder"/> class.
+        /// Initializes a new instance of the <see cref="CryptographyManagerBuilder"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public CryptographyConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public CryptographyManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
         }
@@ -58,8 +58,8 @@ namespace NContext.Security.Cryptography
         /// <typeparam name="THashAlgorithm">The type of hash algorithm.</typeparam>
         /// <typeparam name="TKeyedHashAlgorithm">The type of keyed hash algorithm.</typeparam>
         /// <typeparam name="TSymmetricAlgorithm">The type of symmetric algorithm.</typeparam>
-        /// <returns>Current CryptographyConfigurationBuilder instance.</returns>
-        public CryptographyConfigurationBuilder SetDefaults<THashAlgorithm, TKeyedHashAlgorithm, TSymmetricAlgorithm>()
+        /// <returns>Current CryptographyManagerBuilder instance.</returns>
+        public CryptographyManagerBuilder SetDefaults<THashAlgorithm, TKeyedHashAlgorithm, TSymmetricAlgorithm>()
             where THashAlgorithm : HashAlgorithm
             where TKeyedHashAlgorithm : KeyedHashAlgorithm
             where TSymmetricAlgorithm : SymmetricAlgorithm
@@ -75,9 +75,9 @@ namespace NContext.Security.Cryptography
         /// Sets the application's hash provider.
         /// </summary>
         /// <param name="hashProviderFactory">The hash provider factory.</param>
-        /// <returns>Current <see cref="CryptographyConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="CryptographyManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public CryptographyConfigurationBuilder SetHashProvider(Func<IProvideHashing> hashProviderFactory)
+        public CryptographyManagerBuilder SetHashProvider(Func<IProvideHashing> hashProviderFactory)
         {
             _HashProviderFactory = hashProviderFactory;
 
@@ -88,9 +88,9 @@ namespace NContext.Security.Cryptography
         /// Sets the application's keyed hash provider.
         /// </summary>
         /// <param name="keyedHashProviderFactory">The keyed hash provider factory.</param>
-        /// <returns>Current <see cref="CryptographyConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="CryptographyManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public CryptographyConfigurationBuilder SetKeyedHashProvider(Func<IProvideKeyedHashing> keyedHashProviderFactory)
+        public CryptographyManagerBuilder SetKeyedHashProvider(Func<IProvideKeyedHashing> keyedHashProviderFactory)
         {
             _KeyedHashProviderFactory = keyedHashProviderFactory;
 
@@ -101,9 +101,9 @@ namespace NContext.Security.Cryptography
         /// Sets the application's symmetric encryption provider.
         /// </summary>
         /// <param name="symmetricEncryptionProvider">The symmetric encryption provider.</param>
-        /// <returns>Current <see cref="CryptographyConfigurationBuilder"/> instance.</returns>
+        /// <returns>Current <see cref="CryptographyManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public CryptographyConfigurationBuilder SetSymmetricEncryptionProvider(Func<IProvideSymmetricEncryption> symmetricEncryptionProvider)
+        public CryptographyManagerBuilder SetSymmetricEncryptionProvider(Func<IProvideSymmetricEncryption> symmetricEncryptionProvider)
         {
             _SymmetricEncryptionProviderFactory = symmetricEncryptionProvider;
 

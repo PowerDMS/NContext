@@ -265,11 +265,11 @@
     <Compile Include="..\NET40-NContext\Security\Cryptography\CryptographyConfiguration.cs">
       <Link>Security\Cryptography\CryptographyConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Security\Cryptography\CryptographyConfigurationBuilder.cs">
-      <Link>Security\Cryptography\CryptographyConfigurationBuilder.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext\Security\Cryptography\CryptographyManager.cs">
       <Link>Security\Cryptography\CryptographyManager.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Security\Cryptography\CryptographyManagerBuilder.cs">
+      <Link>Security\Cryptography\CryptographyManagerBuilder.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Security\Cryptography\CryptographyUtility.cs">
       <Link>Security\Cryptography\CryptographyUtility.cs</Link>
@@ -313,8 +313,8 @@
     <Compile Include="..\NET40-NContext\Security\SecurityTokenExpirationPolicy.cs">
       <Link>Security\SecurityTokenExpirationPolicy.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Text\ITextSanitizer.cs">
-      <Link>Text\ITextSanitizer.cs</Link>
+    <Compile Include="..\NET40-NContext\Text\ISanitizeText.cs">
+      <Link>Text\ISanitizeText.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Utilities\AttributeUtility.cs">
       <Link>Utilities\AttributeUtility.cs</Link>

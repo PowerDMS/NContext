@@ -148,10 +148,18 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                                      interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
                         var genericArgumentType = genericEnumerableInterface.GetGenericArguments().Single();
-                        if ((genericArgumentType == typeof(String) || 
-                             genericArgumentType == typeof(Object)))
+                        if (genericArgumentType == typeof(String))
                         {
                             sanitizableNodes.Add(currentItem);
+                        }
+                        else if (genericArgumentType == typeof(Object))
+                        {
+                            sanitizableNodes.Add(currentItem);
+                            ((IEnumerable)currentItem.Value)
+                                .Cast<Object>()
+                                .Where(element => element != null && !IsTerminalObject(element.GetType()))
+                                .Select(element => new Node(null, element, null))
+                                .ForEach(stack.Push);
                         }
                         else if (!IsTerminalObject(genericArgumentType))
                         {
@@ -230,6 +238,11 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                 {
                                     enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
                                 }
+
+                                // TODO: (DG) What if enumerable[j] is not a String or Terminal object?
+                                // Should we change sanitizableNodes to ConcurrentHashSet and add enumerable[j] to it?
+                                // Should we enumerate through enumerable during traversal to find any non-terminal objects?
+                                // You ideally should never just have a generic IEnumerable<Object> but we should handle edge cases?
                             }
                         }
                         else if (node.Parent != null && node.PropertyInfo != null)
