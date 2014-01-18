@@ -22,6 +22,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
 
     public class DummyBlogAuthor
     {
@@ -34,5 +35,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
         public String Email { get; set; }
 
         public IEnumerable<DummyBlogPost> BlogPosts { get; set; }
+
+        public Collection<String> Websites { get; set; }
     }
 }

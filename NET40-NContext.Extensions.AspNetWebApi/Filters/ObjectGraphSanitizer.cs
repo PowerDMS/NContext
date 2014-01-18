@@ -157,7 +157,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                         {
                             ((IEnumerable)currentItem.Value)
                                 .Cast<Object>()
-                                .Select(item => new Node(currentItem.Parent, item, currentItem.PropertyInfo))
+                                .Select(item => new Node(null, item, null))
                                 .ForEach(stack.Push);
                         }
                     }
@@ -234,7 +234,11 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                         }
                         else if (node.Parent != null && node.PropertyInfo != null)
                         {
-                            var sanitizedStringCollection = new Collection<String>();
+                            var sanitizedStringCollection =
+                                node.PropertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(List<>)
+                                    ? (ICollection<String>)new List<String>()
+                                    : (ICollection<String>)new Collection<String>();
+
                             ((IEnumerable<String>) node.Value)
                                 .ForEach(
                                     value =>

@@ -40,5 +40,9 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
         public IEnumerable<String> Tags { get; set; }
 
         public IDictionary<Int32, String> Comments { get; set; }
+
+        public DummyBlogLink[] Links { get; set; }
+
+        public List<String> References { get; set; }
     }
 }
