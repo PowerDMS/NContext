@@ -250,11 +250,6 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                 {
                                     enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
                                 }
-
-                                // TODO: (DG) What if enumerable[j] is not a String or Terminal object?
-                                // Should we change sanitizableNodes to ConcurrentHashSet and add enumerable[j] to it?
-                                // Should we enumerate through enumerable during traversal to find any non-terminal objects?
-                                // You ideally should never just have a generic IEnumerable<Object> but we should handle edge cases?
                             }
                         }
                         else if (node.Parent != null && node.PropertyInfo != null)
