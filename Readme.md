@@ -26,16 +26,14 @@ into NContext.
 
 Continuous Delivery
 -------------------
-Current efforts are underway to bring NContext to a production-ready state. This 
-includes specification tests and an efficient build and deployment strategy.  To 
-accomplish this, I have set up the following environments for the community to use:
+Currently, NContext is being deployed on-demand to reduce development costs. As new feature and bug fixes are brought into the framework and tested, the CI servers are spun-up and deployments are done from the following sites. Pre-release versions are currently deployed to official Nuget/Symbol Source servers. I don't recommend relying on these CI servers for any builds as they aren't live 24/7.
 
 **CI TeamCity Server:** *https://teamcity.wakingventure.com*  
 **CI NuGet Package Source:** *https://nuget.wakingventure.com*  
 **CI Symbol Source Server:** *http://symbolsource.wakingventure.com*  
 
 NContext versioning is still being determined. The core libraries (NContext.dll & 
-NContext.Common.dll) will be released as 2.0.0. Ideally all extensions will be 
+NContext.Common.dll) will be released as 2.x.0. Ideally all extensions will be 
 independently versioned, however, the current build process does not reflect this. 
 This will be addressed in future builds as updating NuGet references is currently a 
 pain since each build packages a new NuGet release for every .nuspec.
