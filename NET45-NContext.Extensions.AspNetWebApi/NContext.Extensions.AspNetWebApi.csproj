@@ -98,9 +98,6 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Configuration\WebApiConfiguration.cs">
       <Link>Configuration\WebApiConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Configuration\WebApiManager.cs">
-      <Link>Configuration\WebApiManager.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Configuration\WebApiManagerBuilder.cs">
       <Link>Configuration\WebApiManagerBuilder.cs</Link>
     </Compile>
@@ -173,6 +170,7 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Routing\Route.cs">
       <Link>Routing\Route.cs</Link>
     </Compile>
+    <Compile Include="Configuration\WebApiManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\NET40-NContext.Extensions.AspNetWebApi\ErrorHandling\Localization\AuthenticationError.resx">

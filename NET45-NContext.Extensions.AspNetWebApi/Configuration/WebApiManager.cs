@@ -101,7 +101,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         }
 
         /// <summary>
-        /// Gets the HTTP configuration.
+        /// Gets the <see cref="HttpConfiguration" /> instance used to configure Web API.
         /// </summary>
         /// <value>The HTTP configuration.</value>
         public HttpConfiguration HttpConfiguration
@@ -115,7 +115,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         }
 
         /// <summary>
-        /// Gets the self host server.
+        /// Gets the <see cref="HttpSelfHostServer" /> instance if used with <see cref="WebApiManagerBuilder.ConfigureForSelfHosting" />
         /// </summary>
         /// <value>The self host server.</value>
         public HttpSelfHostServer SelfHostServer
@@ -184,7 +184,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
             var webApiConfigurations = _CompositionContainer.GetExportedValues<IConfigureWebApi>();
             if (!WebApiConfiguration.IsSelfHosted && WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
             {
-                WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(HttpConfiguration);
+                GlobalConfiguration.Configure(WebApiConfiguration.AspNetHttpConfigurationDelegate);
             }
 
             foreach (var webApiConfiguration in webApiConfigurations)
