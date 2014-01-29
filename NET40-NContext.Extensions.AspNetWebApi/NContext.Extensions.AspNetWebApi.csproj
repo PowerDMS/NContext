@@ -96,11 +96,8 @@
     <Compile Include="Filters\HttpParameterBindingSanitizerFilter.cs" />
     <Compile Include="Filters\HttpParameterBindingValidationActionFilterAttribute.cs" />
     <Compile Include="Filters\ObjectGraphSanitizer.cs" />
-    <Compile Include="Formatters\BsonMediaTypeFormatter.cs" />
-    <Compile Include="Formatters\MediaTypeConstants.cs" />
     <Compile Include="Handlers\ExecutionContextMessageHandler.cs" />
     <Compile Include="Handlers\XHttpMethodOverrideMessageHandler.cs" />
-    <Compile Include="JsonNetExtensions.cs" />
     <Compile Include="Patching\PatchOperation.cs" />
     <Compile Include="Patching\PatchRequest.cs" />
     <Compile Include="Patching\PatchResult.cs" />

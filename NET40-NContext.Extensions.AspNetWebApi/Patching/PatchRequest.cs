@@ -39,6 +39,12 @@ namespace NContext.Extensions.AspNetWebApi.Patching
         {
         }
 
+        /// <summary>
+        /// Patches the specified object using this instance.
+        /// TODO: (DG) Refactor this to support patching complex object with navigation properties.
+        /// </summary>
+        /// <param name="objectToPatch">The object to patch.</param>
+        /// <returns>IResponseTransferObject{PatchResult{`0}}.</returns>
         public IResponseTransferObject<PatchResult<TDto>> Patch(TDto objectToPatch)
         {
             var patchableProperties = TypeDescriptor.GetProperties(objectToPatch)
