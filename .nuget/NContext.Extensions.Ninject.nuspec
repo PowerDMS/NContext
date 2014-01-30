@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NET40-NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net40\" />
-    <file src="..\NET40-NContext.Extensions.Ninject\**\*.cs" target="src" />
+    <file src="NET40-NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net40\" />
+    <file src="NET40-NContext.Extensions.Ninject\**\*.cs" target="src" />
   </files>
 </package>

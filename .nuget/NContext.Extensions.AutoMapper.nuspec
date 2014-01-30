@@ -23,7 +23,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NET40-NContext.Extensions.AutoMapper\bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net40\" />
-    <file src="..\NET40-NContext.Extensions.AutoMapper\**\*.cs" target="src" />
+    <file src="NET40-NContext.Extensions.AutoMapper\bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net40\" />
+    <file src="NET40-NContext.Extensions.AutoMapper\**\*.cs" target="src" />
   </files>
 </package>

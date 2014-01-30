@@ -27,9 +27,9 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\NET40-NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net40\" />
-    <file src="..\NET40-NContext.Extensions.EntityFramework\**\*.cs" target="src" />
-    <file src="..\NET45-NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net45\" />
-    <file src="..\NET45-NContext.Extensions.EntityFramework\**\*.cs" target="src" />
+    <file src="NET40-NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net40\" />
+    <file src="NET40-NContext.Extensions.EntityFramework\**\*.cs" target="src" />
+    <file src="NET45-NContext.Extensions.EntityFramework\bin\$Configuration$\NContext.Extensions.EntityFramework.*" target="lib\net45\" />
+    <file src="NET45-NContext.Extensions.EntityFramework\**\*.cs" target="src" />
   </files>
 </package>
