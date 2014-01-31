@@ -28,7 +28,7 @@ namespace NContext.Common
     /// </summary>
     /// <typeparam name="T">Type of data to return.</typeparam>
     /// <remarks></remarks>
-    public interface IResponseTransferObject<T> : IDisposable
+    public interface IResponseTransferObject<out T> : IDisposable
     {
         /// <summary>
         /// Gets the data.
