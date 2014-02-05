@@ -22,17 +22,18 @@ namespace NContext.Security.Cryptography
 {
     using System;
     using System.Security.Cryptography;
+    using System.Text;
 
     using NContext.Extensions;
-    using NContext.Utilities;
 
     /// <summary>
     /// Defines a provider for cryptographic hash operations.
     /// </summary>
-    /// <remarks></remarks>
     public class HashProvider : IProvideHashing
     {
         private readonly Type _DefaultHashAlgorithm;
+
+        private readonly RandomNumberGenerator _RngCryptoServiceProvider;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="HashProvider"/> class.
@@ -52,89 +53,84 @@ namespace NContext.Security.Cryptography
             }
 
             _DefaultHashAlgorithm = defaultHashAlgorithm;
+            _RngCryptoServiceProvider = new RNGCryptoServiceProvider();
         }
 
         #region Hash CreateHash Methods
 
         /// <summary>
-        /// Creates the hash using the default <see cref="HashAlgorithm"/>.
+        /// Creates the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
         /// <returns>The created hash.</returns>
-        /// <remarks></remarks>
-        public Byte[] CreateHash(Byte[] plainText, Boolean saltEnabled = true)
+        public Byte[] CreateHash(Byte[] plainText, Int32 saltLength = 16)
         {
-            return CreateHash(_DefaultHashAlgorithm, plainText, saltEnabled);
+            return CreateHash(_DefaultHashAlgorithm, plainText, saltLength);
         }
 
         /// <summary>
-        /// Creates the hash using the default <see cref="HashAlgorithm"/>.
+        /// Creates the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
         /// <returns>The created hash.</returns>
-        /// <remarks></remarks>
-        public String CreateHash(String plainText, Boolean saltEnabled = true)
+        public String CreateHash(String plainText, Int32 saltLength = 16)
         {
-            return CreateHash(_DefaultHashAlgorithm, plainText.ToBytes(), saltEnabled).ToHexadecimal();
+            return CreateHash(_DefaultHashAlgorithm, plainText.ToBytes<UnicodeEncoding>(), saltLength).ToHexadecimal();
         }
 
         /// <summary>
-        /// Creates the base64 encoded hash using the default <see cref="HashAlgorithm"/>.
+        /// Creates the base64 encoded hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
         /// <returns>The created hash.</returns>
-        /// <remarks></remarks>
-        public String CreateHashToBase64(String plainText, Boolean saltEnabled = true)
+        public String CreateHashToBase64(String plainText, Int32 saltLength = 16)
         {
-            return CreateHash(_DefaultHashAlgorithm, plainText.ToBytes(), saltEnabled).ToBase64();
+            return CreateHash(_DefaultHashAlgorithm, plainText.ToBytes<UnicodeEncoding>(), saltLength).ToBase64();
         }
 
         /// <summary>
-        /// Creates the hash using the specified <typeparamref name="THashAlgorithm"/>.
+        /// Creates the hash using the specified <see cref="HashAlgorithm" />.
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
         /// <returns>The created hash.</returns>
-        /// <remarks></remarks>
-        public Byte[] CreateHash<THashAlgorithm>(Byte[] plainText, Boolean saltEnabled = true)
-            where THashAlgorithm : HashAlgorithm
+        public Byte[] CreateHash<THashAlgorithm>(Byte[] plainText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new()
         {
-            return CreateHash(typeof(THashAlgorithm), plainText, saltEnabled);
+            return CreateHash(typeof(THashAlgorithm), plainText, saltLength);
         }
 
         /// <summary>
-        /// Creates the hash using the specified <typeparamref name="THashAlgorithm"/>.
+        /// Creates the hash using the specified <see cref="HashAlgorithm" />.
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
         /// <returns>The created hash.</returns>
-        /// <remarks></remarks>
-        public String CreateHash<THashAlgorithm>(String plainText, Boolean saltEnabled = true)
-            where THashAlgorithm : HashAlgorithm
+        public String CreateHash<THashAlgorithm>(String plainText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new()
         {
-            return CreateHash(typeof(THashAlgorithm), plainText.ToBytes(), saltEnabled).ToHexadecimal();
-        }
-        
-        /// <summary>
-        /// Creates the base64 encoded hash using the specified <typeparamref name="THashAlgorithm"/>.
-        /// </summary>
-        /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
-        /// <returns>The created hash.</returns>
-        /// <remarks></remarks>
-        public String CreateHashToBase64<THashAlgorithm>(String plainText, Boolean saltEnabled = true)
-            where THashAlgorithm : HashAlgorithm
-        {
-            return CreateHash(typeof(THashAlgorithm), plainText.ToBytes(), saltEnabled).ToBase64();
+            return CreateHash(typeof(THashAlgorithm), plainText.ToBytes<UnicodeEncoding>(), saltLength).ToHexadecimal();
         }
 
-        private Byte[] CreateHash(Type hashAlgorithmType, Byte[] plainText, Boolean saltEnabled = true)
+        /// <summary>
+        /// Creates the base64 encoded hash using the specified <typeparamref name="THashAlgorithm" />.
+        /// </summary>
+        /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
+        /// <returns>The created hash.</returns>
+        public String CreateHashToBase64<THashAlgorithm>(String plainText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new()
+        {
+            return CreateHash(typeof(THashAlgorithm), plainText.ToBytes<UnicodeEncoding>(), saltLength).ToBase64();
+        }
+
+        private Byte[] CreateHash(Type hashAlgorithmType, Byte[] plainText, Int32 saltLength = 16)
         {
             var hashAlgorithm = Activator.CreateInstance(hashAlgorithmType, true) as HashAlgorithm;
             if (hashAlgorithm == null)
@@ -142,8 +138,17 @@ namespace NContext.Security.Cryptography
                 throw new InvalidOperationException(String.Format("Could not create instance of type {0}.", hashAlgorithmType));
             }
 
-            // TODO: (DG) Support SALT!
-            return hashAlgorithm.ComputeHash(plainText);
+            // Generate salt
+            var salt = new Byte[saltLength];
+            _RngCryptoServiceProvider.GetNonZeroBytes(salt);
+
+            // Compute hash
+            var hashedText = hashAlgorithm.ComputeHash(CryptographyUtility.CombineBytes(salt, plainText));
+
+            // Randomize plain text
+            _RngCryptoServiceProvider.GetBytes(plainText);
+
+            return CryptographyUtility.CombineBytes(salt, hashedText);
         }
 
         #endregion
@@ -151,90 +156,84 @@ namespace NContext.Security.Cryptography
         #region Hash CompareHash Methods
 
         /// <summary>
-        /// Compares the hashes.
+        /// Compares the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
         /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText" />.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
-        /// <remarks></remarks>
-        public Boolean CompareHash(Byte[] plainText, Byte[] hashedText, Boolean saltEnabled = true)
+        public Boolean CompareHash(Byte[] plainText, Byte[] hashedText, Int32 saltLength = 16)
         {
-            return CompareHash(_DefaultHashAlgorithm, plainText, hashedText, saltEnabled);
+            return CompareHash(_DefaultHashAlgorithm, plainText, hashedText, saltLength);
         }
 
         /// <summary>
-        /// Compares the hash.
+        /// Compares the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
         /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText" />.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
-        /// <remarks></remarks>
-        public Boolean CompareHash(String plainText, String hashedText, Boolean saltEnabled = true)
+        public Boolean CompareHash(String plainText, String hashedText, Int32 saltLength = 16)
         {
-            return CompareHash(_DefaultHashAlgorithm, plainText.ToBytes(), hashedText.ToBytesFromHexadecimal(), saltEnabled);
+            return CompareHash(_DefaultHashAlgorithm, plainText.ToBytes<UnicodeEncoding>(), hashedText.ToBytesFromHexadecimal(), saltLength);
         }
 
         /// <summary>
-        /// Compares the hash.
+        /// Compares the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
         /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText" />.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
-        /// <remarks></remarks>
-        public Boolean CompareHashFromBase64(String plainText, String hashedText, Boolean saltEnabled = true)
+        public Boolean CompareHashFromBase64(String plainText, String hashedText, Int32 saltLength = 16)
         {
-            return CompareHash(_DefaultHashAlgorithm, plainText.ToBytes(), hashedText.ToBytesFromBase64());
+            return CompareHash(_DefaultHashAlgorithm, plainText.ToBytes<UnicodeEncoding>(), hashedText.ToBytesFromBase64(), saltLength);
         }
 
         /// <summary>
-        /// Compares the hash.
+        /// Compares the hash using the specified <see cref="HashAlgorithm" />.
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
         /// <param name="plainText">The plain text.</param>
         /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText" />.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
-        /// <remarks></remarks>
-        public Boolean CompareHash<THashAlgorithm>(Byte[] plainText, Byte[] hashedText, Boolean saltEnabled = true)
-            where THashAlgorithm : HashAlgorithm
+        public Boolean CompareHash<THashAlgorithm>(Byte[] plainText, Byte[] hashedText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new()
         {
-            return CompareHash(typeof(THashAlgorithm), plainText, hashedText, saltEnabled);
+            return CompareHash(typeof(THashAlgorithm), plainText, hashedText, saltLength);
         }
 
         /// <summary>
-        /// Compares the hash.
+        /// Compares the hash using the specified <see cref="HashAlgorithm" />.
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
         /// <param name="plainText">The plain text.</param>
         /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText" />.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
-        /// <remarks></remarks>
-        public Boolean CompareHash<THashAlgorithm>(String plainText, String hashedText, Boolean saltEnabled = true)
-            where THashAlgorithm : HashAlgorithm
+        public Boolean CompareHash<THashAlgorithm>(String plainText, String hashedText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new()
         {
-            return CompareHash(typeof(THashAlgorithm), plainText.ToBytes(), hashedText.ToBytesFromHexadecimal(), saltEnabled);
+            return CompareHash(typeof(THashAlgorithm), plainText.ToBytes<UnicodeEncoding>(), hashedText.ToBytesFromHexadecimal(), saltLength);
         }
 
         /// <summary>
-        /// Compares the hash.
+        /// Compares the hash using the specified <see cref="HashAlgorithm" />.
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
         /// <param name="plainText">The plain text.</param>
         /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltEnabled">if set to <c>true</c> [salt enabled].</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText" />.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
-        /// <remarks></remarks>
-        public Boolean CompareHashFromBase64<THashAlgorithm>(String plainText, String hashedText, Boolean saltEnabled = true)
-            where THashAlgorithm : HashAlgorithm
+        public Boolean CompareHashFromBase64<THashAlgorithm>(String plainText, String hashedText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new()
         {
-            return CompareHash(typeof(THashAlgorithm), plainText.ToBytes(), hashedText.ToBytesFromBase64(), saltEnabled);
+            return CompareHash(typeof(THashAlgorithm), plainText.ToBytes<UnicodeEncoding>(), hashedText.ToBytesFromBase64(), saltLength);
         }
 
-        private Boolean CompareHash(Type hashAlgorithmType, Byte[] plainText, Byte[] hashedText, Boolean saltEnabled = true)
+        private Boolean CompareHash(Type hashAlgorithmType, Byte[] plainText, Byte[] hashedText, Int32 saltLength = 16)
         {
             var hashAlgorithm = Activator.CreateInstance(hashAlgorithmType, true) as HashAlgorithm;
             if (hashAlgorithm == null)
@@ -242,10 +241,10 @@ namespace NContext.Security.Cryptography
                 throw new InvalidOperationException(String.Format("Could not create instance of type {0}.", hashAlgorithmType));
             }
 
-            var hashedPlainText = hashAlgorithm.ComputeHash(plainText);
+            var salt = CryptographyUtility.GetBytes(hashedText, saltLength);
+            var targetHash = CryptographyUtility.CombineBytes(salt, hashAlgorithm.ComputeHash(CryptographyUtility.CombineBytes(salt, plainText)));
 
-            // TODO: (DG) Support SALT!
-            return CryptographyUtility.CompareBytes(hashedPlainText, hashedText);
+            return CryptographyUtility.CompareBytes(hashedText, targetHash);
         }
 
         #endregion

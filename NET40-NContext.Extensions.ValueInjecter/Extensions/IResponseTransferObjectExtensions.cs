@@ -42,10 +42,10 @@ namespace NContext.Extensions.ValueInjecter.Extensions
         /// <param name="source">Source instance to translate.</param>
         /// <param name="mapper">A custom anonymous object mapper used for post processing after value injection has taken place.</param>
         /// <returns>Instance of <see cref="IResponseTransferObject{TTarget}"/>.</returns>
-        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget>(this IResponseTransferObject<TSource> source, Func<TSource, Object> mapper = null)
+        public static IResponseTransferObject<TTarget> BindInject<TSource, TTarget>(this IResponseTransferObject<TSource> source, Func<TSource, Object> mapper = null)
             where TTarget : class, new()
         {
-            return source.Translate<TSource, TTarget, LoopValueInjection>(mapper);
+            return source.BindInject<TSource, TTarget, LoopValueInjection>(mapper);
         }
 
         /// <summary>
@@ -58,11 +58,11 @@ namespace NContext.Extensions.ValueInjecter.Extensions
         /// <param name="source">Source instance to translate.</param>
         /// <param name="mapper">A custom anonymous object mapper used for post processing after value injection has taken place.</param>
         /// <returns>Instance of <see cref="IResponseTransferObject{TTarget}"/>.</returns>
-        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> source, Func<TSource, Object> mapper = null)
+        public static IResponseTransferObject<TTarget> BindInject<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> source, Func<TSource, Object> mapper = null)
             where TTarget : class, new()
             where TValueInjection : IValueInjection, new()
         {
-            return source.Translate(Activator.CreateInstance<TTarget>(), Activator.CreateInstance<TValueInjection>(), mapper);
+            return source.BindInject(Activator.CreateInstance<TTarget>(), Activator.CreateInstance<TValueInjection>(), mapper);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace NContext.Extensions.ValueInjecter.Extensions
         /// <param name="valueInjection"><see cref="IValueInjection"/> instance to use. Default is <see cref="LoopValueInjection"/>.</param>
         /// <param name="mapper">A custom anonymous object mapper used for post processing after value injection has taken place.</param>
         /// <returns>Instance of <see cref="IResponseTransferObject{TTarget}"/>.</returns>
-        public static IResponseTransferObject<TTarget> Translate<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> source, TTarget target, TValueInjection valueInjection, Func<TSource, Object> mapper)
+        public static IResponseTransferObject<TTarget> BindInject<TSource, TTarget, TValueInjection>(this IResponseTransferObject<TSource> source, TTarget target, TValueInjection valueInjection, Func<TSource, Object> mapper)
             where TValueInjection : IValueInjection, new()
         {
             Contract.Requires(source != null);

@@ -156,7 +156,7 @@ namespace NContext.Common
             return responseTransferObject;
         }
         
-        private static IResponseTransferObject<T> CreateGenericServiceResponse<T>(IResponseTransferObject<T> originalResponse, T data)
+        internal static IResponseTransferObject<T> CreateGenericServiceResponse<T>(IResponseTransferObject<T> originalResponse, T data)
         {
             if (originalResponse is ServiceResponse<T>)
             {
@@ -178,7 +178,7 @@ namespace NContext.Common
             }
         }
 
-        private static IResponseTransferObject<T2> CreateGenericServiceResponse<T, T2>(IResponseTransferObject<T> originalResponse, T2 data)
+        internal static IResponseTransferObject<T2> CreateGenericServiceResponse<T, T2>(IResponseTransferObject<T> originalResponse, T2 data)
         {
             if (originalResponse is ServiceResponse<T>)
             {
@@ -200,7 +200,7 @@ namespace NContext.Common
             }
         }
 
-        private static IResponseTransferObject<T2> CreateGenericServiceResponse<T, T2>(IResponseTransferObject<T> originalResponse, IEnumerable<Error> errors)
+        internal static IResponseTransferObject<T2> CreateGenericServiceResponse<T, T2>(IResponseTransferObject<T> originalResponse, IEnumerable<Error> errors)
         {
             if (originalResponse is ServiceResponse<T>)
             {

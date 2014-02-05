@@ -95,18 +95,19 @@ namespace NContext.Extensions
         /// <param name="value">The value.</param>
         /// <returns>The byte array.</returns>
         /// <remarks></remarks>
-        public static Byte[] ToBytes(this String value)
+        public static Byte[] ToBytes<TEncoding>(this String value) where TEncoding : Encoding, new()
         {
             if (value == null) return null;
 
             try
             {
-                var encoding = new UTF8Encoding(false, true);
+                var encoding = Activator.CreateInstance<TEncoding>();
+
                 return encoding.GetBytes(value);
             }
             catch (EncoderFallbackException ex)
             {
-                throw new ArgumentException("Invalid UTF8 characters encountered.", ex);
+                throw new ArgumentException("Invalid encoding characters encountered.", ex);
             }
         }
 

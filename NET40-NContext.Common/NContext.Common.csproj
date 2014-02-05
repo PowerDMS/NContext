@@ -75,6 +75,7 @@
     <Compile Include="Extensions\HierarchicalDataExtensions.cs" />
     <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\IMaybeIEnumerableExtensions.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectAsyncExtensions.cs" />
     <Compile Include="Extensions\IResponseTransferObjectIEnumerableExtensions.cs" />
     <Compile Include="IResponseTransferObject.cs" />
     <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SecurityConfigurationBuilder.cs" company="Waking Venture, Inc.">
+// <copyright file="SecurityManagerBuilder.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,24 +29,24 @@ namespace NContext.Security
     /// Defines a configuration class to build the application's <see cref="SecurityManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class SecurityConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
+    public class SecurityManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private SecurityTokenExpirationPolicy _SecurityTokenExpirationPolicy;
 
         private String _CacheProviderName;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="SecurityConfigurationBuilder"/> class.
+        /// Initializes a new instance of the <see cref="SecurityManagerBuilder"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public SecurityConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public SecurityManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
             _SecurityTokenExpirationPolicy = new SecurityTokenExpirationPolicy();
         }
 
-        public SecurityConfigurationBuilder SetCacheProviderName(String cacheProviderName)
+        public SecurityManagerBuilder SetCacheProviderName(String cacheProviderName)
         {
             _CacheProviderName = cacheProviderName;
 
@@ -69,8 +69,8 @@ namespace NContext.Security
         /// </summary>
         /// <param name="expiration">The expiration time span.</param>
         /// <param name="isAbsolute">The method which to use for evicting cached token / principals.</param>
-        /// <returns>SecurityConfigurationBuilder.</returns>
-        public SecurityConfigurationBuilder SetTokenExpirationPolicy(TimeSpan expiration, Boolean isAbsolute = false)
+        /// <returns>SecurityManagerBuilder.</returns>
+        public SecurityManagerBuilder SetTokenExpirationPolicy(TimeSpan expiration, Boolean isAbsolute = false)
         {
             _SecurityTokenExpirationPolicy = new SecurityTokenExpirationPolicy(expiration, isAbsolute);
 

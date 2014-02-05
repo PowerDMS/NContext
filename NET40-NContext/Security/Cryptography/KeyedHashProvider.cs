@@ -22,6 +22,7 @@ namespace NContext.Security.Cryptography
 {
     using System;
     using System.Security.Cryptography;
+    using System.Text;
 
     using NContext.Extensions;
     using NContext.Utilities;
@@ -83,7 +84,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String CreateHash(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes(), plainText.ToBytes(), saltEnabled, dataProtectionScope).ToHexadecimal();
+            return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), saltEnabled, dataProtectionScope).ToHexadecimal();
         }
 
         /// <summary>
@@ -98,7 +99,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String CreateHashToBase64(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes(), plainText.ToBytes(), saltEnabled, dataProtectionScope).ToBase64();
+            return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), saltEnabled, dataProtectionScope).ToBase64();
         }
 
         /// <summary>
@@ -131,7 +132,7 @@ namespace NContext.Security.Cryptography
         public String CreateHash<TKeyedHashAlgorithm>(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TKeyedHashAlgorithm : KeyedHashAlgorithm
         {
-            return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes(), plainText.ToBytes(), saltEnabled, dataProtectionScope).ToHexadecimal();
+            return CreateHash(_DefaultKeyedHashAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), saltEnabled, dataProtectionScope).ToHexadecimal();
         }
 
         /// <summary>
@@ -148,7 +149,7 @@ namespace NContext.Security.Cryptography
         public String CreateHashToBase64<TKeyedHashAlgorithm>(String symmetricKey, String plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TKeyedHashAlgorithm : KeyedHashAlgorithm
         {
-            return CreateHash(typeof(TKeyedHashAlgorithm), symmetricKey.ToBytes(), plainText.ToBytes(), saltEnabled, dataProtectionScope).ToBase64();
+            return CreateHash(typeof(TKeyedHashAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), saltEnabled, dataProtectionScope).ToBase64();
         }
 
         private Byte[] CreateHash(Type keyedHashAlgorithmType, Byte[] symmetricKey, Byte[] plainText, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
@@ -202,8 +203,8 @@ namespace NContext.Security.Cryptography
         public Boolean CompareHash(String symmetricKey, String plainText, String hexadecimalHash, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
             return CompareHash(_DefaultKeyedHashAlgorithm,
-                symmetricKey.ToBytes(),
-                plainText.ToBytes(),
+                symmetricKey.ToBytes<UnicodeEncoding>(),
+                plainText.ToBytes<UnicodeEncoding>(),
                 hexadecimalHash.ToBytesFromHexadecimal(),
                 saltEnabled,
                 dataProtectionScope);
@@ -222,8 +223,8 @@ namespace NContext.Security.Cryptography
         public Boolean CompareHashFromBase64(String symmetricKey, String plainText, String base64EncodedHash, Boolean saltEnabled = true, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
             return CompareHash(_DefaultKeyedHashAlgorithm,
-                symmetricKey.ToBytes(),
-                plainText.ToBytes(),
+                symmetricKey.ToBytes<UnicodeEncoding>(),
+                plainText.ToBytes<UnicodeEncoding>(),
                 base64EncodedHash.ToBytesFromBase64(),
                 saltEnabled,
                 dataProtectionScope);
@@ -265,8 +266,8 @@ namespace NContext.Security.Cryptography
             where TKeyedHashAlgorithm : KeyedHashAlgorithm
         {
             return CompareHash(typeof(TKeyedHashAlgorithm),
-                symmetricKey.ToBytes(),
-                plainText.ToBytes(),
+                symmetricKey.ToBytes<UnicodeEncoding>(),
+                plainText.ToBytes<UnicodeEncoding>(),
                 hexadecimalHash.ToBytesFromHexadecimal(),
                 saltEnabled,
                 dataProtectionScope);
@@ -287,8 +288,8 @@ namespace NContext.Security.Cryptography
             where TKeyedHashAlgorithm : KeyedHashAlgorithm
         {
             return CompareHash(typeof(TKeyedHashAlgorithm),
-                symmetricKey.ToBytes(),
-                plainText.ToBytes(),
+                symmetricKey.ToBytes<UnicodeEncoding>(),
+                plainText.ToBytes<UnicodeEncoding>(),
                 base64EncodedHash.ToBytesFromBase64(),
                 saltEnabled,
                 dataProtectionScope);

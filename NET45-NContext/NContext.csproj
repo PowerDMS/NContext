@@ -49,11 +49,11 @@
     <Compile Include="..\NET40-NContext\Caching\CacheConfiguration.cs">
       <Link>Caching\CacheConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Caching\CacheConfigurationBuilder.cs">
-      <Link>Caching\CacheConfigurationBuilder.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext\Caching\CacheManager.cs">
       <Link>Caching\CacheManager.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Caching\CacheManagerBuilder.cs">
+      <Link>Caching\CacheManagerBuilder.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Caching\IManageCaching.cs">
       <Link>Caching\IManageCaching.cs</Link>
@@ -304,11 +304,11 @@
     <Compile Include="..\NET40-NContext\Security\SecurityConfiguration.cs">
       <Link>Security\SecurityConfiguration.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Security\SecurityConfigurationBuilder.cs">
-      <Link>Security\SecurityConfigurationBuilder.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext\Security\SecurityManager.cs">
       <Link>Security\SecurityManager.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Security\SecurityManagerBuilder.cs">
+      <Link>Security\SecurityManagerBuilder.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Security\SecurityTokenExpirationPolicy.cs">
       <Link>Security\SecurityTokenExpirationPolicy.cs</Link>

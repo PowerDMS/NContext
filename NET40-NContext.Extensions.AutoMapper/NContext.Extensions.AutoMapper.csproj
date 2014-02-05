@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Configuration\AutoMapperManager.cs" />
     <Compile Include="Configuration\IConfigureAutoMapper.cs" />
+    <Compile Include="Extensions\IResponseTransferObjectExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Configuration\IManageAutoMapper.cs" />
     <Compile Include="Configuration\IResponseTransferObjectExtensions.cs" />

@@ -23,6 +23,7 @@ namespace NContext.Security.Cryptography
     using System;
     using System.IO;
     using System.Security.Cryptography;
+    using System.Text;
 
     using NContext.Extensions;
 
@@ -117,7 +118,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String Encrypt(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes(), plainText.ToBytes(), dataProtectionScope).ToHexadecimal();
+            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
         }
 
         /// <summary>
@@ -130,7 +131,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String Encrypt(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText.ToBytes(), dataProtectionScope).ToHexadecimal();
+            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
         }
 
         /// <summary>
@@ -145,7 +146,7 @@ namespace NContext.Security.Cryptography
         public String Encrypt<TSymmetricAlgorithm>(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes(), plainText.ToBytes(), dataProtectionScope).ToHexadecimal();
+            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
         }
 
         /// <summary>
@@ -160,7 +161,7 @@ namespace NContext.Security.Cryptography
         public String Encrypt<TSymmetricAlgorithm>(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText.ToBytes(), dataProtectionScope).ToHexadecimal();
+            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
         }
 
         /// <summary>
@@ -173,7 +174,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String EncryptToBase64(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes(), plainText.ToBytes(), dataProtectionScope).ToBase64();
+            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
         }
 
         /// <summary>
@@ -186,7 +187,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String EncryptToBase64(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText.ToBytes(), dataProtectionScope).ToBase64();
+            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
         }
 
         /// <summary>
@@ -201,7 +202,7 @@ namespace NContext.Security.Cryptography
         public String EncryptToBase64<TSymmetricAlgorithm>(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes(), plainText.ToBytes(), dataProtectionScope).ToBase64();
+            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
         }
 
         /// <summary>
@@ -216,7 +217,7 @@ namespace NContext.Security.Cryptography
         public String EncryptToBase64<TSymmetricAlgorithm>(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText.ToBytes(), dataProtectionScope).ToBase64();
+            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
         }
 
         private Byte[] Encrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
@@ -301,7 +302,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String Decrypt(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes(), cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
+            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
         }
 
         /// <summary>
@@ -329,7 +330,7 @@ namespace NContext.Security.Cryptography
         public String Decrypt<TSymmetricAlgorithm>(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes(), cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
+            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
         }
 
         /// <summary>
@@ -357,7 +358,7 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         public String DecryptFromBase64(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
         {
-            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes(), cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
+            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
         }
 
         /// <summary>
@@ -385,7 +386,7 @@ namespace NContext.Security.Cryptography
         public String DecryptFromBase64<TSymmetricAlgorithm>(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
             where TSymmetricAlgorithm : SymmetricAlgorithm
         {
-            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes(), cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
+            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
         }
 
         /// <summary>

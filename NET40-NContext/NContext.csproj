@@ -87,7 +87,7 @@
     <Compile Include="Configuration\ApplicationComponentBuilder.cs" />
     <Compile Include="Configuration\ApplicationConfiguration.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBuilder.cs" />
-    <Compile Include="Caching\CacheConfigurationBuilder.cs" />
+    <Compile Include="Caching\CacheManagerBuilder.cs" />
     <Compile Include="Caching\CacheManager.cs" />
     <Compile Include="Configuration\Configure.cs" />
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
@@ -163,7 +163,7 @@
     <Compile Include="Configuration\SafeDirectoryCatalog.cs" />
     <Compile Include="Configuration\SecureDirectoryCatalog.cs" />
     <Compile Include="Security\SecurityConfiguration.cs" />
-    <Compile Include="Security\SecurityConfigurationBuilder.cs" />
+    <Compile Include="Security\SecurityManagerBuilder.cs" />
     <Compile Include="Security\SecurityManager.cs" />
     <Compile Include="Extensions\CompositionContainerExtensions.cs" />
     <Compile Include="Extensions\NameValueCollectionExtensions.cs" />

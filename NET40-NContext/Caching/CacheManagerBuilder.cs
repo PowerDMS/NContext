@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CacheConfigurationBuilder.cs" company="Waking Venture, Inc.">
+// <copyright file="CacheManagerBuilder.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -30,16 +30,16 @@ namespace NContext.Caching
     /// Defines a configuration class to build the application's <see cref="CacheManager"/>.
     /// </summary>
     /// <remarks></remarks>
-    public class CacheConfigurationBuilder : ApplicationComponentConfigurationBuilderBase
+    public class CacheManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
         private readonly IDictionary<String, Lazy<ObjectCache>> _Providers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CacheConfigurationBuilder"/> class.
+        /// Initializes a new instance of the <see cref="CacheManagerBuilder"/> class.
         /// </summary>
         /// <param name="applicationConfigurationBuilder">The application configuration.</param>
         /// <remarks></remarks>
-        public CacheConfigurationBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
+        public CacheManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
             _Providers = new Dictionary<String, Lazy<ObjectCache>>();
@@ -51,8 +51,8 @@ namespace NContext.Caching
         /// <typeparam name="TCacheProvider">The type of the cache provider.</typeparam>
         /// <param name="providerName">A name to uniquely identify the cache provider.</param>
         /// <param name="cacheProvider">The cache provider.</param>
-        /// <returns>This <see cref="CacheConfigurationBuilder"/> instance.</returns>
-        public CacheConfigurationBuilder AddProvider<TCacheProvider>(String providerName, Func<TCacheProvider> cacheProvider) where TCacheProvider : ObjectCache
+        /// <returns>This <see cref="CacheManagerBuilder"/> instance.</returns>
+        public CacheManagerBuilder AddProvider<TCacheProvider>(String providerName, Func<TCacheProvider> cacheProvider) where TCacheProvider : ObjectCache
         {
             if (_Providers.ContainsKey(providerName))
             {
