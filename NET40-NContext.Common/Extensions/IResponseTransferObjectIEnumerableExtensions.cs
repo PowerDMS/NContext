@@ -23,6 +23,7 @@ namespace NContext.Common
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
 
     /// <summary>
     /// Defines extension methods for <see cref="IEnumerable{T}"/> yielding a new <see cref="IResponseTransferObject{T}"/>.
@@ -43,7 +44,11 @@ namespace NContext.Common
             {
                 if (!enumerator.MoveNext())
                 {
-                    return new ServiceResponse<T>(new Error("NoMatch", new[] { "No match" }));
+                    return new ServiceResponse<T>(
+                        new Error(
+                            (Int32)HttpStatusCode.InternalServerError,
+                            "IResponseTransferObjectIEnumerableExtensions_FirstResponse_NoMatch", 
+                            new[] { "Enumerable is empty." }));
                 }
 
                 return new ServiceResponse<T>(enumerator.Current);
@@ -64,7 +69,11 @@ namespace NContext.Common
             {
                 if (!enumerator.MoveNext())
                 {
-                    return new ServiceResponse<T>(new Error("NoMatch", new[] { "No match" }));
+                    return new ServiceResponse<T>(
+                        new Error(
+                            (Int32)HttpStatusCode.InternalServerError,
+                            "IResponseTransferObjectIEnumerableExtensions_SingleResponse_NoMatch",
+                            new[] { "Enumerable is empty." }));
                 }
 
                 T current = enumerator.Current;
@@ -74,7 +83,11 @@ namespace NContext.Common
                 }
             }
 
-            return new ServiceResponse<T>(new Error("MoreThanOneMatch", new[] { "More than one match!" }));
+            return new ServiceResponse<T>(
+                new Error(
+                    (Int32)HttpStatusCode.InternalServerError,
+                    "IResponseTransferObjectIEnumerableExtensions_SingleResponse_MoreThanOneMatch",
+                    new[] {"Enumerable has more than one matched entry."}));
         }
 
         private static IEnumerator<T> GetEnumerator<T>(IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)

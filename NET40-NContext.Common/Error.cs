@@ -22,6 +22,7 @@ namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -34,33 +35,32 @@ namespace NContext.Common
         /// <summary>
         /// Initializes a new instance of the <see cref="Error"/> class.
         /// </summary>
-        /// <param name="name">The name of the error which occurred.</param>
-        /// <param name="messages">The messages describing the error.</param>
-        /// <param name="errorCode">The code associated with the error.</param>
-        /// <remarks></remarks>
-        public Error(String name, IEnumerable<String> messages, String errorCode = "")
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <param name="code">The code representing the reason for the error.</param>
+        /// <param name="messages">The messages.</param>
+        public Error(Int32 httpStatusCode, String code, IEnumerable<String> messages)
         {
-            ErrorType = name;
+            HttpStatusCode = httpStatusCode;
+            Code = code;
             Messages = messages;
-            ErrorCode = errorCode;
         }
 
         /// <summary>
-        /// Gets the error code.
+        /// Gets the error code. It is best practice to use an HTTP Status Code to represent the error.
         /// </summary>
         /// <remarks></remarks>
-        [DataMember(Order = 0)]
-        public String ErrorCode { get; private set; }
+        [DataMember(Order = 0, EmitDefaultValue = false)]
+        public Int32 HttpStatusCode { get; private set; }
 
         /// <summary>
-        /// Gets the error type.
+        /// Gets the code which represents the reason for the error.
         /// </summary>
-        /// <remarks></remarks>
+        /// <value>The reason.</value>
         [DataMember(Order = 1)]
-        public String ErrorType { get; private set; }
-
+        public String Code { get; private set; }
+        
         /// <summary>
-        /// Gets the error messages.
+        /// Gets the error's messages.
         /// </summary>
         /// <remarks></remarks>
         [DataMember(Order = 2)]

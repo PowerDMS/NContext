@@ -21,6 +21,7 @@
 namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Patching
 {
     using System;
+    using System.Net;
 
     using Machine.Specifications;
 

@@ -41,10 +41,11 @@ namespace NContext.ErrorHandling
         /// Initializes a new instance of the <see cref="ErrorBase"/> class.
         /// </summary>
         /// <param name="localizationKey">The localization key.</param>
+        /// <param name="httpStatusCode">The HTTP status code.</param>
         /// <param name="errorMessageParameters">The error message parameters.</param>
         /// <remarks></remarks>
-        protected ErrorBase(String localizationKey, params Object[] errorMessageParameters)
-            : this(localizationKey, HttpStatusCode.InternalServerError, errorMessageParameters)
+        protected ErrorBase(String localizationKey, HttpStatusCode httpStatusCode, params Object[] errorMessageParameters) 
+            : this(localizationKey, httpStatusCode, null, errorMessageParameters)
         {
         }
 
@@ -53,12 +54,13 @@ namespace NContext.ErrorHandling
         /// </summary>
         /// <param name="localizationKey">The localization key.</param>
         /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <param name="code">A unique code that represents the reason for the error.</param>
         /// <param name="errorMessageParameters">The error message parameters.</param>
         /// <remarks></remarks>
-        protected ErrorBase(String localizationKey, HttpStatusCode httpStatusCode, params Object[] errorMessageParameters)
+        protected ErrorBase(String localizationKey, HttpStatusCode httpStatusCode, String code, params Object[] errorMessageParameters)
         {
-            ErrorType = GetType();
             HttpStatusCode = httpStatusCode;
+            Code = code;
             SetErrorMessage(localizationKey, errorMessageParameters);
         }
 
@@ -74,19 +76,19 @@ namespace NContext.ErrorHandling
         public static implicit operator Error(ErrorBase error)
         {
             return new Error(
-                error.ErrorType.Name,
+                (Int32)error.HttpStatusCode,
+                error.Code,
                 new List<String>
-                    {
-                        error.Message
-                    },
-                error.HttpStatusCode.ToString());
+                {
+                    error.Message
+                });
         }
 
         /// <summary>
-        /// Gets the error name.
+        /// Gets the code representing the reason for the error.
         /// </summary>
-        /// <remarks></remarks>
-        public Type ErrorType { get; private set; }
+        /// <value>The code.</value>
+        public String Code { get; private set; }
 
         /// <summary>
         /// Gets the localized error message.
@@ -106,9 +108,14 @@ namespace NContext.ErrorHandling
         /// <returns>Error instance.</returns>
         public static Error NullObject()
         {
-            return new Error(String.Empty, Enumerable.Empty<String>(), HttpStatusCode.BadRequest.ToString());
+            return new Error((Int32)HttpStatusCode.BadRequest, String.Empty, Enumerable.Empty<String>());
         }
 
+        /// <summary>
+        /// Gets the localized error message.
+        /// </summary>
+        /// <param name="localizationKey">The localization key.</param>
+        /// <returns>String.</returns>
         protected virtual String GetLocalizedErrorMessage(String localizationKey)
         {
             if (String.IsNullOrWhiteSpace(localizationKey))

@@ -24,7 +24,6 @@ namespace NContext.ErrorHandling.Errors
     using System.Net;
     using System.Transactions;
 
-    using NContext.Common;
     using NContext.Data.Persistence;
     using NContext.Extensions;
 
@@ -37,7 +36,7 @@ namespace NContext.ErrorHandling.Errors
         /// <param name="errorMessageParameters">The error message parameters.</param>
         /// <remarks></remarks>
         private NContextPersistenceError(String localizationKey, params Object[] errorMessageParameters)
-            : base(localizationKey, HttpStatusCode.InternalServerError, errorMessageParameters)
+            : base(localizationKey, HttpStatusCode.InternalServerError, "NContext_PersistenceError", errorMessageParameters)
         {
         }
 

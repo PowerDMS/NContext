@@ -32,7 +32,6 @@ namespace NContext.Extensions
     /// </summary>
     public static class ExceptionExtensions
     {
-
         /// <summary>
         /// Returns an error representing the exception.
         /// </summary>
@@ -41,7 +40,7 @@ namespace NContext.Extensions
         public static IEnumerable<Error> ToErrors(this Exception exception)
         {
             return exception.FromHierarchy(e => e.InnerException)
-                            .Select(ToError);
+                .Select(ToError);
         }
 
         /// <summary>
@@ -62,12 +61,12 @@ namespace NContext.Extensions
         public static IEnumerable<Error> ToErrors(this AggregateException aggregateException)
         {
             return new List<Error>().AddC(aggregateException.ToError())
-                                    .AddRangeC(aggregateException.InnerExceptions.ToErrors());
+                .AddRangeC(aggregateException.InnerExceptions.ToErrors());
         }
 
         private static Error ToError(this Exception exception)
         {
-            return new Error(exception.GetType().Name, new[] { exception.Message }, HttpStatusCode.InternalServerError.ToString());
+            return new Error((Int32)HttpStatusCode.InternalServerError, exception.GetType().Name, new[] { exception.Message });
         }
     }
 }

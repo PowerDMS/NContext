@@ -105,11 +105,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         {
             if (error == null) return new Nothing<HttpStatusCode>();
 
-            HttpStatusCode statusCode;
-            if (String.IsNullOrWhiteSpace(error.ErrorCode) || !Enum.TryParse(error.ErrorCode, true, out statusCode))
-            {
-                return new Nothing<HttpStatusCode>();
-            }
+            var statusCode = (HttpStatusCode) error.HttpStatusCode;
 
             return statusCode.ToMaybe();
         }

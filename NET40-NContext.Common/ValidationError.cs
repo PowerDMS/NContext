@@ -22,6 +22,7 @@ namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
+    using System.Net;
     using System.Runtime.Serialization;
 
     /// <summary>
@@ -37,7 +38,7 @@ namespace NContext.Common
         /// <param name="messages">The messages.</param>
         /// <remarks></remarks>
         public ValidationError(Type entityType, IEnumerable<String> messages)
-            : base(entityType.Name, messages)
+            : base(422, entityType.Name, messages)
         {
         }
     }

@@ -7,8 +7,8 @@
 
     public class AuthenticationError : ErrorBase
     {
-        private AuthenticationError(String localizationKey, HttpStatusCode httpStatusCode, params Object[] errorMessageParameters) 
-            : base(localizationKey, httpStatusCode, errorMessageParameters)
+        private AuthenticationError(String localizationKey, HttpStatusCode httpStatusCode, String code, params Object[] errorMessageParameters) 
+            : base(localizationKey, httpStatusCode, code, errorMessageParameters)
         {
         }
 
@@ -18,7 +18,7 @@
         /// <returns>AuthenticationError.</returns>
         public static AuthenticationError ProviderNotFound()
         {
-            return new AuthenticationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.Unauthorized);
+            return new AuthenticationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.Unauthorized, MethodBase.GetCurrentMethod().Name);
         }
     }
 }

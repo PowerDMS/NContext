@@ -30,8 +30,8 @@ namespace NContext.Extensions.AspNetWebApi.ErrorHandling
     /// </summary>
     internal class HttpParameterValidationError : ErrorBase
     {
-        private HttpParameterValidationError(String localizationKey, HttpStatusCode httpStatusCode, params Object[] errorMessageParameters)
-            : base(localizationKey, httpStatusCode, errorMessageParameters)
+        private HttpParameterValidationError(String localizationKey, HttpStatusCode httpStatusCode, String code, params Object[] errorMessageParameters)
+            : base(localizationKey, httpStatusCode, code, errorMessageParameters)
         {
         }
 
@@ -43,7 +43,7 @@ namespace NContext.Extensions.AspNetWebApi.ErrorHandling
         /// <returns>HttpParameterValidationError.</returns>
         public static HttpParameterValidationError RequiredParameterNotFoundInBody(Type parameterType, String parameterName)
         {
-            return new HttpParameterValidationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.BadRequest, parameterName, parameterType.Name);
+            return new HttpParameterValidationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.BadRequest, MethodBase.GetCurrentMethod().Name, parameterName, parameterType.Name);
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace NContext.Extensions.AspNetWebApi.ErrorHandling
         /// <returns>HttpParameterValidationError.</returns>
         public static HttpParameterValidationError ValidationFailed(String parameterName, Object requiredParameterValue, Object bodyPropertyValue)
         {
-            return new HttpParameterValidationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.BadRequest, parameterName, requiredParameterValue, bodyPropertyValue);
+            return new HttpParameterValidationError(MethodBase.GetCurrentMethod().Name, HttpStatusCode.BadRequest, MethodBase.GetCurrentMethod().Name, parameterName, requiredParameterValue, bodyPropertyValue);
         }
     }
 }

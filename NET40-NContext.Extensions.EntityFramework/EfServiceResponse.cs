@@ -88,19 +88,20 @@ namespace NContext.Extensions.EntityFramework
         private static IEnumerable<Error> TranslateErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
         {
             return errors.ToMaybe()
-                         .Bind(e => e.Select(error => new Error(error.ErrorType.Name, new List<String> { error.Message }, error.HttpStatusCode.ToString())).ToMaybe())
-                         .FromMaybe(Enumerable.Empty<Error>());
+                .Bind(e => e.Select(error => new Error((Int32)error.HttpStatusCode, error.GetType().Name, new List<String> { error.Message }))
+                    .ToMaybe())
+                .FromMaybe(Enumerable.Empty<Error>());
         }
 
         private static IEnumerable<ValidationError> TranslateDbEntityValidationResultsToValidationErrors(IEnumerable<DbEntityValidationResult> validationResults)
         {
             return validationResults.ToMaybe()
-                                    .Bind(results => 
-                                          results.Select(validationResult => 
-                                                         new ValidationError(validationResult.Entry.Entity.GetType(),
-                                                                             validationResult.ValidationErrors
-                                                                                             .Select(validationError => validationError.ErrorMessage))).ToMaybe())
-                                    .FromMaybe(Enumerable.Empty<ValidationError>());
+                .Bind(results => 
+                    results.Select(validationResult => 
+                        new ValidationError(validationResult.Entry.Entity.GetType(),
+                            validationResult.ValidationErrors
+                                .Select(validationError => validationError.ErrorMessage))).ToMaybe())
+                .FromMaybe(Enumerable.Empty<ValidationError>());
         }
     }
 }

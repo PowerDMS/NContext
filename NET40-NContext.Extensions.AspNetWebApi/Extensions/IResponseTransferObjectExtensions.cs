@@ -34,7 +34,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
     {
         /// <summary>
         /// Returns a new <see cref="HttpResponseMessage"/> with the <see cref="HttpResponseMessage.Content"/> set to <paramref name="responseContent"/>. If 
-        /// <paramref name="responseContent"/> contains an error, it will attempt to parse the <see cref="Error.ErrorCode"/> as an <see cref="HttpStatusCode"/> 
+        /// <paramref name="responseContent"/> contains an error, it will attempt to parse the <see cref="Error.Code"/> as an <see cref="HttpStatusCode"/> 
         /// and assign it to the response message.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -59,12 +59,8 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
 
             if (responseContent.Errors.Any())
             {
-                HttpStatusCode errorStatusCode;
-                if (!Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out errorStatusCode))
-                {
-                    errorStatusCode = HttpStatusCode.BadRequest;
-                }
-
+                var errorStatusCode = (HttpStatusCode) responseContent.Errors.First().HttpStatusCode;
+                
                 return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
 
@@ -75,7 +71,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
 
         /// <summary>
         /// Invokes the specified <paramref name="responseBuilder" /> action if <paramref name="responseContent" /> does not contain an error - returning the configured <see cref="HttpResponseMessage" />.
-        /// If <paramref name="responseContent" /> contains errors, the returned response with contain the error content and will attempt to parse the <see cref="Error.ErrorCode" /> as an
+        /// If <paramref name="responseContent" /> contains errors, the returned response with contain the error content and will attempt to parse the <see cref="Error.Code" /> as an
         /// <see cref="HttpStatusCode" /> and assign it to the response message.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -102,18 +98,14 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
             
             if (responseContent.Errors.Any())
             {
-                HttpStatusCode errorStatusCode;
-                if (!Enum.TryParse(responseContent.Errors.First().ErrorCode, true, out errorStatusCode))
-                {
-                    errorStatusCode = HttpStatusCode.BadRequest;
-                }
+                var errorStatusCode = (HttpStatusCode) responseContent.Errors.First().HttpStatusCode;
 
                 return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
 
             var response = setResponseContent
-                               ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent)
-                               : httpRequestMessage.CreateResponse(HttpStatusCode.OK);
+                ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent)
+                : httpRequestMessage.CreateResponse(HttpStatusCode.OK);
 
             responseBuilder.Invoke(responseContent.Data, response);
 

@@ -12,7 +12,7 @@
     {
         /// <summary>
         /// If <seealso cref="IResponseTransferObject{T}.Errors" /> exist, returns a new <see cref="IResponseTransferObject{T2}" /> instance with the current
-        /// <seealso cref="IResponseTransferObject{T}.Errors" />. Else, binds the <seealso cref="IResponseTransferObject{T}.Data" /> into the specified <paramref name="bindingFunction" />.
+        /// <seealso cref="IResponseTransferObject{T}.Errors" />. Else, binds the <seealso cref="IResponseTransferObject{T}.Data" /> into the specified <paramref name="bindFunc" />.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="T2">The type of the next <see cref="IResponseTransferObject{T2}" /> to return.</typeparam>
