@@ -64,8 +64,10 @@ namespace NContext.ErrorHandling
             SetErrorMessage(localizationKey, errorMessageParameters);
         }
 
+// ReSharper disable once UnusedMember.Local
         private ErrorBase()
-        {}
+        {
+        }
 
         /// <summary>
         /// Performs an implicit conversion from <see cref="NContext.ErrorHandling.ErrorBase"/> to <see cref="Error"/>.
@@ -108,7 +110,7 @@ namespace NContext.ErrorHandling
         /// <returns>Error instance.</returns>
         public static Error NullObject()
         {
-            return new Error((Int32)HttpStatusCode.BadRequest, String.Empty, Enumerable.Empty<String>());
+            return new Error((Int32)HttpStatusCode.InternalServerError, String.Empty, Enumerable.Empty<String>());
         }
 
         /// <summary>

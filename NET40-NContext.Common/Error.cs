@@ -22,7 +22,6 @@ namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
-    using System.Net;
     using System.Runtime.Serialization;
 
     /// <summary>
