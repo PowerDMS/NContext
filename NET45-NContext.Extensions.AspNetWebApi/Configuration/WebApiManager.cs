@@ -56,7 +56,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         {
             if (webApiConfiguration == null)
             {
-                throw new ArgumentNullException("webApiConfiguration");
+                webApiConfiguration = new WebApiConfiguration(null, null);
             }
 
             _HttpRoutes = new Lazy<IList<Route>>(() => new List<Route>());
