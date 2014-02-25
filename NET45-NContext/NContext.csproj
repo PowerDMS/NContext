@@ -333,7 +333,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NET45-NContext.Common\NContext.Common.csproj">
       <Project>{e467d2f4-d6fe-4ef8-b959-8d6561fda63d}</Project>
-      <Name>NContext.Common %28NET45\NContext.Common%29</Name>
+      <Name>NContext.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

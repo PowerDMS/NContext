@@ -56,7 +56,7 @@
   <ItemGroup>
     <ProjectReference Include="..\NET45-NContext\NContext.csproj">
       <Project>{7fdac597-cc5c-443f-b474-d14b6eb3db48}</Project>
-      <Name>NContext %28NET45\NContext%29</Name>
+      <Name>NContext</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

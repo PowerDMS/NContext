@@ -46,6 +46,6 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         /// <summary>
         /// Gets the <see cref="HttpSelfHostServer"/> instance if used with <see cref="WebApiManagerBuilder.ConfigureForSelfHosting"/>
         /// </summary>
-        HttpSelfHostServer SelfHostServer { get; }
+        HttpServer HttpServer { get; }
     }
 }

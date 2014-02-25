@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IRunWhenAWebApiRouteIsMapped.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
+// <copyright file="IConfigureOwin.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2014 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,22 +18,28 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Routing
+namespace NContext.Extensions.AspNetWebApi.Owin.Configuration
 {
     using System.ComponentModel.Composition;
 
+    using global::Owin;
+
     /// <summary>
-    /// Defines a role-interface which allows implementors to run when a Web API route is mapped.
+    /// Defines an extensibility point for configuring <see cref="IAppBuilder"/>.
     /// </summary>
-    /// <remarks></remarks>
     [InheritedExport]
-    public interface IRunWhenAWebApiRouteIsMapped
+    public interface IConfigureOwin
     {
         /// <summary>
-        /// Executes the action providing the specified route as an argument.
+        /// Gets the priority based upon the <see cref="PipelineStage"/>. By default, OMCs run at the last event (<see cref="PipelineStage.PreHandlerExecute"/>).
         /// </summary>
-        /// <param name="route">The route.</param>
-        /// <remarks></remarks>
-        void Run(Route route);
+        /// <value>The priority.</value>
+        PipelineStage Priority { get; }
+
+        /// <summary>
+        /// Called by NContext to support OWIN configuration.
+        /// </summary>
+        /// <param name="appBuilder">The application builder.</param>
+        void Configure(IAppBuilder appBuilder);
     }
 }

@@ -94,9 +94,7 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         {
             get
             {
-                return WebApiConfiguration.IsSelfHosted
-                           ? SelfHostServer.Configuration.Routes.AsEnumerable()
-                           : GlobalConfiguration.Configuration.Routes.AsEnumerable();
+                return HttpConfiguration.Routes;
             }
         }
 
@@ -108,17 +106,15 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
         {
             get
             {
-                return _WebApiConfiguration.IsSelfHosted
-                           ? _WebApiConfiguration.HttpSelfHostConfiguration
-                           : GlobalConfiguration.Configuration;
+                return CreateOrGetHttpConfiguration();
             }
         }
 
         /// <summary>
-        /// Gets the self host server.
+        /// Gets the HTTP server.
         /// </summary>
-        /// <value>The self host server.</value>
-        public HttpSelfHostServer SelfHostServer
+        /// <value>The HTTP server.</value>
+        public HttpServer HttpServer
         {
             get
             {
@@ -180,13 +176,13 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageWebApi>(this);
             CompositionContainer = applicationConfiguration.CompositionContainer;
-            
-            var webApiConfigurations = _CompositionContainer.GetExportedValues<IConfigureWebApi>();
+
             if (!WebApiConfiguration.IsSelfHosted && WebApiConfiguration.AspNetHttpConfigurationDelegate != null)
             {
                 WebApiConfiguration.AspNetHttpConfigurationDelegate.Invoke(HttpConfiguration);
             }
 
+            var webApiConfigurations = _CompositionContainer.GetExportedValues<IConfigureWebApi>();
             foreach (var webApiConfiguration in webApiConfigurations)
             {
                 webApiConfiguration.Configure(HttpConfiguration);
@@ -203,37 +199,38 @@ namespace NContext.Extensions.AspNetWebApi.Configuration
             IsConfigured = true;
         }
 
+        protected virtual HttpConfiguration CreateOrGetHttpConfiguration()
+        {
+            return _WebApiConfiguration.IsSelfHosted
+                ? _WebApiConfiguration.HttpSelfHostConfiguration
+                : GlobalConfiguration.Configuration;
+        }
+
         /// <summary>
         /// Registers the routes in the routing collection.
         /// </summary>
         protected virtual void CreateRoutes()
         {
-            var serviceRouteCreatedActions = CompositionContainer.GetExports<IRunWhenAWebApiRouteIsMapped>();
             if (WebApiConfiguration.IsSelfHosted)
             {
                 _HttpRoutes.Value.ForEach(
                     route =>
-                        {
-                            SelfHostServer.Configuration
-                                          .Routes
-                                          .MapHttpRoute(route.RouteName, route.RouteTemplate, route.Defaults, route.Constraints);
-
-                            serviceRouteCreatedActions.ForEach(createdAction => createdAction.Value.Run(route));
+                    {
+                        HttpConfiguration
+                            .Routes
+                            .MapHttpRoute(route.RouteName, route.RouteTemplate, route.Defaults, route.Constraints);
                         });
 
-                SelfHostServer.OpenAsync().Wait();
+                ((HttpSelfHostServer)HttpServer).OpenAsync().Wait();
             }
             else
             {
                 _HttpRoutes.Value.ForEach(
                     route =>
                     {
-                        GlobalConfiguration
-                            .Configuration
+                        HttpConfiguration
                             .Routes
                             .MapHttpRoute(route.RouteName, route.RouteTemplate, route.Defaults, route.Constraints);
-
-                        serviceRouteCreatedActions.ForEach(createdAction => createdAction.Value.Run(route));
                     });
             }
         }
