@@ -34,9 +34,8 @@
 
         protected override void Setup()
         {
-            Builder.RegisterComponent<IManageEvents>(
-                () =>
-                new EventManager(_ActivationProviderFactory.Invoke()));
+            Builder.ApplicationConfiguration
+                .RegisterComponent<IManageEvents>(() => new EventManager(_ActivationProviderFactory.Invoke()));
         }
     }
 }

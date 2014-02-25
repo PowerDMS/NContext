@@ -21,6 +21,7 @@
         public ApplicationConfigurationBuilder ConfigureForOwinSelfHost(IAppBuilder appBuilder)
         {
             _AppBuilder = appBuilder;
+            Setup();
 
             return Builder;
         }
