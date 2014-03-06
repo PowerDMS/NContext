@@ -1,5 +1,6 @@
 ﻿namespace NContext.Common.Tests.Specs
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -7,16 +8,16 @@
 
     using Ploeh.AutoFixture;
 
-    public class with_data_of_type_WhereArrayIterator : when_creating_a_ServiceResponse_with_enumerable_data
+    public class with_data_of_type_Dictionary : when_creating_a_ServiceResponse_with_data_of_type<IDictionary<Object, Object>>
     {
         Establish context = () =>
             {
                 var fixture = new Fixture();
-                Data = fixture.CreateMany<DummyData>().ToArray().Where(dd => dd.Id > 5);
+                Data = fixture.Create<IDictionary<Object, Object>>();
             };
 
         Because of = () => CreateServiceResponse();
 
-        It should_materialize_to_List = () => ServiceResponse.Data.GetType().ShouldEqual(typeof(List<DummyData>));
+        It should_have_the_same_underlying_data_type = () => ServiceResponse.Data.GetType().ShouldEqual(Data.GetType());
     }
 }

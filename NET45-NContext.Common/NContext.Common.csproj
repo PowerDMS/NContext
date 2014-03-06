@@ -97,6 +97,9 @@
     <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectIEnumerableExtensions.cs">
       <Link>Extensions\IResponseTransferObjectIEnumerableExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\TypeExtensions.cs">
+      <Link>Extensions\TypeExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\IMaybe.cs">
       <Link>IMaybe.cs</Link>
     </Compile>

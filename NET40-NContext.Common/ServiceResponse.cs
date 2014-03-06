@@ -23,6 +23,7 @@ namespace NContext.Common
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Linq;
     using System.Runtime.Serialization;
 
@@ -88,14 +89,8 @@ namespace NContext.Common
         {
             Errors = errors ?? Enumerable.Empty<Error>();
 
-            if (data is IEnumerable)
-            {
-                Data = CreateMaterializedEnumerable(data);
-            }
-            else
-            {
-                Data = (data != null) ? data : default(T);
-            }
+            var materializedData = MaterializeDataIfNeeded(data);
+            Data = (materializedData == null) ? default(T) : materializedData;
         }
         
         /// <summary>
@@ -169,28 +164,56 @@ namespace NContext.Common
             return serviceResponse.Data != null;
         }
 
-        private static T CreateMaterializedEnumerable(T data)
+        private static T MaterializeDataIfNeeded(T data)
         {
-            var dataType = data.GetType();
-
-            if ((!dataType.IsGenericTypeDefinition && !dataType.IsGenericType) || 
-                data is ICollection ||
-                !IsIQueryable(dataType))
+            if (typeof(T).IsValueType || data == null)
             {
                 return data;
             }
 
-            var innerType = dataType.GetGenericArguments().Last();
-            var listType = typeof(List<>).MakeGenericType(innerType);
+            var dataType = data.GetType();
+            if (!(data is IEnumerable) || 
+                !dataType.IsGenericType || 
+                IsDictionary(dataType))
+            {
+                return data;
+            }
 
-            return (T)Activator.CreateInstance(listType, data);
+            if (!IsQueryable(dataType) && !dataType.IsNestedPrivate)
+            {
+                return data;
+            }
+
+            // Get the last generic argument.
+            // .NET has several internal iterable types in LINQ that have multiple generic
+            // arguments.  The last is reserved for the actual type used for projection.
+            // ex. WhereSelectArrayIterator, WhereSelectEnumerableIterator, WhereSelectListIterator
+            var genericType = dataType.GetGenericArguments().Last();
+            if (dataType.GetGenericTypeDefinition() == typeof(Collection<>))
+            {
+                var collectionType = typeof(Collection<>).MakeGenericType(genericType);
+                return (T)collectionType.CreateInstance(data);
+            }
+
+            var listType = typeof(List<>).MakeGenericType(genericType);
+            return (T)listType.CreateInstance(data);
         }
 
-        private static Boolean IsIQueryable(Type type)
+        private static Boolean IsDictionary(Type type)
         {
             if (type == null) return false;
 
-            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>)) || 
+            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
+                   type.GetInterfaces()
+                       .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+        }
+
+        private static Boolean IsQueryable(Type type)
+        {
+            if (type == null) return false;
+
+            return
+                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>)) ||
                 type.GetInterfaces()
                     .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IQueryable<>));
         }

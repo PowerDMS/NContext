@@ -21,9 +21,28 @@
 namespace NContext.Common.Tests.Specs
 {
     using System;
-    using System.Collections.Generic;
 
-    public abstract class when_creating_a_ServiceResponse_with_enumerable_data : when_creating_a_ServiceResponse_with_data_of_type<IEnumerable<Object>>
+    using Machine.Specifications;
+
+    public abstract class when_creating_a_ServiceResponse_with_data_of_type<T>
     {
+        static Lazy<IResponseTransferObject<T>> _ServiceResponse;
+
+        Establish context =
+            () =>
+            _ServiceResponse =
+                new Lazy<IResponseTransferObject<T>>(() => new ServiceResponse<T>(Data));
+
+        protected static void CreateServiceResponse()
+        {
+            var x = _ServiceResponse.Value;
+        }
+
+        public static IResponseTransferObject<T> ServiceResponse
+        {
+            get { return _ServiceResponse.Value; }
+        } 
+
+        public static T Data { get; set; } 
     }
 }
