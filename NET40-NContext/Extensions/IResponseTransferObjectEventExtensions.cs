@@ -41,7 +41,7 @@ namespace NContext.Extensions
         {
             return EventManager.RaiseEvent<TEvent>(@event)
                                .ContinueWith(task => task.IsFaulted
-                                                         ? new ServiceResponse<T>(task.Exception.ToErrors())
+                                                         ? new ServiceResponse<T>(task.Exception.ToError())
                                                          : responseTransferObject).Result;
         }
     }

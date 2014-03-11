@@ -46,9 +46,9 @@ namespace NContext.Extensions.AutoMapper.Configuration
         /// and return a new <see cref="ServiceResponse{T2}" /> with errors.</returns>
         public static IResponseTransferObject<TTarget> Map<TSource, TTarget>(this IResponseTransferObject<TSource> responseTransferObject, Action<IMappingOperationOptions> mappingOperationOptions = null)
         {
-            if (responseTransferObject.Errors.Any())
+            if (responseTransferObject.Error != null)
             {
-                return new ServiceResponse<TTarget>(responseTransferObject.Errors);
+                return new ServiceResponse<TTarget>(responseTransferObject.Error);
             }
 
             return new ServiceResponse<TTarget>(Mapper.Map<TTarget>(responseTransferObject, mappingOperationOptions ?? (o => { })));

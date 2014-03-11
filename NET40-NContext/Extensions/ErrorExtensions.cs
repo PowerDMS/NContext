@@ -21,10 +21,7 @@
 namespace NContext.Extensions
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
     using System.Reflection;
-    using System.Text;
 
     using NContext.Common;
     using NContext.ErrorHandling;
@@ -34,20 +31,6 @@ namespace NContext.Extensions
     /// </summary>
     public static class ErrorExtensions
     {
-        /// <summary>
-        /// Return a string of all the error messages seperated by new lines.
-        /// </summary>
-        /// <param name="errors">The errors.</param>
-        /// <returns>String.</returns>
-        public static String ToMessage(this IEnumerable<Error> errors)
-        {
-            var stringBuilder = new StringBuilder();
-            errors.SelectMany(error => error.Messages)
-                  .ForEach(message => stringBuilder.AppendLine(message));
-
-            return stringBuilder.ToString();
-        }
-
         /// <summary>
         /// Returns the <paramref name="error"/> as a <typeparamref name="TException"/>.
         /// </summary>

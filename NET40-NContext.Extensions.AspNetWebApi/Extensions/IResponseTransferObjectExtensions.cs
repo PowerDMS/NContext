@@ -57,9 +57,9 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 throw new ArgumentNullException("httpRequestMessage");
             }
 
-            if (responseContent.Errors.Any())
+            if (responseContent.Error != null)
             {
-                var errorStatusCode = (HttpStatusCode) responseContent.Errors.First().HttpStatusCode;
+                var errorStatusCode = (HttpStatusCode) responseContent.Error.HttpStatusCode;
                 
                 return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }
@@ -96,9 +96,9 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 throw new ArgumentNullException("httpRequestMessage");
             }
             
-            if (responseContent.Errors.Any())
+            if (responseContent.Error != null)
             {
-                var errorStatusCode = (HttpStatusCode) responseContent.Errors.First().HttpStatusCode;
+                var errorStatusCode = (HttpStatusCode) responseContent.Error.HttpStatusCode;
 
                 return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
             }

@@ -20,7 +20,6 @@
 
 namespace NContext.Extensions.AspNetWebApi.Authentication
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net;
@@ -75,39 +74,29 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                 .ToMaybe()
                 .ToServiceResponse(() => AuthenticationError.ProviderNotFound())
                 .Bind(provider => provider.Authenticate(request)
-                                          .Fmap(principal =>
-                                              {
-                                                  // If we're hosted within IIS, set the HttpContext.Current.User
-                                                  if (HttpContext.Current != null)
-                                                  {
-                                                      HttpContext.Current.User = principal;
-                                                  }
+                    .Fmap(principal =>
+                        {
+                            // If we're hosted within IIS, set the HttpContext.Current.User
+                            if (HttpContext.Current != null)
+                            {
+                                HttpContext.Current.User = principal;
+                            }
 
-                                                  Thread.CurrentPrincipal = principal;
+                            Thread.CurrentPrincipal = principal;
 
-                                                  return base.SendAsync(request, cancellationToken);
-                                              }))
-                .CatchAndContinue(errors =>
+                            return base.SendAsync(request, cancellationToken);
+                        }))
+                .CatchAndContinue(error =>
                     {
                         var completionSource = new TaskCompletionSource<HttpResponseMessage>();
                         completionSource.SetResult(
                             request.CreateResponse(
-                                errors.MaybeFirst()
-                                      .Bind(GetHttpStatusCodeFromError)
-                                      .FromMaybe(HttpStatusCode.Unauthorized), new ServiceResponse<Unit>(errors)));
+                                (HttpStatusCode)error.HttpStatusCode,
+                                    new ServiceResponse<Unit>(error)));
 
                         return new ServiceResponse<Task<HttpResponseMessage>>(completionSource.Task);
                     })
                 .FromRight();
-        }
-
-        private IMaybe<HttpStatusCode> GetHttpStatusCodeFromError(Error error)
-        {
-            if (error == null) return new Nothing<HttpStatusCode>();
-
-            var statusCode = (HttpStatusCode) error.HttpStatusCode;
-
-            return statusCode.ToMaybe();
         }
     }
 }

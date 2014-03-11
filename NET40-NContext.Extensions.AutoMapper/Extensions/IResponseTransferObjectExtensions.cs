@@ -2,7 +2,6 @@
 {
     using System;
     using System.Diagnostics.Contracts;
-    using System.Linq;
 
     using global::AutoMapper;
 
@@ -26,9 +25,9 @@
         {
             Contract.Requires(source != null);
 
-            if (source.Errors.Any())
+            if (source.Error != null)
             {
-                return new ServiceResponse<TTarget>(source.Errors);
+                return new ServiceResponse<TTarget>(source.Error);
             }
 
             return new ServiceResponse<TTarget>(Mapper.Map<TSource, TTarget>(source.Data, mappingOperationOptions ?? (o => { })));

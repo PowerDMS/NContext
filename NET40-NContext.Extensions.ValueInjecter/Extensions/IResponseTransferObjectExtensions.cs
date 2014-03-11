@@ -22,7 +22,6 @@ namespace NContext.Extensions.ValueInjecter.Extensions
 {
     using System;
     using System.Diagnostics.Contracts;
-    using System.Linq;
 
     using NContext.Common;
 
@@ -82,9 +81,9 @@ namespace NContext.Extensions.ValueInjecter.Extensions
         {
             Contract.Requires(source != null);
 
-            if (source.Errors.Any())
+            if (source.Error != null)
             {
-                return new ServiceResponse<TTarget>(source.Errors);
+                return new ServiceResponse<TTarget>(source.Error);
             }
 
             return new ServiceResponse<TTarget>(source.Data.Inject().Using(valueInjection).Into(target, mapper == null ? null : mapper.Invoke(source.Data)));

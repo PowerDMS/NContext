@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponseTransferObject.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="AggregateError.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2014 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -22,24 +22,35 @@ namespace NContext.Common
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Runtime.Serialization;
 
     /// <summary>
-    /// Defines a data-transfer object contract used for functional composition.
+    /// Represents one or more errors that occur during application execution.
     /// </summary>
-    /// <typeparam name="T">Type of data to return.</typeparam>
-    /// <remarks></remarks>
-    public interface IResponseTransferObject<out T> : IDisposable
+    [DataContract]
+    public class AggregateError : Error
     {
         /// <summary>
-        /// Gets the data.
+        /// Initializes a new instance of the <see cref="AggregateError"/> class.
         /// </summary>
-        /// <remarks></remarks>
-        T Data { get; }
-        
-        /// <summary>
-        /// Gets the errors.
-        /// </summary>
-        /// <remarks></remarks>
-        Error Error { get; }
+        /// <param name="httpStatusCode">The HTTP status code.</param>
+        /// <param name="code">The code.</param>
+        /// <param name="errors">The errors.</param>
+        public AggregateError(Int32 httpStatusCode, String code, IEnumerable<Error> errors) 
+            : base(
+                httpStatusCode, 
+                code, 
+                errors.ToMaybe()
+                    .Bind(
+                        errorCollection => 
+                            errorCollection.SelectMany(e => e.Messages).ToMaybe())
+                    .FromMaybe(Enumerable.Empty<String>()))
+        {
+            Errors = errors;
+        }
+
+        [DataMember]
+        public IEnumerable<Error> Errors { get; private set; }
     }
 }

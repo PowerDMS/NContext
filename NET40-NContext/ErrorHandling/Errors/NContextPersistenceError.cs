@@ -91,7 +91,7 @@ namespace NContext.ErrorHandling.Errors
         /// <returns>NContextPersistenceError.</returns>
         public static NContextPersistenceError CommitFailed(Guid unitOfWorkId, String transactionIdentifier, TransactionAbortedException exception)
         {
-            return new NContextPersistenceError("CommitFailed", unitOfWorkId, transactionIdentifier, exception.ToErrors().ToMessage());
+            return new NContextPersistenceError("CommitFailed", unitOfWorkId, transactionIdentifier, String.Join(Environment.NewLine, exception.ToError().Messages));
         }
 
         /// <summary>

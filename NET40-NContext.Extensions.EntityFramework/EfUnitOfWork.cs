@@ -132,7 +132,7 @@ namespace NContext.Extensions.EntityFramework
                     }
                     catch (InvalidOperationException ioe)
                     {
-                        return new ServiceResponse<Unit>(ioe.ToErrors());
+                        return new ServiceResponse<Unit>(ioe.ToError());
                     }
                     catch (DbEntityValidationException eve)
                     {

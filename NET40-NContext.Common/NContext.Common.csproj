@@ -71,6 +71,7 @@
   </Choose>
   <!-- =================================================== -->
   <ItemGroup>
+    <Compile Include="AggregateError.cs" />
     <Compile Include="Error.cs" />
     <Compile Include="Extensions\HierarchicalDataExtensions.cs" />
     <Compile Include="Extensions\IListExtensions.cs" />

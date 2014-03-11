@@ -20,7 +20,6 @@
 
 namespace NContext.Extensions.EntityFramework
 {
-    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Validation;
     using System.Linq;
@@ -36,22 +35,22 @@ namespace NContext.Extensions.EntityFramework
     public class EfServiceResponse<T> : ServiceResponse<T>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
+        /// Initializes a new instance of the <see cref="EfServiceResponse{T}"/> class.
         /// </summary>
-        /// <param name="error">The error.</param>
+        /// <param name="data">The data.</param>
         /// <remarks></remarks>
-        public EfServiceResponse(ErrorBase error)
-            : this(new List<ErrorBase> { error })
+        public EfServiceResponse(T data)
+            : base(data)
         {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
         /// </summary>
-        /// <param name="errors">The errors.</param>
+        /// <param name="error">The error.</param>
         /// <remarks></remarks>
-        public EfServiceResponse(IEnumerable<ErrorBase> errors)
-            : base(TranslateErrorBaseToErrorCollection(errors))
+        public EfServiceResponse(ErrorBase error)
+            : base(error)
         {
         }
 
@@ -75,33 +74,15 @@ namespace NContext.Extensions.EntityFramework
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EfServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <remarks></remarks>
-        public EfServiceResponse(T data)
-            : base(data)
+        private static Error TranslateDbEntityValidationResultsToValidationErrors(IEnumerable<DbEntityValidationResult> validationResults)
         {
-        }
-
-        private static IEnumerable<Error> TranslateErrorBaseToErrorCollection(IEnumerable<ErrorBase> errors)
-        {
-            return errors.ToMaybe()
-                .Bind(e => e.Select(error => new Error((Int32)error.HttpStatusCode, error.GetType().Name, new List<String> { error.Message }))
-                    .ToMaybe())
-                .FromMaybe(Enumerable.Empty<Error>());
-        }
-
-        private static IEnumerable<ValidationError> TranslateDbEntityValidationResultsToValidationErrors(IEnumerable<DbEntityValidationResult> validationResults)
-        {
-            return validationResults.ToMaybe()
-                .Bind(results => 
-                    results.Select(validationResult => 
-                        new ValidationError(validationResult.Entry.Entity.GetType(),
-                            validationResult.ValidationErrors
-                                .Select(validationError => validationError.ErrorMessage))).ToMaybe())
-                .FromMaybe(Enumerable.Empty<ValidationError>());
+            return new AggregateError(
+                422, 
+                "ValidationErrors",
+                validationResults.Select(validationResult =>
+                    new ValidationError(
+                        validationResult.Entry.Entity.GetType(),
+                        validationResult.ValidationErrors.Select(validationError => validationError.ErrorMessage))));
         }
     }
 }

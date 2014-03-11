@@ -73,6 +73,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\NET40-NContext.Common\AggregateError.cs">
+      <Link>AggregateError.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\Error.cs">
       <Link>Error.cs</Link>
     </Compile>

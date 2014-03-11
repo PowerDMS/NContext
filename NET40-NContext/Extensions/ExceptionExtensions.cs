@@ -21,7 +21,6 @@
 namespace NContext.Extensions
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
 
@@ -32,41 +31,17 @@ namespace NContext.Extensions
     /// </summary>
     public static class ExceptionExtensions
     {
-        /// <summary>
-        /// Returns an error representing the exception.
-        /// </summary>
-        /// <param name="exception">The exception.</param>
-        /// <returns>Error instance.</returns>
-        public static IEnumerable<Error> ToErrors(this Exception exception)
-        {
-            return exception.FromHierarchy(e => e.InnerException)
-                .Select(ToError);
-        }
-
-        /// <summary>
-        /// Returns the <see cref="IEnumerable{Exception}" /> as an enumerable of <see cref="Error" />.
-        /// </summary>
-        /// <param name="exceptions">The exceptions.</param>
-        /// <returns>IEnumerable{Error}.</returns>
-        public static IEnumerable<Error> ToErrors(this IEnumerable<Exception> exceptions)
-        {
-            return exceptions.SelectMany(ToErrors);
-        }
-
-        /// <summary>
-        /// Returns the <see cref="AggregateException"/> as an enumerable of <see cref="Error"/>.
-        /// </summary>
-        /// <param name="aggregateException">The aggregate exception.</param>
-        /// <returns>IEnumerable{Error}.</returns>
-        public static IEnumerable<Error> ToErrors(this AggregateException aggregateException)
-        {
-            return new List<Error>().AddC(aggregateException.ToError())
-                .AddRangeC(aggregateException.InnerExceptions.ToErrors());
-        }
-
-        private static Error ToError(this Exception exception)
+        public static Error ToError(this Exception exception)
         {
             return new Error((Int32)HttpStatusCode.InternalServerError, exception.GetType().Name, new[] { exception.Message });
+        }
+
+        public static Error ToError(this AggregateException aggregateException)
+        {
+            return new AggregateError(
+                (Int32) HttpStatusCode.InternalServerError, 
+                aggregateException.GetType().Name,
+                aggregateException.InnerExceptions.Select(e => e.ToError()));
         }
     }
 }

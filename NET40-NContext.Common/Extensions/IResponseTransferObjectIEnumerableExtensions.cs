@@ -39,7 +39,6 @@ namespace NContext.Common
         /// <returns>IResponseTransferObject{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
         public static IResponseTransferObject<T> FirstResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            // TODO: (DG) Re-write this error!
             using (var enumerator = GetEnumerator(enumerable, predicate))
             {
                 if (!enumerator.MoveNext())
@@ -64,7 +63,6 @@ namespace NContext.Common
         /// <returns>IResponseTransferObject{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
         public static IResponseTransferObject<T> SingleResponse<T>(this IEnumerable<T> enumerable, Func<T, Boolean> predicate = null)
         {
-            // TODO: (DG) Re-write these errors!
             using (var enumerator = GetEnumerator(enumerable, predicate))
             {
                 if (!enumerator.MoveNext())

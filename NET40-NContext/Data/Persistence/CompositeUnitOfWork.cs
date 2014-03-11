@@ -25,6 +25,7 @@ namespace NContext.Data.Persistence
     using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Threading.Tasks;
     using System.Transactions;
 
@@ -130,15 +131,15 @@ namespace NContext.Data.Persistence
             {
                 try
                 {
-                    IEnumerable<Error> errors;
-                    if ((errors = unitOfWork.Commit().Errors).Any())
+                    Error error;
+                    if ((error = unitOfWork.Commit().Error) != null)
                     {
-                        return new ServiceResponse<Unit>(errors);
+                        return new ServiceResponse<Unit>(error);
                     }
                 }
                 catch (Exception exception)
                 {
-                    return new ServiceResponse<Unit>(exception.ToErrors());
+                    return new ServiceResponse<Unit>(exception.ToError());
                 }
             }
 
@@ -167,23 +168,23 @@ namespace NContext.Data.Persistence
                                 if (state.IsExceptional || state.ShouldExitCurrentIteration) return;
 
                                 unitOfWork.Commit()
-                                    .Catch(errors =>
+                                    .Catch(error =>
                                         {
                                             state.Break();
-                                            errors.ForEach(commitExceptions.Enqueue);
+                                            commitExceptions.Enqueue(error);
                                         });
                             }
                             catch (Exception exception)
                             {
                                 state.Break();
-                                exception.ToErrors().ForEach(commitExceptions.Enqueue);
+                                commitExceptions.Enqueue(exception.ToError());
 
                                 // TODO: (DG) Logging ...
                             }
                         });
 
             return commitExceptions.Any()
-                       ? new ServiceResponse<Unit>(commitExceptions.Select(error => error))
+                       ? new ServiceResponse<Unit>(new AggregateError((Int32)HttpStatusCode.InternalServerError, GetType().Name, commitExceptions.Select(error => error)))
                        : new ServiceResponse<Unit>(default(Unit));
         }
 

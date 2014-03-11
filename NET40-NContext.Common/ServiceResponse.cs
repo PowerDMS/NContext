@@ -37,7 +37,7 @@ namespace NContext.Common
     {
         private T _Data;
 
-        private IEnumerable<Error> _Errors;
+        private Error _Error;
         
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
@@ -55,20 +55,10 @@ namespace NContext.Common
         /// <param name="error">The error.</param>
         /// <remarks></remarks>
         public ServiceResponse(Error error)
-            : this(new List<Error> { error })
+            : this(default(T), error)
         {
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse&lt;T&gt;"/> class.
-        /// </summary>
-        /// <param name="errors">The response errors.</param>
-        /// <remarks></remarks>
-        public ServiceResponse(IEnumerable<Error> errors)
-            : this(default(T), errors)
-        {
-        }
-
+        
         /// <summary>
         /// For deserialization purposes only.
         /// </summary>
@@ -76,7 +66,7 @@ namespace NContext.Common
         protected ServiceResponse()
         {
             Data = default(T);
-            Errors = Enumerable.Empty<Error>();
+            Error = null;
         }
 
         /// <summary>
@@ -85,9 +75,9 @@ namespace NContext.Common
         /// <param name="data">The data.</param>
         /// <param name="errors">The errors.</param>
         /// <remarks></remarks>
-        private ServiceResponse(T data, IEnumerable<Error> errors)
+        private ServiceResponse(T data, Error error)
         {
-            Errors = errors ?? Enumerable.Empty<Error>();
+            Error = error;
 
             var materializedData = MaterializeDataIfNeeded(data);
             Data = (materializedData == null) ? default(T) : materializedData;
@@ -126,15 +116,15 @@ namespace NContext.Common
         /// </summary>
         /// <remarks></remarks>
         [DataMember(Order = 2)]
-        public IEnumerable<Error> Errors
+        public Error Error
         {
             get
             {
-                return _Errors;
+                return _Error;
             }
             protected set
             {
-                _Errors = value;
+                _Error = value;
             }
         }
 
@@ -151,7 +141,7 @@ namespace NContext.Common
                 return false;
             }
 
-            if (serviceResponse.Errors.Any())
+            if (serviceResponse.Error != null)
             {
                 return false;
             }

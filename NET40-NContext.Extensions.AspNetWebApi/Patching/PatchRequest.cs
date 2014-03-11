@@ -24,6 +24,7 @@ namespace NContext.Extensions.AspNetWebApi.Patching
     using System.Collections.Generic;
     using System.ComponentModel;
     using System.Linq;
+    using System.Net;
 
     using NContext.Common;
 
@@ -128,7 +129,7 @@ namespace NContext.Extensions.AspNetWebApi.Patching
             }
 
             return errors.Any()
-                       ? new ServiceResponse<PatchResult<TDto>>(errors)
+                       ? new ServiceResponse<PatchResult<TDto>>(new AggregateError((Int32)HttpStatusCode.BadRequest, "PatchError", errors))
                        : new ServiceResponse<PatchResult<TDto>>(new PatchResult<TDto>(objectToPatch, patchOperations));
         }
 
@@ -145,6 +146,4 @@ namespace NContext.Extensions.AspNetWebApi.Patching
             }
         }
     }
-
-
 }
