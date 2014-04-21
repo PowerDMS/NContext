@@ -67,6 +67,14 @@ namespace NContext.Configuration
                 }
                 catch (ReflectionTypeLoadException)
                 {
+                    // Ignore: could not load the assembly.
+                }
+                catch (TargetInvocationException)
+                {
+                    // Ignore: probably tried to create an AssemblyCatalog with a non-dotNet binary.
+                }
+                catch (Exception)
+                {
                     // Ignore exception
                 }
             }

@@ -52,7 +52,10 @@ namespace NContext.Configuration
             _CompositionDirectories = new HashSet<String>();
             _CompositionFileInfoConstraints = new HashSet<Predicate<FileInfo>>
                 {
-                    new Predicate<FileInfo>(fileInfo => fileInfo.Name.StartsWith("NContext", StringComparison.OrdinalIgnoreCase))
+                    new Predicate<FileInfo>(
+                        fileInfo => 
+                            fileInfo.Name.StartsWith("NContext", StringComparison.OrdinalIgnoreCase) &&
+                            fileInfo.Extension.Equals(".dll", StringComparison.OrdinalIgnoreCase))
                 };
         }
 
