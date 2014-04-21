@@ -24,6 +24,7 @@ namespace NContext.Configuration
     using System.Collections.Generic;
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
+    using System.IO;
     using System.Linq;
 
     using NContext.Common;
@@ -40,7 +41,7 @@ namespace NContext.Configuration
 
         private readonly ISet<String> _CompositionDirectories;
 
-        private readonly ISet<Predicate<String>> _CompositionFileNameConstraints;
+        private readonly ISet<Predicate<FileInfo>> _CompositionFileInfoConstraints;
 
         private CompositionContainer _CompositionContainer;
 
@@ -49,9 +50,9 @@ namespace NContext.Configuration
         protected ApplicationConfigurationBase()
         {
             _CompositionDirectories = new HashSet<String>();
-            _CompositionFileNameConstraints = new HashSet<Predicate<String>>
+            _CompositionFileInfoConstraints = new HashSet<Predicate<FileInfo>>
                 {
-                    new Predicate<String>(fileName => fileName.StartsWith("NContext", StringComparison.OrdinalIgnoreCase))
+                    new Predicate<FileInfo>(fileInfo => fileInfo.Name.StartsWith("NContext", StringComparison.OrdinalIgnoreCase))
                 };
         }
 
@@ -98,16 +99,16 @@ namespace NContext.Configuration
         /// Adds the specified conditions for application composition.
         /// </summary>
         /// <param name="directories">The directories.</param>
-        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <param name="fileInfoConstraints">The file name constraints.</param>
         /// <remarks></remarks>
-        public void AddCompositionConditions(IEnumerable<String> directories, IEnumerable<Predicate<String>> fileNameConstraints)
+        public void AddCompositionConditions(IEnumerable<String> directories, IEnumerable<Predicate<FileInfo>> fileInfoConstraints)
         {
             if (!ISetExtensions.AddRange(_CompositionDirectories, directories.Distinct()))
             {
                 throw new Exception("NContext was unable to add the specified composition directories.");
             }
 
-            if (!_CompositionFileNameConstraints.AddRange(fileNameConstraints))
+            if (!_CompositionFileInfoConstraints.AddRange(fileInfoConstraints))
             {
                 throw new Exception("NContext was unable to add all the specified composition file name constraints. Possible duplicate constraints?");
             }
@@ -174,7 +175,7 @@ namespace NContext.Configuration
                     return;
                 }
 
-                _CompositionContainer = CreateCompositionContainer(_CompositionDirectories, _CompositionFileNameConstraints);
+                _CompositionContainer = CreateCompositionContainer(_CompositionDirectories, _CompositionFileInfoConstraints);
                 if (_CompositionContainer == null)
                 {
                     throw new Exception("NContext requires a composition container.");
@@ -197,6 +198,6 @@ namespace NContext.Configuration
             }
         }
 
-        protected abstract CompositionContainer CreateCompositionContainer(ISet<String> compositionDirectories, ISet<Predicate<String>> compositionFileNameConstraints);
+        protected abstract CompositionContainer CreateCompositionContainer(ISet<String> compositionDirectories, ISet<Predicate<FileInfo>> fileInfoConstraints);
     }
 }

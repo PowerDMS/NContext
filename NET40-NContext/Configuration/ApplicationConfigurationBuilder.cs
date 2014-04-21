@@ -65,17 +65,17 @@ namespace NContext.Configuration
         /// <summary>
         /// Composes the application for web environments. This will use the <see cref="HttpRuntime.BinDirectory"/> for runtime composition.
         /// </summary>
-        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <param name="fileInfoConstraints">The file info constraints.</param>
         /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public ApplicationConfigurationBuilder ComposeForWeb(params Predicate<String>[] fileNameConstraints)
+        public ApplicationConfigurationBuilder ComposeForWeb(params Predicate<FileInfo>[] fileInfoConstraints)
         {
             if (HttpContext.Current == null)
             {
                 throw new InvalidOperationException("HttpContext is null. This method can only be used within a web application.");
             }
 
-            ComposeWith(new[] { HttpRuntime.BinDirectory }, fileNameConstraints);
+            ComposeWith(new[] { HttpRuntime.BinDirectory }, fileInfoConstraints);
 
             return this;
         }
@@ -84,16 +84,16 @@ namespace NContext.Configuration
         /// Composes the application using either the entry assembly location 
         /// or <see cref="AppDomain.CurrentDomain"/> BaseDirectory for runtime composition.
         /// </summary>
-        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <param name="fileInfoConstraints">The file info constraints.</param>
         /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public ApplicationConfigurationBuilder ComposeWith(params Predicate<String>[] fileNameConstraints)
+        public ApplicationConfigurationBuilder ComposeWith(params Predicate<FileInfo>[] fileInfoConstraints)
         {
             var applicationLocation = Assembly.GetEntryAssembly() == null
                                           ? AppDomain.CurrentDomain.BaseDirectory
                                           : Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
 
-            ComposeWith(new[] { applicationLocation }, fileNameConstraints);
+            ComposeWith(new[] { applicationLocation }, fileInfoConstraints);
 
             return this;
         }
@@ -103,12 +103,12 @@ namespace NContext.Configuration
         /// be used in conjunction with its overload and <seealso cref="ComposeForWeb"/>.
         /// </summary>
         /// <param name="directories">The directories.</param>
-        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <param name="fileInfoConstraints">The file info constraints.</param>
         /// <returns>Current <see cref="ApplicationComponentBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public ApplicationConfigurationBuilder ComposeWith(IEnumerable<String> directories, params Predicate<String>[] fileNameConstraints)
+        public ApplicationConfigurationBuilder ComposeWith(IEnumerable<String> directories, params Predicate<FileInfo>[] fileInfoConstraints)
         {
-            _ApplicationConfiguration.AddCompositionConditions(directories, fileNameConstraints);
+            _ApplicationConfiguration.AddCompositionConditions(directories, fileInfoConstraints);
 
             return this;
         }

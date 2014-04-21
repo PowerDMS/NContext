@@ -39,9 +39,9 @@ namespace NContext.Configuration
         /// Initializes a new instance of the <see cref="SafeDirectoryCatalog"/> class.
         /// </summary>
         /// <param name="directories">The directories.</param>
-        /// <param name="fileNameConstraints">The file name constraints.</param>
+        /// <param name="fileInfoConstraints">The file info constraints.</param>
         /// <remarks></remarks>
-        public SafeDirectoryCatalog(IEnumerable<String> directories, IEnumerable<Predicate<String>> fileNameConstraints)
+        public SafeDirectoryCatalog(IEnumerable<String> directories, IEnumerable<Predicate<FileInfo>> fileInfoConstraints)
         {
             var assemblyDirectories = directories.ToList();
             if (!assemblyDirectories.All(Directory.Exists))
@@ -51,18 +51,15 @@ namespace NContext.Configuration
 
             _Catalog = new AggregateCatalog();
             var files = assemblyDirectories.SelectMany(
-                directory =>
-                {
-                    return 
-                        Directory.EnumerateFiles(directory, "*.dll", SearchOption.AllDirectories)
-                                 .Where(filePath => fileNameConstraints.Any(predicate => predicate(Path.GetFileName(filePath))));
-                }).Distinct();
+                directory => Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories)
+                    .Select(filePath => new FileInfo(filePath))
+                    .Where(fileInfo => fileInfoConstraints.Any(predicate => predicate(fileInfo)))).Distinct();
 
             foreach (var file in files)
             {
                 try
                 {
-                    var assemblyCatalog = new AssemblyCatalog(file);
+                    var assemblyCatalog = new AssemblyCatalog(file.FullName);
                     if (assemblyCatalog.Parts.Any())
                     {
                         _Catalog.Catalogs.Add(assemblyCatalog);
