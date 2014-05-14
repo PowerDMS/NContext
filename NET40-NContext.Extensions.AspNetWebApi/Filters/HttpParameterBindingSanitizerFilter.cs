@@ -23,10 +23,15 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
 
+    using Microsoft.FSharp.Core;
+
+    using NContext.Common;
+    using NContext.Extensions.AspNetWebApi.Exceptions;
     using NContext.Text;
 
     /// <summary>
@@ -72,20 +77,26 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             {
                 return;
             }
-            
-            actionContext.ActionDescriptor
-                .ActionBinding
-                .ParameterBindings
-                .Where(pb => pb.Descriptor.ParameterType == typeof(String) || pb.WillReadBody)
-                .AsParallel()
-                .ForAll(parameterBinding =>
+
+            try
+            {
+                actionContext.ActionDescriptor
+                    .ActionBinding
+                    .ParameterBindings
+                    .Where(pb => pb.Descriptor.ParameterType == typeof (String) || pb.WillReadBody)
+                    .AsParallel()
+                    .ForAll(parameterBinding =>
                     {
-                        if (parameterBinding.Descriptor.ParameterType == typeof(String))
+                        if (parameterBinding.Descriptor.ParameterType == typeof (String))
                         {
-                            if (!String.IsNullOrWhiteSpace((String)actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]))
+                            if (
+                                !String.IsNullOrWhiteSpace(
+                                    (String) actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]))
                             {
                                 actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName] =
-                                    SanitizeString((String)actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]);
+                                    SanitizeString(
+                                        (String)
+                                            actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]);
                             }
                         }
                         else
@@ -93,6 +104,23 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                             SanitizeObjectGraph(actionContext.ActionArguments[parameterBinding.Descriptor.ParameterName]);
                         }
                     });
+            }
+            catch (SanitizationException sanitizationException)
+            {
+                var response = actionContext.Request.CreateResponse(
+                    (HttpStatusCode) 422,
+                    new ServiceResponse<Unit>(sanitizationException.ToError()));
+
+                actionContext.Response = response;
+            }
+            catch (Exception e)
+            {
+                var response = actionContext.Request.CreateResponse(
+                    HttpStatusCode.InternalServerError,
+                    new ServiceResponse<Unit>(e.ToError()));
+
+                actionContext.Response = response;
+            }
         }
 
         protected virtual String SanitizeString(String textToSanitize)

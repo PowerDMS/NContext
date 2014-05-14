@@ -40,7 +40,7 @@
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -119,6 +119,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>HttpParameterValidationError.resx</DependentUpon>
     </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Exceptions\SanitizationException.cs">
+      <Link>Exceptions\SanitizationException.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Extensions\IResponseTransferObjectExtensions.cs">
       <Link>Extensions\IResponseTransferObjectExtensions.cs</Link>
     </Compile>
@@ -157,6 +160,12 @@
     </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Routing\Route.cs">
       <Link>Routing\Route.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Serialization\DictionaryConverter.cs">
+      <Link>Serialization\DictionaryConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Serialization\PatchRequestConverter.cs">
+      <Link>Serialization\PatchRequestConverter.cs</Link>
     </Compile>
     <Compile Include="Configuration\WebApiManager.cs" />
   </ItemGroup>

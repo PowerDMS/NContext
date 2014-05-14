@@ -29,6 +29,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
+    using NContext.Extensions.AspNetWebApi.Exceptions;
     using NContext.Text;
 
     /// <summary>
@@ -55,7 +56,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
         /// Traverses the specified object graph looking for all strings to be sanitized by <see cref="ISanitizeText"/>.
         /// </summary>
         /// <param name="objectToSanitize">The object to sanitize.</param>
-        public void Sanitize(Object objectToSanitize)
+        public virtual void Sanitize(Object objectToSanitize)
         {
             if (objectToSanitize == null || IsTerminalObject(objectToSanitize.GetType()))
             {
@@ -106,103 +107,192 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                 idGenerator.HasId(propertyValue, out propertyValueHasId) == 0)
                          select new Node(currentItem.Value, propertyValue, property))
                          .ForEach(stack.Push);
+
+                        continue;
                     }
-                    else if (IsDictionary(currentItemType))
+
+                    if (IsDictionary(currentItemType))
                     {
                         var genericDictionaryInterface =
                             currentItemType.IsGenericType &&
                             currentItemType.GetGenericTypeDefinition() == typeof(IDictionary<,>)
                                 ? currentItemType
                                 : currentItemType.GetInterfaces()
-                                                 .Single(
-                                                     interfaceType =>
-                                                     interfaceType.IsGenericType &&
-                                                     interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+                                    .SingleOrDefault(
+                                        interfaceType =>
+                                            interfaceType.IsGenericType &&
+                                            interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
 
-                        var genericDictionaryValueType = genericDictionaryInterface.GetGenericArguments().Last();
-                        if (genericDictionaryValueType == typeof(String))
+                        if (genericDictionaryInterface != null)
                         {
-                            sanitizableNodes.Add(currentItem);
+                            ProcessGenericDictionary(genericDictionaryInterface, sanitizableNodes, currentItem, currentItemType, stack);
+                            continue;
                         }
-                        else if (genericDictionaryValueType == typeof(Object))
-                        {
-                            sanitizableNodes.Add(currentItem);
-                            var dictionary = ((IDictionary)currentItem.Value);
-                            var enumerator = dictionary.GetEnumerator();
-                            while (enumerator.MoveNext())
-                            {
-                                if (enumerator.Value != null && !IsTerminalObject(enumerator.Value.GetType()))
-                                {
-                                    stack.Push(new Node(null, enumerator.Value, null));
-                                }
-                            }
-                        }
-                        else if (!IsTerminalObject(genericDictionaryValueType))
-                        {
-                            var dictionary = ((IDictionary)currentItem.Value);
-                            var enumerator = dictionary.GetEnumerator();
-                            while (enumerator.MoveNext())
-                            {
-                                stack.Push(new Node(currentItem.Parent, enumerator.Value, currentItem.PropertyInfo));
-                            }
-                        }
+
+                        throw new NotSupportedException(
+                            "ObjectGraphSanitizer does not support non-generic dictionaries.");
                     }
-                    else if (IsEnumerable(currentItemType))
+
+                    if (IsEnumerable(currentItemType))
                     {
                         var genericEnumerableInterface =
                             currentItemType.IsGenericType &&
                             currentItemType.GetGenericTypeDefinition() == typeof(IEnumerable<>)
                                 ? currentItemType
                                 : currentItemType.GetInterfaces()
-                                                 .Single(
-                                                     interfaceType =>
-                                                     interfaceType.IsGenericType &&
-                                                     interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+                                    .SingleOrDefault(
+                                        interfaceType =>
+                                            interfaceType.IsGenericType &&
+                                            interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
 
-                        var genericArgumentType = genericEnumerableInterface.GetGenericArguments().Single();
-                        if (genericArgumentType == typeof(String))
+                        if (genericEnumerableInterface != null)
                         {
-                            sanitizableNodes.Add(currentItem);
+                            ProcessGenericEnumerable(genericEnumerableInterface, sanitizableNodes, currentItem, stack);
+                            continue;
                         }
-                        else if (genericArgumentType == typeof(Object))
-                        {
-                            sanitizableNodes.Add(currentItem);
-                            ((IEnumerable)currentItem.Value)
-                                .Cast<Object>()
-                                .Where(element => element != null && !IsTerminalObject(element.GetType()))
-                                .Select(element => new Node(null, element, null))
-                                .ForEach(stack.Push);
-                        }
-                        else if (!IsTerminalObject(genericArgumentType))
-                        {
-                            ((IEnumerable)currentItem.Value)
-                                .Cast<Object>()
-                                .Select(item => new Node(null, item, null))
-                                .ForEach(stack.Push);
-                        }
+
+                        throw new NotSupportedException(
+                            "ObjectGraphSanitizer does not support non-generic enumerables.");
                     }
+
+                    throw new SanitizationException(String.Format("ObjectGraphSanitizer could not handle the object type: {0}", currentItemType));
                 }
-                else if (currentItem.Parent != null && 
-                         currentItem.PropertyInfo != null)
+
+                if (currentItem.Parent != null && currentItem.PropertyInfo != null)
                 {
                     sanitizableNodes.Add(currentItem);
+                    continue;
+                }
+
+                throw new SanitizationException(String.Format("ObjectGraphSanitizer could not handle the object type: {0}", currentItemType));
+            }
+
+            SanitizeNodes(sanitizableNodes);
+        }
+
+        private void ProcessGenericEnumerable(
+            Type genericEnumerableInterface, 
+            HashSet<Node> sanitizableNodes, 
+            Node currentItem,
+            Stack<Node> stack)
+        {
+            var genericArgumentType = genericEnumerableInterface.GetGenericArguments().Single();
+            if (genericArgumentType == typeof (String))
+            {
+                sanitizableNodes.Add(currentItem);
+            }
+            else if (genericArgumentType == typeof (Object))
+            {
+                // BUG: (DG) You can't assume all objects that implement IEnumerable<> also implement IEnumerable
+                sanitizableNodes.Add(currentItem);
+                ((IEnumerable) currentItem.Value)
+                    .Cast<Object>()
+                    .Where(element => element != null && !IsTerminalObject(element.GetType()))
+                    .Select(element => new Node(null, element, null))
+                    .ForEach(stack.Push);
+            }
+            else if (!IsTerminalObject(genericArgumentType))
+            {
+                ((IEnumerable) currentItem.Value)
+                    .Cast<Object>()
+                    .Select(item => new Node(null, item, null))
+                    .ForEach(stack.Push);
+            }
+            else
+            {
+                throw new SanitizationException(
+                    String.Format(
+                        "ObjectGraphSanitizer could not handle the object type: {0}",
+                        genericArgumentType.FullName));
+            }
+        }
+
+        private void ProcessGenericDictionary(
+            Type genericDictionaryInterface, 
+            HashSet<Node> sanitizableNodes, 
+            Node currentItem,
+            Type currentItemType, 
+            Stack<Node> stack)
+        {
+            var genericDictionaryValueType = genericDictionaryInterface.GetGenericArguments().Last();
+            if (genericDictionaryValueType == typeof (String))
+            {
+                sanitizableNodes.Add(currentItem);
+                return;
+            }
+            
+            if (genericDictionaryValueType == typeof (Object))
+            {
+                sanitizableNodes.Add(currentItem);
+                if (currentItemType.Implements<IDictionary>())
+                {
+                    var dictionary = ((IDictionary)currentItem.Value);
+                    var enumerator = dictionary.GetEnumerator();
+                    while (enumerator.MoveNext())
+                    {
+                        if (enumerator.Value != null && !IsTerminalObject(enumerator.Value.GetType()))
+                        {
+                            stack.Push(new Node(null, enumerator.Value, null));
+                        }
+                    }
+
+                    return;
+                }
+
+                if (currentItem.Value != null)
+                {
+                    throw new NotSupportedException(
+                        String.Format("ObjectGraphSanitizer does not support dictionaries that do not implement IDictionary. Type '{0}' is unsupported.", currentItemType));
                 }
             }
 
+            if (!IsTerminalObject(genericDictionaryValueType))
+            {
+                if (currentItemType.Implements<IDictionary>())
+                {
+                    var dictionary = ((IDictionary) currentItem.Value);
+                    var enumerator = dictionary.GetEnumerator();
+                    while (enumerator.MoveNext())
+                    {
+                        stack.Push(new Node(currentItem.Parent, enumerator.Value, currentItem.PropertyInfo));
+                    }
+
+                    return;
+                }
+
+                if (currentItem.Value != null)
+                {
+                    throw new SanitizationException(
+                        String.Format(
+                            "ObjectGraphSanitizer could not handle the object type: {0}",
+                            genericDictionaryValueType.FullName));
+                }
+            }
+
+            throw new SanitizationException(
+                String.Format(
+                    "ObjectGraphSanitizer could not handle the object type: {0}",
+                    genericDictionaryValueType.FullName));
+        }
+
+        protected virtual void SanitizeNodes(ISet<Node> sanitizableNodes)
+        {
             Parallel.ForEach(
                 sanitizableNodes,
                 _ParallelOptions,
                 node =>
                 {
                     var nodeValueType = node.PropertyInfo == null
-                                            ? node.Value.GetType()
-                                            : node.PropertyInfo.PropertyType;
+                        ? node.Value.GetType()
+                        : node.PropertyInfo.PropertyType;
 
                     if (IsTerminalObject(nodeValueType) && node.Parent != null && node.PropertyInfo != null)
                     {
                         node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.SanitizeHtmlFragment((String)node.Value), null);
+                        return;
                     }
-                    else if (IsDictionary(nodeValueType))
+
+                    if (IsDictionary(nodeValueType))
                     {
                         var dictionary = ((IDictionary)node.Value);
                         var keyList = new List<Object>();
@@ -210,65 +300,76 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                         var enumerator = dictionary.GetEnumerator();
                         while (enumerator.MoveNext())
                         {
-                            var entry = (DictionaryEntry) enumerator.Current;
+                            var entry = (DictionaryEntry)enumerator.Current;
                             if (entry.Value == null)
                             {
                                 continue;
                             }
 
-                            var entryValueType = entry.Value.GetType();
-                            if (entryValueType == typeof(String) && !String.IsNullOrWhiteSpace(entry.Value as String))
+                            if (entry.Value is String && !String.IsNullOrWhiteSpace(entry.Value as String))
                             {
                                 keyList.Add(entry.Key);
                             }
                         }
 
+                        // You cannot modify a collection while iterating through it so 
+                        // we must loop through all keys we found with string values.
                         foreach (var key in keyList)
                         {
                             dictionary[key] = _TextSanitizer.SanitizeHtmlFragment((String)dictionary[key]);
                         }
+
+                        return;
                     }
-                    else
+
+                    if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<String> != null)
                     {
-                        if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<String> != null)
+                        var enumerable = (IList<String>)node.Value;
+                        for (var j = 0; j < enumerable.Count; j++)
                         {
-                            var enumerable = (IList<String>)node.Value;
-                            for (var j = 0; j < enumerable.Count; j++)
+                            if (!String.IsNullOrWhiteSpace(enumerable[j]))
                             {
-                                if (!String.IsNullOrWhiteSpace(enumerable[j]))
-                                {
-                                    enumerable[j] = _TextSanitizer.SanitizeHtmlFragment(enumerable[j]);
-                                }
+                                enumerable[j] = _TextSanitizer.SanitizeHtmlFragment(enumerable[j]);
                             }
                         }
-                        else if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<Object> != null)
-                        {
-                            var enumerable = (IList<Object>)node.Value;
-                            for (var j = 0; j < enumerable.Count; j++)
-                            {
-                                if (enumerable[j] is String && !String.IsNullOrWhiteSpace(enumerable[j] as String))
-                                {
-                                    enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
-                                }
-                            }
-                        }
-                        else if (node.Parent != null && node.PropertyInfo != null)
-                        {
-                            var sanitizedStringCollection =
-                                node.PropertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(List<>)
-                                    ? (ICollection<String>)new List<String>()
-                                    : (ICollection<String>)new Collection<String>();
 
-                            ((IEnumerable<String>) node.Value)
-                                .ForEach(
-                                    value =>
-                                    sanitizedStringCollection.Add(String.IsNullOrWhiteSpace(value)
-                                                                        ? value
-                                                                        : _TextSanitizer.SanitizeHtmlFragment(value)));
-
-                            node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection, null);
-                        }
+                        return;
                     }
+
+                    if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<Object> != null)
+                    {
+                        var enumerable = (IList<Object>)node.Value;
+                        for (var j = 0; j < enumerable.Count; j++)
+                        {
+                            if (enumerable[j] is String && !String.IsNullOrWhiteSpace(enumerable[j] as String))
+                            {
+                                enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
+                            }
+                        }
+
+                        return;
+                    }
+
+                    if (node.Parent != null && node.PropertyInfo != null)
+                    {
+                        var sanitizedStringCollection =
+                            node.PropertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(List<>)
+                                ? (ICollection<String>)new List<String>()
+                                : (ICollection<String>)new Collection<String>();
+
+                        ((IEnumerable<String>)node.Value)
+                            .ForEach(
+                                value =>
+                                    sanitizedStringCollection.Add(String.IsNullOrWhiteSpace(value)
+                                        ? value
+                                        : _TextSanitizer.SanitizeHtmlFragment(value)));
+
+                        node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection, null);
+
+                        return;
+                    }
+
+                    throw new SanitizationException(String.Format("ObjectGraphSanitizer was unable to sanitize node: {0}", node.ToString()));
                 });
         }
 
@@ -276,9 +377,10 @@ namespace NContext.Extensions.AspNetWebApi.Filters
         {
             if (type == null) return false;
 
-            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
+            return  (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
                    type.GetInterfaces()
-                       .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+                       .Any(interfaceType => (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
+                                             (interfaceType == typeof(IDictionary)));
         }
 
         private Boolean IsEnumerable(Type type)
@@ -288,7 +390,8 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             return 
                 (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IEnumerable<>)) || 
                 type.GetInterfaces()
-                    .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>));
+                    .Any(interfaceType => (interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IEnumerable<>)) ||
+                                          (interfaceType == typeof(IEnumerable)));
         }
 
         private Boolean IsTerminalObject(Type type)
@@ -306,7 +409,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                    type == typeof(TimeSpan);
         }
 
-        private class Node : IEquatable<Node>
+        protected class Node : IEquatable<Node>
         {
             private readonly Object _Parent;
 
@@ -409,6 +512,15 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     hashCode = (hashCode*397) ^ (_PropertyInfo != null ? _PropertyInfo.GetHashCode() : 0);
                     return hashCode;
                 }
+            }
+
+            public override string ToString()
+            {
+                return String.Format(
+                    "ParentInstanceType: {0}, PropertyName: {1}, PropertyValue {2}",
+                    Parent.GetType().FullName,
+                    PropertyInfo.Name,
+                    Value);
             }
         }
     }

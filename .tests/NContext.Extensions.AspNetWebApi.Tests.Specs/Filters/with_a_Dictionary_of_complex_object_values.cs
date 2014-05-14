@@ -12,19 +12,19 @@
     public class with_a_Dictionary_of_complex_object_values : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
-            {
-                TextSanitizer = Mock.Create<ISanitizeText>();
+        {
+            TextSanitizer = Mock.Create<ISanitizeText>();
 
-                Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
-                    .Returns(_SanitizedValue);
+            Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
+                .Returns(_SanitizedValue);
 
-                _Data = new Dictionary<Int32, DummyBlogAuthor>
-                    {
-                        { 0, new DummyBlogAuthor{ AuthorId = Guid.Empty, FirstName = "Daniel", LastName = "Gioulakis", Email = null } },
-                        { 1, new DummyBlogAuthor() },
-                        { 2, null }
-                    };
-            };
+            _Data = new Dictionary<Int32, DummyBlogAuthor>
+                {
+                    { 0, new DummyBlogAuthor{ AuthorId = Guid.Empty, FirstName = "Daniel", LastName = "Gioulakis", Email = null } },
+                    { 1, new DummyBlogAuthor() },
+                    { 2, null }
+                };
+        };
 
         Because of = () => Sanitize(_Data);
 
