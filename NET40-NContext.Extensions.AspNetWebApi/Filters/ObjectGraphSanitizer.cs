@@ -129,8 +129,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                             continue;
                         }
 
-                        throw new NotSupportedException(
-                            "ObjectGraphSanitizer does not support non-generic dictionaries.");
+                        throw new NotSupportedException("ObjectGraphSanitizer does not support non-generic dictionaries.");
                     }
 
                     if (IsEnumerable(currentItemType))
@@ -151,11 +150,10 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                             continue;
                         }
 
-                        throw new NotSupportedException(
-                            "ObjectGraphSanitizer does not support non-generic enumerables.");
+                        throw new NotSupportedException("ObjectGraphSanitizer does not support non-generic enumerables.");
                     }
 
-                    throw new SanitizationException(String.Format("ObjectGraphSanitizer could not handle the object type: {0}", currentItemType));
+                    continue;
                 }
 
                 if (currentItem.Parent != null && currentItem.PropertyInfo != null)
