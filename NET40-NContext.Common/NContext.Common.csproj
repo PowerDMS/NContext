@@ -89,7 +89,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceResponse.cs" />
     <Compile Include="ValidationError.cs" />
-    <Compile Include="WritableAttribute.cs" />
   </ItemGroup>
   <Import Condition=" '$(NCrunch)' == '1' " Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Condition=" '$(NCrunch)' == '' " Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

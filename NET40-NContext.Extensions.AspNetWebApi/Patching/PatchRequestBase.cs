@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PatchResult.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2013 Waking Venture, Inc.
+// <copyright file="PatchRequestBase.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2014 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -20,34 +20,31 @@
 
 namespace NContext.Extensions.AspNetWebApi.Patching
 {
-    using System.Collections.Generic;
+    using System;
 
-    public class PatchResult<T>
+    /// <summary>
+    /// Defines a transfer object for HTTP PATCH support.
+    /// </summary>
+    public abstract class PatchRequestBase
     {
-        private readonly T _PatchedObject;
+        private Action<Object> _OnPatchedHandler;
 
-        private readonly IEnumerable<PatchOperation<T>> _Operations;
-
-        public PatchResult(T patchedObject, IEnumerable<PatchOperation<T>> operations)
+        /// <summary>
+        /// Gets the on patched handler.
+        /// </summary>
+        /// <value>The on patched handler.</value>
+        internal Action<Object> OnPatchedHandler
         {
-            _PatchedObject = patchedObject;
-            _Operations = operations;
+            get { return _OnPatchedHandler; }
         }
 
-        public T PatchedObject
+        /// <summary>
+        /// Sets the on patched handler.
+        /// </summary>
+        /// <param name="handler">The handler.</param>
+        internal void SetOnPatchedHandler(Action<Object> handler)
         {
-            get
-            {
-                return _PatchedObject;
-            }
-        }
-
-        public IEnumerable<PatchOperation<T>> Operations
-        {
-            get
-            {
-                return _Operations;
-            }
+            _OnPatchedHandler = handler;
         }
     }
 }

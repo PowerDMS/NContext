@@ -123,12 +123,12 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             }
         }
 
-        protected virtual String SanitizeString(String textToSanitize)
+        public virtual String SanitizeString(String textToSanitize)
         {
             return _TextSanitizer.SanitizeHtmlFragment(textToSanitize);
         }
 
-        protected virtual void SanitizeObjectGraph(Object objectToSanitize)
+        public virtual void SanitizeObjectGraph(Object objectToSanitize)
         {
             _ObjectGraphSanitizer.Value.Sanitize(objectToSanitize);
         }

@@ -1,6 +1,6 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="WritableAttribute.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2013 Waking Venture, Inc.
+// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="PatchRequestParameterBindingAttribute.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2014 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,16 +18,27 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Common
+namespace NContext.Extensions.AspNetWebApi.Patching
 {
-    using System;
+    using System.Web.Http;
+    using System.Web.Http.Controllers;
+    using System.Web.Http.Validation;
 
     /// <summary>
-    /// Defines an attribute which specifies whether a property is writable by the consumer.
-    /// This is typically used when patching DTO's or translation between DTOs -> Entities.
+    /// This attribute is only used on action parameters of type <see cref="PatchRequest{T}"/>.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public class WritableAttribute : Attribute
+    public class PatchRequestParameterBindingAttribute : ParameterBindingAttribute
     {
+        /// <summary>
+        /// Gets the binding.
+        /// </summary>
+        /// <param name="parameter">The parameter.</param>
+        /// <returns>System.Web.Http.Controllers.HttpParameterBinding.</returns>
+        public override HttpParameterBinding GetBinding(HttpParameterDescriptor parameter)
+        {
+            IBodyModelValidator bodyModelValidator = parameter.Configuration.Services.GetBodyModelValidator();
+
+            return new PatchRequestParameterBinding(parameter, bodyModelValidator);
+        }
     }
 }

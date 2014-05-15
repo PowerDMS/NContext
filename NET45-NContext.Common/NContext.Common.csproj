@@ -127,9 +127,6 @@
     <Compile Include="..\NET40-NContext.Common\ValidationError.cs">
       <Link>ValidationError.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Common\WritableAttribute.cs">
-      <Link>WritableAttribute.cs</Link>
-    </Compile>
   </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

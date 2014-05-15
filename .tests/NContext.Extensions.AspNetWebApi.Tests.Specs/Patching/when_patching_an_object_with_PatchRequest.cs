@@ -21,24 +21,29 @@
 namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Patching
 {
     using System;
-    using System.Net;
+    using System.Collections.Generic;
 
     using Machine.Specifications;
 
     using NContext.Common;
     using NContext.Extensions.AspNetWebApi.Patching;
 
+    using Newtonsoft.Json;
+
     public class when_patching_an_object_with_PatchRequest
     {
         Establish context = () =>
-            {
-                _PatchRequest = new PatchRequest<DummyDto>
-                    {
-                        { "firstname", "Marc" },
-                        { "DisabledOn", new DateTime(2013, 07, 26, 10, 0, 0) },
-                        { "isAdmin", true },
-                        { "spaceamount", null }
-                    };
+        {
+            var patchJson = JsonConvert.SerializeObject(
+                new Dictionary<String, Object>
+                {
+                    {"firstname", "Marc"},
+                    {"DisabledOn", new DateTime(2013, 07, 26, 10, 0, 0)},
+                    {"isAdmin", true},
+                    {"spaceamount", null}
+                });
+
+                _PatchRequest = new PatchRequest<DummyDto>(patchJson);
 
                 _DomainTargetDto = new DummyDto
                     {
@@ -56,7 +61,7 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Patching
 
         It should_patch_all_requested_properties = () =>
             {
-                var patchedObject = _PatchResult.Data.PatchedObject;
+                var patchedObject = _PatchResult.Data;
                 patchedObject.FirstName.ShouldEqual("Marc");
                 patchedObject.DisabledOn.ShouldEqual(new DateTime(2013, 07, 26, 10, 0, 0));
                 patchedObject.IsAdmin.ShouldEqual(true);
@@ -67,27 +72,6 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Patching
 
         static DummyDto _DomainTargetDto;
 
-        static IResponseTransferObject<PatchResult<DummyDto>> _PatchResult;
-    }
-
-    internal class DummyDto
-    {
-        public Int32 Id { get; set; }
-
-        [Writable]
-        public String FirstName { get; set; }
-
-        public DateTime CreatedOn { get; set; }
-
-        [Writable]
-        public DateTime? DisabledOn { get; set; }
-
-        [Writable]
-        public Boolean IsAdmin { get; set; }
-
-        [Writable]
-        public Int32? SpaceAmount { get; set; }
-
-        public Int32 SpaceUsed { get; set; }
+        static IResponseTransferObject<DummyDto> _PatchResult;
     }
 }

@@ -143,14 +143,17 @@
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Handlers\XHttpMethodOverrideMessageHandler.cs">
       <Link>Handlers\XHttpMethodOverrideMessageHandler.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchOperation.cs">
-      <Link>Patching\PatchOperation.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchRequest.cs">
       <Link>Patching\PatchRequest.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchResult.cs">
-      <Link>Patching\PatchResult.cs</Link>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchRequestBase.cs">
+      <Link>Patching\PatchRequestBase.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchRequestParameterBinding.cs">
+      <Link>Patching\PatchRequestParameterBinding.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Patching\PatchRequestParameterBindingAttribute.cs">
+      <Link>Patching\PatchRequestParameterBindingAttribute.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
@@ -160,12 +163,6 @@
     </Compile>
     <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Routing\Route.cs">
       <Link>Routing\Route.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Serialization\DictionaryConverter.cs">
-      <Link>Serialization\DictionaryConverter.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext.Extensions.AspNetWebApi\Serialization\PatchRequestConverter.cs">
-      <Link>Serialization\PatchRequestConverter.cs</Link>
     </Compile>
     <Compile Include="Configuration\WebApiManager.cs" />
   </ItemGroup>
