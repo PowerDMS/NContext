@@ -101,7 +101,7 @@ namespace NContext.Common
         }
 
         /// <summary>
-        /// Invokes the specified action if <see cref="IResponseTransferObject{T}.Error" /> is not null.
+        /// Invokes the specified action if <see cref="IResponseTransferObject{T}.Error" /> is null.
         /// Returns the current <see cref="IResponseTransferObject{T}" /> instance.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -110,7 +110,7 @@ namespace NContext.Common
         /// <returns>The current <see cref="IResponseTransferObject{T}" /> instance.</returns>
         public static IResponseTransferObject<T> Let<T>(this IResponseTransferObject<T> responseTransferObject, Action<T> action)
         {
-            if (responseTransferObject.Error != null)
+            if (responseTransferObject.Error == null)
             {
                 action.Invoke(responseTransferObject.Data);
             }
