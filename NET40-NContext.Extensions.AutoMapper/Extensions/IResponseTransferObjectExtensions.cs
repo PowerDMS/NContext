@@ -21,7 +21,6 @@
         public static IResponseTransferObject<TTarget> BindMap<TSource, TTarget>(
             this IResponseTransferObject<TSource> source, 
             Action<IMappingOperationOptions> mappingOperationOptions = null)
-            where TTarget : class, new()
         {
             Contract.Requires(source != null);
 
