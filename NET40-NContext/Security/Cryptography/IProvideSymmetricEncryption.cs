@@ -55,7 +55,7 @@ namespace NContext.Security.Cryptography
         /// <param name="cipherText">The cipher text.</param>
         void Encrypt(Byte[] symmetricKey, Stream plainText, Stream cipherText);
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> stream using the specified 
         /// <paramref name="symmetricKey" /> and default <see cref="SymmetricAlgorithm" />.
@@ -90,7 +90,7 @@ namespace NContext.Security.Cryptography
         void Encrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Stream plainText, Stream cipherText)
             where TSymmetricAlgorithm : SymmetricAlgorithm, new();
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> 
         /// stream using the specified <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
@@ -122,7 +122,7 @@ namespace NContext.Security.Cryptography
         /// <param name="plainText">The plain text.</param>
         void Decrypt(Byte[] symmetricKey, Stream cipherText, Stream plainText);
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
         /// <paramref name="symmetricKey" /> and the default <see cref="SymmetricAlgorithm" />.
@@ -156,7 +156,7 @@ namespace NContext.Security.Cryptography
         void Decrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Stream cipherText, Stream plainText)
             where TSymmetricAlgorithm : SymmetricAlgorithm, new();
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
         /// <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.

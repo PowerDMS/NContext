@@ -83,7 +83,7 @@ namespace NContext.Security.Cryptography
             Encrypt(_DefaultSymmetricAlgorithm, symmetricKey, plainText, cipherText);
         }
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> stream using the specified 
         /// <paramref name="symmetricKey" /> and default <see cref="SymmetricAlgorithm" />.
@@ -127,7 +127,7 @@ namespace NContext.Security.Cryptography
             Encrypt(typeof(TSymmetricAlgorithm), symmetricKey, plainText, cipherText);
         }
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> 
         /// stream using the specified <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
@@ -197,7 +197,7 @@ namespace NContext.Security.Cryptography
             cipherText.Position = 0;
         }
 
-#if NET45
+#if NET45_OR_GREATER
         private async Task EncryptAsync(Type symmetricAlgorithm, Byte[] symmetricKey, Stream plainText, Stream cipherText)
         {
             Contract.Requires(symmetricAlgorithm != null);
@@ -252,7 +252,7 @@ namespace NContext.Security.Cryptography
             Decrypt(_DefaultSymmetricAlgorithm, symmetricKey, cipherText, plainText);
         }
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
         /// <paramref name="symmetricKey" /> and the default <see cref="SymmetricAlgorithm" />.
@@ -295,7 +295,7 @@ namespace NContext.Security.Cryptography
             Decrypt(typeof(TSymmetricAlgorithm), symmetricKey, cipherText, plainText);
         }
 
-#if NET45
+#if NET45_OR_GREATER
         /// <summary>
         /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
         /// <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
@@ -369,7 +369,7 @@ namespace NContext.Security.Cryptography
             plainText.Position = 0;
         }
 
-#if NET45
+#if NET45_OR_GREATER
         private async Task DecryptAsync(Type symmetricAlgorithm, Byte[] symmetricKey, Stream cipherText, Stream plainText)
         {
             Contract.Requires(symmetricAlgorithm != null);
