@@ -29,8 +29,6 @@ namespace NContext.Security.Cryptography
     /// <remarks></remarks>
     public interface IProvideHashing
     {
-        #region Hash CreateHash Methods
-
         /// <summary>
         /// Creates the hash using the default <see cref="HashAlgorithm"/>.
         /// </summary>
@@ -90,10 +88,6 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         String CreateHashToBase64<THashAlgorithm>(String plainText, Int32 saltLength = 16)
             where THashAlgorithm : HashAlgorithm, new();
-
-        #endregion
-
-        #region Hash CompareHash Methods
 
         /// <summary>
         /// Compares the hash using the default <see cref="HashAlgorithm"/>.
@@ -160,7 +154,5 @@ namespace NContext.Security.Cryptography
         /// <remarks></remarks>
         Boolean CompareHashFromBase64<THashAlgorithm>(String plainText, String hashedText, Int32 saltLength = 16)
             where THashAlgorithm : HashAlgorithm, new();
-
-        #endregion
     }
 }

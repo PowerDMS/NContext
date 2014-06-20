@@ -24,9 +24,10 @@ using System.Text;
 
 namespace NContext.Security.Cryptography
 {
+    using System.IO;
     using System.Linq;
 
-    internal static class CryptographyUtility
+    public static class CryptographyUtility
     {
         public static Boolean CompareBytes(Byte[] byte1, Byte[] byte2)
         {
@@ -49,7 +50,7 @@ namespace NContext.Security.Cryptography
         /// <para>The string containing a valid hexadecimal number.</para>
         /// </param>
         /// <returns><para>The byte array representing the hexadecimal.</para></returns>
-        public static Byte[] GetBytesFromHexString(string hexadecimalNumber)
+        public static Byte[] GetBytesFromHexString(String hexadecimalNumber)
         {
             if (hexadecimalNumber == null) throw new ArgumentNullException("hexadecimalNumber");
 
@@ -90,7 +91,7 @@ namespace NContext.Security.Cryptography
         /// <returns>
         /// <para>The formatted representation of the bytes as a hexadecimal number.</para>
         /// </returns>
-        public static string GetHexStringFromBytes(Byte[] bytes)
+        public static String GetHexStringFromBytes(Byte[] bytes)
         {
             if (bytes == null) throw new ArgumentNullException("bytes");
             if (bytes.Length == 0) throw new ArgumentException("The value must be greater than 0 bytes.", "bytes");
@@ -122,10 +123,19 @@ namespace NContext.Security.Cryptography
             return combinedBytes;
         }
         
-        public static Byte[] GetBytes(Byte[] bytes, Int32 length)
+        public static Byte[] GetBytes(Byte[] bytes, Int32 count, Int32 offset = 0)
         {
-            var copiedBytes = new Byte[length];
-            Buffer.BlockCopy(bytes, 0, copiedBytes, 0, length);
+            var copiedBytes = new Byte[count];
+            Buffer.BlockCopy(bytes, offset, copiedBytes, 0, count);
+
+            return copiedBytes;
+        }
+
+        public static Byte[] GetBytes(Stream stream, Int32 count, Int32 offset = 0)
+        {
+            var copiedBytes = new Byte[count];
+            stream.Read(copiedBytes, offset, count);
+            stream.Position = 0;
 
             return copiedBytes;
         }

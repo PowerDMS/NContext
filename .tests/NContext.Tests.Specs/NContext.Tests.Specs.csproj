@@ -70,6 +70,10 @@
     <Compile Include="Security\Cryptography\Hashing\when_using_salt_base64.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_salt_Byte_array.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_salt_hexadecimal.cs" />
+    <Compile Include="Security\Cryptography\SymmetricEncryption\when_using_SymmetricEncryptionProvider.cs" />
+    <Compile Include="Security\Cryptography\SymmetricEncryption\with_async_stream_and_AesCryptoServiceProvider.cs" />
+    <Compile Include="Security\Cryptography\SymmetricEncryption\with_byte_array_and_AesCryptoServiceProvider.cs" />
+    <Compile Include="Security\Cryptography\SymmetricEncryption\with_stream_and_AesCryptoServiceProvider.cs" />
     <Compile Include="SpecAssertionExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

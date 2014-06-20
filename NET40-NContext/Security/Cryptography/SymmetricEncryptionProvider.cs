@@ -21,16 +21,16 @@
 namespace NContext.Security.Cryptography
 {
     using System;
+    using System.Diagnostics.Contracts;
     using System.IO;
     using System.Security.Cryptography;
-    using System.Text;
+    using System.Threading.Tasks;
 
     using NContext.Extensions;
 
     /// <summary>
     /// Defines a provider for symmetric cryptographic operations.
     /// </summary>
-    /// <remarks></remarks>
     public class SymmetricEncryptionProvider : IProvideSymmetricEncryption
     {
         private readonly Type _DefaultSymmetricAlgorithm;
@@ -39,383 +39,366 @@ namespace NContext.Security.Cryptography
         /// Initializes a new instance of the <see cref="SymmetricEncryptionProvider"/> class.
         /// </summary>
         /// <param name="defaultSymmetricAlgorithm">The default symmetric algorithm.</param>
-        /// <remarks></remarks>
+        /// <exception cref="System.ArgumentException">DefaultSymmetricAlgorithm is invalid. Must be of type derived from SymmetricAlgorithm.;defaultSymmetricAlgorithm</exception>
         public SymmetricEncryptionProvider(Type defaultSymmetricAlgorithm)
         {
-            if (!defaultSymmetricAlgorithm.Implements<SymmetricAlgorithm>())
+            if (defaultSymmetricAlgorithm == typeof(SymmetricAlgorithm) || !defaultSymmetricAlgorithm.Implements<SymmetricAlgorithm>())
             {
-                throw new ArgumentException("DefaultSymmetricAlgorithm is invalid. Must be of type SymmetricAlgorithm.", "defaultSymmetricAlgorithm");
+                throw new ArgumentException("DefaultSymmetricAlgorithm is invalid. Must be of type derived from SymmetricAlgorithm.", "defaultSymmetricAlgorithm");
             }
 
             _DefaultSymmetricAlgorithm = defaultSymmetricAlgorithm;
         }
 
-        #region Symmetric Encryption Methods
+        /// <summary>
+        /// Gets the default symmetric algorithm.
+        /// </summary>
+        /// <value>The default symmetric algorithm.</value>
+        public Type DefaultSymmetricAlgorithm
+        {
+            get { return _DefaultSymmetricAlgorithm; }
+        }
 
         /// <summary>
-        /// Encrypts the text using the specified symmetric key and default <see cref="SymmetricAlgorithm"/>.
+        /// Encrypts the <paramref name="plainText" /> using the specified <paramref name="symmetricKey" /> and default <see cref="SymmetricAlgorithm" />.
         /// </summary>
         /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
         /// <returns>The encrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Encrypt(Byte[] symmetricKey, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+        public Byte[] Encrypt(Byte[] symmetricKey, Byte[] plainText)
         {
-            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey, plainText, dataProtectionScope);
+            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey, plainText);
         }
 
         /// <summary>
-        /// Encrypts the text using the specified symmetric key and default <see cref="SymmetricAlgorithm"/>.
+        /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> stream using the specified 
+        /// <paramref name="symmetricKey" /> and default <see cref="SymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
         /// </summary>
-        /// <param name="protectedKeyFile">The protected key file.</param>
+        /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
+        /// <param name="cipherText">The cipher text.</param>
+        public void Encrypt(Byte[] symmetricKey, Stream plainText, Stream cipherText)
+        {
+            Encrypt(_DefaultSymmetricAlgorithm, symmetricKey, plainText, cipherText);
+        }
+
+#if NET45
+        /// <summary>
+        /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> stream using the specified 
+        /// <paramref name="symmetricKey" /> and default <see cref="SymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
+        /// </summary>
+        /// <param name="symmetricKey">The symmetric key.</param>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="cipherText">The cipher text.</param>
+        /// <returns>Task.</returns>
+        public Task EncryptAsync(Byte[] symmetricKey, Stream plainText, Stream cipherText)
+        {
+            return EncryptAsync(_DefaultSymmetricAlgorithm, symmetricKey, plainText, cipherText);
+        }
+#endif
+
+        /// <summary>
+        /// Encrypts the text using the specified <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
+        /// </summary>
+        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+        /// <param name="symmetricKey">The symmetric key.</param>
+        /// <param name="plainText">The plain text.</param>
         /// <returns>The encrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Encrypt(FileInfo protectedKeyFile, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+        public Byte[] Encrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Byte[] plainText)
+            where TSymmetricAlgorithm : SymmetricAlgorithm, new()
         {
-            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText, dataProtectionScope);
+            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey, plainText);
         }
 
         /// <summary>
-        /// Encrypts the text using the specified symmetric key and <typeparamref name="TSymmetricAlgorithm"/>.
+        /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> 
+        /// stream using the specified <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
         /// </summary>
         /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
         /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The encrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Encrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
+        /// <param name="cipherText">The cipher text.</param>
+        public void Encrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Stream plainText, Stream cipherText)
+            where TSymmetricAlgorithm : SymmetricAlgorithm, new()
         {
-            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey, plainText, dataProtectionScope);
+            Encrypt(typeof(TSymmetricAlgorithm), symmetricKey, plainText, cipherText);
         }
 
+#if NET45
         /// <summary>
-        /// Encrypts the text using the specified key file and <typeparamref name="TSymmetricAlgorithm"/>.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The encrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Encrypt<TSymmetricAlgorithm>(FileInfo protectedKeyFile, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText, dataProtectionScope);
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified symmetric key and default <see cref="SymmetricAlgorithm"/> and returns its hexidecimal representation.
-        /// </summary>
-        /// <param name="symmetricKey">The symmetric key.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The encrypted text.</returns>
-        /// <remarks></remarks>
-        public String Encrypt(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified key file and default <see cref="SymmetricAlgorithm"/> and returns its hexidecimal representation.
-        /// </summary>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The encrypted text.</returns>
-        /// <remarks></remarks>
-        public String Encrypt(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified symmetric key and <typeparamref name="TSymmetricAlgorithm"/> and returns its hexidecimal representation.
+        /// Encrypts the <paramref name="plainText" /> into the specified <paramref name="cipherText" /> 
+        /// stream using the specified <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
         /// </summary>
         /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
         /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The encrypted text.</returns>
-        /// <remarks></remarks>
-        public String Encrypt<TSymmetricAlgorithm>(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
+        /// <param name="cipherText">The cipher text.</param>
+        public Task EncryptAsync<TSymmetricAlgorithm>(Byte[] symmetricKey, Stream plainText, Stream cipherText)
+            where TSymmetricAlgorithm : SymmetricAlgorithm, new()
         {
-            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
+            return EncryptAsync(typeof(TSymmetricAlgorithm), symmetricKey, plainText, cipherText);
         }
+#endif
+
+        private Byte[] Encrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Byte[] plainText)
+        {
+            Contract.Requires(symmetricAlgorithm != null);
+            Contract.Requires(symmetricKey != null && symmetricKey.Length > 0);
+            Contract.Requires(plainText != null && plainText.Length > 0);
+
+            var algorithm = (SymmetricAlgorithm)Activator.CreateInstance(symmetricAlgorithm);
+            var ivLength = algorithm.BlockSize / 8;
+
+            algorithm.Key = symmetricKey;
+            algorithm.GenerateIV();
+
+            using (var cipherText = new MemoryStream())
+            using (var encryptionStream = new CryptoStream(cipherText, algorithm.CreateEncryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Write))
+            {
+                cipherText.Write(algorithm.IV, 0, ivLength);
+                encryptionStream.Write(plainText, 0, plainText.Length);
+                if (!encryptionStream.HasFlushedFinalBlock)
+                {
+                    encryptionStream.FlushFinalBlock();
+                }
+
+                return cipherText.ToArray();
+            }
+        }
+
+        private void Encrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Stream plainText, Stream cipherText)
+        {
+            Contract.Requires(symmetricAlgorithm != null);
+            Contract.Requires(symmetricKey != null && symmetricKey.Length > 0);
+            Contract.Requires(plainText != null);
+            Contract.Requires(cipherText != null);
+
+            var algorithm = (SymmetricAlgorithm) Activator.CreateInstance(symmetricAlgorithm);
+            var ivLength = algorithm.BlockSize / 8;
+            algorithm.Key = symmetricKey;
+            algorithm.GenerateIV();
+
+            plainText.Position = 0;
+            cipherText.Position = 0;
+            cipherText.Write(algorithm.IV, 0, ivLength);
+
+            var encryptionStream = new CryptoStream(cipherText, algorithm.CreateEncryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Write);
+            plainText.CopyTo(encryptionStream);
+            if (!encryptionStream.HasFlushedFinalBlock)
+            {
+                encryptionStream.FlushFinalBlock();
+            }
+            
+            plainText.Position = 0;
+            cipherText.Position = 0;
+        }
+
+#if NET45
+        private async Task EncryptAsync(Type symmetricAlgorithm, Byte[] symmetricKey, Stream plainText, Stream cipherText)
+        {
+            Contract.Requires(symmetricAlgorithm != null);
+            Contract.Requires(symmetricKey != null && symmetricKey.Length > 0);
+            Contract.Requires(plainText != null);
+            Contract.Requires(cipherText != null);
+
+            var algorithm = (SymmetricAlgorithm)Activator.CreateInstance(symmetricAlgorithm);
+            var ivLength = algorithm.BlockSize / 8;
+            algorithm.Key = symmetricKey;
+            algorithm.GenerateIV();
+
+            plainText.Position = 0;
+            cipherText.Position = 0;
+            cipherText.Write(algorithm.IV, 0, ivLength);
+
+            var encryptionStream = new CryptoStream(cipherText, algorithm.CreateEncryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Write);
+
+            await plainText.CopyToAsync(encryptionStream);
+
+            if (!encryptionStream.HasFlushedFinalBlock)
+            {
+                encryptionStream.FlushFinalBlock();
+            }
+
+            plainText.Position = 0;
+            cipherText.Position = 0;
+        }
+#endif
 
         /// <summary>
-        /// Encrypts the text using the specified key file and <typeparamref name="TSymmetricAlgorithm"/> and returns its hexidecimal representation.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The encrypted text.</returns>
-        /// <remarks></remarks>
-        public String Encrypt<TSymmetricAlgorithm>(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToHexadecimal();
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified symmetric key and default <see cref="SymmetricAlgorithm"/> and returns the result, base64 encoded.
-        /// </summary>
-        /// <param name="symmetricKey">The symmetric key.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The base64 encoded, encrypted text.</returns>
-        /// <remarks></remarks>
-        public String EncryptToBase64(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Encrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified key file and default <see cref="SymmetricAlgorithm"/> and returns the result, base64 encoded.
-        /// </summary>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The base64 encoded, encrypted text.</returns>
-        /// <remarks></remarks>
-        public String EncryptToBase64(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Encrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified symmetric key and <typeparamref name="TSymmetricAlgorithm"/> and returns the result, base64 encoded.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="symmetricKey">The symmetric key.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The base64 encoded, encrypted text.</returns>
-        /// <remarks></remarks>
-        public String EncryptToBase64<TSymmetricAlgorithm>(String symmetricKey, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Encrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
-        }
-
-        /// <summary>
-        /// Encrypts the text using the specified key file and <typeparamref name="TSymmetricAlgorithm"/> and returns the result, base64 encoded.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="plainText">The plain text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The base64 encoded, encrypted text.</returns>
-        /// <remarks></remarks>
-        public String EncryptToBase64<TSymmetricAlgorithm>(FileInfo protectedKeyFile, String plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Encrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, plainText.ToBytes<UnicodeEncoding>(), dataProtectionScope).ToBase64();
-        }
-
-        private Byte[] Encrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            // TODO: (DG) IMPLEMENT!
-            throw new NotImplementedException();
-        }
-
-        private Byte[] Encrypt(Type symmetricAlgorithm, String protectedKeyFileName, Byte[] plainText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            // TODO: (DG) IMPLEMENT!
-            throw new NotImplementedException();
-        }
-
-        #endregion
-
-        #region Symmetric Decryption Methods
-
-        /// <summary>
-        /// Decrypts the cipher text using the specified symmetric key and the default <see cref="SymmetricAlgorithm"/>.
+        /// Decrypts the <paramref name="cipherText" /> using the specified <paramref name="symmetricKey" /> and the default <see cref="SymmetricAlgorithm" />.
         /// </summary>
         /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
         /// <returns>The decrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Decrypt(Byte[] symmetricKey, Byte[] cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+        public Byte[] Decrypt(Byte[] symmetricKey, Byte[] cipherText)
         {
-            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey, cipherText, dataProtectionScope);
+            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey, cipherText);
         }
 
         /// <summary>
-        /// Decrypts the cipher text using the specified key file and the default <see cref="SymmetricAlgorithm"/>.
+        /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
+        /// <paramref name="symmetricKey" /> and the default <see cref="SymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
         /// </summary>
-        /// <param name="protectedKeyFile">The protected key file.</param>
+        /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
+        /// <param name="plainText">The plain text.</param>
+        public void Decrypt(Byte[] symmetricKey, Stream cipherText, Stream plainText)
+        {
+            Decrypt(_DefaultSymmetricAlgorithm, symmetricKey, cipherText, plainText);
+        }
+
+#if NET45
+        /// <summary>
+        /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
+        /// <paramref name="symmetricKey" /> and the default <see cref="SymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
+        /// </summary>
+        /// <param name="symmetricKey">The symmetric key.</param>
+        /// <param name="cipherText">The cipher text.</param>
+        /// <param name="plainText">The plain text.</param>
+        public Task DecryptAsync(Byte[] symmetricKey, Stream cipherText, Stream plainText)
+        {
+            return DecryptAsync(_DefaultSymmetricAlgorithm, symmetricKey, cipherText, plainText);
+        }
+#endif
+
+        /// <summary>
+        /// Decrypts the <paramref name="cipherText" /> using the specified <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
+        /// </summary>
+        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
+        /// <param name="symmetricKey">The symmetric key.</param>
+        /// <param name="cipherText">The cipher text.</param>
         /// <returns>The decrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Decrypt(FileInfo protectedKeyFile, Byte[] cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+        public Byte[] Decrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Byte[] cipherText)
+            where TSymmetricAlgorithm : SymmetricAlgorithm, new()
         {
-            return Decrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, cipherText, dataProtectionScope);
+            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey, cipherText);
         }
 
         /// <summary>
-        /// Decrypts the cipher text using the specified symmetric key and <typeparamref name="TSymmetricAlgorithm"/>.
+        /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
+        /// <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
         /// </summary>
         /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
         /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Decrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Byte[] cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
+        /// <param name="plainText">The plain text.</param>
+        public void Decrypt<TSymmetricAlgorithm>(Byte[] symmetricKey, Stream cipherText, Stream plainText)
+            where TSymmetricAlgorithm : SymmetricAlgorithm, new()
         {
-            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey, cipherText, dataProtectionScope);
+            Decrypt(typeof(TSymmetricAlgorithm), symmetricKey, cipherText, plainText);
         }
 
+#if NET45
         /// <summary>
-        /// Decrypts the cipher text using the specified key file and <typeparamref name="TSymmetricAlgorithm"/>.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted byte array.</returns>
-        /// <remarks></remarks>
-        public Byte[] Decrypt<TSymmetricAlgorithm>(FileInfo protectedKeyFile, Byte[] cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Decrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, cipherText, dataProtectionScope);
-        }
-
-        /// <summary>
-        /// Decrypts the (hexadecimal) cipher text using the specified symmetric key and default <see cref="SymmetricAlgorithm"/>.
-        /// </summary>
-        /// <param name="symmetricKey">The symmetric key.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String Decrypt(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
-        }
-
-        /// <summary>
-        /// Decrypts the (hexadecimal) cipher text using the specified key file and default <see cref="SymmetricAlgorithm"/>.
-        /// </summary>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String Decrypt(FileInfo protectedKeyFile, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Decrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
-        }
-
-        /// <summary>
-        /// Decrypts the (hexadecimal) cipher text using the specified symmetric key and <typeparamref name="TSymmetricAlgorithm"/>.
+        /// Decrypts the <paramref name="cipherText" /> into the specified <paramref name="plainText" /> stream using the specified 
+        /// <paramref name="symmetricKey" /> and <typeparamref name="TSymmetricAlgorithm" />.
+        /// Both streams remain unclosed, however, their positions are reset.  It is the caller's responsibility to close and dispose the streams.
         /// </summary>
         /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
         /// <param name="symmetricKey">The symmetric key.</param>
         /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String Decrypt<TSymmetricAlgorithm>(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
+        /// <param name="plainText">The plain text.</param>
+        public Task DecryptAsync<TSymmetricAlgorithm>(Byte[] symmetricKey, Stream cipherText, Stream plainText)
+            where TSymmetricAlgorithm : SymmetricAlgorithm, new()
         {
-            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
+            return DecryptAsync(typeof(TSymmetricAlgorithm), symmetricKey, cipherText, plainText);
+        }
+#endif
+
+        private Byte[] Decrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Byte[] cipherText)
+        {
+            Contract.Requires(symmetricAlgorithm != null);
+            Contract.Requires(symmetricKey != null && symmetricKey.Length > 0);
+            Contract.Requires(cipherText != null && cipherText.Length > 0);
+
+            var algorithm = (SymmetricAlgorithm)Activator.CreateInstance(symmetricAlgorithm);
+            var ivSize = algorithm.BlockSize / 8;
+            if (cipherText.Length < ivSize)
+            {
+                throw new ArgumentException("The cipherText specified is invalid and does not contain the initialization vector.");
+            }
+
+            algorithm.Key = symmetricKey;
+            algorithm.IV = CryptographyUtility.GetBytes(cipherText, ivSize);
+            var cipher = CryptographyUtility.GetBytes(cipherText, cipherText.Length - ivSize, ivSize);
+
+            using (var encryptedStream = new MemoryStream(cipher))
+            using (var plainTextStream = new MemoryStream())
+            using (var decryptionStream = new CryptoStream(encryptedStream, algorithm.CreateDecryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Read))
+            {
+                decryptionStream.CopyTo(plainTextStream);
+
+                return plainTextStream.ToArray();
+            }
         }
 
-        /// <summary>
-        /// Decrypts the (hexadecimal) cipher text using the specified key file and <typeparamref name="TSymmetricAlgorithm"/>.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String Decrypt<TSymmetricAlgorithm>(FileInfo protectedKeyFile, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
+        private void Decrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Stream cipherText, Stream plainText)
         {
-            return Decrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, cipherText.ToBytesFromHexadecimal(), dataProtectionScope).ToUTF8();
+            Contract.Requires(symmetricAlgorithm != null);
+            Contract.Requires(symmetricKey != null && symmetricKey.Length > 0);
+            Contract.Requires(cipherText != null);
+            Contract.Requires(plainText != null);
+
+            var algorithm = (SymmetricAlgorithm) Activator.CreateInstance(symmetricAlgorithm);
+            var ivSize = algorithm.BlockSize / 8;
+            if (cipherText.Length < ivSize)
+            {
+                throw new ArgumentException(
+                    "The cipherText specified is invalid and does not contain the initialization vector.");
+            }
+
+            cipherText.Position = 0;
+            plainText.Position = 0;
+
+            algorithm.Key = symmetricKey;
+            algorithm.IV = CryptographyUtility.GetBytes(cipherText, ivSize);
+
+            cipherText.Position = ivSize;
+
+            var decryptionStream = new CryptoStream(cipherText, algorithm.CreateDecryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Read);
+            decryptionStream.CopyTo(plainText);
+
+            cipherText.Position = 0;
+            plainText.Position = 0;
         }
 
-        /// <summary>
-        /// Decrypts the (base64 encoded) cipher using the specified symmetric key and default <see cref="SymmetricAlgorithm"/>.
-        /// </summary>
-        /// <param name="symmetricKey">The symmetric key.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String DecryptFromBase64(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
+#if NET45
+        private async Task DecryptAsync(Type symmetricAlgorithm, Byte[] symmetricKey, Stream cipherText, Stream plainText)
         {
-            return Decrypt(_DefaultSymmetricAlgorithm, symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
-        }
+            Contract.Requires(symmetricAlgorithm != null);
+            Contract.Requires(symmetricKey != null && symmetricKey.Length > 0);
+            Contract.Requires(cipherText != null);
+            Contract.Requires(plainText != null);
 
-        /// <summary>
-        /// Decrypts the (base64 encoded) specified cipher using the key file and default <see cref="SymmetricAlgorithm"/>.
-        /// </summary>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String DecryptFromBase64(FileInfo protectedKeyFile, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            return Decrypt(_DefaultSymmetricAlgorithm, protectedKeyFile.FullName, cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
-        }
+            var algorithm = (SymmetricAlgorithm)Activator.CreateInstance(symmetricAlgorithm);
+            var ivSize = algorithm.BlockSize / 8;
+            if (cipherText.Length < ivSize)
+            {
+                throw new ArgumentException("The cipherText specified is invalid and does not contain the initialization vector.");
+            }
 
-        /// <summary>
-        /// Decrypts the (base64 encoded) cipher using the specified symmetric key and <typeparamref name="TSymmetricAlgorithm"/>.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="symmetricKey">The symmetric key.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String DecryptFromBase64<TSymmetricAlgorithm>(String symmetricKey, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Decrypt(typeof(TSymmetricAlgorithm), symmetricKey.ToBytes<UnicodeEncoding>(), cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
-        }
+            cipherText.Position = 0;
+            plainText.Position = 0;
 
-        /// <summary>
-        /// Decrypts the (base64 encoded) cipher using the specified key file and <typeparamref name="TSymmetricAlgorithm"/>.
-        /// </summary>
-        /// <typeparam name="TSymmetricAlgorithm">The type of the symmetric algorithm.</typeparam>
-        /// <param name="protectedKeyFile">The protected key file.</param>
-        /// <param name="cipherText">The cipher text.</param>
-        /// <param name="dataProtectionScope">The data protection scope.</param>
-        /// <returns>The decrypted text.</returns>
-        /// <remarks></remarks>
-        public String DecryptFromBase64<TSymmetricAlgorithm>(FileInfo protectedKeyFile, String cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-            where TSymmetricAlgorithm : SymmetricAlgorithm
-        {
-            return Decrypt(typeof(TSymmetricAlgorithm), protectedKeyFile.FullName, cipherText.ToBytesFromBase64(), dataProtectionScope).ToUTF8();
-        }
+            algorithm.Key = symmetricKey;
+            algorithm.IV = CryptographyUtility.GetBytes(cipherText, ivSize);
 
-        private Byte[] Decrypt(Type symmetricAlgorithm, Byte[] symmetricKey, Byte[] cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            // TODO: IMPLEMENT!
-            throw new NotImplementedException();
-        }
+            cipherText.Position = ivSize;
 
-        private Byte[] Decrypt(Type symmetricAlgorithm, String protectedKeyFileName, Byte[] cipherText, DataProtectionScope dataProtectionScope = DataProtectionScope.LocalMachine)
-        {
-            // TODO: IMPLEMENT!
-            throw new NotImplementedException();
-        }
+            var decryptionStream = new CryptoStream(cipherText, algorithm.CreateDecryptor(algorithm.Key, algorithm.IV), CryptoStreamMode.Read);
+            
+            await decryptionStream.CopyToAsync(plainText);
 
-        #endregion
+            cipherText.Position = 0;
+            plainText.Position = 0;
+        }
+#endif
     }
 }

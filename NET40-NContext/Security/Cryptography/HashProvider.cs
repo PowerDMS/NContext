@@ -56,8 +56,6 @@ namespace NContext.Security.Cryptography
             _RngCryptoServiceProvider = new RNGCryptoServiceProvider();
         }
 
-        #region Hash CreateHash Methods
-
         /// <summary>
         /// Creates the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
@@ -151,10 +149,6 @@ namespace NContext.Security.Cryptography
             return CryptographyUtility.CombineBytes(salt, hashedText);
         }
 
-        #endregion
-
-        #region Hash CompareHash Methods
-
         /// <summary>
         /// Compares the hash using the default <see cref="HashAlgorithm" />.
         /// </summary>
@@ -246,7 +240,5 @@ namespace NContext.Security.Cryptography
 
             return CryptographyUtility.CompareBytes(hashedText, targetHash);
         }
-
-        #endregion
     }
 }
