@@ -2,7 +2,7 @@
   
   <PropertyGroup>
     <NContextMajorVersion>2</NContextMajorVersion>
-    <NContextMinorVersion>1</NContextMinorVersion>
+    <NContextMinorVersion>2</NContextMinorVersion>
     <NContextPatchVersion>0</NContextPatchVersion>
     <BuildNumber>$(BUILD_NUMBER)</BuildNumber> <!-- TeamCity Build -->
     <BuildVcsNumber>$(BUILD_VCS_NUMBER)</BuildVcsNumber> <!-- Git SHA -->
