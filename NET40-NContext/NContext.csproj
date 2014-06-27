@@ -177,8 +177,6 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\SecurityTokenExpirationPolicy.cs" />
-    <Compile Include="Text\SanitizationIgnoreAttribute.cs" />
-    <Compile Include="Text\SanitizationHtmlAttribute.cs" />
     <Compile Include="Text\ISanitizeText.cs" />
     <Compile Include="Text\ObjectGraphSanitizer.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />

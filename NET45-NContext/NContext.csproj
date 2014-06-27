@@ -322,12 +322,6 @@
     <Compile Include="..\NET40-NContext\Text\ObjectGraphSanitizer.cs">
       <Link>Text\ObjectGraphSanitizer.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Text\SanitizationHtmlAttribute.cs">
-      <Link>Text\SanitizationHtmlAttribute.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\Text\SanitizationIgnoreAttribute.cs">
-      <Link>Text\SanitizationIgnoreAttribute.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext\Utilities\AttributeUtility.cs">
       <Link>Utilities\AttributeUtility.cs</Link>
     </Compile>

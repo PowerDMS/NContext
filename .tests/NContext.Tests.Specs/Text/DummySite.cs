@@ -2,7 +2,7 @@
 {
     using System;
 
-    using NContext.Text;
+    using NContext.Common.Text;
 
     public class DummySite
     {

@@ -120,6 +120,12 @@
     <Compile Include="..\NET40-NContext.Common\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Text\SanitizationHtmlAttribute.cs">
+      <Link>Text\SanitizationHtmlAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Text\SanitizationIgnoreAttribute.cs">
+      <Link>Text\SanitizationIgnoreAttribute.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\ValidationError.cs">
       <Link>ValidationError.cs</Link>
     </Compile>

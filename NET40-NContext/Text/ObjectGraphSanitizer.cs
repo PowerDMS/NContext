@@ -30,6 +30,7 @@ namespace NContext.Text
     using System.Threading.Tasks;
 
     using NContext.Common;
+    using NContext.Common.Text;
     using NContext.Exceptions;
     using NContext.Extensions;
 
