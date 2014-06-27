@@ -93,6 +93,9 @@
     <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectAsyncExtensions.cs">
       <Link>Extensions\IResponseTransferObjectAsyncExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectEnumerableDataExtensions.cs">
+      <Link>Extensions\IResponseTransferObjectEnumerableDataExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectExtensions.cs">
       <Link>Extensions\IResponseTransferObjectExtensions.cs</Link>
     </Compile>

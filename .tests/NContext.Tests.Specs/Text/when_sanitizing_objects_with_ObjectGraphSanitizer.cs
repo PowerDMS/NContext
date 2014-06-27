@@ -18,13 +18,12 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
+namespace NContext.Tests.Specs.Text
 {
     using System;
 
     using Machine.Specifications;
 
-    using NContext.Extensions.AspNetWebApi.Filters;
     using NContext.Text;
 
     public abstract class when_sanitizing_objects_with_ObjectGraphSanitizer

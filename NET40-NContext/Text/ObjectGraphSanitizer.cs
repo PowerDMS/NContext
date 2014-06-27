@@ -18,7 +18,7 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Filters
+namespace NContext.Text
 {
     using System;
     using System.Collections;
@@ -29,8 +29,9 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using System.Runtime.Serialization;
     using System.Threading.Tasks;
 
-    using NContext.Extensions.AspNetWebApi.Exceptions;
-    using NContext.Text;
+    using NContext.Common;
+    using NContext.Exceptions;
+    using NContext.Extensions;
 
     /// <summary>
     /// Defines a object graph traverser designed for sanitizing user-input.
@@ -67,7 +68,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             var stack = new Stack<Node>();
             var sanitizableNodes = new HashSet<Node>();
 
-            stack.Push(new Node(null, objectToSanitize, null));
+            stack.Push(new Node(null, objectToSanitize, null, false));
 
             while (stack.Count > 0)
             {
@@ -100,12 +101,18 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                          * */
                         (from property in currentItemType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                          let propertyValue = property.GetValue(currentItem.Value, null)
+                         let allowHtml = property.GetCustomAttributes(typeof(SanitizationHtmlAttribute),true).SingleOrDefault().ToMaybe().Bind(_ => true.ToMaybe()).FromMaybe(false)
                          where (property.PropertyType == typeof(String) && 
-                                !String.IsNullOrWhiteSpace(propertyValue as String)) ||
+                                !String.IsNullOrWhiteSpace(propertyValue as String) &&
+                                property.GetCustomAttributes(typeof(SanitizationIgnoreAttribute), true)
+                                    .SingleOrDefault()
+                                    .ToMaybe()
+                                    .Bind(_ => false.ToMaybe())
+                                    .FromMaybe(true)) ||
                                (propertyValue != null && 
                                 !IsTerminalObject(propertyValue.GetType()) && 
                                 idGenerator.HasId(propertyValue, out propertyValueHasId) == 0)
-                         select new Node(currentItem.Value, propertyValue, property))
+                         select new Node(currentItem.Value, propertyValue, property, allowHtml))
                          .ForEach(stack.Push);
 
                         continue;
@@ -186,14 +193,14 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                 ((IEnumerable) currentItem.Value)
                     .Cast<Object>()
                     .Where(element => element != null && !IsTerminalObject(element.GetType()))
-                    .Select(element => new Node(null, element, null))
+                    .Select(element => new Node(null, element, null, currentItem.AllowHtml))
                     .ForEach(stack.Push);
             }
             else if (!IsTerminalObject(genericArgumentType))
             {
                 ((IEnumerable) currentItem.Value)
                     .Cast<Object>()
-                    .Select(item => new Node(null, item, null))
+                    .Select(item => new Node(null, item, null, currentItem.AllowHtml))
                     .ForEach(stack.Push);
             }
             else
@@ -230,7 +237,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     {
                         if (enumerator.Value != null && !IsTerminalObject(enumerator.Value.GetType()))
                         {
-                            stack.Push(new Node(null, enumerator.Value, null));
+                            stack.Push(new Node(null, enumerator.Value, null, currentItem.AllowHtml));
                         }
                     }
 
@@ -252,7 +259,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     var enumerator = dictionary.GetEnumerator();
                     while (enumerator.MoveNext())
                     {
-                        stack.Push(new Node(currentItem.Parent, enumerator.Value, currentItem.PropertyInfo));
+                        stack.Push(new Node(currentItem.Parent, enumerator.Value, currentItem.PropertyInfo, currentItem.AllowHtml));
                     }
 
                     return;
@@ -286,7 +293,13 @@ namespace NContext.Extensions.AspNetWebApi.Filters
 
                     if (IsTerminalObject(nodeValueType) && node.Parent != null && node.PropertyInfo != null)
                     {
-                        node.PropertyInfo.SetValue(node.Parent, _TextSanitizer.SanitizeHtmlFragment((String)node.Value), null);
+                        node.PropertyInfo.SetValue(
+                            node.Parent,
+                            node.AllowHtml
+                                ? _TextSanitizer.SanitizeHtml((String) node.Value)
+                                : _TextSanitizer.SanitizeHtmlFragment((String) node.Value),
+                            null);
+
                         return;
                     }
 
@@ -314,7 +327,9 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                         // we must loop through all keys we found with string values.
                         foreach (var key in keyList)
                         {
-                            dictionary[key] = _TextSanitizer.SanitizeHtmlFragment((String)dictionary[key]);
+                            dictionary[key] = node.AllowHtml
+                                ? _TextSanitizer.SanitizeHtml((String) dictionary[key])
+                                : _TextSanitizer.SanitizeHtmlFragment((String)dictionary[key]);
                         }
 
                         return;
@@ -327,7 +342,9 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                         {
                             if (!String.IsNullOrWhiteSpace(enumerable[j]))
                             {
-                                enumerable[j] = _TextSanitizer.SanitizeHtmlFragment(enumerable[j]);
+                                enumerable[j] = node.AllowHtml
+                                ? _TextSanitizer.SanitizeHtml(enumerable[j])
+                                : _TextSanitizer.SanitizeHtmlFragment(enumerable[j]);
                             }
                         }
 
@@ -341,7 +358,9 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                         {
                             if (enumerable[j] is String && !String.IsNullOrWhiteSpace(enumerable[j] as String))
                             {
-                                enumerable[j] = _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
+                                enumerable[j] = node.AllowHtml
+                                ? _TextSanitizer.SanitizeHtml((String)enumerable[j])
+                                : _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
                             }
                         }
 
@@ -355,12 +374,14 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                                 ? (ICollection<String>)new List<String>()
                                 : (ICollection<String>)new Collection<String>();
 
-                        ((IEnumerable<String>)node.Value)
+                        ((IEnumerable<String>) node.Value)
                             .ForEach(
                                 value =>
                                     sanitizedStringCollection.Add(String.IsNullOrWhiteSpace(value)
                                         ? value
-                                        : _TextSanitizer.SanitizeHtmlFragment(value)));
+                                        : node.AllowHtml
+                                            ? _TextSanitizer.SanitizeHtml(value)
+                                            : _TextSanitizer.SanitizeHtmlFragment(value)));
 
                         node.PropertyInfo.SetValue(node.Parent, sanitizedStringCollection, null);
 
@@ -415,10 +436,13 @@ namespace NContext.Extensions.AspNetWebApi.Filters
 
             private readonly PropertyInfo _PropertyInfo;
 
-            public Node(Object parent, Object value, PropertyInfo propertyInfo)
+            private readonly Boolean _AllowHtml;
+
+            public Node(Object parent, Object value, PropertyInfo propertyInfo, Boolean allowHtml)
             {
                 _Parent = parent;
                 _PropertyInfo = propertyInfo;
+                _AllowHtml = allowHtml;
                 _Value = value;
             }
 
@@ -444,6 +468,11 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                 {
                     return _PropertyInfo;
                 }
+            }
+
+            public Boolean AllowHtml
+            {
+                get { return _AllowHtml; }
             }
 
             public static Boolean operator ==(Node x, Node y)

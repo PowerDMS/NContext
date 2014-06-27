@@ -1,8 +1,7 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
+﻿namespace NContext.Tests.Specs.Text
 {
     using System;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
 
     using Machine.Specifications;
 
@@ -10,7 +9,7 @@
 
     using Telerik.JustMock;
 
-    public class with_an_enumerable_of_String : when_sanitizing_objects_with_ObjectGraphSanitizer
+    public class with_an_array_of_String : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
             {
@@ -19,7 +18,7 @@
                 Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
                     .Returns(_SanitizedValue);
 
-                _Data = new Collection<String>
+                _Data = new String[]
                     {
                         "Daniel",
                         "Gioulakis"

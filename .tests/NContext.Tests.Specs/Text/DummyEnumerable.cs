@@ -1,4 +1,4 @@
-namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Filters
+namespace NContext.Tests.Specs.Text
 {
     using System.Collections.Generic;
 

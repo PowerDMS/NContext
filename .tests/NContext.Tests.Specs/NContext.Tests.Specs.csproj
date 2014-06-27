@@ -44,6 +44,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Machine.Specifications.Should.0.7.2\lib\net45\Machine.Specifications.Should.dll</HintPath>
     </Reference>
+    <Reference Include="Ploeh.AutoFixture">
+      <HintPath>..\..\packages\AutoFixture.3.19.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -75,6 +78,24 @@
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_byte_array_and_AesCryptoServiceProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_stream_and_AesCryptoServiceProvider.cs" />
     <Compile Include="SpecAssertionExtensions.cs" />
+    <Compile Include="Text\DummyBlogAuthor.cs" />
+    <Compile Include="Text\DummyBlogLink.cs" />
+    <Compile Include="Text\DummyBlogPost.cs" />
+    <Compile Include="Text\DummyEnumerable.cs" />
+    <Compile Include="Text\DummySite.cs" />
+    <Compile Include="Text\when_sanitizing_objects_with_ObjectGraphSanitizer.cs" />
+    <Compile Include="Text\with_an_array_of_Object.cs" />
+    <Compile Include="Text\with_an_array_of_String.cs" />
+    <Compile Include="Text\with_an_enumerable_of_Object.cs" />
+    <Compile Include="Text\with_an_enumerable_of_String.cs" />
+    <Compile Include="Text\with_configuration_attributes.cs" />
+    <Compile Include="Text\with_a_complex_object.cs" />
+    <Compile Include="Text\with_a_derived_Dictionary_of_Object_values.cs" />
+    <Compile Include="Text\with_a_derived_enumerable_of_Object.cs" />
+    <Compile Include="Text\with_a_Dictionary_of_complex_object_values.cs" />
+    <Compile Include="Text\with_a_Dictionary_of_object_values.cs" />
+    <Compile Include="Text\with_a_Dictionary_of_string_values.cs" />
+    <Compile Include="Text\with_a_dictionary_without_IDictionary_support.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NET45-NContext.Common\NContext.Common.csproj">

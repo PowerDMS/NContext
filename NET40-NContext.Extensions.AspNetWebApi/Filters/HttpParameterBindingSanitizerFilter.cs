@@ -31,7 +31,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
     using Microsoft.FSharp.Core;
 
     using NContext.Common;
-    using NContext.Extensions.AspNetWebApi.Exceptions;
+    using NContext.Exceptions;
     using NContext.Text;
 
     /// <summary>

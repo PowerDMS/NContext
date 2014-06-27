@@ -214,6 +214,9 @@
     <Compile Include="..\NET40-NContext\EventHandling\IManageEvents.cs">
       <Link>EventHandling\IManageEvents.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext\Exceptions\SanitizationException.cs">
+      <Link>Exceptions\SanitizationException.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext\Extensions\ByteExtensions.cs">
       <Link>Extensions\ByteExtensions.cs</Link>
     </Compile>
@@ -315,6 +318,15 @@
     </Compile>
     <Compile Include="..\NET40-NContext\Text\ISanitizeText.cs">
       <Link>Text\ISanitizeText.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Text\ObjectGraphSanitizer.cs">
+      <Link>Text\ObjectGraphSanitizer.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Text\SanitizationHtmlAttribute.cs">
+      <Link>Text\SanitizationHtmlAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext\Text\SanitizationIgnoreAttribute.cs">
+      <Link>Text\SanitizationIgnoreAttribute.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Utilities\AttributeUtility.cs">
       <Link>Utilities\AttributeUtility.cs</Link>

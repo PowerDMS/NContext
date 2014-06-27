@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="SanitizationException.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2014 Waking Venture, Inc.
+// <copyright file="DummyBlogPost.cs" company="Waking Venture, Inc.">
+//   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
 //   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
@@ -18,24 +18,31 @@
 // </copyright>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace NContext.Extensions.AspNetWebApi.Exceptions
+namespace NContext.Tests.Specs.Text
 {
     using System;
+    using System.Collections.Generic;
 
-    using NContext.Extensions.AspNetWebApi.Filters;
-
-    /// <summary>
-    /// Defines an exception when object sanitization fails within <see cref="ObjectGraphSanitizer"/>.
-    /// </summary>
-    public class SanitizationException : Exception
+    public class DummyBlogPost
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SanitizationException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        public SanitizationException(String message)
-            : base(message)
-        {
-        }
+        public Int32 BlogId { get; set; }
+
+        public DummyBlogAuthor Author { get; set; }
+
+        public String Title { get; set; }
+
+        public String Content { get; set; }
+
+        public DateTime CreatedOn { get; set; }
+
+        public DateTime? PublishedOn { get; set; }
+
+        public IEnumerable<String> Tags { get; set; }
+
+        public IDictionary<Int32, String> Comments { get; set; }
+
+        public DummyBlogLink[] Links { get; set; }
+
+        public List<String> References { get; set; }
     }
 }
