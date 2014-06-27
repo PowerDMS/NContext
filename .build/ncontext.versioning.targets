@@ -2,8 +2,8 @@
   
   <PropertyGroup>
     <NContextMajorVersion>2</NContextMajorVersion>
-    <NContextMinorVersion>3</NContextMinorVersion>
-    <NContextPatchVersion>1</NContextPatchVersion>
+    <NContextMinorVersion>4</NContextMinorVersion>
+    <NContextPatchVersion>0</NContextPatchVersion>
     <BuildNumber>$(BUILD_NUMBER)</BuildNumber> <!-- TeamCity Build -->
     <BuildVcsNumber>$(BUILD_VCS_NUMBER)</BuildVcsNumber> <!-- Git SHA -->
     <AssemblyInfoFile>$(MSBuildProjectDirectory)\..\AssemblyInfoShared.cs</AssemblyInfoFile>
