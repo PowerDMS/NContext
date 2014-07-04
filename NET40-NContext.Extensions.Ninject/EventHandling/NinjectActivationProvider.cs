@@ -21,7 +21,6 @@
 namespace NContext.Extensions.Ninject.EventHandling
 {
     using System;
-    using System.Linq;
 
     using NContext.EventHandling;
 
@@ -51,7 +50,7 @@ namespace NContext.Extensions.Ninject.EventHandling
         /// <returns>IHandleEvents.</returns>
         public IHandleEvents CreateInstance<TEvent>(Type handler)
         {
-            return _Kernel.Resolve(_Kernel.CreateRequest(handler, null, null, false, true)).SingleOrDefault() as IHandleEvents;
+            return _Kernel.Get(handler) as IHandleEvents;
         }
     }
 }

@@ -67,7 +67,6 @@ namespace NContext.Extensions.Logging.Targets
             _ActionBlock = new ActionBlock<IEnumerable<LogEntry>>(
                 logEntries =>
                     {
-                        _FlushTimer.Change(_FlushInterval, TimeSpan.FromMilliseconds(-1));
                         Log(logEntries);
                     },
                 new ExecutionDataflowBlockOptions
@@ -97,7 +96,9 @@ namespace NContext.Extensions.Logging.Targets
         {
             lock (_FlushLock)
             {
-                ((BatchBlock<LogEntry>) _BatchBlock).TriggerBatch();
+                ((BatchBlock<LogEntry>)_BatchBlock).TriggerBatch();
+
+                _FlushTimer.Change(_FlushInterval, TimeSpan.FromMilliseconds(-1));
             }
         }
 
