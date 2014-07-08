@@ -20,6 +20,7 @@
 
 namespace NContext.Extensions.AutoMapper.Configuration
 {
+    using System;
     using System.ComponentModel.Composition;
 
     using global::AutoMapper;
@@ -36,5 +37,11 @@ namespace NContext.Extensions.AutoMapper.Configuration
         /// <param name="mapperConfiguration">The mapper configuration.</param>
         /// <remarks></remarks>
         void Configure(IConfiguration mapperConfiguration);
+
+        /// <summary>
+        /// Gets the priority used to configure the <see cref="IConfiguration"/>. Lower 
+        /// priority will cause implementations to execute first.
+        /// </summary>
+        Int32 Priority { get; }
     }
 }

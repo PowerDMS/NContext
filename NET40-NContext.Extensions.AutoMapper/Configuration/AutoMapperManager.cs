@@ -22,6 +22,7 @@ namespace NContext.Extensions.AutoMapper.Configuration
 {
     using System;
     using System.ComponentModel.Composition;
+    using System.Linq;
 
     using NContext.Configuration;
 
@@ -107,8 +108,10 @@ namespace NContext.Extensions.AutoMapper.Configuration
             }
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageAutoMapper>(this);
-            var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExports<IConfigureAutoMapper>();
-            mappingConfigurations.ForEach(mappingConfiguration => mappingConfiguration.Value.Configure(Configuration));
+
+            var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExportedValues<IConfigureAutoMapper>();
+            mappingConfigurations.OrderBy(mappingConfiguration => mappingConfiguration.Priority)
+                                 .ForEach(mappingConfiguration => mappingConfiguration.Configure(Configuration));
 
             _IsConfigured = true;
         }
