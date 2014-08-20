@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>NContext by Cephei</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>NContext</h1>
+        <p>Application composition framework for .NET 4 &amp; 4.5</p>
+
+        <p class="view"><a href="https://github.com/Cephei/NContext">View the Project on GitHub <small>Cephei/NContext</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/Cephei/NContext/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/Cephei/NContext/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/Cephei/NContext">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="ncontext" class="anchor" href="#ncontext"><span class="octicon octicon-link"></span></a>NContext</h1>
+
+<p>NContext is an application composition framework for .NET 4 &amp; 4.5.</p>
+
+<p>This project is an on-going architectural research effort. It borrows many
+ideas, patterns, and concepts from a variety of software architects in the
+field. NContext is unique and innovative in how it allows you to design your
+application without tying it down to any specific technology or architectural
+pattern.</p>
+
+<p>At it's core, NContext introduces two fundamental concepts: dynamic application
+composition (bootstrapping) based upon MEF and IResponseTransferObject - a DTO
+which allows you to create a functionally composable application codebase. With 
+it, the idea of Functional Domain Composition.</p>
+
+<p>It also introduces new concepts in designing your bounded-contexts. With few
+core dependencies, NContext's highly-extensible design allows for custom add-on
+modules. Already built extensions include: Entity Framework, ASP.NET Web API &amp; 
+OWIN, AutoMapper, Value Injecter, and Logging. Some application components have 
+been baked into NContext including: Caching, Security, Cryptography.</p>
+
+<p>NContext is dependency-injection container agnostic. Ninject and Unity support
+has been added with the intentions of supporting all popular containers in the
+near future.</p>
+
+<h2>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+
+<p>The MIT License (MIT)</p>
+
+<p>Copyright (c) 2014 Daniel Gioulakis, Waking Venture Inc.</p>
+
+<p>Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:</p>
+
+<p>The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.</p>
+
+<p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.</p>
+
+<h2>
+<a name="project-management" class="anchor" href="#project-management"><span class="octicon octicon-link"></span></a>Project Management</h2>
+
+<p>Feel free to comment and vote on ideas or features you'd like to see incorporated
+into NContext.</p>
+
+<p><strong>Trello:</strong> <em><a href="https://trello.com/b/xqQg5bfC">https://trello.com/b/xqQg5bfC</a></em>  </p>
+
+<h2>
+<a name="continuous-delivery" class="anchor" href="#continuous-delivery"><span class="octicon octicon-link"></span></a>Continuous Delivery</h2>
+
+<p>Currently, NContext is being deployed on-demand to reduce development costs. As new feature and bug fixes are brought into the framework and tested, the CI servers are spun-up and deployments are done from the following sites. Pre-release versions are currently deployed to official Nuget/Symbol Source servers. I don't recommend relying on these CI servers for any builds as they aren't live 24/7.</p>
+
+<p><strong>CI TeamCity Server:</strong> <em><a href="https://teamcity.wakingventure.com">https://teamcity.wakingventure.com</a></em><br><strong>CI NuGet Package Source:</strong> <em><a href="https://nuget.wakingventure.com">https://nuget.wakingventure.com</a></em><br><strong>CI Symbol Source Server:</strong> <em><a href="http://symbolsource.wakingventure.com">http://symbolsource.wakingventure.com</a></em>  </p>
+
+<p>NContext versioning is still being determined. The core libraries (NContext.dll &amp; 
+NContext.Common.dll) will be released as 2.x.0. Ideally all extensions will be 
+independently versioned, however, the current build process does not reflect this. 
+This will be addressed in future builds as updating NuGet references is currently a 
+pain since each build packages a new NuGet release for every .nuspec.</p>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/Cephei">Cephei</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
