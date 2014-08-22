@@ -54,7 +54,7 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
-        /// <returns>IResponseTransferObject{Boolean}.</returns>
-        IResponseTransferObject<Unit> Commit();
+        /// <returns>IServiceResponse{Unit}.</returns>
+        IServiceResponse<Unit> Commit();
     }
 }

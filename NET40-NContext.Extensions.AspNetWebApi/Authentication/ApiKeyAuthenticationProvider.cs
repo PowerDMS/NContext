@@ -54,7 +54,7 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// <param name="requestMessage">The request message.</param>
         /// <returns>Instance of <see cref="IPrincipal"/>.</returns>
         /// <remarks></remarks>
-        public virtual IResponseTransferObject<IPrincipal> Authenticate(HttpRequestMessage requestMessage)
+        public virtual IServiceResponse<IPrincipal> Authenticate(HttpRequestMessage requestMessage)
         {
             if (!CanAuthenticate(requestMessage))
             {
@@ -104,6 +104,6 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// </summary>
         /// <param name="apiKey">The API key.</param>
         /// <returns>IPrincipal.</returns>
-        public abstract IResponseTransferObject<IPrincipal> AuthenticateApiKey(String apiKey);
+        public abstract IServiceResponse<IPrincipal> AuthenticateApiKey(String apiKey);
     }
 }

@@ -44,6 +44,6 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
         /// <param name="requestMessage">The request message.</param>
         /// <returns>Instance of <see cref="IPrincipal"/>.</returns>
         /// <remarks></remarks>
-        IResponseTransferObject<IPrincipal> Authenticate(HttpRequestMessage requestMessage);
+        IServiceResponse<IPrincipal> Authenticate(HttpRequestMessage requestMessage);
     }
 }

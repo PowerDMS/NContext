@@ -31,24 +31,24 @@ namespace NContext.Extensions
     public static class ErrorBaseExtensions
     {
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{Unit}"/> with the specified <paramref name="error"/>.
+        /// Returns a new <see cref="IServiceResponse{Unit}"/> with the specified <paramref name="error"/>.
         /// </summary>
         /// <param name="error">The error.</param>
-        /// <returns>IResponseTransferObject{Unit}.</returns>
-        public static IResponseTransferObject<Unit> ToServiceResponse(this ErrorBase error)
+        /// <returns>IServiceResponse{Unit}.</returns>
+        public static IServiceResponse<Unit> ToServiceResponse(this ErrorBase error)
         {
-            return new ServiceResponse<Unit>(error);
+            return new ErrorResponse<Unit>(error);
         }
 
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T}"/> with the specified <paramref name="error"/>.
+        /// Returns a new <see cref="IServiceResponse{T}"/> with the specified <paramref name="error"/>.
         /// </summary>
-        /// <typeparam name="T">Type of IResponseTransferObject.</typeparam>
+        /// <typeparam name="T">Type of IServiceResponse.</typeparam>
         /// <param name="error">The error.</param>
-        /// <returns>IResponseTransferObject{T}.</returns>
-        public static IResponseTransferObject<T> ToServiceResponse<T>(this ErrorBase error)
+        /// <returns>IServiceResponse{T}.</returns>
+        public static IServiceResponse<T> ToServiceResponse<T>(this ErrorBase error)
         {
-            return new ServiceResponse<T>(error);
+            return new ErrorResponse<T>(error);
         }
     }
 }

@@ -107,7 +107,7 @@ namespace NContext.Data.Persistence
             return UnitsOfWork.Any(uow => uow.GetType().Implements<T>());
         }
 
-        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
+        protected override IServiceResponse<Unit> CommitTransaction(TransactionScope transactionScope)
         {
             using (transactionScope)
             {
@@ -125,7 +125,7 @@ namespace NContext.Data.Persistence
             }
         }
 
-        private IResponseTransferObject<Unit> CommitChildren()
+        private IServiceResponse<Unit> CommitChildren()
         {
             foreach (var unitOfWork in UnitsOfWork)
             {
@@ -134,19 +134,19 @@ namespace NContext.Data.Persistence
                     Error error;
                     if ((error = unitOfWork.Commit().Error) != null)
                     {
-                        return new ServiceResponse<Unit>(error);
+                        return new ErrorResponse<Unit>(error);
                     }
                 }
                 catch (Exception exception)
                 {
-                    return new ServiceResponse<Unit>(exception.ToError());
+                    return new ErrorResponse<Unit>(exception.ToError());
                 }
             }
 
-            return new ServiceResponse<Unit>(default(Unit));
+            return new DataResponse<Unit>(default(Unit));
         }
 
-        private IResponseTransferObject<Unit> CommitChildrenParallel()
+        private IServiceResponse<Unit> CommitChildrenParallel()
         {
             if (!AmbientContextManager.IsThreadSafe)
             {
@@ -184,8 +184,8 @@ namespace NContext.Data.Persistence
                         });
 
             return commitExceptions.Any()
-                       ? new ServiceResponse<Unit>(new AggregateError((Int32)HttpStatusCode.InternalServerError, GetType().Name, commitExceptions.Select(error => error)))
-                       : new ServiceResponse<Unit>(default(Unit));
+                       ? (IServiceResponse<Unit>)new ErrorResponse<Unit>(new AggregateError((Int32)HttpStatusCode.InternalServerError, GetType().Name, commitExceptions.Select(error => error)))
+                       : (IServiceResponse<Unit>)new DataResponse<Unit>(default(Unit));
         }
 
         protected override void DisposeManagedResources()

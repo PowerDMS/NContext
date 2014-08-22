@@ -75,8 +75,8 @@ namespace NContext.Extensions.EntityFramework
         /// Commits the changes within the persistence context.
         /// </summary>
         /// <param name="transactionScope">The transaction scope.</param>
-        /// <returns>IResponseTransferObject{Boolean}.</returns>
-        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
+        /// <returns>IServiceResponse{Boolean}.</returns>
+        protected override IServiceResponse<Unit> CommitTransaction(TransactionScope transactionScope)
         {
             if (Parent == null)
             {
@@ -120,7 +120,7 @@ namespace NContext.Extensions.EntityFramework
         {
         }
 
-        private IResponseTransferObject<Unit> CommitTransactionInternal()
+        private IServiceResponse<Unit> CommitTransactionInternal()
         {
             foreach (var context in DbContextContainer.Contexts)
             {
@@ -132,7 +132,7 @@ namespace NContext.Extensions.EntityFramework
                     }
                     catch (InvalidOperationException ioe)
                     {
-                        return new ServiceResponse<Unit>(ioe.ToError());
+                        return new ErrorResponse<Unit>(ioe.ToError());
                     }
                     catch (DbEntityValidationException eve)
                     {
@@ -145,7 +145,7 @@ namespace NContext.Extensions.EntityFramework
                 }
             }
 
-            return new ServiceResponse<Unit>(default(Unit));
+            return new DataResponse<Unit>(default(Unit));
         }
 
         #endregion

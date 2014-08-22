@@ -1,9 +1,9 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   
   <PropertyGroup>
-    <NContextMajorVersion>2</NContextMajorVersion>
-    <NContextMinorVersion>4</NContextMinorVersion>
-    <NContextPatchVersion>3</NContextPatchVersion>
+    <NContextMajorVersion>3</NContextMajorVersion>
+    <NContextMinorVersion>0</NContextMinorVersion>
+    <NContextPatchVersion>0</NContextPatchVersion>
     <BuildNumber>$(BUILD_NUMBER)</BuildNumber> <!-- TeamCity Build -->
     <BuildVcsNumber>$(BUILD_VCS_NUMBER)</BuildVcsNumber> <!-- Git SHA -->
     <AssemblyInfoFile>$(MSBuildProjectDirectory)\..\AssemblyInfoShared.cs</AssemblyInfoFile>

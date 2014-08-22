@@ -109,7 +109,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             {
                 var response = actionContext.Request.CreateResponse(
                     (HttpStatusCode) 422,
-                    new ServiceResponse<Unit>(sanitizationException.ToError()));
+                    new ErrorResponse<Unit>(sanitizationException.ToError()));
 
                 actionContext.Response = response;
             }
@@ -117,7 +117,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
             {
                 var response = actionContext.Request.CreateResponse(
                     HttpStatusCode.InternalServerError,
-                    new ServiceResponse<Unit>(e.ToError()));
+                    new ErrorResponse<Unit>(e.ToError()));
 
                 actionContext.Response = response;
             }

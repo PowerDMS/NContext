@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponseTransferObjectIQueryableExtensions.cs" company="Waking Venture, Inc.">
+// <copyright file="IServiceResponseIQueryableExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2012 Waking Venture, Inc.
 //
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -29,48 +29,48 @@ namespace NContext.Extensions
     using NContext.Common;
 
     /// <summary>
-    /// Defines extension methods for <see cref="IQueryable{T}"/> yielding a new <see cref="IResponseTransferObject{T}"/>.
+    /// Defines extension methods for <see cref="IQueryable{T}"/> yielding a new <see cref="IServiceResponse{T}"/>.
     /// </summary>
-    public static class IResponseTransferObjectIQueryableExtensions
+    public static class IServiceResponseIQueryableExtensions
     {
         /// <summary>
-        /// Returns an <see cref="IResponseTransferObject{T}"/> with the first element of a sequence.
+        /// Returns an <see cref="IServiceResponse{T}"/> with the first element of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="queryable">The <see cref="IQueryable{T}"/> to return the first element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
-        /// <returns>IResponseTransferObject{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> FirstResponse<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
+        /// <returns>IServiceResponse{T} with the first element in the sequence that passes the test in the (optional) predicate function.</returns>
+        public static IServiceResponse<T> FirstResponse<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
         {
             using (var enumerator = GetEnumerator(queryable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
-                    return new ServiceResponse<T>(
+                    return new ErrorResponse<T>(
                         new Error(
                             (Int32)HttpStatusCode.InternalServerError,
                             "IResponseTransferObjectIQueryableExtensions_FirstResponse_NoMatch",
                             new[] { "Enumerable is empty." }));
                 }
 
-                return new ServiceResponse<T>(enumerator.Current);
+                return new DataResponse<T>(enumerator.Current);
             }
         }
 
         /// <summary>
-        /// Returns an <see cref="IResponseTransferObject{T}"/> with the single, specific element of a sequence.
+        /// Returns an <see cref="IServiceResponse{T}"/> with the single, specific element of a sequence.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="queryable">The <see cref="IQueryable{T}"/> to return the single element of.</param>
         /// <param name="predicate">An optional function to test each element for a condition.</param>
-        /// <returns>IResponseTransferObject{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
-        public static IResponseTransferObject<T> SingleResponse<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
+        /// <returns>IServiceResponse{T} with the single element in the sequence that passes the test in the (optional) predicate function.</returns>
+        public static IServiceResponse<T> SingleResponse<T>(this IQueryable<T> queryable, Expression<Func<T, Boolean>> predicate = null)
         {
             using (var enumerator = GetEnumerator(queryable, predicate))
             {
                 if (!enumerator.MoveNext())
                 {
-                    return new ServiceResponse<T>(
+                    return new ErrorResponse<T>(
                         new Error(
                             (Int32)HttpStatusCode.InternalServerError,
                             "IResponseTransferObjectIQueryableExtensions_SingleResponse_NoMatch",
@@ -80,12 +80,11 @@ namespace NContext.Extensions
                 T current = enumerator.Current;
                 if (!enumerator.MoveNext())
                 {
-                    return new ServiceResponse<T>(current);
+                    return new DataResponse<T>(current);
                 }
             }
-
-
-            return new ServiceResponse<T>(
+            
+            return new ErrorResponse<T>(
                 new Error(
                     (Int32)HttpStatusCode.InternalServerError,
                     "IResponseTransferObjectIQueryableExtensions_SingleResponse_MoreThanOneMatch",
