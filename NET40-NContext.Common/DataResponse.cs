@@ -6,31 +6,55 @@
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    /// <summary>
+    /// Defines a generic data-transfer-object for containing arbitrary data.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class DataResponse<T> : ServiceResponse<T>
     {
         private readonly T _Data;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataResponse{T}"/> class.
+        /// </summary>
+        /// <param name="data">The data.</param>
         public DataResponse(T data)
         {
             var materializedData = MaterializeDataIfNeeded(data);
             _Data = (materializedData == null) ? default(T) : materializedData;
         }
 
+        /// <summary>
+        /// Gets whether the instance is left.
+        /// </summary>
+        /// <value>The is left.</value>
         public override Boolean IsLeft
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Gets the left value.
+        /// </summary>
+        /// <returns>Error.</returns>
         public override Error GetLeft()
         {
             return null;
         }
 
+        /// <summary>
+        /// Gets the right value, <see cref="Data"/>.
+        /// </summary>
+        /// <returns>T.</returns>
         public override T GetRight()
         {
             return _Data;
         }
 
+        /// <summary>
+        /// Gets the data.
+        /// </summary>
+        /// <value>The data.</value>
         public override T Data
         {
             get { return _Data; }

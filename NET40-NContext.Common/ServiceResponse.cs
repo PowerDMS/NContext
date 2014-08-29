@@ -3,6 +3,10 @@
     using System;
     using System.Runtime.Serialization;
 
+    /// <summary>
+    /// Defines a data-transfer-object used for functional composition.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     [DataContract(Name = "ServiceResponseOf{0}")]
     [KnownType(typeof(ErrorResponse<>))]
     [KnownType(typeof(DataResponse<>))]
@@ -34,9 +38,17 @@
             return serviceResponse.Data != null;
         }
 
+        /// <summary>
+        /// Gets the error.
+        /// </summary>
+        /// <value>The error.</value>
         [DataMember]
         public virtual Error Error { get { return null; } }
 
+        /// <summary>
+        /// Gets the data.
+        /// </summary>
+        /// <value>The data.</value>
         [DataMember]
         public virtual T Data { get { return default(T); } }
     }

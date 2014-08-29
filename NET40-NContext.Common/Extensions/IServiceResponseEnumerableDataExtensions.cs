@@ -9,34 +9,36 @@
     public static class IServiceResponseEnumerableDataExtensions
     {
         /// <summary>
-        /// Projects each data element for each <paramref name="responseTransferObjects"/> into a new <see cref="ServiceResponse{IEnumerable{T}}"/>.  
+        /// Projects each data element for each <paramref name="serviceResponses"/> into a new <see cref="ServiceResponse{IEnumerable{T}}"/>.  
         /// If any <see cref="IServiceResponse{T}"/> has an error, then: 
-        /// if <paramref name="aggregateErrors"/> is true, it will loop through all <paramref name="responseTransferObjects"/> 
+        /// if <paramref name="aggregateErrors"/> is true, it will loop through all <paramref name="serviceResponses"/> 
         /// and return a <see cref="ServiceResponse{T}"/> with <see cref="AggregateError"/>, else,
         /// it will break out and return a <see cref="ServiceResponse{T}"/> with the first error encountered.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="responseTransferObjects">The response transfer objects.</param>
+        /// <param name="serviceResponses">The response transfer objects.</param>
         /// <param name="aggregateErrors">The aggregate errors.</param>
         /// <returns>IServiceResponse&lt;IEnumerable&lt;T&gt;&gt;.</returns>
-        public static IServiceResponse<IEnumerable<T>> SelectToServiceResponse<T>(this IEnumerable<IServiceResponse<T>> responseTransferObjects, Boolean aggregateErrors = false)
+        public static IServiceResponse<IEnumerable<T>> SelectToServiceResponse<T>(
+            this IEnumerable<IServiceResponse<T>> serviceResponses, 
+            Boolean aggregateErrors = false)
         {
             var errors = new List<Error>();
             var data = new List<T>();
-            foreach (var responseTransferObject in responseTransferObjects.TakeWhile(responseTransferObject => responseTransferObject != null))
+            foreach (var serviceResponse in serviceResponses.TakeWhile(responseTransferObject => responseTransferObject != null))
             {
-                if (responseTransferObject.Error != null)
+                if (serviceResponse.Error != null)
                 {
                     if (!aggregateErrors)
                     {
-                        return new ErrorResponse<IEnumerable<T>>(responseTransferObject.Error);
+                        return new ErrorResponse<IEnumerable<T>>(serviceResponse.Error);
                     }
 
-                    errors.Add(responseTransferObject.Error);
+                    errors.Add(serviceResponse.Error);
                     break;
                 }
 
-                data.Add(responseTransferObject.Data);
+                data.Add(serviceResponse.Data);
             }
 
             if (errors.Any())
@@ -49,34 +51,36 @@
         }
 
         /// <summary>
-        /// Projects each element of <see cref="IServiceResponse{T}.Data"/> for each <paramref name="responseTransferObjects"/> into an <see cref="IEnumerable{T}"/> and flattens the resulting sequences into one sequence into a new <see cref="ServiceResponse{IEnumerable{T}}" />.  
+        /// Projects each element of <see cref="IServiceResponse{T}.Data"/> for each <paramref name="serviceResponses"/> into an <see cref="IEnumerable{T}"/> and flattens the resulting sequences into one sequence into a new <see cref="ServiceResponse{IEnumerable{T}}" />.  
         /// If any <see cref="IServiceResponse{T}"/> has an error, then: 
-        /// if <paramref name="aggregateErrors"/> is true, it will loop through all <paramref name="responseTransferObjects"/> 
+        /// if <paramref name="aggregateErrors"/> is true, it will loop through all <paramref name="serviceResponses"/> 
         /// and return a <see cref="ServiceResponse{T}"/> with <see cref="AggregateError"/>, else,
         /// it will break out and return a <see cref="ServiceResponse{T}"/> with the first error encountered.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="responseTransferObjects">The response transfer objects.</param>
+        /// <param name="serviceResponses">The service responses.</param>
         /// <param name="aggregateErrors">The aggregate errors.</param>
         /// <returns>IServiceResponse{IEnumerable{T}}.</returns>
-        public static IServiceResponse<IEnumerable<T>> SelectManyToServiceResponse<T>(this IEnumerable<IServiceResponse<IEnumerable<T>>> responseTransferObjects, Boolean aggregateErrors = false)
+        public static IServiceResponse<IEnumerable<T>> SelectManyToServiceResponse<T>(
+            this IEnumerable<IServiceResponse<IEnumerable<T>>> serviceResponses, 
+            Boolean aggregateErrors = false)
         {
             var errors = new List<Error>();
             var data = new List<T>();
-            foreach (var responseTransferObject in responseTransferObjects.TakeWhile(responseTransferObject => responseTransferObject != null))
+            foreach (var serviceResponse in serviceResponses.TakeWhile(responseTransferObject => responseTransferObject != null))
             {
-                if (responseTransferObject.Error != null)
+                if (serviceResponse.Error != null)
                 {
                     if (!aggregateErrors)
                     {
-                        return new ErrorResponse<IEnumerable<T>>(responseTransferObject.Error);
+                        return new ErrorResponse<IEnumerable<T>>(serviceResponse.Error);
                     }
 
-                    errors.Add(responseTransferObject.Error);
+                    errors.Add(serviceResponse.Error);
                     break;
                 }
 
-                data.AddRange(responseTransferObject.Data);
+                data.AddRange(serviceResponse.Data);
             }
 
             if (errors.Any())
