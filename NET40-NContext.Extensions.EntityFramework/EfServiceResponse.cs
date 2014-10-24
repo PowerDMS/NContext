@@ -20,12 +20,12 @@
 
 namespace NContext.Extensions.EntityFramework
 {
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Validation;
     using System.Linq;
 
     using NContext.Common;
-    using NContext.ErrorHandling;
 
     /// <summary>
     /// Defines an Entity Framework <see cref="ServiceResponse{T}"/> adapter.
@@ -34,25 +34,7 @@ namespace NContext.Extensions.EntityFramework
     /// </typeparam>
     public class EfServiceResponse<T> : ServiceResponse<T>
     {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EfServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="data">The data.</param>
-        /// <remarks></remarks>
-        public EfServiceResponse(T data)
-            : base(data)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
-        /// </summary>
-        /// <param name="error">The error.</param>
-        /// <remarks></remarks>
-        public EfServiceResponse(ErrorBase error)
-            : base(error)
-        {
-        }
+        private readonly Error _Error;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ServiceResponse{T}"/> class.
@@ -70,8 +52,8 @@ namespace NContext.Extensions.EntityFramework
         /// <param name="validationResults">The validation results.</param>
         /// <remarks></remarks>
         public EfServiceResponse(IEnumerable<DbEntityValidationResult> validationResults)
-            : base(TranslateDbEntityValidationResultsToValidationErrors(validationResults))
         {
+            _Error = TranslateDbEntityValidationResultsToValidationErrors(validationResults);
         }
 
         private static Error TranslateDbEntityValidationResultsToValidationErrors(IEnumerable<DbEntityValidationResult> validationResults)
@@ -83,6 +65,21 @@ namespace NContext.Extensions.EntityFramework
                     new ValidationError(
                         validationResult.Entry.Entity.GetType(),
                         validationResult.ValidationErrors.Select(validationError => validationError.ErrorMessage))));
+        }
+
+        public override Boolean IsLeft
+        {
+            get { return true; }
+        }
+
+        public override Error GetLeft()
+        {
+            return _Error;
+        }
+
+        public override T GetRight()
+        {
+            return default(T);
         }
     }
 }

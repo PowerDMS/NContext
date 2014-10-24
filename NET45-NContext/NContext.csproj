@@ -241,11 +241,11 @@
     <Compile Include="..\NET40-NContext\Extensions\IMaybeIQueryableExtensions.cs">
       <Link>Extensions\IMaybeIQueryableExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Extensions\IResponseTransferObjectEventExtensions.cs">
-      <Link>Extensions\IResponseTransferObjectEventExtensions.cs</Link>
+    <Compile Include="..\NET40-NContext\Extensions\IServiceResponseEventExtensions.cs">
+      <Link>Extensions\IServiceResponseEventExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\Extensions\IResponseTransferObjectIQueryableExtensions.cs">
-      <Link>Extensions\IResponseTransferObjectIQueryableExtensions.cs</Link>
+    <Compile Include="..\NET40-NContext\Extensions\IServiceResponseIQueryableExtensions.cs">
+      <Link>Extensions\IServiceResponseIQueryableExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Extensions\ISetExtensions.cs">
       <Link>Extensions\ISetExtensions.cs</Link>

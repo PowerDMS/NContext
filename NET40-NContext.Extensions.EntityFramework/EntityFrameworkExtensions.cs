@@ -46,15 +46,15 @@ namespace NContext.Extensions.EntityFramework
         }
 
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{TEntity}"/>.
+        /// Returns a new <see cref="IServiceResponse{TEntity}"/>.
         /// </summary>
         /// <typeparam name="TEntity">The type of the entity.</typeparam>
         /// <param name="entity">The entity.</param>
-        /// <returns>IResponseTransferObject{TEntity}.</returns>
-        public static IResponseTransferObject<TEntity> ToServiceResponse<TEntity>(this TEntity entity)
+        /// <returns>IServiceResponse{TEntity}.</returns>
+        public static IServiceResponse<TEntity> ToServiceResponse<TEntity>(this TEntity entity)
             where TEntity : IEntity
         {
-            return new EfServiceResponse<TEntity>(entity);
+            return new DataResponse<TEntity>(entity);
         }
     }
 }

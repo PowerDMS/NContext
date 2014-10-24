@@ -46,8 +46,8 @@ namespace NContext.Extensions.AspNetWebApi.Patching
         /// Patches the specified object using Json.net.
         /// </summary>
         /// <param name="original">The original object to patch.</param>
-        /// <returns>IResponseTransferObject&lt;TDto&gt;.</returns>
-        public virtual IResponseTransferObject<T> Patch(T original)
+        /// <returns>IServiceResponse{T}.</returns>
+        public virtual IServiceResponse<T> Patch(T original)
         {
             JsonConvert.PopulateObject(_JsonRepresentation, original);
 
@@ -56,7 +56,7 @@ namespace NContext.Extensions.AspNetWebApi.Patching
                 OnPatchedHandler.Invoke(original);
             }
 
-            return new ServiceResponse<T>(original);
+            return new DataResponse<T>(original);
         }
     }
 }

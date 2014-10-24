@@ -145,8 +145,8 @@
     <Compile Include="Extensions\ErrorExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
-    <Compile Include="Extensions\IResponseTransferObjectEventExtensions.cs" />
-    <Compile Include="Extensions\IResponseTransferObjectIQueryableExtensions.cs" />
+    <Compile Include="Extensions\IServiceResponseEventExtensions.cs" />
+    <Compile Include="Extensions\IServiceResponseIQueryableExtensions.cs" />
     <Compile Include="Extensions\ISetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Configuration\ApplicationComponentDependencyAttribute.cs" />

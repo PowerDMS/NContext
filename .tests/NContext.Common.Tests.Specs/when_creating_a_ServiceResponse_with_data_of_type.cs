@@ -26,19 +26,19 @@ namespace NContext.Common.Tests.Specs
 
     public abstract class when_creating_a_ServiceResponse_with_data_of_type<T>
     {
-        static Lazy<IResponseTransferObject<T>> _ServiceResponse;
+        static Lazy<IServiceResponse<T>> _ServiceResponse;
 
         Establish context =
             () =>
             _ServiceResponse =
-                new Lazy<IResponseTransferObject<T>>(() => new ServiceResponse<T>(Data));
+                new Lazy<IServiceResponse<T>>(() => new DataResponse<T>(Data));
 
         protected static void CreateServiceResponse()
         {
             var x = _ServiceResponse.Value;
         }
 
-        public static IResponseTransferObject<T> ServiceResponse
+        public static IServiceResponse<T> ServiceResponse
         {
             get { return _ServiceResponse.Value; }
         } 

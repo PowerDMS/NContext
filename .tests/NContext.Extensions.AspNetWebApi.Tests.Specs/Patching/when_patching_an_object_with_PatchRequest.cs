@@ -72,6 +72,6 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Patching
 
         static DummyDto _DomainTargetDto;
 
-        static IResponseTransferObject<DummyDto> _PatchResult;
+        static IServiceResponse<DummyDto> _PatchResult;
     }
 }

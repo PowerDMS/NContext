@@ -21,35 +21,34 @@
 namespace NContext.Extensions.AspNetWebApi.Extensions
 {
     using System;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
 
     using NContext.Common;
 
     /// <summary>
-    /// Defines extension methods for <see cref="IResponseTransferObject{T}"/>.
+    /// Defines extension methods for <see cref="IServiceResponse{T}"/>.
     /// </summary>
     public static class IResponseTransferObjectExtensions
     {
         /// <summary>
-        /// Returns a new <see cref="HttpResponseMessage"/> with the <see cref="HttpResponseMessage.Content"/> set to <paramref name="responseContent"/>. If 
-        /// <paramref name="responseContent"/> contains an error, it will attempt to parse the <see cref="Error.Code"/> as an <see cref="HttpStatusCode"/> 
+        /// Returns a new <see cref="HttpResponseMessage"/> with the <see cref="HttpResponseMessage.Content"/> set to <paramref name="serviceResponse"/>. If 
+        /// <paramref name="serviceResponse"/> contains an error, it will attempt to parse the <see cref="Error.Code"/> as an <see cref="HttpStatusCode"/> 
         /// and assign it to the response message.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="responseContent">The content contained in the HTTP response.</param>
+        /// <param name="serviceResponse">The content contained in the HTTP response.</param>
         /// <param name="httpRequestMessage">The active <see cref="HttpRequestMessage"/>.</param>
-        /// <param name="statusCode">The <see cref="HttpStatusCode"/> to set if <paramref name="responseContent"/> has no errors.</param>
+        /// <param name="statusCode">The <see cref="HttpStatusCode"/> to set if <paramref name="serviceResponse"/> has no errors.</param>
         /// <returns>HttpResponseMessage instance.</returns>
         public static HttpResponseMessage ToHttpResponseMessage<T>(
-            this IResponseTransferObject<T> responseContent, 
+            this IServiceResponse<T> serviceResponse, 
             HttpRequestMessage httpRequestMessage,
             HttpStatusCode statusCode = HttpStatusCode.OK)
         {
-            if (responseContent == null)
+            if (serviceResponse == null)
             {
-                throw new ArgumentNullException("responseContent");
+                throw new ArgumentNullException("serviceResponse");
             }
 
             if (httpRequestMessage == null)
@@ -57,38 +56,38 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 throw new ArgumentNullException("httpRequestMessage");
             }
 
-            if (responseContent.Error != null)
+            if (serviceResponse.Error != null)
             {
-                var errorStatusCode = (HttpStatusCode) responseContent.Error.HttpStatusCode;
+                var errorStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
                 
-                return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
+                return httpRequestMessage.CreateResponse(errorStatusCode, serviceResponse);
             }
 
             return ShouldSetResponseContent(statusCode)
-                       ? httpRequestMessage.CreateResponse(statusCode, responseContent)
+                       ? httpRequestMessage.CreateResponse(statusCode, serviceResponse)
                        : httpRequestMessage.CreateResponse(statusCode);
         }
 
         /// <summary>
-        /// Invokes the specified <paramref name="responseBuilder" /> action if <paramref name="responseContent" /> does not contain an error - returning the configured <see cref="HttpResponseMessage" />.
-        /// If <paramref name="responseContent" /> contains errors, the returned response with contain the error content and will attempt to parse the <see cref="Error.Code" /> as an
+        /// Invokes the specified <paramref name="responseBuilder" /> action if <paramref name="serviceResponse" /> does not contain an error - returning the configured <see cref="HttpResponseMessage" />.
+        /// If <paramref name="serviceResponse" /> contains errors, the returned response with contain the error content and will attempt to parse the <see cref="Error.Code" /> as an
         /// <see cref="HttpStatusCode" /> and assign it to the response message.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <param name="responseContent">The <see cref="IResponseTransferObject{t}" /> used to build the <see cref="HttpResponseMessage" />.</param>
+        /// <param name="serviceResponse">The <see cref="IServiceResponse{t}" /> used to build the <see cref="HttpResponseMessage" />.</param>
         /// <param name="httpRequestMessage">The active <see cref="HttpRequestMessage" />.</param>
         /// <param name="responseBuilder">The response builder method to invoke when no errors exist.</param>
-        /// <param name="setResponseContent">Determines whether to set the <param name="responseContent.Data"></param> as the response content.</param>
+        /// <param name="setResponseContent">Determines whether to set the <param name="serviceResponse.Data"></param> as the response content.</param>
         /// <returns>HttpResponseMessage instance.</returns>
         public static HttpResponseMessage ToHttpResponseMessage<T>(
-            this IResponseTransferObject<T> responseContent, 
+            this IServiceResponse<T> serviceResponse, 
             HttpRequestMessage httpRequestMessage, 
             Action<T, HttpResponseMessage> responseBuilder,
             Boolean setResponseContent = true)
         {
-            if (responseContent == null)
+            if (serviceResponse == null)
             {
-                throw new ArgumentNullException("responseContent");
+                throw new ArgumentNullException("serviceResponse");
             }
 
             if (httpRequestMessage == null)
@@ -96,18 +95,18 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 throw new ArgumentNullException("httpRequestMessage");
             }
             
-            if (responseContent.Error != null)
+            if (serviceResponse.Error != null)
             {
-                var errorStatusCode = (HttpStatusCode) responseContent.Error.HttpStatusCode;
+                var errorStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
 
-                return httpRequestMessage.CreateResponse(errorStatusCode, responseContent);
+                return httpRequestMessage.CreateResponse(errorStatusCode, serviceResponse);
             }
 
             var response = setResponseContent
-                ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, responseContent)
+                ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, serviceResponse)
                 : httpRequestMessage.CreateResponse(HttpStatusCode.OK);
 
-            responseBuilder.Invoke(responseContent.Data, response);
+            responseBuilder.Invoke(serviceResponse.Data, response);
 
             return response;
         }

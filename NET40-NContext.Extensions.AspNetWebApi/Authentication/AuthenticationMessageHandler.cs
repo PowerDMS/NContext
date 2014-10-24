@@ -92,9 +92,9 @@ namespace NContext.Extensions.AspNetWebApi.Authentication
                         completionSource.SetResult(
                             request.CreateResponse(
                                 (HttpStatusCode)error.HttpStatusCode,
-                                    new ServiceResponse<Unit>(error)));
+                                    new ErrorResponse<Unit>(error)));
 
-                        return new ServiceResponse<Task<HttpResponseMessage>>(completionSource.Task);
+                        return new DataResponse<Task<HttpResponseMessage>>(completionSource.Task);
                     })
                 .FromRight();
         }

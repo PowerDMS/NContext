@@ -21,7 +21,6 @@
 namespace NContext.Data.Persistence
 {
     using System;
-    using System.Diagnostics;
     using System.Transactions;
 
     using Microsoft.FSharp.Core;
@@ -40,9 +39,9 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
-        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
+        protected override IServiceResponse<Unit> CommitTransaction(TransactionScope transactionScope)
         {
-            return new ServiceResponse<Unit>(default(Unit));
+            return new DataResponse<Unit>(default(Unit));
         }
 
         /// <summary>

@@ -44,16 +44,16 @@ namespace NContext.Common
         }
 
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T}"/>. If <paramref name="instance"/> is <see cref="Nothing{T}"/>, then 
-        /// the <paramref name="isNothingToErrorBindingFunc"/> is invoked to return a <see cref="IResponseTransferObject{T}"/> with 
+        /// Returns a new <see cref="IServiceResponse{T}"/>. If <paramref name="instance"/> is <see cref="Nothing{T}"/>, then 
+        /// the <paramref name="isNothingToErrorBindingFunc"/> is invoked to return a <see cref="IServiceResponse{T}"/> with 
         /// errors.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The <see cref="IMaybe{T}"/> instance.</param>
         /// <param name="isNothingToErrorBindingFunc">The function to invoke if <paramref name="instance"/> is <see cref="Nothing{T}"/>.</param>
-        /// <returns>IResponseTransferObject{T}.</returns>
+        /// <returns>IServiceResponse{T}.</returns>
         /// <exception cref="System.ArgumentNullException">instance</exception>
-        public static IResponseTransferObject<T> ToServiceResponse<T>(this IMaybe<T> instance, Func<Error> isNothingToErrorBindingFunc)
+        public static IServiceResponse<T> ToServiceResponse<T>(this IMaybe<T> instance, Func<Error> isNothingToErrorBindingFunc)
         {
             if (instance == null) throw new ArgumentNullException("instance");
 
@@ -61,28 +61,28 @@ namespace NContext.Common
 
             if (instance.IsJust)
             {
-                return new ServiceResponse<T>(instance.FromMaybe(default(T)));
+                return new DataResponse<T>(instance.FromMaybe(default(T)));
             }
 
-            return new ServiceResponse<T>(isNothingToErrorBindingFunc.Invoke());
+            return new ErrorResponse<T>(isNothingToErrorBindingFunc.Invoke());
         }
         
         /// <summary>
-        /// Returns a new <see cref="IResponseTransferObject{T}"/>. If <paramref name="instance"/> is <see cref="Nothing{T}"/>, then 
+        /// Returns a new <see cref="IServiceResponse{T}"/>. If <paramref name="instance"/> is <see cref="Nothing{T}"/>, then 
         /// the <paramref name="defaultValue"/> is used instead of errors.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="instance">The instance.</param>
         /// <param name="defaultValue">The default value to use if <typeparamref name="T"/> is <see cref="Nothing{T}"/>.</param>
-        /// <returns>IResponseTransferObject{0}.</returns>
+        /// <returns>IServiceResponse{0}.</returns>
         /// <exception cref="System.ArgumentNullException">instance</exception>
-        public static IResponseTransferObject<T> ToServiceResponse<T>(this IMaybe<T> instance, T defaultValue)
+        public static IServiceResponse<T> ToServiceResponse<T>(this IMaybe<T> instance, T defaultValue)
         {
             if (instance == null) throw new ArgumentNullException("instance");
 
             if (defaultValue == null) throw new ArgumentNullException("defaultValue");
 
-            return new ServiceResponse<T>(instance.FromMaybe(defaultValue));
+            return new DataResponse<T>(instance.FromMaybe(defaultValue));
         }
 
         /// <summary>

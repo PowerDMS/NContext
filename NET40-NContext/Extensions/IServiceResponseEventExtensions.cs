@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponseTransferObjectEventExtensions.cs" company="Waking Venture, Inc.">
+// <copyright file="IServiceResponseEventExtensions.cs" company="Waking Venture, Inc.">
 //   Copyright (c) 2013 Waking Venture, Inc.
 // 
 //   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
@@ -24,9 +24,9 @@ namespace NContext.Extensions
     using NContext.EventHandling;
 
     /// <summary>
-    /// Defines event handling extension methods for <see cref="IResponseTransferObject{T}"/>.
+    /// Defines event handling extension methods for <see cref="IServiceResponse{T}"/>.
     /// </summary>
-    public static class IResponseTransferObjectEventExtensions
+    public static class IServiceResponseEventExtensions
     {
         /// <summary>
         /// Raises the specified event. Event handlers may be executed in parallel. All handlers 
@@ -35,14 +35,14 @@ namespace NContext.Extensions
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TEvent">The type of the T event.</typeparam>
-        /// <param name="responseTransferObject">The response transfer object.</param>
+        /// <param name="serviceResponse">The service response.</param>
         /// <param name="event">The event.</param>
-        public static IResponseTransferObject<T> Raise<T, TEvent>(this IResponseTransferObject<T> responseTransferObject, TEvent @event)
+        public static IServiceResponse<T> Raise<T, TEvent>(this IServiceResponse<T> serviceResponse, TEvent @event)
         {
             return EventManager.RaiseEvent<TEvent>(@event)
-                               .ContinueWith(task => task.IsFaulted
-                                                         ? new ServiceResponse<T>(task.Exception.ToError())
-                                                         : responseTransferObject).Result;
+                .ContinueWith(task => task.IsFaulted
+                    ? new ErrorResponse<T>(task.Exception.ToError())
+                    : serviceResponse).Result;
         }
     }
 }

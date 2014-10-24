@@ -184,9 +184,9 @@ namespace NContext.Data.Persistence
         /// The transaction Scope.
         /// </param>
         /// <returns>
-        /// The IResponseTransferObject{Boolean}.
+        /// The IServiceResponse{Boolean}.
         /// </returns>
-        protected abstract IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope);
+        protected abstract IServiceResponse<Unit> CommitTransaction(TransactionScope transactionScope);
 
         private void ValidateTransactionOptions(UnitOfWorkBase parent, TransactionOptions transactionOptions)
         {
@@ -267,9 +267,9 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
-        /// <returns>IResponseTransferObject{Boolean}.</returns>
+        /// <returns>IServiceResponse{Boolean}.</returns>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public IResponseTransferObject<Unit> Commit()
+        public IServiceResponse<Unit> Commit()
         {
             if (Status == TransactionStatus.Active)
             {
@@ -337,7 +337,7 @@ namespace NContext.Data.Persistence
                                    }
                                }
 
-                               return new ServiceResponse<Unit>(default(Unit));
+                               return new DataResponse<Unit>(default(Unit));
                            });
         }
 
