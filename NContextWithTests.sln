@@ -75,9 +75,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi.Owin", "NET45-NContext.Extensions.AspNetWebApi.Owin\NContext.Extensions.AspNetWebApi.Owin.csproj", "{8C840595-4F99-446D-A0BA-14A36C81F90E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis", "NContext.Extensions.Redis\NContext.Extensions.Redis.csproj", "{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis", "NET45-NContext.Extensions.Redis\NContext.Extensions.Redis.csproj", "{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis.Tests.Specs", "NContext.Extensions.Redis.Tests.Specs\NContext.Extensions.Redis.Tests.Specs.csproj", "{C008F7EC-D99E-4B3C-A850-8808FDD77E39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis.Tests.Specs", ".tests\NContext.Extensions.Redis.Tests.Specs\NContext.Extensions.Redis.Tests.Specs.csproj", "{C008F7EC-D99E-4B3C-A850-8808FDD77E39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
