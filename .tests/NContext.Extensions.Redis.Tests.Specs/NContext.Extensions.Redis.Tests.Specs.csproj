@@ -77,7 +77,7 @@
     <Compile Include="when_using_RedisCache.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NContext.Extensions.Redis\NContext.Extensions.Redis.csproj">
+    <ProjectReference Include="..\..\NET45-NContext.Extensions.Redis\NContext.Extensions.Redis.csproj">
       <Project>{4fdad7ae-2ae8-4e32-bd4e-3ec44133309d}</Project>
       <Name>NContext.Extensions.Redis</Name>
     </ProjectReference>
