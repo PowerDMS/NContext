@@ -84,8 +84,7 @@ namespace NContext.Extensions.AspNetWebApi.Filters
                     .ActionBinding
                     .ParameterBindings
                     .Where(pb => pb.Descriptor.ParameterType == typeof (String) || pb.WillReadBody)
-                    .AsParallel()
-                    .ForAll(parameterBinding =>
+                    .ForEach(parameterBinding =>
                     {
                         if (parameterBinding.Descriptor.ParameterType == typeof (String))
                         {

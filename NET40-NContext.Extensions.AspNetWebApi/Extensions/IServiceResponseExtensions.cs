@@ -1,24 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IResponseTransferObjectExtensions.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
-//
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-//
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.Extensions.AspNetWebApi.Extensions
+﻿namespace NContext.Extensions.AspNetWebApi.Extensions
 {
     using System;
     using System.Net;
@@ -29,7 +9,7 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
     /// <summary>
     /// Defines extension methods for <see cref="IServiceResponse{T}"/>.
     /// </summary>
-    public static class IResponseTransferObjectExtensions
+    public static class IServiceResponseExtensions
     {
         /// <summary>
         /// Returns a new <see cref="HttpResponseMessage"/> with the <see cref="HttpResponseMessage.Content"/> set to <paramref name="serviceResponse"/>. If 
@@ -56,16 +36,15 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
                 throw new ArgumentNullException("httpRequestMessage");
             }
 
+            var responseStatusCode = statusCode;
             if (serviceResponse.Error != null)
             {
-                var errorStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
-                
-                return httpRequestMessage.CreateResponse(errorStatusCode, serviceResponse);
+                responseStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
             }
 
-            return ShouldSetResponseContent(statusCode)
-                       ? httpRequestMessage.CreateResponse(statusCode, serviceResponse)
-                       : httpRequestMessage.CreateResponse(statusCode);
+            return ShouldSetResponseContent(httpRequestMessage, statusCode)
+                ? httpRequestMessage.CreateResponse(responseStatusCode, serviceResponse)
+                : httpRequestMessage.CreateResponse(responseStatusCode);
         }
 
         /// <summary>
@@ -94,29 +73,32 @@ namespace NContext.Extensions.AspNetWebApi.Extensions
             {
                 throw new ArgumentNullException("httpRequestMessage");
             }
-            
+
+            var responseStatusCode = HttpStatusCode.OK;
             if (serviceResponse.Error != null)
             {
-                var errorStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
-
-                return httpRequestMessage.CreateResponse(errorStatusCode, serviceResponse);
+                responseStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
             }
 
-            var response = setResponseContent
-                ? httpRequestMessage.CreateResponse(HttpStatusCode.OK, serviceResponse)
-                : httpRequestMessage.CreateResponse(HttpStatusCode.OK);
+            var response = setResponseContent && ShouldSetResponseContent(httpRequestMessage, responseStatusCode)
+                ? httpRequestMessage.CreateResponse(responseStatusCode, serviceResponse)
+                : httpRequestMessage.CreateResponse(responseStatusCode);
 
-            responseBuilder.Invoke(serviceResponse.Data, response);
+            if (serviceResponse.IsRight && responseBuilder != null)
+            {
+                responseBuilder.Invoke(serviceResponse.Data, response);
+            }
 
             return response;
         }
 
-        private static Boolean ShouldSetResponseContent(HttpStatusCode statusCode)
+        private static Boolean ShouldSetResponseContent(HttpRequestMessage httpRequestMessage, HttpStatusCode responseStatusCode)
         {
-            return statusCode != HttpStatusCode.NoContent &&
-                   statusCode != HttpStatusCode.ResetContent &&
-                   statusCode != HttpStatusCode.NotModified &&
-                   statusCode != HttpStatusCode.Continue;
+            return httpRequestMessage.Method != HttpMethod.Head &&
+                   responseStatusCode != HttpStatusCode.NoContent &&
+                   responseStatusCode != HttpStatusCode.ResetContent &&
+                   responseStatusCode != HttpStatusCode.NotModified &&
+                   responseStatusCode != HttpStatusCode.Continue;
         }
     }
 }

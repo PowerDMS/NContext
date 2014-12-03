@@ -32,13 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Machine.Specifications.0.8.3\lib\net45\Machine.Specifications.dll</HintPath>
+      <HintPath>..\..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Clr4, Version=0.8.3.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Machine.Specifications.Clr4, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Machine.Specifications.0.8.3\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
+      <HintPath>..\..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
     </Reference>
     <Reference Include="Machine.Specifications.Should, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -48,9 +48,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture, Version=3.21.0.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+    <Reference Include="Ploeh.AutoFixture, Version=3.21.1.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\AutoFixture.3.21.0\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+      <HintPath>..\..\packages\AutoFixture.3.21.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -74,12 +74,19 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.JustMock, Version=2014.3.923.5, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+    <Reference Include="Telerik.JustMock, Version=2014.3.1021.2, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\when_converting_a_service_response_to_HttpResponseMessage.cs" />
+    <Compile Include="Extensions\with_a_get_request_and_DataResponse.cs" />
+    <Compile Include="Extensions\with_a_get_request_and_DataResponse_and_custom_builder.cs" />
+    <Compile Include="Extensions\with_a_get_request_and_ErrorResponse.cs" />
+    <Compile Include="Extensions\with_a_head_request_and_ErrorResponse.cs" />
+    <Compile Include="Extensions\with_a_get_request_and_ErrorResponse_and_custom_builder.cs" />
+    <Compile Include="Extensions\with_a_head_request_and_DataResponse.cs" />
     <Compile Include="Filters\DummyApiController.cs" />
     <Compile Include="Filters\DummyBlogAuthor.cs" />
     <Compile Include="Filters\DummyBlogLink.cs" />
