@@ -1,25 +1,7 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="when_raising_an_event.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2013 Waking Venture, Inc.
-// 
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-// 
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.Tests.Specs.EventHandling
+﻿namespace NContext.Tests.Specs.EventHandling
 {
+    using System;
+    using System.Collections.Concurrent;
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
@@ -30,9 +12,12 @@ namespace NContext.Tests.Specs.EventHandling
 
     using Telerik.JustMock;
 
-    public class when_raising_an_event
+    public abstract class when_raising_an_event
     {
+        private static readonly ConcurrentBag<DummyEvent> _HandledEvents = new ConcurrentBag<DummyEvent>();
+
         private static IManageEvents _EventManager;
+
         private static IActivationProvider _ActivationProvider;
 
         Establish context = () =>
@@ -47,6 +32,11 @@ namespace NContext.Tests.Specs.EventHandling
                 _EventManager.Configure(appConfig);
             };
 
+        public static ConcurrentBag<DummyEvent> HandledEvents
+        {
+            get { return _HandledEvents; }
+        }
+
         protected static IManageEvents EventManager
         {
             get { return _EventManager; }
@@ -55,6 +45,11 @@ namespace NContext.Tests.Specs.EventHandling
         protected static IActivationProvider ActivationProvider
         {
             get { return _ActivationProvider; }
+        }
+
+        protected static IHandleEvents HandlerFactory(Type handlerType)
+        {
+            return (IHandleEvents) Activator.CreateInstance(handlerType);
         }
     }
 }

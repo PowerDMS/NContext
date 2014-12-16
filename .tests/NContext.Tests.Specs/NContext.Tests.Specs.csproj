@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FakeItEasy">
+      <HintPath>..\..\packages\FakeItEasy.1.25.1\lib\net40\FakeItEasy.dll</HintPath>
+    </Reference>
     <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.dll</HintPath>
@@ -62,10 +65,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventHandling\DummyEventHandler.cs" />
+    <Compile Include="EventHandling\AsynchronousEventHandler.cs" />
+    <Compile Include="EventHandling\ConditionalEvent.cs" />
+    <Compile Include="EventHandling\ConditionalEventHandler.cs" />
+    <Compile Include="EventHandling\ConventionBasedEventHandler.cs" />
+    <Compile Include="EventHandling\GracefulEvent.cs" />
+    <Compile Include="EventHandling\SynchronousEvent.cs" />
+    <Compile Include="EventHandling\SynchronousEventHandler.cs" />
     <Compile Include="EventHandling\DummyEvent.cs" />
+    <Compile Include="EventHandling\GracefulEventHandler.cs" />
     <Compile Include="EventHandling\when_raising_an_event.cs" />
-    <Compile Include="EventHandling\with_handlers.cs" />
+    <Compile Include="EventHandling\with_an_asynchronous_event_handler.cs" />
+    <Compile Include="EventHandling\with_a_conditional_handler_that_cannot_handle_the_event.cs" />
+    <Compile Include="EventHandling\with_a_conditional_handler_that_can_handle_the_event.cs" />
+    <Compile Include="EventHandling\with_a_graceful_event_handler.cs" />
+    <Compile Include="EventHandling\with_a_synchronous_event_handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_hashing_with_HashProvider.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_no_salt_base64.cs" />

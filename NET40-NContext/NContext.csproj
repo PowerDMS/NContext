@@ -130,14 +130,6 @@
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
     <Compile Include="ErrorHandling\Errors\Localization\NContextPersistenceError.Designer.cs" />
     <Compile Include="ErrorHandling\Errors\NContextPersistenceError.cs" />
-    <Compile Include="EventHandling\EventManager.cs" />
-    <Compile Include="EventHandling\EventManagerBuilder.cs" />
-    <Compile Include="EventHandling\IActivationProvider.cs" />
-    <Compile Include="EventHandling\IConditionallyHandleEvents.cs" />
-    <Compile Include="EventHandling\IHandleEvent.cs" />
-    <Compile Include="EventHandling\IHandleEvents.cs" />
-    <Compile Include="EventHandling\IManageEvents.cs" />
-    <Compile Include="EventHandling\IGracefullyHandleEvent.cs" />
     <Compile Include="Exceptions\SanitizationException.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -145,7 +137,6 @@
     <Compile Include="Extensions\ErrorExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
-    <Compile Include="Extensions\IServiceResponseEventExtensions.cs" />
     <Compile Include="Extensions\IServiceResponseIQueryableExtensions.cs" />
     <Compile Include="Extensions\ISetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -181,6 +172,7 @@
     <Compile Include="Text\ObjectGraphSanitizer.cs" />
     <Compile Include="Utilities\AttributeUtility.cs" />
     <Compile Include="Security\Cryptography\CryptographyUtility.cs" />
+    <Compile Include="Utilities\TaskEx.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -200,6 +192,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +206,9 @@
       <Project>{2ec085ce-bf81-46ed-a2d7-8cd0b9afdec2}</Project>
       <Name>NContext.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventHandling\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

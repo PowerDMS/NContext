@@ -190,30 +190,6 @@
     <Compile Include="..\NET40-NContext\ErrorHandling\Errors\NContextPersistenceError.cs">
       <Link>ErrorHandling\Errors\NContextPersistenceError.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\EventManager.cs">
-      <Link>EventHandling\EventManager.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\EventManagerBuilder.cs">
-      <Link>EventHandling\EventManagerBuilder.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\IActivationProvider.cs">
-      <Link>EventHandling\IActivationProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\IConditionallyHandleEvents.cs">
-      <Link>EventHandling\IConditionallyHandleEvents.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\IGracefullyHandleEvent.cs">
-      <Link>EventHandling\IGracefullyHandleEvent.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\IHandleEvent.cs">
-      <Link>EventHandling\IHandleEvent.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\IHandleEvents.cs">
-      <Link>EventHandling\IHandleEvents.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\EventHandling\IManageEvents.cs">
-      <Link>EventHandling\IManageEvents.cs</Link>
-    </Compile>
     <Compile Include="..\NET40-NContext\Exceptions\SanitizationException.cs">
       <Link>Exceptions\SanitizationException.cs</Link>
     </Compile>
@@ -240,9 +216,6 @@
     </Compile>
     <Compile Include="..\NET40-NContext\Extensions\IMaybeIQueryableExtensions.cs">
       <Link>Extensions\IMaybeIQueryableExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\NET40-NContext\Extensions\IServiceResponseEventExtensions.cs">
-      <Link>Extensions\IServiceResponseEventExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext\Extensions\IServiceResponseIQueryableExtensions.cs">
       <Link>Extensions\IServiceResponseIQueryableExtensions.cs</Link>
@@ -325,6 +298,17 @@
     <Compile Include="..\NET40-NContext\Utilities\AttributeUtility.cs">
       <Link>Utilities\AttributeUtility.cs</Link>
     </Compile>
+    <Compile Include="EventHandling\DefaultActivationProvider.cs" />
+    <Compile Include="EventHandling\EventManager.cs" />
+    <Compile Include="EventHandling\EventManagerBuilder.cs" />
+    <Compile Include="EventHandling\IActivationProvider.cs" />
+    <Compile Include="EventHandling\IConditionallyHandleEvents.cs" />
+    <Compile Include="EventHandling\IGracefullyHandleEvent.cs" />
+    <Compile Include="EventHandling\IHandleEvent.cs" />
+    <Compile Include="EventHandling\IHandleEventAsync.cs" />
+    <Compile Include="EventHandling\IHandleEvents.cs" />
+    <Compile Include="EventHandling\IManageEvents.cs" />
+    <Compile Include="Extensions\IServiceResponseEventExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\NET40-NContext\ErrorHandling\Errors\Localization\NContextPersistenceError.resx">

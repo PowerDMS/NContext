@@ -1,24 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="EventManager.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2013 Waking Venture, Inc.
-//
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-//
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.EventHandling
+﻿namespace NContext.EventHandling
 {
     using System;
     using System.Collections.Concurrent;
@@ -26,7 +6,6 @@ namespace NContext.EventHandling
     using System.ComponentModel.Composition;
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
-    using System.Reflection;
     using System.Threading.Tasks;
 
     using NContext.Configuration;
@@ -37,7 +16,7 @@ namespace NContext.EventHandling
     /// </summary>
     public class EventManager : IManageEvents
     {
-        private static readonly IDictionary<Type, IEnumerable<Type>> _EventHandlerCache;
+        private static readonly ConcurrentDictionary<Type, IEnumerable<Type>> _EventHandlerCache;
 
         private static IActivationProvider _ActivationProvider;
 
@@ -80,14 +59,10 @@ namespace NContext.EventHandling
         /// <returns>Task.</returns>
         public static Task RaiseEvent<TEvent>(TEvent @event)
         {
-#if NET45_OR_GREATER
-            return Task.Run(() => RaiseEventInternal(@event));
-#else
-            return Task.Factory.StartNew(() => RaiseEventInternal(@event));
-#endif
+            return RaiseEventInternal(@event);
         }
 
-        private static Task RaiseEventInternal<TEvent>(TEvent @event)
+        private static async Task<Object> RaiseEventInternal<TEvent>(TEvent @event)
         {
             IEnumerable<Type> handlerTypes;
             if (_EventHandlerCache.ContainsKey(typeof(TEvent)))
@@ -96,17 +71,22 @@ namespace NContext.EventHandling
             }
             else
             {
-                _EventHandlerCache[typeof(TEvent)] = handlerTypes = _CompositionContainer.GetExportTypesThatImplement<IHandleEvent<TEvent>>().ToList();
+                handlerTypes = _EventHandlerCache.GetOrAdd(
+                    typeof(TEvent), 
+                    _CompositionContainer.GetExportTypesThatImplement<IHandleEvent<TEvent>>()
+                        .Concat(_CompositionContainer.GetExportTypesThatImplement<IHandleEventAsync<TEvent>>()).ToList());
             }
 
             var tcs = new TaskCompletionSource<Object>();
-            var exceptions = new ConcurrentQueue<Exception>();
+            var exceptions = new ConcurrentBag<Exception>();
+            var completeHandlerTypes = handlerTypes.Concat(_ConditionalEventHandlers).ToList();
 
-            handlerTypes
-                .Concat(_ConditionalEventHandlers)
-                .AsParallel()
-                .WithDegreeOfParallelism(Environment.ProcessorCount)
-                .ForAll(handlerType =>
+            await ForEachAsync(
+                completeHandlerTypes,
+                completeHandlerTypes.Count > Environment.ProcessorCount
+                    ? Environment.ProcessorCount
+                    : completeHandlerTypes.Count,
+                    async handlerType =>
                     {
                         try
                         {
@@ -123,8 +103,12 @@ namespace NContext.EventHandling
                                     var conditionalHandler = (IConditionallyHandleEvents)handler;
                                     if (conditionalHandler.CanHandle(@event))
                                     {
-                                        conditionalHandler.Handle(@event);
+                                        await conditionalHandler.Handle(@event);
                                     }
+                                }
+                                else if (handlerType.Implements<IHandleEventAsync<TEvent>>())
+                                {
+                                    await ((IHandleEventAsync<TEvent>)handler).Handle(@event);
                                 }
                                 else
                                 {
@@ -140,12 +124,12 @@ namespace NContext.EventHandling
                                     return;
                                 }
 
-                                exceptions.Enqueue(ex);
+                                exceptions.Add(ex);
                             }
                         }
                         catch (Exception ex)
                         {
-                            exceptions.Enqueue(ex);
+                            exceptions.Add(ex);
                         }
                     });
 
@@ -158,7 +142,7 @@ namespace NContext.EventHandling
                 tcs.SetResult(null);
             }
 
-            return tcs.Task;
+            return await tcs.Task;
         }
 
         /// <summary>
@@ -183,9 +167,21 @@ namespace NContext.EventHandling
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageEvents>(this);
             _CompositionContainer = applicationConfiguration.CompositionContainer;
-            _ConditionalEventHandlers = _CompositionContainer.GetExportTypesThatImplement<IConditionallyHandleEvents>();
+            _ConditionalEventHandlers = _CompositionContainer.GetExportTypesThatImplement<IConditionallyHandleEvents>().ToList();
 
             _IsConfigured = true;
+        }
+
+        private static Task ForEachAsync<T>(IEnumerable<T> source, Int32 degreeOfParallelism, Func<T, Task> body)
+        {
+            return Task.WhenAll(
+                from partition in Partitioner.Create(source).GetPartitions(degreeOfParallelism)
+                select Task.Run(async () =>
+                {
+                    using (partition)
+                        while (partition.MoveNext())
+                            await body(partition.Current);
+                }));
         }
     }
 }
