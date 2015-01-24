@@ -1,6 +1,7 @@
 namespace NContext.Security.Cryptography
 {
     using System;
+    using System.IO;
     using System.Security.Cryptography;
 
     /// <summary>
@@ -17,6 +18,15 @@ namespace NContext.Security.Cryptography
         /// <returns>The created hash.</returns>
         /// <remarks></remarks>
         Byte[] CreateHash(Byte[] plainText, Int32 saltLength = 16);
+
+        /// <summary>
+        /// Creates the hash using the default <see cref="HashAlgorithm"/>.
+        /// </summary>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
+        /// <returns>The created hash.</returns>
+        /// <remarks></remarks>
+        Byte[] CreateHash(Stream plainText, Int32 saltLength = 16);
 
         /// <summary>
         /// Creates the hash using the default <see cref="HashAlgorithm"/>.
@@ -48,6 +58,16 @@ namespace NContext.Security.Cryptography
             where THashAlgorithm : HashAlgorithm, new();
 
         /// <summary>
+        /// Creates the hash using the specified <see cref="HashAlgorithm" />.
+        /// </summary>
+        /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="saltLength">The length of bytes to use as salt.</param>
+        /// <returns>The created hash.</returns>
+        Byte[] CreateHash<THashAlgorithm>(Stream plainText, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new();
+
+        /// <summary>
         /// Creates the hash using the specified <see cref="HashAlgorithm"/>.
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
@@ -73,11 +93,21 @@ namespace NContext.Security.Cryptography
         /// Compares the hash using the default <see cref="HashAlgorithm"/>.
         /// </summary>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText"/>.</param>
+        /// <param name="hashedBytes">The hashed text.</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedBytes"/>.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
         /// <remarks></remarks>
-        Boolean CompareHash(Byte[] plainText, Byte[] hashedText, Int32 saltLength = 16);
+        Boolean CompareHash(Byte[] plainText, Byte[] hashedBytes, Int32 saltLength = 16);
+
+        /// <summary>
+        /// Compares the hash using the specified <see cref="HashAlgorithm"/>.
+        /// </summary>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="hashedBytes">The hashed text.</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedBytes"/>.</param>
+        /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+        /// <remarks></remarks>
+        Boolean CompareHash(Stream plainText, Byte[] hashedBytes, Int32 saltLength = 16);
 
         /// <summary>
         /// Compares the hash using the default <see cref="HashAlgorithm"/>.
@@ -104,11 +134,22 @@ namespace NContext.Security.Cryptography
         /// </summary>
         /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
         /// <param name="plainText">The plain text.</param>
-        /// <param name="hashedText">The hashed text.</param>
-        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedText"/>.</param>
+        /// <param name="hashedBytes">The hashed text.</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedBytes"/>.</param>
         /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
         /// <remarks></remarks>
-        Boolean CompareHash<THashAlgorithm>(Byte[] plainText, Byte[] hashedText, Int32 saltLength = 16)
+        Boolean CompareHash<THashAlgorithm>(Byte[] plainText, Byte[] hashedBytes, Int32 saltLength = 16)
+            where THashAlgorithm : HashAlgorithm, new();
+
+        /// <summary>
+        /// Compares the hash using the specified <see cref="HashAlgorithm" />.
+        /// </summary>
+        /// <typeparam name="THashAlgorithm">The type of the hash algorithm.</typeparam>
+        /// <param name="plainText">The plain text.</param>
+        /// <param name="hashedBytes">The hashed text.</param>
+        /// <param name="saltLength">The length of bytes used for salt in the <paramref name="hashedBytes" />.</param>
+        /// <returns><c>true</c> if the hashes match, else <c>false</c></returns>
+        Boolean CompareHash<THashAlgorithm>(Stream plainText, Byte[] hashedBytes, Int32 saltLength = 16)
             where THashAlgorithm : HashAlgorithm, new();
 
         /// <summary>

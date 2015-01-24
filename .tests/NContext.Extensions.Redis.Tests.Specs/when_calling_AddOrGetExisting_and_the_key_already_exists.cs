@@ -1,7 +1,5 @@
 namespace NContext.Extensions.Redis.Tests.Specs
 {
-    using System;
-
     using Machine.Specifications;
 
     [Tags("functional")]

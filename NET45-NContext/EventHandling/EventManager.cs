@@ -59,7 +59,7 @@
         /// <returns>Task.</returns>
         public static Task RaiseEvent<TEvent>(TEvent @event)
         {
-            return RaiseEventInternal(@event);
+            return Task.Run(() => RaiseEventInternal(@event));
         }
 
         private static async Task<Object> RaiseEventInternal<TEvent>(TEvent @event)
