@@ -121,6 +121,7 @@
       <DependentUpon>HttpParameterValidationError.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\IServiceResponseExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Filters\HttpParameterBindingSanitizerFilter.cs" />
     <Compile Include="Filters\HttpParameterBindingValidationActionFilterAttribute.cs" />
     <Compile Include="Handlers\ExecutionContextMessageHandler.cs" />

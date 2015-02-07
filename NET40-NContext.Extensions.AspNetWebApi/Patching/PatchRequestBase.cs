@@ -7,24 +7,10 @@
     /// </summary>
     public abstract class PatchRequestBase
     {
-        private Action<Object> _OnPatchedHandler;
-
         /// <summary>
         /// Gets the on patched handler.
         /// </summary>
         /// <value>The on patched handler.</value>
-        internal Action<Object> OnPatchedHandler
-        {
-            get { return _OnPatchedHandler; }
-        }
-
-        /// <summary>
-        /// Sets the on patched handler.
-        /// </summary>
-        /// <param name="handler">The handler.</param>
-        internal void SetOnPatchedHandler(Action<Object> handler)
-        {
-            _OnPatchedHandler = handler;
-        }
+        protected internal Action<Object> OnPatchedHandler { get; set; }
     }
 }

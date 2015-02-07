@@ -117,7 +117,7 @@
 
             if (sanitizationFilter != null)
             {
-                patchRequest.SetOnPatchedHandler(sanitizationFilter.SanitizeObjectGraph);
+                patchRequest.OnPatchedHandler = sanitizationFilter.SanitizeObjectGraph;
             }
 
             return patchRequest;

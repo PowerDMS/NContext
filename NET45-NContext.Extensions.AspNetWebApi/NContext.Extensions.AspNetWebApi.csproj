@@ -159,6 +159,7 @@
       <Link>Routing\Route.cs</Link>
     </Compile>
     <Compile Include="Configuration\WebApiManager.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\NET40-NContext.Extensions.AspNetWebApi\ErrorHandling\Localization\AuthenticationError.resx">
