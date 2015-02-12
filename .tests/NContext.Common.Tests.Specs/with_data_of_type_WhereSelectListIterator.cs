@@ -15,7 +15,7 @@
                 Data = fixture.CreateMany<DummyData>().Select(dd => dd);
             };
 
-        Because of = () => CreateServiceResponse();
+        Because of = () => CreateDataResponse();
 
         It should_materialize_to_List = () => ServiceResponse.Data.GetType().ShouldEqual(typeof(List<DummyData>));
     }

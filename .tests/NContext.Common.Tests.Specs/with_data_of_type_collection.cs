@@ -15,7 +15,7 @@
                 Data = new Collection<DummyData>(fixture.CreateMany<DummyData>().ToList());
             };
 
-        Because of = () => CreateServiceResponse();
+        Because of = () => CreateDataResponse();
 
         It should_have_the_same_underlying_data_type = () => ServiceResponse.Data.GetType().ShouldEqual(Data.GetType());
     }

@@ -64,12 +64,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Fmap\DummyChild.cs" />
     <Compile Include="DummyCollection.cs" />
     <Compile Include="DummyData.cs" />
     <Compile Include="DummyData2.cs" />
+    <Compile Include="Fmap\DummyParent.cs" />
+    <Compile Include="Fmap\with_an_error.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="when_creating_a_ServiceResponse_with_data_of_type.cs" />
     <Compile Include="when_creating_a_ServiceResponse_with_enumerable_data.cs" />
+    <Compile Include="Fmap\when_using_fmap.cs" />
+    <Compile Include="Fmap\with_data_inheritence.cs" />
     <Compile Include="with_data_of_type_Dictionary.cs" />
     <Compile Include="with_data_of_type_inherits_from_Collection.cs" />
     <Compile Include="with_data_of_type_value_type.cs" />
@@ -84,6 +89,8 @@
     <Compile Include="with_data_of_type_WhereSelectEnumerableIterator.cs" />
     <Compile Include="with_data_of_type_WhereSelectListIterator.cs" />
     <Compile Include="with_data_that_implements_IQueryable.cs" />
+    <Compile Include="Fmap\with_enumerable_data_inheritence.cs" />
+    <Compile Include="Fmap\with_primitive_data.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

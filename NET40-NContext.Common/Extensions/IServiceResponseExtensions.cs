@@ -134,72 +134,6 @@
             return serviceResponse;
         }
         
-        internal static IServiceResponse<T> CreateGenericDataResponse<T>(IServiceResponse<T> originalResponse, T data)
-        {
-            if (originalResponse is ServiceResponse<T>)
-            {
-                return new DataResponse<T>(data);
-            }
-
-            try
-            {
-                return Activator.CreateInstance(
-                    originalResponse.GetType()
-                                    .GetGenericTypeDefinition()
-                                    .MakeGenericType(typeof(T)),
-                    data) as IServiceResponse<T>;
-            }
-            catch (TargetInvocationException)
-            {
-                // No contructor found that supported IEnumerable<T>! Return default.
-                return new DataResponse<T>(data);
-            }
-        }
-
-        internal static IServiceResponse<T2> CreateGenericDataResponse<T, T2>(IServiceResponse<T> originalResponse, T2 data)
-        {
-            if (originalResponse is ServiceResponse<T>)
-            {
-                return new DataResponse<T2>(data);
-            }
-
-            try
-            {
-                return Activator.CreateInstance(
-                    originalResponse.GetType()
-                                    .GetGenericTypeDefinition()
-                                    .MakeGenericType(typeof(T)),
-                    data) as IServiceResponse<T2>;
-            }
-            catch (TargetInvocationException)
-            {
-                // No contructor found that supported IEnumerable<T>! Return default.
-                return new DataResponse<T2>(data);
-            }
-        }
-
-        internal static IServiceResponse<T2> CreateGenericErrorResponse<T, T2>(IServiceResponse<T> originalResponse, Error error)
-        {
-            if (originalResponse is ServiceResponse<T>)
-            {
-                return new ErrorResponse<T2>(error);
-            }
-
-            try
-            {
-                return Activator.CreateInstance(
-                    originalResponse.GetType()
-                                    .GetGenericTypeDefinition()
-                                    .MakeGenericType(typeof(T)),
-                    error) as IServiceResponse<T2>;
-            }
-            catch (TargetInvocationException)
-            {
-                // No contructor found that supported IEnumerable<T>! Return default.
-                return new ErrorResponse<T2>(error);
-            }
-        }
-
         /// <summary>
         /// Returns the error.
         /// </summary>
@@ -232,6 +166,98 @@
             }
 
             return serviceResponse.Data;
+        }
+
+        internal static IServiceResponse<T> CreateGenericDataResponse<T>(IServiceResponse<T> originalResponse, T data)
+        {
+            if (IsBuiltInDataResponse(originalResponse))
+            {
+                return new DataResponse<T>(data);
+            }
+
+            try
+            {
+                return Activator.CreateInstance(
+                    originalResponse.GetType()
+                                    .GetGenericTypeDefinition()
+                                    .MakeGenericType(typeof(T)),
+                    data) as IServiceResponse<T>;
+            }
+            catch (TargetInvocationException)
+            {
+                // No supportable constructor found! Return default.
+                return new DataResponse<T>(data);
+            }
+        }
+
+        internal static IServiceResponse<T2> CreateGenericDataResponse<T, T2>(IServiceResponse<T> originalResponse, T2 data)
+        {
+            if (IsBuiltInDataResponse(originalResponse))
+            {
+                return new DataResponse<T2>(data);
+            }
+
+            try
+            {
+                return Activator.CreateInstance(
+                    originalResponse.GetType()
+                                    .GetGenericTypeDefinition()
+                                    .MakeGenericType(typeof(T2)),
+                    data) as IServiceResponse<T2>;
+            }
+            catch (TargetInvocationException)
+            {
+                // No supportable constructor found! Return default.
+                return new DataResponse<T2>(data);
+            }
+        }
+
+        internal static IServiceResponse<T2> CreateGenericErrorResponse<T, T2>(IServiceResponse<T> originalResponse, Error error)
+        {
+            if (IsBuiltInErrorResponse(originalResponse))
+            {
+                return new ErrorResponse<T2>(error);
+            }
+
+            try
+            {
+                return Activator.CreateInstance(
+                    originalResponse.GetType()
+                                    .GetGenericTypeDefinition()
+                                    .MakeGenericType(typeof(T2)),
+                    error) as IServiceResponse<T2>;
+            }
+            catch (TargetInvocationException)
+            {
+                // No supportable constructor found! Return default.
+                return new ErrorResponse<T2>(error);
+            }
+        }
+
+        private static Boolean IsBuiltInDataResponse<T>(IServiceResponse<T> originalResponse)
+        {
+#if NET45_OR_GREATER
+            var typeInfo = originalResponse.GetType().GetTypeInfo();
+            return (originalResponse is DataResponse<T>) ||
+                   (typeInfo.IsGenericType && typeof(DataResponse<>).GetTypeInfo().IsAssignableFrom(typeInfo.GetGenericTypeDefinition().GetTypeInfo()));
+#else
+            var typeInfo = originalResponse.GetType();
+            return (originalResponse is DataResponse<T>) ||
+                   (typeInfo.IsGenericType && typeof(DataResponse<>).IsAssignableFrom(typeInfo.GetGenericTypeDefinition()));
+#endif
+        }
+        
+        private static Boolean IsBuiltInErrorResponse<T>(IServiceResponse<T> originalResponse)
+        {
+#if NET45_OR_GREATER
+            var typeInfo = originalResponse.GetType().GetTypeInfo();
+            return (originalResponse is ErrorResponse<T>) ||
+                   (typeInfo.IsGenericType && typeof(ErrorResponse<>).GetTypeInfo().IsAssignableFrom(typeInfo.GetGenericTypeDefinition().GetTypeInfo()));
+#else
+            var typeInfo = originalResponse.GetType();
+            return (originalResponse is ErrorResponse<T>) ||
+                   (typeInfo.IsGenericType && typeof(ErrorResponse<>).IsAssignableFrom(typeInfo.GetGenericTypeDefinition()));
+#endif
         }
     }
 }

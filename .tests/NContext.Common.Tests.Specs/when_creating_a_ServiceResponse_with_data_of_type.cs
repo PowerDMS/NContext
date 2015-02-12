@@ -13,8 +13,14 @@
             _ServiceResponse =
                 new Lazy<IServiceResponse<T>>(() => new DataResponse<T>(Data));
 
-        protected static void CreateServiceResponse()
+        protected static void CreateDataResponse()
         {
+            var x = _ServiceResponse.Value;
+        }
+
+        protected static void CreateServiceResponse(IServiceResponse<T> response)
+        {
+            _ServiceResponse = new Lazy<IServiceResponse<T>>(() => response);
             var x = _ServiceResponse.Value;
         }
 

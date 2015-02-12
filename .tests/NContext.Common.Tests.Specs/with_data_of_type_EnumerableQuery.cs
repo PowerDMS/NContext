@@ -15,7 +15,7 @@
                 Data = fixture.CreateMany<DummyData>().AsQueryable().Where(dd => dd.Id > 5);
             };
 
-        Because of = () => CreateServiceResponse();
+        Because of = () => CreateDataResponse();
 
         It should_materialize_to_List = () => ServiceResponse.Data.GetType().GetGenericTypeDefinition().ShouldEqual(typeof(List<>));
     }
