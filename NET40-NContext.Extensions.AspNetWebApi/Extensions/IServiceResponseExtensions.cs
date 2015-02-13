@@ -42,7 +42,7 @@
                 responseStatusCode = (HttpStatusCode) serviceResponse.Error.HttpStatusCode;
             }
 
-            return ShouldSetResponseContent(httpRequestMessage, statusCode)
+            return ShouldSetResponseContent(httpRequestMessage, responseStatusCode)
                 ? httpRequestMessage.CreateResponse(responseStatusCode, serviceResponse)
                 : httpRequestMessage.CreateResponse(responseStatusCode);
         }
