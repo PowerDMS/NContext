@@ -26,7 +26,7 @@
         /// <value>The is left.</value>
         public override Boolean IsLeft
         {
-            get { return true; }
+            get { return false; }
         }
 
         /// <summary>

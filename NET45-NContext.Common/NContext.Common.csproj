@@ -87,6 +87,9 @@
     <Compile Include="..\NET40-NContext.Common\Extensions\HierarchicalDataExtensions.cs">
       <Link>Extensions\HierarchicalDataExtensions.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IEitherExtensions.cs">
+      <Link>Extensions\IEitherExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\Extensions\IListExtensions.cs">
       <Link>Extensions\IListExtensions.cs</Link>
     </Compile>
