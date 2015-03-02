@@ -13,7 +13,7 @@ namespace NContext.Common
     /// </summary>
     public class ActivationStore
     {
-        private readonly ConcurrentDictionary<ConstructorInfo, Func<object[], object>> _InternalStore;
+        private readonly ConcurrentDictionary<ConstructorInfo, Func<Object[], Object>> _InternalStore;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ActivationStore"/> class.

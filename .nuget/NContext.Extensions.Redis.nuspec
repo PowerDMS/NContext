@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>NContext.Extensions.Redis</id>
+    <version>0.0.0</version>
+    <authors>Daniel Gioulakis</authors>
+    <owners>Daniel Gioulakis</owners>
+    <copyright>Daniel Gioulakis</copyright>
+    <description>ObjectCache implementation for Redis.  Exposes StackExchange.Redis objects so you'll need to add that as a reference as well.</description>
+    <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/Cephei/NContext</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>NContext</tags>
+    <dependencies>
+      <group targetFramework="net45">
+        <dependency id="StackExchange.Redis" version="[1.0.330,)" />
+      </group>      
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="NET45-NContext.Extensions.Redis\bin\$Configuration$\NContext.Extensions.Redis.*" target="lib\net45\" />
+    <file src="NET45-NContext.Extensions.Redis\**\*.cs" target="src" />
+  </files>
+</package>

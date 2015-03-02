@@ -32,20 +32,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Machine.Specifications, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="FakeItEasy, Version=1.25.2.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Machine.Specifications.0.8.2\lib\net45\Machine.Specifications.dll</HintPath>
+      <HintPath>..\..\packages\FakeItEasy.1.25.2\lib\net40\FakeItEasy.dll</HintPath>
     </Reference>
-    <Reference Include="Machine.Specifications.Clr4, Version=0.8.2.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Machine.Specifications, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Machine.Specifications.0.8.2\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
+      <HintPath>..\..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.dll</HintPath>
+    </Reference>
+    <Reference Include="Machine.Specifications.Clr4, Version=0.9.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Machine.Specifications.0.9.1\lib\net45\Machine.Specifications.Clr4.dll</HintPath>
     </Reference>
     <Reference Include="Machine.Specifications.Should, Version=0.7.2.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Machine.Specifications.Should.0.7.2\lib\net45\Machine.Specifications.Should.dll</HintPath>
     </Reference>
-    <Reference Include="Ploeh.AutoFixture">
-      <HintPath>..\..\packages\AutoFixture.3.19.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    <Reference Include="Ploeh.AutoFixture, Version=3.24.1.0, Culture=neutral, PublicKeyToken=b24654c590009d4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\AutoFixture.3.24.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -56,25 +61,38 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Telerik.JustMock, Version=2014.3.923.5, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
+    <Reference Include="Telerik.JustMock, Version=2014.3.1021.2, Culture=neutral, PublicKeyToken=721b6c5bc0326b3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\bin\Telerik.JustMock.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\when_using_CacheManager.cs" />
-    <Compile Include="EventHandling\DummyEventHandler.cs" />
+    <Compile Include="EventHandling\AsynchronousEventHandler.cs" />
+    <Compile Include="EventHandling\ConditionalEvent.cs" />
+    <Compile Include="EventHandling\ConditionalEventHandler.cs" />
+    <Compile Include="EventHandling\ConventionBasedEventHandler.cs" />
+    <Compile Include="EventHandling\GracefulEvent.cs" />
+    <Compile Include="EventHandling\SynchronousEvent.cs" />
+    <Compile Include="EventHandling\SynchronousEventHandler.cs" />
     <Compile Include="EventHandling\DummyEvent.cs" />
+    <Compile Include="EventHandling\GracefulEventHandler.cs" />
     <Compile Include="EventHandling\when_raising_an_event.cs" />
-    <Compile Include="EventHandling\with_handlers.cs" />
+    <Compile Include="EventHandling\with_an_asynchronous_event_handler.cs" />
+    <Compile Include="EventHandling\with_a_conditional_handler_that_cannot_handle_the_event.cs" />
+    <Compile Include="EventHandling\with_a_conditional_handler_that_can_handle_the_event.cs" />
+    <Compile Include="EventHandling\with_a_graceful_event_handler.cs" />
+    <Compile Include="EventHandling\with_a_synchronous_event_handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_hashing_with_HashProvider.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_no_salt_base64.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_no_salt_Byte_array.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_no_salt_hexadecimal.cs" />
+    <Compile Include="Security\Cryptography\Hashing\when_using_no_salt_stream.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_salt_base64.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_salt_Byte_array.cs" />
     <Compile Include="Security\Cryptography\Hashing\when_using_salt_hexadecimal.cs" />
+    <Compile Include="Security\Cryptography\Hashing\when_using_salt_stream.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryption\when_using_SymmetricEncryptionProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_async_stream_and_AesCryptoServiceProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_byte_array_and_AesCryptoServiceProvider.cs" />

@@ -27,7 +27,7 @@ License
 -------
 The MIT License (MIT)
 
-Copyright (c) 2014 Daniel Gioulakis, Waking Venture Inc.
+Copyright (c) 2014 Daniel Gioulakis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -59,9 +59,9 @@ Continuous Delivery
 -------------------
 Currently, NContext is being deployed on-demand to reduce development costs. As new feature and bug fixes are brought into the framework and tested, the CI servers are spun-up and deployments are done from the following sites. Pre-release versions are currently deployed to official Nuget/Symbol Source servers. I don't recommend relying on these CI servers for any builds as they aren't live 24/7.
 
-**CI TeamCity Server:** *https://teamcity.wakingventure.com*  
-**CI NuGet Package Source:** *https://nuget.wakingventure.com*  
-**CI Symbol Source Server:** *http://symbolsource.wakingventure.com*  
+**CI TeamCity Server:** *https://teamcity.dgdev.net*  
+**CI NuGet Package Source:** *https://nuget.dgdev.net*  
+**CI Symbol Source Server:** *http://symbolsource.dgdev.net*  
 
 NContext versioning is still being determined. The core libraries (NContext.dll & 
 NContext.Common.dll) will be released as 2.x.0. Ideally all extensions will be 

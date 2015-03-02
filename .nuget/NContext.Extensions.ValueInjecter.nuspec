@@ -4,11 +4,11 @@
     <id>NContext.Extensions.ValueInjecter</id>
     <version>0.0.0</version>
     <authors>Daniel Gioulakis</authors>
-    <owners>Waking Venture Inc.</owners>
-    <copyright>Waking Venture Inc.</copyright>
-    <description>[to fill]</description>
+    <owners>Daniel Gioulakis</owners>
+    <copyright>Daniel Gioulakis</copyright>
+    <description>NContext application component for ValueInjecter.</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>http://ncontext.wakingventure.com</projectUrl>
+    <projectUrl>https://github.com/Cephei/NContext</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>

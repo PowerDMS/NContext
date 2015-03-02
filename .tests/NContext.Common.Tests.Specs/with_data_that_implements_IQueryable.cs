@@ -13,7 +13,7 @@ namespace NContext.Common.Tests.Specs
             Data = fixture.CreateMany<DummyData>().AsQueryable();
         };
 
-        Because of = () => CreateServiceResponse();
+        Because of = () => CreateDataResponse();
 
         It should_materialize_the_data_to_a_concrete_list = () => ServiceResponse.Data.GetType().GetGenericTypeDefinition().ShouldEqual(typeof(List<>));
     }

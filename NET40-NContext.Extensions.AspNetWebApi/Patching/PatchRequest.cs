@@ -1,30 +1,25 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PatchRequest.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2014 Waking Venture, Inc.
-// 
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-// 
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-// 
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.Extensions.AspNetWebApi.Patching
+﻿namespace NContext.Extensions.AspNetWebApi.Patching
 {
     using System;
 
     using NContext.Common;
 
     using Newtonsoft.Json;
+
+    /// <summary>
+    /// Delegate PatchedAction
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="patched">The patched object.</param>
+    public delegate void PatchedAction<in T>(T patched);
+
+    /// <summary>
+    /// Delegate ClonedPatchedAction.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="original">The original object.</param>
+    /// <param name="patched">The patched object.</param>
+    public delegate void ClonedPatchedAction<in T>(T original, T patched);
 
     /// <summary>
     /// Defines a transfer object for HTTP PATCH support.
@@ -43,20 +38,74 @@ namespace NContext.Extensions.AspNetWebApi.Patching
         }
 
         /// <summary>
+        /// Gets the json representation.
+        /// </summary>
+        /// <value>The json representation.</value>
+        protected String JsonRepresentation
+        {
+            get { return _JsonRepresentation; }
+        }
+
+        /// <summary>
         /// Patches the specified object using Json.net.
         /// </summary>
         /// <param name="original">The original object to patch.</param>
-        /// <returns>IResponseTransferObject&lt;TDto&gt;.</returns>
-        public virtual IResponseTransferObject<T> Patch(T original)
+        /// <returns>IServiceResponse{T}.</returns>
+        public virtual IServiceResponse<T> Patch(T original)
         {
-            JsonConvert.PopulateObject(_JsonRepresentation, original);
+            return Patch(original, (PatchedAction<T>) null);
+        }
+
+        /// <summary>
+        /// Patches the specified object using Json.net.
+        /// </summary>
+        /// <param name="original">The original object to patch.</param>
+        /// <param name="afterPatch">The after patch action.</param>
+        /// <returns>IServiceResponse{T}.</returns>
+        public virtual IServiceResponse<T> Patch(T original, PatchedAction<T> afterPatch)
+        {
+            JsonConvert.PopulateObject(JsonRepresentation, original);
 
             if (OnPatchedHandler != null)
             {
                 OnPatchedHandler.Invoke(original);
             }
 
-            return new ServiceResponse<T>(original);
+            if (afterPatch != null)
+            {
+                afterPatch(original);
+            }
+
+            return new DataResponse<T>(original);
+        }
+
+        /// <summary>
+        /// Patches the specified object using Json.net.
+        /// </summary>
+        /// <param name="original">The original object to patch.</param>
+        /// <param name="afterPatch">The after patch action.</param>
+        /// <returns>IServiceResponse{T}.</returns>
+        public virtual IServiceResponse<T> Patch(T original, ClonedPatchedAction<T> afterPatch)
+        {
+            T clone = null;
+            if (afterPatch != null)
+            {
+                clone = original.Copy();
+            }
+
+            JsonConvert.PopulateObject(JsonRepresentation, original);
+
+            if (OnPatchedHandler != null)
+            {
+                OnPatchedHandler.Invoke(original);
+            }
+
+            if (afterPatch != null)
+            {
+                afterPatch(clone, original);
+            }
+
+            return new DataResponse<T>(original);
         }
     }
 }

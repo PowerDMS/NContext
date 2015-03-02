@@ -1,24 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositeUnitOfWork.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
-//
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-//
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.Data.Persistence
+﻿namespace NContext.Data.Persistence
 {
     using System;
     using System.Collections;
@@ -107,7 +87,7 @@ namespace NContext.Data.Persistence
             return UnitsOfWork.Any(uow => uow.GetType().Implements<T>());
         }
 
-        protected override IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope)
+        protected override IServiceResponse<Unit> CommitTransaction(TransactionScope transactionScope)
         {
             using (transactionScope)
             {
@@ -125,7 +105,7 @@ namespace NContext.Data.Persistence
             }
         }
 
-        private IResponseTransferObject<Unit> CommitChildren()
+        private IServiceResponse<Unit> CommitChildren()
         {
             foreach (var unitOfWork in UnitsOfWork)
             {
@@ -134,19 +114,19 @@ namespace NContext.Data.Persistence
                     Error error;
                     if ((error = unitOfWork.Commit().Error) != null)
                     {
-                        return new ServiceResponse<Unit>(error);
+                        return new ErrorResponse<Unit>(error);
                     }
                 }
                 catch (Exception exception)
                 {
-                    return new ServiceResponse<Unit>(exception.ToError());
+                    return new ErrorResponse<Unit>(exception.ToError());
                 }
             }
 
-            return new ServiceResponse<Unit>(default(Unit));
+            return new DataResponse<Unit>(default(Unit));
         }
 
-        private IResponseTransferObject<Unit> CommitChildrenParallel()
+        private IServiceResponse<Unit> CommitChildrenParallel()
         {
             if (!AmbientContextManager.IsThreadSafe)
             {
@@ -184,8 +164,8 @@ namespace NContext.Data.Persistence
                         });
 
             return commitExceptions.Any()
-                       ? new ServiceResponse<Unit>(new AggregateError((Int32)HttpStatusCode.InternalServerError, GetType().Name, commitExceptions.Select(error => error)))
-                       : new ServiceResponse<Unit>(default(Unit));
+                       ? (IServiceResponse<Unit>)new ErrorResponse<Unit>(new AggregateError((Int32)HttpStatusCode.InternalServerError, GetType().Name, commitExceptions.Select(error => error)))
+                       : (IServiceResponse<Unit>)new DataResponse<Unit>(default(Unit));
         }
 
         protected override void DisposeManagedResources()

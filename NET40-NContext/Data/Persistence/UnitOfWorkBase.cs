@@ -1,23 +1,3 @@
-// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="UnitOfWorkBase.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
-//
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-//
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
 namespace NContext.Data.Persistence
 {
     using System;
@@ -184,9 +164,9 @@ namespace NContext.Data.Persistence
         /// The transaction Scope.
         /// </param>
         /// <returns>
-        /// The IResponseTransferObject{Boolean}.
+        /// The IServiceResponse{Boolean}.
         /// </returns>
-        protected abstract IResponseTransferObject<Unit> CommitTransaction(TransactionScope transactionScope);
+        protected abstract IServiceResponse<Unit> CommitTransaction(TransactionScope transactionScope);
 
         private void ValidateTransactionOptions(UnitOfWorkBase parent, TransactionOptions transactionOptions)
         {
@@ -267,9 +247,9 @@ namespace NContext.Data.Persistence
         /// <summary>
         /// Commits the changes to the database.
         /// </summary>
-        /// <returns>IResponseTransferObject{Boolean}.</returns>
+        /// <returns>IServiceResponse{Boolean}.</returns>
         /// <exception cref="System.InvalidOperationException"></exception>
-        public IResponseTransferObject<Unit> Commit()
+        public IServiceResponse<Unit> Commit()
         {
             if (Status == TransactionStatus.Active)
             {
@@ -337,7 +317,7 @@ namespace NContext.Data.Persistence
                                    }
                                }
 
-                               return new ServiceResponse<Unit>(default(Unit));
+                               return new DataResponse<Unit>(default(Unit));
                            });
         }
 

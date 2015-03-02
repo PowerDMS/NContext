@@ -1,24 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CompositionContainerExtensions.cs" company="Waking Venture, Inc.">
-//   Copyright (c) 2012 Waking Venture, Inc.
-//
-//   Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated 
-//   documentation files (the "Software"), to deal in the Software without restriction, including without limitation 
-//   the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, 
-//   and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-//
-//   The above copyright notice and this permission notice shall be included in all copies or substantial portions 
-//   of the Software.
-//
-//   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED 
-//   TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL 
-//   THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF 
-//   CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
-//   DEALINGS IN THE SOFTWARE.
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
-
-namespace NContext.Extensions
+﻿namespace NContext.Extensions
 {
     using System;
     using System.Collections.Generic;
@@ -30,6 +10,10 @@ namespace NContext.Extensions
     /// </summary>
     public static class CompositionContainerExtensions
     {
+        private static readonly Object _SyncLock = new Object();
+
+        private static volatile IEnumerable<Type> _ExportedTypes;
+
         /// <summary>
         /// Gets all types within the <see cref="CompositionContainer"/>'s <see cref="CompositionContainer.Catalog"/>.
         /// </summary>
@@ -38,10 +22,22 @@ namespace NContext.Extensions
         /// <remarks></remarks>
         public static IEnumerable<Type> GetExportTypes(this CompositionContainer container)
         {
-            return container.Catalog.Parts
+            if (_ExportedTypes == null)
+            {
+                lock (_SyncLock)
+                {
+                    if (_ExportedTypes == null)
+                    {
+                        _ExportedTypes = container.Catalog.Parts
                             .Select(part => part.GetType().GetMethod("GetLazyPartType").Invoke(part, null))
                             .OfType<Lazy<Type>>()
-                            .Select(lazyPart => lazyPart.Value);
+                            .Select(lazyPart => lazyPart.Value)
+                            .ToList();
+                    }
+                }
+            }
+
+            return _ExportedTypes;
         }
 
         /// <summary>
@@ -55,7 +51,19 @@ namespace NContext.Extensions
         public static IEnumerable<Type> GetExportTypesThatImplement<TExport>(this CompositionContainer container)
         {
             return container.GetExportTypes()
-                            .Where(typePart => typePart.Implements<TExport>());
+                .Where(typePart => typePart.IsAssignableToType(typeof(TExport))).ToList();
+        }
+
+        private static Boolean IsAssignableToType(this Type type, Type assignableType)
+        {
+            return 
+                type.GetInterfaces()
+                .Any(
+                @interface => 
+                    @interface == assignableType || 
+                    @interface.IsGenericType && @interface.GetGenericTypeDefinition() == assignableType) || 
+                    (type.IsGenericType && type.GetGenericTypeDefinition() == assignableType) || 
+                    (type.BaseType != null && IsAssignableToType(type.BaseType, assignableType));
         }
 
         /*

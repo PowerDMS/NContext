@@ -1,17 +1,27 @@
 ﻿namespace NContext.Tests.Specs.EventHandling
 {
-    public class DummyEvent
-    {
-        private readonly int _EventParameter;
+    using System;
 
-        public DummyEvent(int EventParameter)
+    public abstract class DummyEvent
+    {
+        private readonly String _EventParameter;
+
+        public DummyEvent(String eventParameter)
         {
-            _EventParameter = EventParameter;
+            _EventParameter = eventParameter;
         }
 
-        public int EventParameter
+        public String EventParameter
         {
             get { return _EventParameter; }
+        }
+    }
+
+    public class AsynchronousEvent : DummyEvent
+    {
+        public AsynchronousEvent(String eventParameter)
+            : base(eventParameter)
+        {
         }
     }
 }

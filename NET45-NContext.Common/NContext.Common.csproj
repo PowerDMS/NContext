@@ -75,11 +75,20 @@
     <Compile Include="..\NET40-NContext.Common\AggregateError.cs">
       <Link>AggregateError.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Either.cs">
+      <Link>Either.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\Error.cs">
       <Link>Error.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\ErrorResponse.cs">
+      <Link>ErrorResponse.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\Extensions\HierarchicalDataExtensions.cs">
       <Link>Extensions\HierarchicalDataExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IEitherExtensions.cs">
+      <Link>Extensions\IEitherExtensions.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Common\Extensions\IListExtensions.cs">
       <Link>Extensions\IListExtensions.cs</Link>
@@ -90,23 +99,26 @@
     <Compile Include="..\NET40-NContext.Common\Extensions\IMaybeIEnumerableExtensions.cs">
       <Link>Extensions\IMaybeIEnumerableExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectAsyncExtensions.cs">
-      <Link>Extensions\IResponseTransferObjectAsyncExtensions.cs</Link>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IServiceResponseAsyncExtensions.cs">
+      <Link>Extensions\IServiceResponseAsyncExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectEnumerableDataExtensions.cs">
-      <Link>Extensions\IResponseTransferObjectEnumerableDataExtensions.cs</Link>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IServiceResponseEnumerableDataExtensions.cs">
+      <Link>Extensions\IServiceResponseEnumerableDataExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectExtensions.cs">
-      <Link>Extensions\IResponseTransferObjectExtensions.cs</Link>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IServiceResponseExtensions.cs">
+      <Link>Extensions\IServiceResponseExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Common\Extensions\IResponseTransferObjectIEnumerableExtensions.cs">
-      <Link>Extensions\IResponseTransferObjectIEnumerableExtensions.cs</Link>
+    <Compile Include="..\NET40-NContext.Common\Extensions\IServiceResponseIEnumerableExtensions.cs">
+      <Link>Extensions\IServiceResponseIEnumerableExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\IEither.cs">
+      <Link>IEither.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Common\IMaybe.cs">
       <Link>IMaybe.cs</Link>
     </Compile>
-    <Compile Include="..\NET40-NContext.Common\IResponseTransferObject.cs">
-      <Link>IResponseTransferObject.cs</Link>
+    <Compile Include="..\NET40-NContext.Common\IServiceResponse.cs">
+      <Link>IServiceResponse.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Common\IToken.cs">
       <Link>IToken.cs</Link>
@@ -114,11 +126,20 @@
     <Compile Include="..\NET40-NContext.Common\Just.cs">
       <Link>Just.cs</Link>
     </Compile>
+    <Compile Include="..\NET40-NContext.Common\Left.cs">
+      <Link>Left.cs</Link>
+    </Compile>
     <Compile Include="..\NET40-NContext.Common\Nothing.cs">
       <Link>Nothing.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Common\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\Right.cs">
+      <Link>Right.cs</Link>
+    </Compile>
+    <Compile Include="..\NET40-NContext.Common\ServiceResponse.cs">
+      <Link>ServiceResponse.cs</Link>
     </Compile>
     <Compile Include="..\NET40-NContext.Common\Text\SanitizationHtmlAttribute.cs">
       <Link>Text\SanitizationHtmlAttribute.cs</Link>
@@ -130,9 +151,10 @@
       <Link>ValidationError.cs</Link>
     </Compile>
     <Compile Include="ActivationStore.cs" />
+    <Compile Include="DataResponse.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
-    <Compile Include="ServiceResponse.cs" />
   </ItemGroup>
+  <ItemGroup />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

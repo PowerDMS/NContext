@@ -2,89 +2,37 @@
 {
     using System;
 
-    public interface IEither<TLeft, TRight>
+    /// <summary>
+    /// Defines a type that represents either two possibilities, <typeparamref name="A"/> or <typeparamref name="B"/>.
+    /// </summary>
+    /// <typeparam name="A">The left type (typically the negative or error).</typeparam>
+    /// <typeparam name="B">The right type (mnemonic for correct).</typeparam>
+    public interface IEither<out A, out B>
     {
-        TLeft Left { get; }
-
-        TRight Right { get; }
-    }
-
-    public interface IResponseTransferObject<TLeft, TRight> : IEither<TLeft, TRight>, IDisposable
-    {
-    }
-
-    public class ServiceResponse<TLeft, TRight> : IResponseTransferObject<TLeft, TRight>
-    {
-        private readonly TLeft _Left;
-
-        private readonly TRight _Right;
-
-        public ServiceResponse(TRight right)
-        {
-            _Right = right;
-        }
-
-        public ServiceResponse(TLeft left)
-        {
-            _Left = left;
-        }
-
-        public TLeft Left
-        {
-            get
-            {
-                return _Left;
-            }
-        }
-
-        public TRight Right
-        {
-            get
-            {
-                return _Right;
-            }
-        }
-        
-        #region Implementation of IDisposable
-
-        protected Boolean IsDisposed { get; set; }
+        /// <summary>
+        /// Gets whether the instance is left.
+        /// </summary>
+        /// <value>The value, is left.</value>
+        Boolean IsLeft { get; }
 
         /// <summary>
-        /// Finalizes an instance of the <see cref="ServiceResponse{T}" /> class.
+        /// Gets whether the instance is right.
         /// </summary>
-        ~ServiceResponse()
-        {
-            Dispose(false);
-        }
+        /// <value>The value, is right.</value>
+        Boolean IsRight { get; }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Gets the left value.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+        /// <returns>A.</returns>
+        /// <exception cref="InvalidOperationException">Implementations may choose to throw this exception if the instance <see cref="IsRight"/>.  Some may choose to just return null.</exception>
+        A GetLeft();
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
+        /// Gets the right value.
         /// </summary>
-        /// <param name="disposeManagedResources"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
-        protected virtual void Dispose(Boolean disposeManagedResources)
-        {
-            if (IsDisposed)
-            {
-                return;
-            }
-
-            if (disposeManagedResources)
-            {
-            }
-
-            IsDisposed = true;
-        }
-
-        #endregion
+        /// <returns>B.</returns>
+        /// <exception cref="InvalidOperationException">Implementations may choose to throw this exception if the instance <see cref="IsLeft"/>.  Some may choose to just return null.</exception>
+        B GetRight();
     }
 }
