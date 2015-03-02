@@ -32,7 +32,7 @@ namespace NContext.Caching
     /// <remarks></remarks>
     public class CacheManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
-        private readonly IDictionary<String, Lazy<ObjectCache>> _Providers;
+        private readonly IDictionary<String, Func<ObjectCache>> _Providers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheManagerBuilder"/> class.
@@ -42,7 +42,7 @@ namespace NContext.Caching
         public CacheManagerBuilder(ApplicationConfigurationBuilder applicationConfigurationBuilder)
             : base(applicationConfigurationBuilder)
         {
-            _Providers = new Dictionary<String, Lazy<ObjectCache>>();
+            _Providers = new Dictionary<String, Func<ObjectCache>>();
         }
 
         /// <summary>
@@ -52,14 +52,15 @@ namespace NContext.Caching
         /// <param name="providerName">A name to uniquely identify the cache provider.</param>
         /// <param name="cacheProvider">The cache provider.</param>
         /// <returns>This <see cref="CacheManagerBuilder"/> instance.</returns>
-        public CacheManagerBuilder AddProvider<TCacheProvider>(String providerName, Func<TCacheProvider> cacheProvider) where TCacheProvider : ObjectCache
+        public CacheManagerBuilder AddProvider<TCacheProvider>(String providerName, Func<TCacheProvider> cacheProvider) 
+            where TCacheProvider : ObjectCache
         {
             if (_Providers.ContainsKey(providerName))
             {
                 throw new ArgumentException("Provider key already exists in collection.", "providerName");
             }
 
-            _Providers.Add(providerName, new Lazy<ObjectCache>(cacheProvider));
+            _Providers.Add(providerName, cacheProvider);
 
             return this;
         }

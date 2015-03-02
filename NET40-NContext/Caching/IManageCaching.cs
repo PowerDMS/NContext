@@ -56,6 +56,6 @@ namespace NContext.Caching
         /// Occurs when the cache provider associated with <paramref name="providerName"/> 
         /// is not of type <typeparamref name="TProvider"/>
         /// </exception>
-        TProvider GetProvider<TProvider>(String providerName) where TProvider : ObjectCache;
+        TProvider GetProvider<TProvider>(String providerName) where TProvider : class;
     }
 }

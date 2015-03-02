@@ -33,7 +33,8 @@ namespace NContext.Caching
     /// </summary>
     public class CacheManager : IManageCaching
     {
-        private readonly CacheConfiguration _CacheConfiguration;
+        private volatile IDictionary<String, ProviderFactory> _Providers = 
+            new Dictionary<String, ProviderFactory>();
 
         private Boolean _IsConfigured;
 
@@ -49,7 +50,10 @@ namespace NContext.Caching
                 throw new ArgumentNullException("cacheConfiguration");
             }
 
-            _CacheConfiguration = cacheConfiguration;
+            foreach (var providerRegistration in cacheConfiguration.Providers)
+            {
+                _Providers.Add(providerRegistration.Key, new ProviderFactory(providerRegistration.Value));
+            }
         }
 
         /// <summary>
@@ -60,7 +64,7 @@ namespace NContext.Caching
         {
             get
             {
-                return _CacheConfiguration.Providers.Values.Select(provider => provider.Value);
+                return _Providers.Values.Select(provider => provider.GetOrCreateCache());
             }
         }
 
@@ -104,12 +108,12 @@ namespace NContext.Caching
         /// <exception cref="System.ArgumentOutOfRangeException">providerName;There is no cache provider registered with name:  + providerName</exception>
         public ObjectCache GetProvider(String providerName)
         {
-            if (!_CacheConfiguration.Providers.ContainsKey(providerName))
+            if (!_Providers.ContainsKey(providerName))
             {
                 throw new ArgumentOutOfRangeException("providerName", "There is no cache provider registered with name: " + providerName);
             }
 
-            return _CacheConfiguration.Providers[providerName].Value;
+            return _Providers[providerName].GetOrCreateCache();
         }
 
         /// <summary>
@@ -123,20 +127,54 @@ namespace NContext.Caching
         /// Occurs when the cache provider associated with <paramref name="providerName"/> 
         /// is not of type <typeparamref name="TProvider"/>
         /// </exception>
-        public TProvider GetProvider<TProvider>(String providerName) where TProvider : ObjectCache
+        public TProvider GetProvider<TProvider>(String providerName) where TProvider : class
         {
-            if (!_CacheConfiguration.Providers.ContainsKey(providerName))
+            if (!_Providers.ContainsKey(providerName))
             {
                 throw new ArgumentOutOfRangeException("providerName", "There is no cache provider registered with name: " + providerName);
             }
 
-            var cacheProvider = _CacheConfiguration.Providers[providerName].Value;
+            var cacheProvider = _Providers[providerName].GetOrCreateCache();
             if (!(cacheProvider is TProvider))
             {
                 throw new InvalidOperationException(String.Format("Cache provider '{0}' is not of type '{1}'.", providerName, typeof(TProvider).Name));
             }
 
-            return (TProvider)cacheProvider;
+            return cacheProvider as TProvider;
+        }
+
+        private class ProviderFactory
+        {
+            private static readonly Object _Sync = new Object();
+
+            private readonly Func<ObjectCache> _CacheFactory;
+
+            private volatile ObjectCache _Cache;
+
+            public ProviderFactory(Func<ObjectCache> cacheFactory)
+            {
+                _CacheFactory = cacheFactory;
+                GetOrCreateCache();
+            }
+
+            public ObjectCache GetOrCreateCache()
+            {
+                if (_Cache != null) return _Cache;
+
+                try
+                {
+                    lock (_Sync)
+                    {
+                        if (_Cache != null) return _Cache;
+
+                        return _Cache = _CacheFactory();
+                    }
+                }
+                catch (Exception)
+                {
+                    return null;
+                }
+            }
         }
     }
 }

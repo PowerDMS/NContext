@@ -29,13 +29,13 @@ namespace NContext.Caching
     /// </summary>
     public class CacheConfiguration
     {
-        private readonly IDictionary<String, Lazy<ObjectCache>> _Providers;
+        private readonly IDictionary<String, Func<ObjectCache>> _Providers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CacheConfiguration"/> class.
         /// </summary>
         /// <param name="providers">The cache providers.</param>
-        public CacheConfiguration(IDictionary<String, Lazy<ObjectCache>> providers)
+        public CacheConfiguration(IDictionary<String, Func<ObjectCache>> providers)
         {
             _Providers = providers;
         }
@@ -44,7 +44,7 @@ namespace NContext.Caching
         /// Gets the cache providers.
         /// </summary>
         /// <value>The providers.</value>
-        public IDictionary<String, Lazy<ObjectCache>> Providers
+        public IDictionary<String, Func<ObjectCache>> Providers
         {
             get { return _Providers; }
         }
