@@ -8,26 +8,32 @@ field. NContext is unique and innovative in how it allows you to design your
 application without tying it down to any specific technology or architectural
 pattern.
 
-At it's core, NContext introduces two fundamental concepts: dynamic application
-composition (bootstrapping) based upon MEF and IResponseTransferObject - a DTO
-which allows you to create a functionally composable application codebase. With 
-it, the idea of Functional Domain Composition.
+At it's core, NContext introduces two fundamental concepts: 
+  1. Dynamic application composition (bootstrapping) based upon MEF  
+  2. IServiceResponse - a DTO which allows you to create a functionally composable application codebase; one without the use of non-local exits as a use of control flow. With it, the idea of Functional Domain Composition.
 
 It also introduces new concepts in designing your bounded-contexts. With few
 core dependencies, NContext's highly-extensible design allows for custom add-on
 modules. Already built extensions include: Entity Framework, ASP.NET Web API & 
-OWIN, AutoMapper, Value Injecter, and Logging. Some application components have 
-been baked into NContext including: Caching, Security, Cryptography.
+OWIN, AutoMapper, and Value Injecter. Some application components have 
+been baked into NContext including: Caching, Security, Cryptography, Event Handling, 
+and Logging.
 
 NContext is dependency-injection container agnostic. Ninject and Unity support
-has been added with the intentions of supporting all popular containers in the
-near future.
+has been added.
+
+Project Management & Status
+---------------------------
+Version 3 of NContext provided a stable release that's currently being used in 
+high-volume production websites.  The future of this project will be to move to 
+different ownership to allow for easier contribution and management from parties 
+highly-invested in this codebase.
 
 License
 -------
 The MIT License (MIT)
 
-Copyright (c) 2014 Daniel Gioulakis
+Copyright (c) 2015 Daniel Gioulakis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -46,14 +52,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-
-Project Management
-------------------
-Feel free to comment and vote on ideas or features you'd like to see incorporated
-into NContext.
-
-**Trello:** *https://trello.com/b/xqQg5bfC*  
 
 Continuous Delivery
 -------------------
