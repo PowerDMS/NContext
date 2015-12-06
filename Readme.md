@@ -25,9 +25,19 @@ has been added.
 Project Management & Status
 ---------------------------
 Version 3 of NContext provided a stable release that's currently being used in 
-high-volume production websites.  The future of this project will be to move to 
-different ownership to allow for easier contribution and management from parties 
-highly-invested in this codebase.
+high-volume production websites.  Version 4 will introduce breaking changes as 
+well as transfer project ownership to allow for easier contribution and management 
+from parties highly-invested in this codebase.
+
+2016 Roadmap
+------------
+  1. [ ] Migrate project to PowerDMS github
+  2. [ ] Migrate CI server configurations
+  3. [ ] Remove .NET 4.0 support
+  4. [ ] Refactor ASP.NET / WebAPI to use OWIN. Remove legacy MS dependencies.
+  5. [ ] Remove NContext.Data (UoW / Specification patterns).
+  6. [ ] Add support for DryIoC extension.
+  7. [ ] Add more IEither abstaction extensions.
 
 License
 -------
