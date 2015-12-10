@@ -31,8 +31,8 @@ from parties highly-invested in this codebase.
 
 2016 Roadmap
 ------------
-  1. [ ] Migrate project to PowerDMS github
-  2. [ ] Migrate CI server configurations
+  1. [x] Migrate project to PowerDMS github
+  2. [x] Migrate CI server configurations
   3. [ ] Remove .NET 4.0 support
   4. [ ] Refactor ASP.NET / WebAPI to use OWIN. Remove legacy MS dependencies.
   5. [ ] Remove NContext.Data (UoW / Specification patterns).
@@ -65,11 +65,7 @@ THE SOFTWARE.
 
 Continuous Delivery
 -------------------
-Currently, NContext is being deployed on-demand to reduce development costs. As new feature and bug fixes are brought into the framework and tested, the CI servers are spun-up and deployments are done from the following sites. Pre-release versions are currently deployed to official Nuget/Symbol Source servers. I don't recommend relying on these CI servers for any builds as they aren't live 24/7.
-
-**CI TeamCity Server:** *https://teamcity.dgdev.net*  
-**CI NuGet Package Source:** *https://nuget.dgdev.net*  
-**CI Symbol Source Server:** *http://symbolsource.dgdev.net*  
+Currently, NContext releases Nuget alpha releases on each commit to master.  This will change to a /dev branch in the future.
 
 NContext versioning is still being determined. The core libraries (NContext.dll & 
 NContext.Common.dll) will be released as 2.x.0. Ideally all extensions will be 
