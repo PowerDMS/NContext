@@ -4,23 +4,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <Framework Condition=" '$(Framework)' == '' ">portable-net4+sl4+wp7</Framework>
     <ProjectGuid>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</ProjectGuid>
-    <CustomConstants>SILVERLIGHT40;WINDOWS_PHONE7</CustomConstants>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NContext.Common</RootNamespace>
     <AssemblyName>NContext.Common</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <DocumentationFile>bin\$(Configuration)\$(Framework)\NContext.Common.xml</DocumentationFile>
-    <OutputPath>bin\$(Configuration)\$(Framework)\</OutputPath>
     <WarningLevel>4</WarningLevel>
     <ErrorReport>prompt</ErrorReport>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Profile151</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -31,7 +27,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <DefineConstants>DEBUG;TRACE;$(CustomConstants)</DefineConstants>
+    <DefineConstants>DEBUG;TRACE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>bin\Debug\</OutputPath>
@@ -40,7 +36,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <DefineConstants>TRACE;$(CustomConstants)</DefineConstants>
+    <DefineConstants>TRACE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <OutputPath>bin\Release\</OutputPath>
