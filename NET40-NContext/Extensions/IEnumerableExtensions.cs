@@ -4,32 +4,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    using NContext.Data.Persistence;
-    using NContext.Data.Specifications;
-
     /// <summary>
     /// Defines extension methods for IEnumerable.
     /// </summary>
     public static class IEnumerableExtensions
     {
-        /// <summary>
-        /// Queries the context based on the provided specification and returns results that
-        /// are only satisfied by the specification.
-        /// </summary>
-        /// <typeparam name="TEntity">The type of the entity.</typeparam>
-        /// <param name="entities">The entities.</param>
-        /// <param name="specification">
-        /// A <see cref="SpecificationBase{TEntity}" /> instance used to filter results that only satisfy the specification.
-        /// </param>
-        /// <returns>A <see cref="IQueryable{TEntity}" /> that can be used to enumerate over the results
-        /// of the query.</returns>
-        /// <paramref name="entities" />
-        public static IEnumerable<TEntity> AllMatching<TEntity>(this IEnumerable<TEntity> entities, SpecificationBase<TEntity> specification)
-            where TEntity : class, IEntity
-        {
-            return entities.AsQueryable().Where(specification.IsSatisfiedBy());
-        }
-
         public static IEnumerable<TSource> Distinct<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> getKey)
         {
             var hashSet = new HashSet<TKey>();

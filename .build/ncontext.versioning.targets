@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   
   <PropertyGroup>
-    <NContextMajorVersion>3</NContextMajorVersion>
+    <NContextMajorVersion>4</NContextMajorVersion>
     <NContextMinorVersion>0</NContextMinorVersion>
     <NContextPatchVersion>0</NContextPatchVersion>
     <BuildNumber>$(BUILD_NUMBER)</BuildNumber> <!-- TeamCity Build -->

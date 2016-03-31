@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NContext.Extensions.Logging")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NContext extension for logging.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("PowerDMS")]
 [assembly: AssemblyProduct("NContext.Extensions.Logging")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright © Daniel Gioulakis, PowerDMS 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

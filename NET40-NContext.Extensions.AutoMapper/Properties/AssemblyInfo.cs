@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Waking Venture Inc.")]
+[assembly: AssemblyCompany("PowerDMS")]
 [assembly: AssemblyProduct("NContext")]
-[assembly: AssemblyCopyright("Copyright © Waking Venture Inc. 2012")]
+[assembly: AssemblyCopyright("Copyright © Daniel Gioulakis, PowerDMS 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

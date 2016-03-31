@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("NContext.Extensions.Redis")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("NContext extension for Redis.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("PowerDMS")]
 [assembly: AssemblyProduct("NContext.Extensions.Redis")]
-[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyCopyright("Copyright © Daniel Gioulakis, PowerDMS 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

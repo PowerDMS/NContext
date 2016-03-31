@@ -5,11 +5,12 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Reflection;
 
     /// <summary>
     /// Defines a generic data-transfer-object for containing arbitrary data.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The type of data.</typeparam>
     public class DataResponse<T> : ServiceResponse<T>
     {
         private readonly T _Data;
@@ -25,7 +26,7 @@
         }
 
         /// <summary>
-        /// Gets whether the instance is left.
+        /// Gets the is left.
         /// </summary>
         /// <value>The is left.</value>
         public override Boolean IsLeft
@@ -34,7 +35,7 @@
         }
 
         /// <summary>
-        /// Gets the left value.
+        /// Gets the left value. (Returns null)
         /// </summary>
         /// <returns>Error.</returns>
         public override Error GetLeft()
@@ -62,20 +63,21 @@
 
         private static T MaterializeDataIfNeeded(T data)
         {
-            if (typeof(T).IsValueType || data == null)
+            if (typeof(T).GetTypeInfo().IsValueType || data == null)
             {
                 return data;
             }
 
             var dataType = data.GetType();
+            var dataTypeInfo = dataType.GetTypeInfo();
             if (!(data is IEnumerable) ||
-                !dataType.IsGenericType ||
+                !dataTypeInfo.IsGenericType ||
                 IsDictionary(dataType))
             {
                 return data;
             }
 
-            if (!IsQueryable(dataType) && !dataType.IsNestedPrivate)
+            if (!IsQueryable(dataType) && !dataTypeInfo.IsNestedPrivate)
             {
                 return data;
             }
@@ -84,7 +86,7 @@
             // .NET has several internal iterable types in LINQ that have multiple generic
             // arguments.  The last is reserved for the actual type used for projection.
             // ex. WhereSelectArrayIterator, WhereSelectEnumerableIterator, WhereSelectListIterator
-            var genericType = dataType.GetGenericArguments().Last();
+            var genericType = dataType.GenericTypeArguments.Last();
             if (dataType.GetGenericTypeDefinition() == typeof(Collection<>))
             {
                 var collectionType = typeof(Collection<>).MakeGenericType(genericType);
@@ -99,19 +101,25 @@
         {
             if (type == null) return false;
 
-            return (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
-                   type.GetInterfaces()
-                       .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
+            var typeInfo = type.GetTypeInfo();
+
+            return (typeInfo.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) ||
+                    typeInfo.ImplementedInterfaces
+                        .Any(interfaceType => interfaceType.GetTypeInfo().IsGenericType &&
+                             interfaceType.GetGenericTypeDefinition() == typeof(IDictionary<,>));
         }
 
         private static Boolean IsQueryable(Type type)
         {
             if (type == null) return false;
 
+            var typeInfo = type.GetTypeInfo();
+
             return
-                (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>)) ||
-                type.GetInterfaces()
-                    .Any(interfaceType => interfaceType.IsGenericType && interfaceType.GetGenericTypeDefinition() == typeof(IQueryable<>));
+                (typeInfo.IsGenericType && type.GetGenericTypeDefinition() == typeof(IQueryable<>)) ||
+                 typeInfo.ImplementedInterfaces
+                     .Any(interfaceType => interfaceType.GetTypeInfo().IsGenericType &&
+                          interfaceType.GetGenericTypeDefinition() == typeof(IQueryable<>));
         }
     }
 }

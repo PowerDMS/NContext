@@ -2,63 +2,36 @@
 {
     using System;
     using System.Web.Http;
-    using System.Web.Http.SelfHost;
 
     /// <summary>
     /// Defines configuration support for ASP.NET Web API.
     /// </summary>
     public class WebApiConfiguration
     {
-        private readonly Action<HttpConfiguration> _AspNetHttpConfigurationDelegate;
+        private readonly Action _HostConfigurationAction;
 
-        private readonly Lazy<HttpSelfHostConfiguration> _HttpSelfHostConfiguration;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebApiConfiguration"/> class.
-        /// </summary>
-        /// <param name="aspNetHttpConfigurationDelegate">The ASP net HTTP configuration delegate.</param>
-        /// <param name="httpSelfHostConfiguration">The HTTP self host configuration.</param>
-        /// <remarks></remarks>
-        public WebApiConfiguration(Action<HttpConfiguration> aspNetHttpConfigurationDelegate, Lazy<HttpSelfHostConfiguration> httpSelfHostConfiguration)
+        private readonly Func<HttpConfiguration> _HttpConfigurationFactory;
+        
+        public WebApiConfiguration(Func<HttpConfiguration> httpConfigurationFactory, Action hostConfigurationAction)
         {
-            _AspNetHttpConfigurationDelegate = aspNetHttpConfigurationDelegate;
-            _HttpSelfHostConfiguration = httpSelfHostConfiguration;
+            if (httpConfigurationFactory == null)
+                throw new ArgumentNullException("httpConfigurationFactory");
+
+            if (hostConfigurationAction == null)
+                throw new ArgumentNullException("hostConfigurationAction");
+
+            _HttpConfigurationFactory = httpConfigurationFactory;
+            _HostConfigurationAction = hostConfigurationAction;
         }
 
-        /// <summary>
-        /// Gets the <see cref="AspNetHttpConfigurationDelegate"/> instance.
-        /// </summary>
-        /// <remarks></remarks>
-        public Action<HttpConfiguration> AspNetHttpConfigurationDelegate
+        public Action HostConfigurationAction
         {
-            get
-            {
-                return _AspNetHttpConfigurationDelegate;
-            }
+            get { return _HostConfigurationAction; }
         }
 
-        /// <summary>
-        /// Gets the <see cref="HttpSelfHostConfiguration"/> instance.
-        /// </summary>
-        /// <remarks></remarks>
-        public HttpSelfHostConfiguration HttpSelfHostConfiguration
+        public Func<HttpConfiguration> HttpConfigurationFactory
         {
-            get
-            {
-                return _HttpSelfHostConfiguration.Value;
-            }
-        }
-
-        /// <summary>
-        /// Gets a value indicating whether the API is self-hosted.
-        /// </summary>
-        /// <remarks></remarks>
-        protected internal Boolean IsSelfHosted
-        {
-            get
-            {
-                return _HttpSelfHostConfiguration != null;
-            }
+            get { return _HttpConfigurationFactory; }
         }
     }
 }

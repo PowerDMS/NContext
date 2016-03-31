@@ -2,7 +2,6 @@
 {
     using System;
     using System.Web.Http;
-    using System.Web.Http.SelfHost;
 
     using NContext.Configuration;
 
@@ -11,11 +10,9 @@
     /// </summary>
     public class WebApiManagerBuilder : ApplicationComponentConfigurationBuilderBase
     {
-        private Action<HttpConfiguration> _AspNetHttpConfigurationDelegate;
+        private Action _HostConfigurationAction;
 
-        private Lazy<HttpSelfHostConfiguration> _HttpSelfHostConfigurationFactory;
-
-        private Boolean _IsConfigured;
+        private Func<HttpConfiguration> _HttpConfigurationFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ApplicationComponentConfigurationBuilderBase"/> class.
@@ -27,41 +24,32 @@
         {
         }
 
-        /// <summary>
-        /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
-        /// </summary>
-        /// <returns>Current <see cref="WebApiManagerBuilder"/> instance.</returns>
-        /// <remarks></remarks>
-        public ApplicationConfigurationBuilder ConfigureForIIS()
+        public Func<HttpConfiguration> HttpConfigurationFactory
         {
-            return ConfigureForIIS(null);
+            get { return _HttpConfigurationFactory; }
+            private set { _HttpConfigurationFactory = value; }
+        }
+
+        public Action HostConfigurationAction
+        {
+            get { return _HostConfigurationAction; }
+            private set { _HostConfigurationAction = value; }
         }
 
         /// <summary>
-        /// Sets the delegate to use when configuring the application's <see cref="GlobalConfiguration.Configuration"/>.
+        /// Sets the action to invoke for configuring the host.
         /// </summary>
-        /// <param name="configurationDelegate">The configuration delegate.</param>
-        /// <returns>Current <see cref="WebApiManagerBuilder"/> instance.</returns>
         /// <remarks></remarks>
-        public ApplicationConfigurationBuilder ConfigureForIIS(Action<HttpConfiguration> configurationDelegate)
+        public WebApiManagerBuilder SetHostConfigurationAction(Action hostConfigurationAction)
         {
-            _AspNetHttpConfigurationDelegate = configurationDelegate;
-            Setup();
-
-            return Builder;
+            HostConfigurationAction = hostConfigurationAction;
+            return this;
         }
 
-        /// <summary>
-        /// Sets the <see cref="HttpSelfHostConfiguration" /> instance to be used when self-hosting the API, externally from ASP.NET.
-        /// </summary>
-        /// <param name="configurationDelegate">The configuration delegate.</param>
-        /// <returns>Current <see cref="WebApiManagerBuilder" /> instance.</returns>
-        public ApplicationConfigurationBuilder ConfigureForSelfHosting(Func<HttpSelfHostConfiguration> configurationDelegate)
+        public WebApiManagerBuilder SetHttpConfigurationFactory(Func<HttpConfiguration> httpConfigurationFactory)
         {
-            _HttpSelfHostConfigurationFactory = new Lazy<HttpSelfHostConfiguration>(configurationDelegate);
-            Setup();
-
-            return Builder;
+            HttpConfigurationFactory = httpConfigurationFactory;
+            return this;
         }
 
         /// <summary>
@@ -70,16 +58,11 @@
         /// <remarks></remarks>
         protected override void Setup()
         {
-            if (!_IsConfigured)
-            {
-                Builder.ApplicationConfiguration
-                    .RegisterComponent<IManageWebApi>(
-                        () => 
-                            new WebApiManager(
-                                new WebApiConfiguration(_AspNetHttpConfigurationDelegate, _HttpSelfHostConfigurationFactory)));
-
-                _IsConfigured = true;
-            }
+            Builder.ApplicationConfiguration
+                .RegisterComponent<IManageWebApi>(
+                    () =>
+                        new WebApiManager(
+                            new WebApiConfiguration(HttpConfigurationFactory, HostConfigurationAction)));
         }
     }
 }

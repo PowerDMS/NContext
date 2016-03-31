@@ -15,11 +15,8 @@
     {
         private readonly IAppBuilder _AppBuilder;
 
-        private static readonly Lazy<HttpConfiguration> _HttpConfiguration =
-            new Lazy<HttpConfiguration>(() => new HttpConfiguration());
-
         public WebApiOwinManager(IAppBuilder appBuilder)
-            : base(null)
+            : base()
         {
             _AppBuilder = appBuilder;
         }
@@ -37,55 +34,9 @@
         /// Configures the specified application configuration.
         /// </summary>
         /// <param name="applicationConfiguration">The application configuration.</param>
-        public override void Configure(ApplicationConfigurationBase applicationConfiguration)
+        public override void ConfigureHost()
         {
-            if (IsConfigured) return;
-
-            applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageWebApi>(this);
-            CompositionContainer = applicationConfiguration.CompositionContainer;
-
-            var webApiConfigurations = CompositionContainer.GetExportedValues<IConfigureWebApi>();
-            foreach (var webApiConfiguration in webApiConfigurations)
-            {
-                webApiConfiguration.Configure(HttpConfiguration);
-            }
-
-            var routingConfigurations = CompositionContainer.GetExportedValues<IConfigureHttpRouting>().OrderBy(c => c.Priority);
-            foreach (var routingConfiguration in routingConfigurations)
-            {
-                routingConfiguration.Configure(this);
-            }
-
-            CreateRoutes();
-
-            var owinConfigurations = CompositionContainer.GetExportedValues<IConfigureOwin>().OrderBy(oc => oc.Priority);
-            foreach (var owinConfiguration in owinConfigurations)
-            {
-                owinConfiguration.Configure(AppBuilder);
-            }
-
             AppBuilder.UseWebApi(HttpConfiguration);
-
-            IsConfigured = true;
-        }
-
-        protected override HttpConfiguration CreateOrGetHttpConfiguration()
-        {
-            return _HttpConfiguration.Value;
-        }
-
-        /// <summary>
-        /// Creates the routes.
-        /// </summary>
-        protected override void CreateRoutes()
-        {
-            HttpRoutes.ForEach(
-                route =>
-                {
-                    HttpConfiguration
-                        .Routes
-                        .MapHttpRoute(route.RouteName, route.RouteTemplate, route.Defaults, route.Constraints);
-                });
         }
     }
 }

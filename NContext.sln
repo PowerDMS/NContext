@@ -1,20 +1,14 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NET40-NContext\NContext.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Unity", "NET40-NContext.Extensions.Unity\NContext.Extensions.Unity.csproj", "{C6F06E82-728B-4CFD-86BE-CC5DFA815086}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityFramework", "NET40-NContext.Extensions.EntityFramework\NContext.Extensions.EntityFramework.csproj", "{C9F7B439-599F-404C-8203-A67AD5A3FEA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi", "NET40-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNetWebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNet.WebApi", "NET40-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNet.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NET40-NContext.Common\NContext.Common.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.ValueInjecter", "NET40-NContext.Extensions.ValueInjecter\NContext.Extensions.ValueInjecter.csproj", "{0EAFD594-5631-4C33-A5F2-BDA64E103421}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject", "NET40-NContext.Extensions.Ninject\NContext.Extensions.Ninject.csproj", "{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}"
 EndProject
@@ -35,9 +29,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{27AA2B
 		.nuget\NContext.Extensions.Unity.nuspec = .nuget\NContext.Extensions.Unity.nuspec
 		.nuget\NContext.Extensions.ValueInjecter.nuspec = .nuget\NContext.Extensions.ValueInjecter.nuspec
 		.nuget\NContext.nuspec = .nuget\NContext.nuspec
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7737B376-DAD7-4F46-A4EE-F38B21E3D790}"
@@ -48,21 +39,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7737B3
 		.build\ncontext.versioning.targets = .build\ncontext.versioning.targets
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET40", "NET40", "{AB9477DE-5531-4F64-8750-AE29FC748C64}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET45", "NET45", "{47F09B41-EB9C-4E43-BAE5-05A8E2FCCC50}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{8CD95573-0F11-4481-B865-D0B3CD8202A6}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NET45-NContext\NContext.csproj", "{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NET45-NContext.Common\NContext.Common.csproj", "{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi", "NET45-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNetWebApi.csproj", "{97E0CA56-560F-4048-9667-D364E440D703}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.EntityFramework", "NET45-NContext.Extensions.EntityFramework\NContext.Extensions.EntityFramework.csproj", "{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi.Owin", "NET45-NContext.Extensions.AspNetWebApi.Owin\NContext.Extensions.AspNetWebApi.Owin.csproj", "{8C840595-4F99-446D-A0BA-14A36C81F90E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET45", "NET45", "{AB9477DE-5531-4F64-8750-AE29FC748C64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis", "NET45-NContext.Extensions.Redis\NContext.Extensions.Redis.csproj", "{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}"
 EndProject
@@ -79,18 +56,6 @@ Global
 		{B5614B58-83C2-46BE-9463-9E140519298E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B5614B58-83C2-46BE-9463-9E140519298E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B5614B58-83C2-46BE-9463-9E140519298E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
 		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
 		{B59D121B-CEFE-41EA-9B29-5922C0B996D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -103,12 +68,6 @@ Global
 		{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421}.Release|Any CPU.Build.0 = Release|Any CPU
 		{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
 		{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
 		{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -127,36 +86,6 @@ Global
 		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{151F413D-DFCC-4064-BC5A-AC51E5D343CA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97E0CA56-560F-4048-9667-D364E440D703}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{97E0CA56-560F-4048-9667-D364E440D703}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{97E0CA56-560F-4048-9667-D364E440D703}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97E0CA56-560F-4048-9667-D364E440D703}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97E0CA56-560F-4048-9667-D364E440D703}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97E0CA56-560F-4048-9667-D364E440D703}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8C840595-4F99-446D-A0BA-14A36C81F90E}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C840595-4F99-446D-A0BA-14A36C81F90E}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
-		{8C840595-4F99-446D-A0BA-14A36C81F90E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8C840595-4F99-446D-A0BA-14A36C81F90E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8C840595-4F99-446D-A0BA-14A36C81F90E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8C840595-4F99-446D-A0BA-14A36C81F90E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -169,22 +98,13 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B5614B58-83C2-46BE-9463-9E140519298E} = {AB9477DE-5531-4F64-8750-AE29FC748C64}
-		{C6F06E82-728B-4CFD-86BE-CC5DFA815086} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
-		{C9F7B439-599F-404C-8203-A67AD5A3FEA9} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{B59D121B-CEFE-41EA-9B29-5922C0B996D2} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2} = {AB9477DE-5531-4F64-8750-AE29FC748C64}
 		{6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7} = {AB9477DE-5531-4F64-8750-AE29FC748C64}
-		{0EAFD594-5631-4C33-A5F2-BDA64E103421} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{97682107-3B66-4615-9350-F75FFE9510C8} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
-		{151F413D-DFCC-4064-BC5A-AC51E5D343CA} = {8CD95573-0F11-4481-B865-D0B3CD8202A6}
-		{8CD95573-0F11-4481-B865-D0B3CD8202A6} = {47F09B41-EB9C-4E43-BAE5-05A8E2FCCC50}
-		{7FDAC597-CC5C-443F-B474-D14B6EB3DB48} = {47F09B41-EB9C-4E43-BAE5-05A8E2FCCC50}
-		{E467D2F4-D6FE-4EF8-B959-8D6561FDA63D} = {47F09B41-EB9C-4E43-BAE5-05A8E2FCCC50}
-		{97E0CA56-560F-4048-9667-D364E440D703} = {8CD95573-0F11-4481-B865-D0B3CD8202A6}
-		{5C3C6A1C-CA48-42A3-9284-FF9492F065E2} = {8CD95573-0F11-4481-B865-D0B3CD8202A6}
-		{8C840595-4F99-446D-A0BA-14A36C81F90E} = {8CD95573-0F11-4481-B865-D0B3CD8202A6}
-		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D} = {8CD95573-0F11-4481-B865-D0B3CD8202A6}
+		{151F413D-DFCC-4064-BC5A-AC51E5D343CA} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		                EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35

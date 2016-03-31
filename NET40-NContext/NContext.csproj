@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NContext</RootNamespace>
     <AssemblyName>NContext</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -46,6 +46,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Debug\NContext.xml</DocumentationFile>
     <UseVSHostingProcess>true</UseVSHostingProcess>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -56,6 +57,7 @@
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>bin\Release\NContext.xml</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug DLL and Web|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -66,6 +68,7 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="FSharp.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -97,39 +100,20 @@
     <Compile Include="Configuration\IRunWhenComponentConfigurationIsComplete.cs" />
     <Compile Include="Configuration\IRunWhenApplicationConfigurationIsComplete.cs" />
     <Compile Include="Configuration\RegisteredApplicationComponent.cs" />
-    <Compile Include="Data\Persistence\AmbientContextManagerBase.cs" />
-    <Compile Include="Data\Persistence\AmbientContextManagerHelper.cs" />
-    <Compile Include="Data\Persistence\AmbientUnitOfWorkDecorator.cs" />
-    <Compile Include="Data\Persistence\FileSystemUnitOfWork.cs" />
-    <Compile Include="Data\Persistence\IAmbientContextManagerFactory.cs" />
-    <Compile Include="Data\Persistence\IEntity.cs" />
-    <Compile Include="Data\Persistence\IPersistenceFactory.cs" />
-    <Compile Include="Data\Persistence\IUnitOfWork.cs" />
-    <Compile Include="Data\Persistence\NonAtomicUnitOfWork.cs" />
-    <Compile Include="Data\Persistence\ObjectCacheAmbientContextManager.cs" />
-    <Compile Include="Data\Persistence\PerRequestAmbientContextManagerFactory.cs" />
-    <Compile Include="Data\Persistence\PerRequestAmbientContextManager.cs" />
-    <Compile Include="Data\Persistence\PersistenceFactoryBase.cs" />
-    <Compile Include="Data\Persistence\PersistenceOptions.cs" />
-    <Compile Include="Data\Persistence\PerThreadAmbientContextManager.cs" />
-    <Compile Include="Data\Persistence\PerThreadAmbientContextManagerFactory.cs" />
-    <Compile Include="Data\Specifications\AdHocSpecification.cs" />
-    <Compile Include="Data\Specifications\AndSpecification.cs" />
-    <Compile Include="Data\Specifications\CompositeSpecification.cs" />
-    <Compile Include="Data\Specifications\ExpressionExtensions.cs" />
-    <Compile Include="Data\Specifications\NotSpecification.cs" />
-    <Compile Include="Data\Specifications\OrSpecification.cs" />
-    <Compile Include="Data\Specifications\ParameterRebinder.cs" />
-    <Compile Include="Data\Specifications\SpecificationBase.cs" />
-    <Compile Include="Data\Specifications\TrueSpecification.cs" />
-    <Compile Include="Data\Persistence\UnitOfWorkBase.cs" />
-    <Compile Include="Data\Persistence\PersistenceFactory.cs" />
-    <Compile Include="Data\Persistence\CompositeUnitOfWork.cs" />
     <Compile Include="ErrorHandling\ErrorBase.cs" />
     <Compile Include="Configuration\IApplicationComponent.cs" />
     <Compile Include="Configuration\ApplicationConfigurationBase.cs" />
     <Compile Include="ErrorHandling\Errors\Localization\NContextPersistenceError.Designer.cs" />
-    <Compile Include="ErrorHandling\Errors\NContextPersistenceError.cs" />
+    <Compile Include="EventHandling\DefaultActivationProvider.cs" />
+    <Compile Include="EventHandling\EventManager.cs" />
+    <Compile Include="EventHandling\EventManagerBuilder.cs" />
+    <Compile Include="EventHandling\IActivationProvider.cs" />
+    <Compile Include="EventHandling\IConditionallyHandleEvents.cs" />
+    <Compile Include="EventHandling\IGracefullyHandleEvent.cs" />
+    <Compile Include="EventHandling\IHandleEvent.cs" />
+    <Compile Include="EventHandling\IHandleEventAsync.cs" />
+    <Compile Include="EventHandling\IHandleEvents.cs" />
+    <Compile Include="EventHandling\IManageEvents.cs" />
     <Compile Include="Exceptions\SanitizationException.cs" />
     <Compile Include="Extensions\ByteExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
@@ -137,6 +121,7 @@
     <Compile Include="Extensions\ErrorExtensions.cs" />
     <Compile Include="Extensions\ExceptionExtensions.cs" />
     <Compile Include="Extensions\IMaybeIQueryableExtensions.cs" />
+    <Compile Include="Extensions\IServiceResponseEventExtensions.cs" />
     <Compile Include="Extensions\IServiceResponseIQueryableExtensions.cs" />
     <Compile Include="Extensions\ISetExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -207,9 +192,7 @@
       <Name>NContext.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventHandling\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

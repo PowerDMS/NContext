@@ -12,24 +12,29 @@
     /// <remarks></remarks>
     public class ApplicationConfigurationBuilder
     {
-        private static readonly ApplicationConfiguration _ApplicationConfiguration =
+        private readonly ApplicationConfiguration _ApplicationConfiguration =
             new ApplicationConfiguration();
 
-        private static readonly Dictionary<Type, ApplicationComponentBuilder> _Components =
+        private readonly Dictionary<Type, ApplicationComponentBuilder> _Components =
             new Dictionary<Type, ApplicationComponentBuilder>();
         
         /// <summary>
         /// Gets the application configuration.
         /// </summary>
         /// <remarks></remarks>
-        public ApplicationConfiguration ApplicationConfiguration
+        public virtual ApplicationConfiguration ApplicationConfiguration
         {
             get
             {
                 return _ApplicationConfiguration;
             }
         }
-        
+
+        public virtual IDictionary<Type, ApplicationComponentBuilder> Components
+        {
+            get { return _Components; }
+        }
+
         /// <summary>
         /// Performs an implicit conversion from <see cref="ApplicationConfigurationBuilder"/> 
         /// to <see cref="Configuration.ApplicationConfiguration"/>.
@@ -39,7 +44,7 @@
         /// <remarks></remarks>
         public static implicit operator ApplicationConfiguration(ApplicationConfigurationBuilder applicationConfigurationBuilder)
         {
-            return _ApplicationConfiguration;
+            return applicationConfigurationBuilder.ApplicationConfiguration;
         }
 
         /// <summary>
@@ -88,7 +93,7 @@
         /// <remarks></remarks>
         public ApplicationConfigurationBuilder ComposeWith(IEnumerable<String> directories, params Predicate<FileInfo>[] fileInfoConstraints)
         {
-            _ApplicationConfiguration.AddCompositionConditions(directories, fileInfoConstraints);
+            ApplicationConfiguration.AddCompositionConditions(directories, fileInfoConstraints);
 
             return this;
         }
@@ -103,13 +108,13 @@
             where TApplicationComponent : class, IApplicationComponent
         {
             ApplicationComponentBuilder section;
-            if (_Components.TryGetValue(typeof(TApplicationComponent), out section))
+            if (Components.TryGetValue(typeof(TApplicationComponent), out section))
             {
                 return section;
             }
 
             var componentConfigurationBuilder = (ApplicationComponentBuilder)Activator.CreateInstance(typeof(ApplicationComponentBuilder), this);
-            _Components.Add(typeof(TApplicationComponent), componentConfigurationBuilder);
+            Components.Add(typeof(TApplicationComponent), componentConfigurationBuilder);
 
             return componentConfigurationBuilder;
         }
@@ -124,7 +129,7 @@
         public ApplicationConfigurationBuilder RegisterComponent<TApplicationComponent>(Func<TApplicationComponent> componentFactory)
             where TApplicationComponent : class, IApplicationComponent
         {
-            _ApplicationConfiguration.RegisterComponent<TApplicationComponent>(componentFactory);
+            ApplicationConfiguration.RegisterComponent<TApplicationComponent>(componentFactory);
 
             return this;
         }
