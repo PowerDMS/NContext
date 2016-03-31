@@ -54,7 +54,7 @@
         /// <summary>
         /// Gets the application composition container.
         /// </summary>
-        public CompositionContainer CompositionContainer
+        public virtual CompositionContainer CompositionContainer
         {
             get
             {

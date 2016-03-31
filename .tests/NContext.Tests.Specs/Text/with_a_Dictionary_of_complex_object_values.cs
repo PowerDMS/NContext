@@ -3,19 +3,19 @@
     using System;
     using System.Collections.Generic;
 
+    using FakeItEasy;
+
     using Machine.Specifications;
 
     using NContext.Text;
-
-    using Telerik.JustMock;
 
     public class with_a_Dictionary_of_complex_object_values : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
         {
-            TextSanitizer = Mock.Create<ISanitizeText>();
+            TextSanitizer = A.Fake<ISanitizeText>();
 
-            Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
+            A.CallTo(() => TextSanitizer.SanitizeHtmlFragment(A<string>._))
                 .Returns(_SanitizedValue);
 
             _Data = new Dictionary<Int32, DummyBlogAuthor>

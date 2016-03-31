@@ -2,16 +2,16 @@ namespace NContext.Tests.Specs.EventHandling
 {
     using System;
 
-    using Machine.Specifications;
+    using FakeItEasy;
 
-    using Telerik.JustMock;
+    using Machine.Specifications;
 
     public class with_a_graceful_event_handler : when_raising_an_event
     {
         Establish context = () =>
         {
-            Mock.Arrange(() => ActivationProvider.CreateInstance<GracefulEvent>(Arg.IsAny<Type>()))
-                .Returns((Type handlerType) => HandlerFactory(handlerType));
+            A.CallTo(() => ActivationProvider.CreateInstance<GracefulEvent>(A<Type>._))
+                .ReturnsLazily((Type handlerType) => HandlerFactory(handlerType));
 
             _Event = new GracefulEvent("graceful");
         };

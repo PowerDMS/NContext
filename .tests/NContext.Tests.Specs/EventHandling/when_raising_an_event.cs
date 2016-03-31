@@ -5,13 +5,13 @@
     using System.ComponentModel.Composition.Hosting;
     using System.Reflection;
 
+    using FakeItEasy;
+
     using Machine.Specifications;
 
     using NContext.Configuration;
     using NContext.EventHandling;
-
-    using Telerik.JustMock;
-
+    
     public abstract class when_raising_an_event
     {
         private static readonly ConcurrentBag<DummyEvent> _HandledEvents = new ConcurrentBag<DummyEvent>();
@@ -22,11 +22,14 @@
 
         Establish context = () =>
             {
-                var appConfig = Mock.Create<ApplicationConfigurationBase>();
-                _ActivationProvider = Mock.Create<IActivationProvider>();
+                var appConfig = A.Fake<ApplicationConfigurationBase>();
+                _ActivationProvider = A.Fake<IActivationProvider>();
 
-                Mock.Arrange(() => appConfig.CompositionContainer)
-                    .Returns(new CompositionContainer(new AggregateCatalog(new AssemblyCatalog(Assembly.Load("NContext")), new AssemblyCatalog(Assembly.GetExecutingAssembly()))));
+                A.CallTo(() => appConfig.CompositionContainer)
+                    .Returns(
+                        new CompositionContainer(
+                            new AggregateCatalog(
+                                new AssemblyCatalog(Assembly.Load("NContext")), new AssemblyCatalog(Assembly.GetExecutingAssembly()))));
                 
                 _EventManager = new EventManager(ActivationProvider);
                 _EventManager.Configure(appConfig);

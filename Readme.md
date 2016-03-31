@@ -1,6 +1,6 @@
 NContext
 ========
-NContext is an application composition framework for .NET 4 & 4.5.
+NContext is an application composition framework for >= .NET 4.5.2.
 
 This project is an on-going architectural research effort. It borrows many
 ideas, patterns, and concepts from a variety of software architects in the
@@ -10,12 +10,11 @@ pattern.
 
 At it's core, NContext introduces two fundamental concepts: 
   1. Dynamic application composition (bootstrapping) based upon MEF  
-  2. IServiceResponse - a DTO which allows you to create a functionally composable application codebase; one without the use of non-local exits as a use of control flow. With it, the idea of Functional Domain Composition.
+  2. IServiceResponse - a DTO which allows you to create a functionally composable application codebase; one without the use of non-local exits as a use of control flow. With it, the idea of functional domain composition.
 
 It also introduces new concepts in designing your bounded-contexts. With few
 core dependencies, NContext's highly-extensible design allows for custom add-on
-modules. Already built extensions include: Entity Framework, ASP.NET Web API & 
-OWIN, AutoMapper, and Value Injecter. Some application components have 
+modules. Already built extensions include: ASP.NET Web API, AutoMapper, and Redis. Some application components have 
 been baked into NContext including: Caching, Security, Cryptography, Event Handling, 
 and Logging.
 

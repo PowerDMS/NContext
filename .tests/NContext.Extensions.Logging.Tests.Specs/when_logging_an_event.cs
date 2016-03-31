@@ -7,12 +7,12 @@
     using System.Runtime.InteropServices;
     using System.Threading;
 
+    using FakeItEasy;
+
     using Machine.Specifications;
 
     using NContext.Configuration;
     using NContext.Extensions.Logging.Targets;
-
-    using Telerik.JustMock;
 
     [Tags("slow")]
     public class when_logging_an_event
@@ -27,8 +27,8 @@
 
         Establish configure_log_manager = () =>
             {
-                var config = Mock.Create<ApplicationConfigurationBase>();
-                Mock.Arrange(() => config.CompositionContainer).Returns(new CompositionContainer());
+                var config = A.Fake<ApplicationConfigurationBase>(c => c.Wrapping(new ApplicationConfiguration()));
+                A.CallTo(() => config.CompositionContainer).Returns(new CompositionContainer());
 
                 _BufferedLogTarget = new BatchTarget(100, TimeSpan.FromSeconds(2), Environment.ProcessorCount);
                 _LogTarget = new SingleTarget(1);

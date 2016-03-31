@@ -7,6 +7,7 @@
 
     using StackExchange.Redis;
     
+    [Ignore("Need to stand up redis instance.")]
     [Subject(typeof(RedisCache))]
     public class when_using_RedisCache
     {

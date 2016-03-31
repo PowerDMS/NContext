@@ -2,32 +2,28 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NET40-NContext\NContext.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NET45-NContext\NContext.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNet.WebApi", "NET40-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNet.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNet.WebApi", "NET45-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNet.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NET40-NContext.Common\NContext.Common.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NET45-NContext.Common\NContext.Common.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extensions", "Extensions", "{6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject", "NET40-NContext.Extensions.Ninject\NContext.Extensions.Ninject.csproj", "{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Ninject", "NET45-NContext.Extensions.Ninject\NContext.Extensions.Ninject.csproj", "{80FDE6FF-F96A-4264-AAF3-64B6D3FE3357}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NET40-NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMapper", "NET45-NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.csproj", "{97682107-3B66-4615-9350-F75FFE9510C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging", "NET45-NContext.Extensions.Logging\NContext.Extensions.Logging.csproj", "{151F413D-DFCC-4064-BC5A-AC51E5D343CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NContext.Common.nuspec = .nuget\NContext.Common.nuspec
-		.nuget\NContext.Extensions.AspNetWebApi.nuspec = .nuget\NContext.Extensions.AspNetWebApi.nuspec
-		.nuget\NContext.Extensions.AspNetWebApi.Owin.nuspec = .nuget\NContext.Extensions.AspNetWebApi.Owin.nuspec
+		.nuget\NContext.Extensions.AspNet.WebApi.nuspec = .nuget\NContext.Extensions.AspNet.WebApi.nuspec
 		.nuget\NContext.Extensions.AutoMapper.nuspec = .nuget\NContext.Extensions.AutoMapper.nuspec
-		.nuget\NContext.Extensions.EntityFramework.nuspec = .nuget\NContext.Extensions.EntityFramework.nuspec
 		.nuget\NContext.Extensions.Logging.nuspec = .nuget\NContext.Extensions.Logging.nuspec
 		.nuget\NContext.Extensions.Ninject.nuspec = .nuget\NContext.Extensions.Ninject.nuspec
 		.nuget\NContext.Extensions.Redis.nuspec = .nuget\NContext.Extensions.Redis.nuspec
-		.nuget\NContext.Extensions.Unity.nuspec = .nuget\NContext.Extensions.Unity.nuspec
-		.nuget\NContext.Extensions.ValueInjecter.nuspec = .nuget\NContext.Extensions.ValueInjecter.nuspec
 		.nuget\NContext.nuspec = .nuget\NContext.nuspec
 	EndProjectSection
 EndProject
@@ -42,6 +38,18 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NET45", "NET45", "{AB9477DE-5531-4F64-8750-AE29FC748C64}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis", "NET45-NContext.Extensions.Redis\NContext.Extensions.Redis.csproj", "{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".tests", ".tests", "{35055D9B-0FC1-4A00-81B7-D2479DD30011}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Tests.Specs", ".tests\NContext.Tests.Specs\NContext.Tests.Specs.csproj", "{3D3619F7-36EE-48F4-8B14-2639BDEC609E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common.Tests.Specs", ".tests\NContext.Common.Tests.Specs\NContext.Common.Tests.Specs.csproj", "{FE8E1512-B511-428E-B58A-3D577E09C2E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Redis.Tests.Specs", ".tests\NContext.Extensions.Redis.Tests.Specs\NContext.Extensions.Redis.Tests.Specs.csproj", "{C008F7EC-D99E-4B3C-A850-8808FDD77E39}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging.Tests.Specs", ".tests\NContext.Extensions.Logging.Tests.Specs\NContext.Extensions.Logging.Tests.Specs.csproj", "{83894E98-204C-454F-BB24-858685F43645}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi.Tests.Specs", ".tests\NContext.Extensions.AspNetWebApi.Tests.Specs\NContext.Extensions.AspNetWebApi.Tests.Specs.csproj", "{BF252C06-2A2C-42C2-8DCF-681708E6A16B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -92,6 +100,36 @@ Global
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83894E98-204C-454F-BB24-858685F43645}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{83894E98-204C-454F-BB24-858685F43645}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{83894E98-204C-454F-BB24-858685F43645}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83894E98-204C-454F-BB24-858685F43645}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83894E98-204C-454F-BB24-858685F43645}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83894E98-204C-454F-BB24-858685F43645}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B}.Debug DLL and Web|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B}.Debug DLL and Web|Any CPU.Build.0 = Debug|Any CPU
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -105,6 +143,11 @@ Global
 		{97682107-3B66-4615-9350-F75FFE9510C8} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{151F413D-DFCC-4064-BC5A-AC51E5D343CA} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
 		{4FDAD7AE-2AE8-4E32-BD4E-3EC44133309D} = {6BBB9AF7-DC1A-48B9-9C88-FF81AB932BB7}
+		{3D3619F7-36EE-48F4-8B14-2639BDEC609E} = {35055D9B-0FC1-4A00-81B7-D2479DD30011}
+		{FE8E1512-B511-428E-B58A-3D577E09C2E5} = {35055D9B-0FC1-4A00-81B7-D2479DD30011}
+		{C008F7EC-D99E-4B3C-A850-8808FDD77E39} = {35055D9B-0FC1-4A00-81B7-D2479DD30011}
+		{83894E98-204C-454F-BB24-858685F43645} = {35055D9B-0FC1-4A00-81B7-D2479DD30011}
+		{BF252C06-2A2C-42C2-8DCF-681708E6A16B} = {35055D9B-0FC1-4A00-81B7-D2479DD30011}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		                EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Validation.5.0.505.0\lib\NET35;packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.2\lib\NET35

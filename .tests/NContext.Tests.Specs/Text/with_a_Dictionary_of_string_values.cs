@@ -4,22 +4,22 @@
     using System.Collections.Generic;
     using System.Linq;
 
+    using FakeItEasy;
+
     using Machine.Specifications;
 
     using NContext.Text;
 
-    using Telerik.JustMock;
-
     public class with_a_Dictionary_of_String_values : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
-            {
-                TextSanitizer = Mock.Create<ISanitizeText>();
+        {
+            TextSanitizer = A.Fake<ISanitizeText>();
 
-                Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
-                    .Returns(_SanitizedValue);
+            A.CallTo(() => TextSanitizer.SanitizeHtmlFragment(A<string>._))
+                .Returns(_SanitizedValue);
 
-                _Data = new Dictionary<String, String>
+            _Data = new Dictionary<String, String>
                     {
                         { "FirstName", "Daniel" },
                         { "MiddleName", null },

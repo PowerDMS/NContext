@@ -5,22 +5,22 @@
     using System.Collections.ObjectModel;
     using System.Linq;
 
+    using FakeItEasy;
+
     using Machine.Specifications;
 
     using NContext.Text;
 
-    using Telerik.JustMock;
-
     public class with_an_enumerable_of_Object : when_sanitizing_objects_with_ObjectGraphSanitizer
     {
         Establish context = () =>
-            {
-                TextSanitizer = Mock.Create<ISanitizeText>();
+        {
+            TextSanitizer = A.Fake<ISanitizeText>();
 
-                Mock.Arrange(() => TextSanitizer.SanitizeHtmlFragment(Arg.AnyString))
-                    .Returns(_SanitizedValue);
+            A.CallTo(() => TextSanitizer.SanitizeHtmlFragment(A<string>._))
+                .Returns(_SanitizedValue);
 
-                _Link = new DummyBlogLink { Text = "<script>alert('xss');</script>" };
+            _Link = new DummyBlogLink { Text = "<script>alert('xss');</script>" };
                 _NestedDictionary = new Dictionary<String, Object> { { "SomeKey", "<script>alert('xss');</script>" } };
                 _NestedEnumerable = new Collection<Object> { "<script>alert('xss');</script>" };
                 _Data = new Collection<Object>

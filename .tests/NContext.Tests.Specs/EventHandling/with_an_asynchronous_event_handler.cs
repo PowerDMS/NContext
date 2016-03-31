@@ -2,16 +2,16 @@ namespace NContext.Tests.Specs.EventHandling
 {
     using System;
 
-    using Machine.Specifications;
+    using FakeItEasy;
 
-    using Telerik.JustMock;
+    using Machine.Specifications;
 
     public class with_an_asynchronous_event_handler : when_raising_an_event
     {
         Establish context = () =>
         {
-            Mock.Arrange(() => ActivationProvider.CreateInstance<AsynchronousEvent>(Arg.IsAny<Type>()))
-                .Returns((Type handlerType) => HandlerFactory(handlerType));
+            A.CallTo(() => ActivationProvider.CreateInstance<AsynchronousEvent>(A<Type>._))
+                .ReturnsLazily((Type handlerType) => HandlerFactory(handlerType));
 
             _Event = new AsynchronousEvent("asynchronous");
         };

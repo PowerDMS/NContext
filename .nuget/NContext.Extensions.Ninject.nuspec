@@ -3,27 +3,23 @@
   <metadata>
     <id>NContext.Extensions.Ninject</id>
     <version>0.0.0</version>
-    <authors>Daniel Gioulakis</authors>
-    <owners>Daniel Gioulakis</owners>
-    <copyright>Daniel Gioulakis</copyright>
+    <authors>Daniel Gioulakis, PowerDMS Inc.</authors>
+    <owners>Daniel Gioulakis, PowerDMS Inc.</owners>
+    <copyright>Daniel Gioulakis, PowerDMS Inc.</copyright>
     <description>NContext application component for Ninject.</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/Cephei/NContext</projectUrl>
+    <projectUrl>https://github.com/PowerDMS/NContext</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-	    <group targetFramework="net40">
+	    <group targetFramework="net452">
         <dependency id="NContext" version="[$version$,)" />
-        <dependency id="Ninject" version="[3.0.1.10,)" />
-	    </group>
-	    <group targetFramework="net45">
-        <dependency id="NContext" version="[$version$,)" />
-        <dependency id="Ninject" version="[3.0.1.10,)" />
+        <dependency id="Ninject" version="[3.2.2,)" />
 	    </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="NET40-NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net40\" />
-    <file src="NET40-NContext.Extensions.Ninject\**\*.cs" target="src" />
+    <file src="NET45-NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net452\" />
+    <file src="NET45-NContext.Extensions.Ninject\**\*.cs" target="src" />
   </files>
 </package>

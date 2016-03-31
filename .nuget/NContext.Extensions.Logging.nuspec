@@ -3,27 +3,23 @@
   <metadata>
     <id>NContext.Extensions.Logging</id>
     <version>0.0.0</version>
-    <authors>Daniel Gioulakis</authors>
-    <owners>Daniel Gioulakis</owners>
-    <copyright>Daniel Gioulakis</copyright>
+    <authors>Daniel Gioulakis, PowerDMS Inc.</authors>
+    <owners>Daniel Gioulakis, PowerDMS Inc.</owners>
+    <copyright>Daniel Gioulakis, PowerDMS Inc.</copyright>
     <description>NContext application component for logging.  Logging infrastructure uses TPL Dataflow to push immutable log messages.  Supports batch logging.</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
-    <projectUrl>https://github.com/Cephei/NContext</projectUrl>
+    <projectUrl>https://github.com/PowerDMS/NContext</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-      <group targetFramework="net40">
+      <group targetFramework="net452">
         <dependency id="NContext" version="[$version$,)" />
-        <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.14,)" />
-      </group>
-      <group targetFramework="net45">
-        <dependency id="NContext" version="[$version$,)" />
-        <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.14,)" />
+        <dependency id="Microsoft.Tpl.Dataflow" version="[4.5.24,)" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="NET45-NContext.Extensions.Logging\bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net45\" />
+    <file src="NET45-NContext.Extensions.Logging\bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net452\" />
     <file src="NET45-NContext.Extensions.Logging\**\*.cs" target="src" />
   </files>
 </package>
