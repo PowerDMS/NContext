@@ -3,9 +3,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyCompany("Waking Venture Inc.")]
+[assembly: AssemblyCompany("PowerDMS Inc.")]
 [assembly: AssemblyProduct("NContext")]
-[assembly: AssemblyCopyright("Copyright © Waking Venture Inc. 2012")]
+[assembly: AssemblyCopyright("Copyright © Daniel Gioulakis, PowerDMS Inc. 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -25,5 +25,3 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("NContext.Tests.Specs")]
 
 [assembly: AssemblyFileVersion("2.0.0.0")]
-
-[assembly: CLSCompliant(true)]
