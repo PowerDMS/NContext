@@ -4,7 +4,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext", "NET45-NContext\NContext.csproj", "{B5614B58-83C2-46BE-9463-9E140519298E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNet.WebApi", "NET45-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNet.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNet.WebApi", "NET45-NContext.Extensions.AspNet.WebApi\NContext.Extensions.AspNet.WebApi.csproj", "{B59D121B-CEFE-41EA-9B29-5922C0B996D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Common", "NET45-NContext.Common\NContext.Common.csproj", "{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}"
 EndProject

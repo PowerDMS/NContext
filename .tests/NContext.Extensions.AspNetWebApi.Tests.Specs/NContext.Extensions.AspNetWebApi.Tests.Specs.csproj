@@ -101,7 +101,7 @@
       <Project>{e467d2f4-d6fe-4ef8-b959-8d6561fda63d}</Project>
       <Name>NContext.Common %28NET45\NContext.Common%29</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\NET45-NContext.Extensions.AspNetWebApi\NContext.Extensions.AspNet.WebApi.csproj">
+    <ProjectReference Include="..\..\NET45-NContext.Extensions.AspNet.WebApi\NContext.Extensions.AspNet.WebApi.csproj">
       <Project>{b59d121b-cefe-41ea-9b29-5922c0b996d2}</Project>
       <Name>NContext.Extensions.AspNet.WebApi</Name>
     </ProjectReference>
