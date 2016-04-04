@@ -64,9 +64,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\when_using_CacheManager.cs" />
+    <Compile Include="EventHandling\Concurrent\ConcurrentEvent.cs" />
+    <Compile Include="EventHandling\Concurrent\ConcurrentHandlers.cs" />
+    <Compile Include="EventHandling\Concurrent\with_concurrent_handlers.cs" />
     <Compile Include="EventHandling\DerivedEvent.cs" />
     <Compile Include="EventHandling\DerivedEventHandler.cs" />
     <Compile Include="EventHandling\DummyEvent.cs" />
+    <Compile Include="EventHandling\Serial\SerialEvent.cs" />
+    <Compile Include="EventHandling\Serial\SerialHandlers.cs" />
+    <Compile Include="EventHandling\Serial\with_serial_handlers.cs" />
     <Compile Include="EventHandling\when_raising_an_event.cs" />
     <Compile Include="EventHandling\with_a_derived_event_handler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -116,6 +122,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

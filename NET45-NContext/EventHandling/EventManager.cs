@@ -52,7 +52,7 @@
             return RaiseEventInternal(@event);
         }
 
-        private Task RaiseEventInternal(object @event)
+        private async Task RaiseEventInternal(object @event)
         {
             var eventType = @event.GetType();
             var eventInformation = _EventHandlerCache.GetOrAdd(
@@ -89,7 +89,7 @@
 
             if (eventInformation.Parallelize)
             {
-                return Task.WhenAll(
+                await Task.WhenAll(
                     from partition in Partitioner.Create(eventInformation.Handlers)
                         .GetPartitions(
                             eventInformation.Handlers.Count > Environment.ProcessorCount
@@ -101,11 +101,14 @@
                             while (partition.MoveNext())
                                 InvokeEventHandler(partition.Current, eventInformation.CreateInstanceMethod, @event);
                     }));
+
+                return;
             }
-            
-            return Task.WhenAll(
-                eventInformation.Handlers.Select(
-                    handlerInformation => InvokeEventHandler(handlerInformation, eventInformation.CreateInstanceMethod, @event)));
+
+            foreach (var handlerInformation in eventInformation.Handlers)
+            {
+                await InvokeEventHandler(handlerInformation, eventInformation.CreateInstanceMethod, @event);
+            }
         }
 
         private Task InvokeEventHandler(EventHandlerInformation handlerInformation, MethodInfo createInstanceMethod, object @event)
