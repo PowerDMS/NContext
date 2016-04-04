@@ -52,6 +52,22 @@
             return RaiseEventInternal(@event);
         }
 
+        /// <summary>
+        /// Determines the number of partitions to create for concurrent execution of processing event handlers.  This will 
+        /// affect the number of thread-pool threads queued to execute handlers in parallel. By default, <see cref="EventManager"/> 
+        /// will only process a maximum of <see cref="Environment.ProcessorCount"/> (one thread per virtual processor) 
+        /// unless the <paramref name="handlerCount"/> is less than the <see cref="Environment.ProcessorCount"/> value. 
+        /// In which it will partition according to the <paramref name="handlerCount"/>.
+        /// </summary>
+        /// <param name="handlerCount"></param>
+        /// <returns></returns>
+        protected virtual Int32 GetPartitionCount(Int32 handlerCount)
+        {
+            return handlerCount > Environment.ProcessorCount
+                ? Environment.ProcessorCount
+                : handlerCount;
+        }
+
         private async Task RaiseEventInternal(object @event)
         {
             var eventType = @event.GetType();
@@ -79,7 +95,9 @@
 
                     if (eventHandlers.Count == 0)
                         throw new InvalidOperationException(
-                            String.Format("There is no event handler for event type '{0}'.", eventType.Name));
+                            String.Format(
+                                "There is no event handler for event type '{0}'.  You must create a class which implements IHandleEvent<{0}>.", 
+                                eventType.Name));
 
                     return new EventInformation(
                         eventHandlers, 
@@ -91,10 +109,7 @@
             {
                 await Task.WhenAll(
                     from partition in Partitioner.Create(eventInformation.Handlers)
-                        .GetPartitions(
-                            eventInformation.Handlers.Count > Environment.ProcessorCount
-                                ? Environment.ProcessorCount
-                                : eventInformation.Handlers.Count)
+                        .GetPartitions(GetPartitionCount(eventInformation.Handlers.Count))
                     select Task.Run(async () =>
                     {
                         using (partition)
