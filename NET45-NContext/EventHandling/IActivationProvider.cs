@@ -14,6 +14,6 @@
         /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <param name="handler">The handler to create.</param>
         /// <returns>IHandleEvent{TEvent}.</returns>
-        IHandleEvents CreateInstance<TEvent>(Type handler);
+        IHandleEvent<TEvent> CreateInstance<TEvent>(Type handler);
     }
 }

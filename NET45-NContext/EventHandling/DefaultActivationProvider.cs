@@ -13,9 +13,9 @@
         /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <param name="handler">The handler to create.</param>
         /// <returns>IHandleEvent{TEvent}.</returns>
-        public IHandleEvents CreateInstance<TEvent>(Type handler)
+        public IHandleEvent<TEvent> CreateInstance<TEvent>(Type handler)
         {
-            return Activator.CreateInstance(handler) as IHandleEvents;
+            return (IHandleEvent<TEvent>)Activator.CreateInstance(handler);
         }
     }
 }

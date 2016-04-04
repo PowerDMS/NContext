@@ -14,10 +14,10 @@ namespace NContext.Extensions.AutoMapper.Configuration
     /// <remarks></remarks>
     public class AutoMapperManager : IManageAutoMapper
     {
-        private static readonly Lazy<IConfiguration> _ConfigurationStore =
+        private readonly Lazy<IConfiguration> _ConfigurationStore =
             new Lazy<IConfiguration>(() => Mapper.Configuration);
 
-        private static readonly Lazy<IMappingEngine> _MappingEngine =
+        private readonly Lazy<IMappingEngine> _MappingEngine =
             new Lazy<IMappingEngine>(() => Mapper.Engine);
 
         private Boolean _IsConfigured;

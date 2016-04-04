@@ -14,45 +14,30 @@
     
     public abstract class when_raising_an_event
     {
-        private static readonly ConcurrentBag<DummyEvent> _HandledEvents = new ConcurrentBag<DummyEvent>();
-
-        private static IManageEvents _EventManager;
-
-        private static IActivationProvider _ActivationProvider;
-
         Establish context = () =>
             {
-                var appConfig = A.Fake<ApplicationConfigurationBase>();
-                _ActivationProvider = A.Fake<IActivationProvider>();
+                HandledEvents = new ConcurrentBag<object>();
+                ActivationProvider = new DefaultActivationProvider();
+                EventManager = new EventManager(ActivationProvider);
 
+                var appConfig = A.Fake<ApplicationConfigurationBase>();
                 A.CallTo(() => appConfig.CompositionContainer)
                     .Returns(
                         new CompositionContainer(
                             new AggregateCatalog(
                                 new AssemblyCatalog(Assembly.Load("NContext")), new AssemblyCatalog(Assembly.GetExecutingAssembly()))));
-                
-                _EventManager = new EventManager(ActivationProvider);
-                _EventManager.Configure(appConfig);
+
+                EventManager.Configure(appConfig);
             };
 
-        public static ConcurrentBag<DummyEvent> HandledEvents
-        {
-            get { return _HandledEvents; }
-        }
+        Because of = async () => await EventManager.Raise(Event).Await().AsTask;
 
-        protected static IManageEvents EventManager
-        {
-            get { return _EventManager; }
-        }
+        public static ConcurrentBag<object> HandledEvents;
 
-        protected static IActivationProvider ActivationProvider
-        {
-            get { return _ActivationProvider; }
-        }
+        protected static IManageEvents EventManager;
 
-        protected static IHandleEvents HandlerFactory(Type handlerType)
-        {
-            return (IHandleEvents) Activator.CreateInstance(handlerType);
-        }
+        protected static IActivationProvider ActivationProvider;
+
+        protected static object Event;
     }
 }

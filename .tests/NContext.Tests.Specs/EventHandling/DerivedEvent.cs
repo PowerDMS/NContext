@@ -1,6 +1,6 @@
 ﻿namespace NContext.Tests.Specs.EventHandling
 {
-    public class DummyEvent
+    public class DerivedEvent : DummyEvent
     {
     }
 }

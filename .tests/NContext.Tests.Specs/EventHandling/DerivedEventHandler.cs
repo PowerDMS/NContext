@@ -4,9 +4,9 @@
 
     using NContext.EventHandling;
 
-    public class AsynchronousEventHandler : IHandleEventAsync<AsynchronousEvent>
+    public class DerivedEventHandler : IHandleEvent<DerivedEvent>
     {
-        public async Task Handle(AsynchronousEvent @event)
+        public async Task HandleAsync(DerivedEvent @event)
         {
             await Task.Delay(2000);
 

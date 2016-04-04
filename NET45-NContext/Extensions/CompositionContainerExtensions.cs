@@ -54,6 +54,12 @@
                 .Where(typePart => typePart.IsAssignableToType(typeof(TExport))).ToList();
         }
 
+        public static IEnumerable<Type> GetExportTypesThatImplement(this CompositionContainer container, Type type)
+        {
+            return container.GetExportTypes()
+                .Where(typePart => typePart.IsAssignableToType(type));
+        } 
+
         private static Boolean IsAssignableToType(this Type type, Type assignableType)
         {
             return 
@@ -65,26 +71,5 @@
                     (type.IsGenericType && type.GetGenericTypeDefinition() == assignableType) || 
                     (type.BaseType != null && IsAssignableToType(type.BaseType, assignableType));
         }
-
-        /*
-        public static IEnumerable<Type> GetExportedTypes<T>(this CompositionContainer container)
-        {
-            return container.Catalog
-                            .Parts
-                            .Select(part => ComposablePartExportType<T>(part))
-                            .Where(t => t != null);
-        }
-
-        private static Type ComposablePartExportType<T>(ComposablePartDefinition part)
-        {
-            if (part.ExportDefinitions.Any(def => def.Metadata.ContainsKey("ExportTypeIdentity") &&
-                def.Metadata["ExportTypeIdentity"].Equals(typeof(T).FullName)))
-            {
-                return ReflectionModelServices.GetPartType(part).Value;
-            }
-
-            return null;
-        }
-        */
     }
 }

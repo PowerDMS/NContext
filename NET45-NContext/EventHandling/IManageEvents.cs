@@ -13,11 +13,10 @@
         /// <summary>
         /// Raises the specified event.
         /// </summary>
-        /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <param name="event">The event.</param>
-        /// <exception cref="AggregateException">Thrown if the <see cref="IActivationProvider"/> 
+        /// <exception cref="System.AggregateException">Thrown if the <see cref="IActivationProvider"/> 
         /// cannot create an instance of the handler.</exception>
         /// <returns>Task.</returns>
-        Task Raise<TEvent>(TEvent @event);
+        Task Raise(Object @event);
     }
 }

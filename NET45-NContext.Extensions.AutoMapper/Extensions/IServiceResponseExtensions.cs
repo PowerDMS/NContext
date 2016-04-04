@@ -1,7 +1,6 @@
 ﻿namespace NContext.Extensions.AutoMapper.Extensions
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     using global::AutoMapper;
 
@@ -22,8 +21,6 @@
             this IServiceResponse<TSource> source, 
             Action<IMappingOperationOptions> mappingOperationOptions = null)
         {
-            Contract.Requires(source != null);
-
             if (source.Error != null)
             {
                 return new ErrorResponse<TTarget>(source.Error);
