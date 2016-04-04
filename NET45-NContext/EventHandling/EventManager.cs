@@ -95,11 +95,11 @@
                             eventInformation.Handlers.Count > Environment.ProcessorCount
                                 ? Environment.ProcessorCount
                                 : eventInformation.Handlers.Count)
-                    select Task.Run(() =>
+                    select Task.Run(async () =>
                     {
                         using (partition)
                             while (partition.MoveNext())
-                                InvokeEventHandler(partition.Current, eventInformation.CreateInstanceMethod, @event);
+                                await InvokeEventHandler(partition.Current, eventInformation.CreateInstanceMethod, @event);
                     }));
 
                 return;
