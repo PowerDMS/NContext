@@ -20,3 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("NContext is an application composition framework for .NET.")]
 
 [assembly: InternalsVisibleTo("NContext.Tests.Specs")]
+
+[assembly: AssemblyVersion("0.0.0.0")]
+[assembly: AssemblyFileVersion("0.0.0.0")]
+[assembly: AssemblyInformationalVersion("0.0.0.0")]
