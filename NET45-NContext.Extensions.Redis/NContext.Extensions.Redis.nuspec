@@ -1,25 +1,24 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
-    <id>NContext.Extensions.Ninject</id>
+    <id>NContext.Extensions.Redis</id>
     <version>0.0.0</version>
     <authors>Daniel Gioulakis, PowerDMS Inc.</authors>
     <owners>Daniel Gioulakis, PowerDMS Inc.</owners>
     <copyright>Daniel Gioulakis, PowerDMS Inc.</copyright>
-    <description>NContext application component for Ninject.</description>
+    <description>ObjectCache implementation for Redis.  Exposes StackExchange.Redis objects so you'll need to add that as a reference as well.</description>
     <licenseUrl>http://opensource.org/licenses/MIT</licenseUrl>
     <projectUrl>https://github.com/PowerDMS/NContext</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-	    <group targetFramework="net452">
-        <dependency id="NContext" version="[$version$,)" />
-        <dependency id="Ninject" version="[3.2.2,)" />
-	    </group>
+      <group targetFramework="net452">
+        <dependency id="StackExchange.Redis" version="[1.1.572,)" />
+      </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="NET45-NContext.Extensions.Ninject\bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net452\" />
-    <file src="NET45-NContext.Extensions.Ninject\**\*.cs" target="src" />
+    <file src="bin\$Configuration$\NContext.Extensions.Redis.*" target="lib\net452\" />
+    <file src="**\*.cs" target="src" />
   </files>
 </package>

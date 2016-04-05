@@ -19,7 +19,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="NET45-NContext.Extensions.Logging\bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net452\" />
-    <file src="NET45-NContext.Extensions.Logging\**\*.cs" target="src" />
+    <file src="bin\$Configuration$\NContext.Extensions.Logging.*" target="lib\net452\" />
+    <file src="**\*.cs" target="src" />
   </files>
 </package>

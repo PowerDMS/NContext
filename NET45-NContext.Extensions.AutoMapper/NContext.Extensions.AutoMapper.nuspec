@@ -19,7 +19,7 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="NET45-NContext.Extensions.AutoMapper\bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net452\" />
-    <file src="NET45-NContext.Extensions.AutoMapper\**\*.cs" target="src" />
+    <file src="bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net452\" />
+    <file src="**\*.cs" target="src" />
   </files>
 </package>

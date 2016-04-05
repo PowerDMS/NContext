@@ -98,16 +98,16 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\NET45-NContext.Common\NContext.Common.csproj">
-      <Project>{e467d2f4-d6fe-4ef8-b959-8d6561fda63d}</Project>
-      <Name>NContext.Common %28NET45\NContext.Common%29</Name>
+      <Project>{2EC085CE-BF81-46ED-A2D7-8CD0B9AFDEC2}</Project>
+      <Name>NContext.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NET45-NContext.Extensions.AspNet.WebApi\NContext.Extensions.AspNet.WebApi.csproj">
       <Project>{b59d121b-cefe-41ea-9b29-5922c0b996d2}</Project>
       <Name>NContext.Extensions.AspNet.WebApi</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NET45-NContext\NContext.csproj">
-      <Project>{7fdac597-cc5c-443f-b474-d14b6eb3db48}</Project>
-      <Name>NContext %28NET45\NContext%29</Name>
+      <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
+      <Name>NContext</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

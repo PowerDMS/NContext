@@ -16,17 +16,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AutoMap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging", "NET45-NContext.Extensions.Logging\NContext.Extensions.Logging.csproj", "{151F413D-DFCC-4064-BC5A-AC51E5D343CA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{27AA2BEC-D44F-4526-A1E5-98D5F8490ED0}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NContext.Common.nuspec = .nuget\NContext.Common.nuspec
-		.nuget\NContext.Extensions.AspNet.WebApi.nuspec = .nuget\NContext.Extensions.AspNet.WebApi.nuspec
-		.nuget\NContext.Extensions.AutoMapper.nuspec = .nuget\NContext.Extensions.AutoMapper.nuspec
-		.nuget\NContext.Extensions.Logging.nuspec = .nuget\NContext.Extensions.Logging.nuspec
-		.nuget\NContext.Extensions.Ninject.nuspec = .nuget\NContext.Extensions.Ninject.nuspec
-		.nuget\NContext.Extensions.Redis.nuspec = .nuget\NContext.Extensions.Redis.nuspec
-		.nuget\NContext.nuspec = .nuget\NContext.nuspec
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".build", ".build", "{7737B376-DAD7-4F46-A4EE-F38B21E3D790}"
 	ProjectSection(SolutionItems) = preProject
 		.build\continuousdeployment.build = .build\continuousdeployment.build
@@ -50,6 +39,17 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.Logging.Tests.Specs", ".tests\NContext.Extensions.Logging.Tests.Specs\NContext.Extensions.Logging.Tests.Specs.csproj", "{83894E98-204C-454F-BB24-858685F43645}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NContext.Extensions.AspNetWebApi.Tests.Specs", ".tests\NContext.Extensions.AspNetWebApi.Tests.Specs\NContext.Extensions.AspNetWebApi.Tests.Specs.csproj", "{BF252C06-2A2C-42C2-8DCF-681708E6A16B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuspec", ".nuspec", "{440B97E7-B414-44A8-A702-98F27009CD21}"
+	ProjectSection(SolutionItems) = preProject
+		NET45-NContext.Common\NContext.Common.nuspec = NET45-NContext.Common\NContext.Common.nuspec
+		NET45-NContext.Extensions.AspNet.WebApi\NContext.Extensions.AspNet.WebApi.nuspec = NET45-NContext.Extensions.AspNet.WebApi\NContext.Extensions.AspNet.WebApi.nuspec
+		NET45-NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.nuspec = NET45-NContext.Extensions.AutoMapper\NContext.Extensions.AutoMapper.nuspec
+		NET45-NContext.Extensions.Logging\NContext.Extensions.Logging.nuspec = NET45-NContext.Extensions.Logging\NContext.Extensions.Logging.nuspec
+		NET45-NContext.Extensions.Ninject\NContext.Extensions.Ninject.nuspec = NET45-NContext.Extensions.Ninject\NContext.Extensions.Ninject.nuspec
+		NET45-NContext.Extensions.Redis\NContext.Extensions.Redis.nuspec = NET45-NContext.Extensions.Redis\NContext.Extensions.Redis.nuspec
+		NET45-NContext\NContext.nuspec = NET45-NContext\NContext.nuspec
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

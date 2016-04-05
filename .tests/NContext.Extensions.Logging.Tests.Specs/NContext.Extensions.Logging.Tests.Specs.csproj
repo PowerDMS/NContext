@@ -72,8 +72,8 @@
       <Name>NContext.Extensions.Logging</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\NET45-NContext\NContext.csproj">
-      <Project>{7fdac597-cc5c-443f-b474-d14b6eb3db48}</Project>
-      <Name>NContext %28NET45\NContext%29</Name>
+      <Project>{B5614B58-83C2-46BE-9463-9E140519298E}</Project>
+      <Name>NContext</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
