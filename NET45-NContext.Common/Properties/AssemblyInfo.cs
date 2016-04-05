@@ -13,10 +13,5 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0 Alpha")]
-
 [assembly: AssemblyTitle("NContext.Common")]
 [assembly: AssemblyDescription("Common dependency for NContext libraries.")]
-
-[assembly: AssemblyFileVersion("2.0.0.0")]

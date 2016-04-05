@@ -15,13 +15,8 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("Release")]
 #endif
 
-[assembly: AssemblyVersion("2.0.0")]
-[assembly: AssemblyInformationalVersion("2.0.0 Alpha")]
-
 [assembly: Guid("763725d3-7444-4baf-84ff-d15242d71929")]
 [assembly: AssemblyTitle("NContext")]
-[assembly: AssemblyDescription("NContext is an application composition framework for .NET 4.0.")]
+[assembly: AssemblyDescription("NContext is an application composition framework for .NET.")]
 
 [assembly: InternalsVisibleTo("NContext.Tests.Specs")]
-
-[assembly: AssemblyFileVersion("2.0.0.0")]
