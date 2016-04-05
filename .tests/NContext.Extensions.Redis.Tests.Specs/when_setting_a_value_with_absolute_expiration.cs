@@ -6,7 +6,7 @@ namespace NContext.Extensions.Redis.Tests.Specs
 
     using Machine.Specifications;
 
-    [Tags("functional")]
+    [Tags("integration")]
     public class when_setting_a_value_with_absolute_expiration : when_using_RedisCache
     {
         Because of = () =>

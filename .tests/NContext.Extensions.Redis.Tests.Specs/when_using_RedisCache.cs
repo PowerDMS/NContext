@@ -9,6 +9,7 @@
     
     [Ignore("Need to stand up redis instance.")]
     [Subject(typeof(RedisCache))]
+    [Tags("integration")]
     public class when_using_RedisCache
     {
         Establish context = () =>

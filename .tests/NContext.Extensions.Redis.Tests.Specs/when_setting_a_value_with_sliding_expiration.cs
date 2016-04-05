@@ -1,13 +1,12 @@
 namespace NContext.Extensions.Redis.Tests.Specs
 {
     using System;
-    using System.Reactive.Linq;
     using System.Runtime.Caching;
     using System.Threading;
 
     using Machine.Specifications;
-
-    [Tags("functional")]
+    
+    [Tags("integration")]
     public class when_setting_a_value_with_sliding_expiration : when_using_RedisCache
     {
         Because of = () =>

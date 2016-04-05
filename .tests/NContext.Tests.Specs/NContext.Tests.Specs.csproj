@@ -89,7 +89,6 @@
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_async_stream_and_AesCryptoServiceProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_byte_array_and_AesCryptoServiceProvider.cs" />
     <Compile Include="Security\Cryptography\SymmetricEncryption\with_stream_and_AesCryptoServiceProvider.cs" />
-    <Compile Include="SpecAssertionExtensions.cs" />
     <Compile Include="Text\DummyBlogAuthor.cs" />
     <Compile Include="Text\DummyBlogLink.cs" />
     <Compile Include="Text\DummyBlogPost.cs" />

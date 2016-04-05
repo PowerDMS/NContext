@@ -4,7 +4,7 @@ namespace NContext.Extensions.Redis.Tests.Specs
 
     using Machine.Specifications;
 
-    [Tags("functional")]
+    [Tags("integration")]
     public class when_calling_AddOrGetExisting_and_the_key_doesnt_exist : when_using_RedisCache
     {
         Because of = () => _Value = Cache.AddOrGetExisting(CacheKey, 10, null);
