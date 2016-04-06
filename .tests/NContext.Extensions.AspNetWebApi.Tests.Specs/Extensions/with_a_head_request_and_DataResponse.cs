@@ -3,10 +3,11 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Extensions
     using System;
     using System.Net.Http;
 
+    using AspNet.WebApi.Extensions;
+
     using Machine.Specifications;
 
     using NContext.Common;
-    using NContext.Extensions.AspNetWebApi.Extensions;
 
     public class with_a_head_request_and_DataResponse : when_converting_a_service_response_to_HttpResponseMessage
     {

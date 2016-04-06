@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Filters
+﻿namespace NContext.Extensions.AspNet.WebApi.Filters
 {
     using System;
     using System.Collections.Generic;
@@ -8,11 +8,13 @@
     using System.Web.Http.Controllers;
     using System.Web.Http.Filters;
 
+    using Common;
+
+    using Exceptions;
+
     using Microsoft.FSharp.Core;
 
-    using NContext.Common;
-    using NContext.Exceptions;
-    using NContext.Text;
+    using Text;
 
     /// <summary>
     /// Defines an action filter that allows for auto-sanitization of HTTP parameter bindings.

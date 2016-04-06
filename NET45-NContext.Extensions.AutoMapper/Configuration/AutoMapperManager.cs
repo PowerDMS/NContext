@@ -1,60 +1,28 @@
 namespace NContext.Extensions.AutoMapper.Configuration
 {
     using System;
-    using System.ComponentModel.Composition;
     using System.Linq;
-
-    using NContext.Configuration;
+    using System.ComponentModel.Composition;
 
     using global::AutoMapper;
 
-    /// <summary>
-    /// Defines an AutoMapper application component.
-    /// </summary>
-    /// <remarks></remarks>
+    using NContext.Configuration;
+
     public class AutoMapperManager : IManageAutoMapper
     {
-        private readonly Lazy<IConfiguration> _ConfigurationStore =
-            new Lazy<IConfiguration>(() => Mapper.Configuration);
-
-        private readonly Lazy<IMappingEngine> _MappingEngine =
-            new Lazy<IMappingEngine>(() => Mapper.Engine);
+        private IMapperConfiguration _Configuration;
 
         private Boolean _IsConfigured;
-
-        /// <summary>
-        /// Gets the configuration provider.
-        /// </summary>
-        /// <remarks></remarks>
-        public IConfigurationProvider ConfigurationProvider
-        {
-            get
-            {
-                return (IConfigurationProvider)_ConfigurationStore.Value;
-            }
-        }
 
         /// <summary>
         /// Gets the AutoMapper configuration.
         /// </summary>
         /// <remarks></remarks>
-        public IConfiguration Configuration
+        public virtual IConfiguration Configuration
         {
             get
             {
-                return _ConfigurationStore.Value;
-            }
-        }
-
-        /// <summary>
-        /// Gets the AutoMapper mapping engine.
-        /// </summary>
-        /// <remarks></remarks>
-        public IMappingEngine MappingEngine
-        {
-            get
-            {
-                return _MappingEngine.Value;
+                return _Configuration;
             }
         }
 
@@ -90,8 +58,13 @@ namespace NContext.Extensions.AutoMapper.Configuration
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageAutoMapper>(this);
 
             var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExportedValues<IConfigureAutoMapper>();
-            mappingConfigurations.OrderBy(mappingConfiguration => mappingConfiguration.Priority)
-                                 .ForEach(mappingConfiguration => mappingConfiguration.Configure(Configuration));
+            
+            _Configuration = new MapperConfiguration(c =>
+            {
+                mappingConfigurations
+                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
+                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(c));
+            });
 
             _IsConfigured = true;
         }

@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Configuration
+﻿namespace NContext.Extensions.AspNet.WebApi.Configuration
 {
     using System.ComponentModel.Composition;
     using System.Web.Http;

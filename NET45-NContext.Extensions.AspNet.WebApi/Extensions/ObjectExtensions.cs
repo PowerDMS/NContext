@@ -1,8 +1,10 @@
-﻿namespace System
+﻿namespace NContext.Extensions.AspNet.WebApi.Extensions
 {
-    using ArrayExtensions;
+    using System;
     using System.Collections.Generic;
     using System.Reflection;
+
+    using ArrayExtensions;
 
     public static class ObjectExtensions
     {
@@ -74,7 +76,7 @@
         }
     }
 
-    public class ReferenceEqualityComparer : EqualityComparer<Object>
+    public class ReferenceEqualityComparer : EqualityComparer<object>
     {
         public override bool Equals(object x, object y)
         {

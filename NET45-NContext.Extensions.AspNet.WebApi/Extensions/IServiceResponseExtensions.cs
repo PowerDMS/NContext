@@ -1,10 +1,10 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Extensions
+﻿namespace NContext.Extensions.AspNet.WebApi.Extensions
 {
     using System;
     using System.Net;
     using System.Net.Http;
 
-    using NContext.Common;
+    using Common;
 
     /// <summary>
     /// Defines extension methods for <see cref="IServiceResponse{T}"/>.

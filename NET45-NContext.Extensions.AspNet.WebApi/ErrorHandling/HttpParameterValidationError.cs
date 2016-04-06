@@ -1,8 +1,9 @@
-﻿namespace NContext.Extensions.AspNetWebApi.ErrorHandling
+﻿namespace NContext.Extensions.AspNet.WebApi.ErrorHandling
 {
     using System;
     using System.Net;
     using System.Reflection;
+
     using NContext.ErrorHandling;
 
     /// <summary>

@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Configuration
+﻿namespace NContext.Extensions.AspNet.WebApi.Configuration
 {
     using System;
     using System.Collections.Generic;
@@ -8,7 +8,8 @@
     using System.Web.Http.Routing;
 
     using NContext.Configuration;
-    using NContext.Extensions.AspNetWebApi.Routing;
+
+    using Routing;
 
     /// <summary>
     /// Defines an application component manager for configuring ASP.NET Web API.

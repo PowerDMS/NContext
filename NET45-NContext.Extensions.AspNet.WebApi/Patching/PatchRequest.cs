@@ -1,8 +1,10 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Patching
+﻿namespace NContext.Extensions.AspNet.WebApi.Patching
 {
     using System;
 
-    using NContext.Common;
+    using Common;
+
+    using Extensions;
 
     using Newtonsoft.Json;
 

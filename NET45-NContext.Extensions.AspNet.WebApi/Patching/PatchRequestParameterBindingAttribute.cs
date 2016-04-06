@@ -1,4 +1,4 @@
-namespace NContext.Extensions.AspNetWebApi.Patching
+namespace NContext.Extensions.AspNet.WebApi.Patching
 {
     using System.Web.Http;
     using System.Web.Http.Controllers;

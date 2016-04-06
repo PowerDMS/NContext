@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Routing
+﻿namespace NContext.Extensions.AspNet.WebApi.Routing
 {
     using System;
 

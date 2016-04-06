@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Filters
+﻿namespace NContext.Extensions.AspNet.WebApi.Filters
 {
     using System;
     using System.Collections.Generic;
@@ -12,6 +12,7 @@
     using System.Web.Http.ModelBinding;
 
     using ErrorHandling;
+
     using Extensions;
 
     /// <summary>

@@ -4,10 +4,11 @@
     using System.Linq;
     using System.Net.Http;
 
+    using AspNet.WebApi.Extensions;
+
     using Machine.Specifications;
 
     using NContext.Common;
-    using NContext.Extensions.AspNetWebApi.Extensions;
 
     public class with_a_head_request_and_ErrorResponse : when_converting_a_service_response_to_HttpResponseMessage
     {

@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Handlers
+﻿namespace NContext.Extensions.AspNet.WebApi.Handlers
 {
     using System;
     using System.Linq;

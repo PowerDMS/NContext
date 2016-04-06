@@ -1,7 +1,9 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Routing
+﻿namespace NContext.Extensions.AspNet.WebApi.Routing
 {
     using System;
     using System.ComponentModel.Composition;
+
+    using Configuration;
 
     /// <summary>
     /// Defines an HTTP routing configuration extensibility point for ASP.NET Web API. Allows 

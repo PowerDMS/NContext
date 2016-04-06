@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Patching
+﻿namespace NContext.Extensions.AspNet.WebApi.Patching
 {
     using System;
 
@@ -11,6 +11,6 @@
         /// Gets the on patched handler.
         /// </summary>
         /// <value>The on patched handler.</value>
-        protected internal Action<Object> OnPatchedHandler { get; set; }
+        protected internal Action<object> OnPatchedHandler { get; set; }
     }
 }

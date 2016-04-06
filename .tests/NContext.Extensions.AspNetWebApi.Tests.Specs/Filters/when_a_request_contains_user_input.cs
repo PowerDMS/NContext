@@ -8,6 +8,8 @@
     using System.Web.Http.Hosting;
     using System.Web.Http.Routing;
 
+    using AspNet.WebApi.Filters;
+
     using FakeItEasy;
 
     using Ploeh.AutoFixture;
@@ -15,7 +17,6 @@
     using Machine.Specifications;
 
     using NContext.Text;
-    using NContext.Extensions.AspNetWebApi.Filters;
 
     [Ignore("Removing JustMock")]
     public class when_a_request_contains_user_input

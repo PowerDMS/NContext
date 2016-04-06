@@ -3,10 +3,11 @@
     using System;
     using System.Collections.Generic;
 
+    using AspNet.WebApi.Patching;
+
     using Machine.Specifications;
 
     using NContext.Common;
-    using NContext.Extensions.AspNetWebApi.Patching;
 
     using Newtonsoft.Json;
 

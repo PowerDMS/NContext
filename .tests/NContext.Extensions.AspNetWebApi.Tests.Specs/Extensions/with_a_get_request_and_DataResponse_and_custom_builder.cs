@@ -4,10 +4,11 @@ namespace NContext.Extensions.AspNetWebApi.Tests.Specs.Extensions
     using System.Net;
     using System.Net.Http;
 
+    using AspNet.WebApi.Extensions;
+
     using Machine.Specifications;
 
     using NContext.Common;
-    using NContext.Extensions.AspNetWebApi.Extensions;
 
     public class with_a_get_request_and_DataResponse_and_custom_builder : when_converting_a_service_response_to_HttpResponseMessage
     {

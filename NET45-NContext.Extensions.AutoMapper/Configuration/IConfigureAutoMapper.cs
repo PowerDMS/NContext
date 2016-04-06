@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="mapperConfiguration">The mapper configuration.</param>
         /// <remarks></remarks>
-        void Configure(IConfiguration mapperConfiguration);
+        void Configure(IMapperConfiguration mapperConfiguration);
 
         /// <summary>
         /// Gets the priority used to configure the <see cref="IConfiguration"/>. Lower 

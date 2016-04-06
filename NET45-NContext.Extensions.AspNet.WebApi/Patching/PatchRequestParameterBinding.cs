@@ -1,4 +1,4 @@
-﻿namespace NContext.Extensions.AspNetWebApi.Patching
+﻿namespace NContext.Extensions.AspNet.WebApi.Patching
 {
     using System;
     using System.Collections.Concurrent;
@@ -12,8 +12,9 @@
     using System.Web.Http.Metadata;
     using System.Web.Http.Validation;
 
-    using NContext.Common;
-    using NContext.Extensions.AspNetWebApi.Filters;
+    using Common;
+
+    using Filters;
 
     /// <summary>
     /// Parameter binding that will read from the body to create a new <see cref="PatchRequest{T}"/>
