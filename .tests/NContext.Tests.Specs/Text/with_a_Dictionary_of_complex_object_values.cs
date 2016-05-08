@@ -28,7 +28,8 @@
 
         Because of = () => Sanitize(_Data);
 
-        It should_sanitize_all_strings_in_the_dictionary_complex_object_values = () => _Data[0].FirstName.ShouldEqual(_Data[0].LastName).ShouldEqual(_SanitizedValue);
+        It should_sanitize_all_strings_in_the_dictionary_complex_object_values = 
+            () => _Data[0].FirstName.ShouldEqual(_Data[0].LastName).ShouldEqual(_SanitizedValue);
 
         static IDictionary<Int32, DummyBlogAuthor> _Data;
 

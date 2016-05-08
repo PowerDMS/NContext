@@ -30,7 +30,8 @@
 
         Because of = () => Sanitize(_Data);
 
-        It should_sanitize_only_dictionary_string_values = () => _Data.Select(item => item.Value).ShouldContainOnly(Guid.Empty, _SanitizedValue, _SanitizedValue, null);
+        It should_sanitize_only_dictionary_string_values = 
+            () => _Data.Select(item => item.Value).ShouldContainOnly(Guid.Empty, _SanitizedValue, _SanitizedValue, null);
 
         static IDictionary<String, Object> _Data;
 

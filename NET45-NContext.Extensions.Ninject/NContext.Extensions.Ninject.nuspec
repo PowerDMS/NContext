@@ -12,14 +12,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-	    <group targetFramework="net452">
+	    <group targetFramework="net451">
         <dependency id="NContext" version="[$version$,)" />
         <dependency id="Ninject" version="[3.2.2,)" />
 	    </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net452\" />
+    <file src="bin\$Configuration$\NContext.Extensions.Ninject.*" target="lib\net451\" />
     <file src="**\*.cs" target="src" />
   </files>
 </package>

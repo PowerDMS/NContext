@@ -55,7 +55,8 @@
             {
                 Node currentItem = stack.Pop();
 
-                if (currentItem.Value == null) continue;
+                if (currentItem.Value == null)
+                    continue;
 
                 Boolean firstOccurrence;
                 idGenerator.GetId(currentItem.Value, out firstOccurrence);
@@ -69,36 +70,12 @@
                     continue; // Should never get here because of WHERE filter below.
                 }
 
-                var currentItemType = currentItem.PropertyInfo == null ? currentItem.Value.GetType() : currentItem.PropertyInfo.PropertyType;
+                var currentItemType = currentItem.PropertyInfo == null 
+                    ? currentItem.Value.GetType() 
+                    : currentItem.PropertyInfo.PropertyType;
+
                 if (!IsTerminalObject(currentItemType))
                 {
-                    if (!(currentItemType.IsGenericType) && currentItemType.GetInterfaces().All(i => !i.IsGenericType))
-                    {
-                        Boolean propertyValueHasId;
-
-                        /* Get all properties that are either:
-                         * a) strings that aren't null or whitespace
-                         * b) non-terminal objects that we haven't already visited in the graph.
-                         * */
-                        (from property in currentItemType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                         let propertyValue = property.GetValue(currentItem.Value, null)
-                         let allowHtml = property.GetCustomAttributes(typeof(SanitizationHtmlAttribute),true).SingleOrDefault().ToMaybe().Bind(_ => true.ToMaybe()).FromMaybe(false)
-                         where (property.PropertyType == typeof(String) && 
-                                !String.IsNullOrWhiteSpace(propertyValue as String) &&
-                                property.GetCustomAttributes(typeof(SanitizationIgnoreAttribute), true)
-                                    .SingleOrDefault()
-                                    .ToMaybe()
-                                    .Bind(_ => false.ToMaybe())
-                                    .FromMaybe(true)) ||
-                               (propertyValue != null && 
-                                !IsTerminalObject(propertyValue.GetType()) && 
-                                idGenerator.HasId(propertyValue, out propertyValueHasId) == 0)
-                         select new Node(currentItem.Value, propertyValue, property, allowHtml))
-                         .ForEach(stack.Push);
-
-                        continue;
-                    }
-
                     if (IsDictionary(currentItemType))
                     {
                         var genericDictionaryInterface =
@@ -141,6 +118,15 @@
                         throw new NotSupportedException("ObjectGraphSanitizer does not support non-generic enumerables.");
                     }
 
+                    (from property in currentItemType.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                        let propertyValue = property.GetValue(currentItem.Value, null)
+                        let allowHtml = property
+                            .GetCustomAttributes(typeof(SanitizationHtmlAttribute), true)
+                            .SingleOrDefault().ToMaybe().Bind(_ => true.ToMaybe()).FromMaybe(false)
+                        where PropertyIsSanitizable(property, propertyValue, idGenerator)
+                        select new Node(currentItem.Value, propertyValue, property, allowHtml))
+                        .ForEach(stack.Push);
+
                     continue;
                 }
 
@@ -154,6 +140,28 @@
             }
 
             SanitizeNodes(sanitizableNodes);
+        }
+
+        private bool PropertyIsSanitizable(PropertyInfo property, object propertyValue, ObjectIDGenerator idGenerator)
+        {
+            /* Get all properties that are either:
+             * a) strings that aren't null or whitespace
+             * b) uris that aren't null
+             * c) non-terminal objects that we haven't already visited in the graph.
+             * d) properties without the SanitizationIgnoreAttribute
+             * */
+
+            bool propertyValueHasId;
+            return property.GetCustomAttributes(typeof(SanitizationIgnoreAttribute), true)
+                .SingleOrDefault()
+                .ToMaybe()
+                .Bind(_ => false.ToMaybe())
+                .FromMaybe(true) &&
+                   ((property.PropertyType == typeof(String) && !String.IsNullOrWhiteSpace(propertyValue as String)) ||
+                    (property.PropertyType == typeof(Uri) && propertyValue != null) ||
+                    (propertyValue != null && 
+                    !IsTerminalObject(propertyValue.GetType()) &&
+                     idGenerator.HasId(propertyValue, out propertyValueHasId) == 0));
         }
 
         private void ProcessGenericEnumerable(
@@ -274,11 +282,22 @@
 
                     if (IsTerminalObject(nodeValueType) && node.Parent != null && node.PropertyInfo != null)
                     {
+                        bool isUri = node.PropertyInfo.PropertyType == typeof(Uri);
+                        var value = isUri
+                            ? node.Value.ToString()
+                            : (String)node.Value;
+
+                        var sanitizedValue = node.AllowHtml
+                            ? _TextSanitizer.SanitizeHtml(value)
+                            : _TextSanitizer.SanitizeHtmlFragment(value);
+
+                        var newValue = isUri
+                            ? new Uri(sanitizedValue)
+                            : (Object)sanitizedValue;
+
                         node.PropertyInfo.SetValue(
                             node.Parent,
-                            node.AllowHtml
-                                ? _TextSanitizer.SanitizeHtml((String) node.Value)
-                                : _TextSanitizer.SanitizeHtmlFragment((String) node.Value),
+                            newValue,
                             null);
 
                         return;
@@ -286,36 +305,37 @@
 
                     if (IsDictionary(nodeValueType))
                     {
-                        var dictionary = ((IDictionary)node.Value);
-                        var keyList = new List<Object>();
-
-                        var enumerator = dictionary.GetEnumerator();
-                        while (enumerator.MoveNext())
+                        var dictionary = (IDictionary)node.Value;
+                        var keyEnumerator = dictionary.Keys.Cast<object>().ToList().GetEnumerator();
+                        while (keyEnumerator.MoveNext())
                         {
-                            var entry = (DictionaryEntry)enumerator.Current;
-                            if (entry.Value == null)
-                            {
+                            var entry = keyEnumerator.Current;
+                            var value = dictionary[entry];
+                            if (value == null || !(!String.IsNullOrWhiteSpace(value as string) || value is Uri))
                                 continue;
-                            }
 
-                            if (entry.Value is String && !String.IsNullOrWhiteSpace(entry.Value as String))
+                            var isUri = false;
+                            if (value is Uri)
                             {
-                                keyList.Add(entry.Key);
+                                isUri = true;
+                                value = value.ToString();
                             }
-                        }
 
-                        // You cannot modify a collection while iterating through it so 
-                        // we must loop through all keys we found with string values.
-                        foreach (var key in keyList)
-                        {
-                            dictionary[key] = node.AllowHtml
-                                ? _TextSanitizer.SanitizeHtml((String) dictionary[key])
-                                : _TextSanitizer.SanitizeHtmlFragment((String)dictionary[key]);
+                            var sanitizedValue = node.AllowHtml
+                                ? _TextSanitizer.SanitizeHtml((String)value)
+                                : _TextSanitizer.SanitizeHtmlFragment((String)value);
+
+                            object dictValue = isUri
+                                ? (object)new Uri(sanitizedValue)
+                                : (object)sanitizedValue;
+
+                            dictionary[entry] = dictValue;
                         }
 
                         return;
                     }
 
+                    // IList<string>
                     if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<String> != null)
                     {
                         var enumerable = (IList<String>)node.Value;
@@ -332,6 +352,7 @@
                         return;
                     }
 
+                    // IList<object>
                     if (node.Parent == null && node.PropertyInfo == null && node.Value as IList<Object> != null)
                     {
                         var enumerable = (IList<Object>)node.Value;
@@ -342,6 +363,13 @@
                                 enumerable[j] = node.AllowHtml
                                 ? _TextSanitizer.SanitizeHtml((String)enumerable[j])
                                 : _TextSanitizer.SanitizeHtmlFragment((String)enumerable[j]);
+                            }
+                            else if (enumerable[j] is Uri && enumerable[j] != null)
+                            {
+                                var uriValue = enumerable[j].ToString();
+                                enumerable[j] = node.AllowHtml
+                                ? new Uri(_TextSanitizer.SanitizeHtml(uriValue))
+                                : new Uri(_TextSanitizer.SanitizeHtmlFragment(uriValue));
                             }
                         }
 
@@ -403,6 +431,7 @@
                    type.IsPointer ||
                    type == typeof(String) ||
                    type == typeof(DateTime) ||
+                   type == typeof(Uri) ||
                    type == typeof(Decimal) ||
                    type == typeof(Guid) ||
                    type == typeof(DateTimeOffset) ||

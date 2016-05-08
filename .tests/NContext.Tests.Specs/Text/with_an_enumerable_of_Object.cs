@@ -18,7 +18,15 @@
             TextSanitizer = A.Fake<ISanitizeText>();
 
             A.CallTo(() => TextSanitizer.SanitizeHtmlFragment(A<string>._))
-                .Returns(_SanitizedValue);
+                    .ReturnsLazily(fake =>
+                    {
+                        Uri uriValue = null;
+                        try { uriValue = new Uri((string)fake.Arguments[0]); } catch { }
+
+                        return uriValue != null
+                            ? _SanitizedUriValue
+                            : _SanitizedValue;
+                    });
 
             _Link = new DummyBlogLink { Text = "<script>alert('xss');</script>" };
                 _NestedDictionary = new Dictionary<String, Object> { { "SomeKey", "<script>alert('xss');</script>" } };
@@ -32,7 +40,8 @@
                         "",
                         _Link,
                         _NestedDictionary,
-                        _NestedEnumerable
+                        _NestedEnumerable,
+                        new Uri("javascript:alert('xss')")
                     };
             };
 
@@ -40,7 +49,7 @@
 
         It should_sanitize_the_strings = () =>
         {
-            _Data.ShouldContainOnly(5, _SanitizedValue, null, _SanitizedValue, "", _Link, _NestedDictionary, _NestedEnumerable);
+            _Data.ShouldContainOnly(5, _SanitizedValue, null, _SanitizedValue, "", _Link, _NestedDictionary, _NestedEnumerable, new Uri(_SanitizedUriValue));
             ((DummyBlogLink) _Data.ElementAt(5)).Text.ShouldEqual(_SanitizedValue);
             ((IDictionary<String, Object>) _Data.ElementAt(6))["SomeKey"].ShouldEqual(_SanitizedValue);
             ((IEnumerable<Object>) _Data.ElementAt(7)).ShouldContainOnly(_SanitizedValue);
@@ -55,5 +64,7 @@
         static IEnumerable<Object> _NestedEnumerable;
 
         const String _SanitizedValue = "ncontext";
+
+        const String _SanitizedUriValue = "http://ncontext.fake/";
     }
 }

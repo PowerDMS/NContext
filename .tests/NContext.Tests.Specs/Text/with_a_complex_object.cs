@@ -19,7 +19,15 @@
                 TextSanitizer = A.Fake<ISanitizeText>();
 
                 A.CallTo(() => TextSanitizer.SanitizeHtmlFragment(A<string>._))
-                    .Returns(_SanitizedValue);
+                    .ReturnsLazily(fake =>
+                    {
+                        Uri uriValue = null;
+                        try { uriValue = new Uri((string)fake.Arguments[0]); } catch { }
+
+                        return uriValue != null 
+                            ? _SanitizedUriValue
+                            : _SanitizedValue;
+                    });
 
                 var fixture = new Fixture();
                 fixture.Behaviors.Remove(fixture.Behaviors.Single(b => b is ThrowingRecursionBehavior));
@@ -43,10 +51,14 @@
             data.Author.LastName.ShouldEqual(_SanitizedValue); // Complex navigation property (object) -> property check
             data.Author.Websites.ShouldContainOnly(_SanitizedValue, _SanitizedValue, _SanitizedValue); // Concrete enumerable declaration check
             data.Author.BlogPosts.First().Comments.Values.ShouldContainOnly(_SanitizedValue, _SanitizedValue, _SanitizedValue); // Circular reference check
+            data.ComplexReadOnlyCollection.Select(t => t.Name).ShouldEachConformTo(n => n.Equals(_SanitizedValue));
+            data.ComplexReadOnlyCollection.Select(t => t.Uri).ShouldEachConformTo(n => n.ToString().Equals(_SanitizedUriValue));
         };
 
         static IEnumerable<DummyBlogPost> _Data;
 
         const String _SanitizedValue = "ncontext";
+
+        const String _SanitizedUriValue = "http://ncontext.fake/";
     }
 }

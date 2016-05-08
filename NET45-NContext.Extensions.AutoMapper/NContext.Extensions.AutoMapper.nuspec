@@ -12,14 +12,14 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <tags>NContext</tags>
     <dependencies>
-	    <group targetFramework="net452">
+	    <group targetFramework="net451">
         <dependency id="NContext.Common" version="[$version$,)" />
         <dependency id="AutoMapper" version="[4.2.1,)" />
 	    </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net452\" />
+    <file src="bin\$Configuration$\NContext.Extensions.AutoMapper.*" target="lib\net451\" />
     <file src="**\*.cs" target="src" />
   </files>
 </package>

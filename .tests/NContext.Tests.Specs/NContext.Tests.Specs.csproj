@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NContext.Tests.Specs</RootNamespace>
     <AssemblyName>NContext.Tests.Specs</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
     <TargetFrameworkProfile />
@@ -93,12 +93,15 @@
     <Compile Include="Text\DummyBlogLink.cs" />
     <Compile Include="Text\DummyBlogPost.cs" />
     <Compile Include="Text\DummyEnumerable.cs" />
+    <Compile Include="Text\DummyGeneric.cs" />
     <Compile Include="Text\DummySite.cs" />
+    <Compile Include="Text\TagDto.cs" />
     <Compile Include="Text\when_sanitizing_objects_with_ObjectGraphSanitizer.cs" />
     <Compile Include="Text\with_an_array_of_Object.cs" />
     <Compile Include="Text\with_an_array_of_String.cs" />
     <Compile Include="Text\with_an_enumerable_of_Object.cs" />
     <Compile Include="Text\with_an_enumerable_of_String.cs" />
+    <Compile Include="Text\with_a_generic_complex_object.cs" />
     <Compile Include="Text\with_configuration_attributes.cs" />
     <Compile Include="Text\with_a_complex_object.cs" />
     <Compile Include="Text\with_a_derived_Dictionary_of_Object_values.cs" />
@@ -121,7 +124,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
