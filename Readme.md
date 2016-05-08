@@ -1,5 +1,7 @@
 NContext
 ========
+[![Build status](https://ci.appveyor.com/api/projects/status/8ov1tf29ju5mp93b/branch/master?svg=true)](https://ci.appveyor.com/project/powerdms/ncontext/branch/master) [![NuGet Pre Release](https://img.shields.io/nuget/vpre/NContext.svg)](https://www.nuget.org/packages?q=ncontext)
+
 NContext is an application composition framework for >= .NET 4.5.2.
 
 This project is an on-going architectural research effort. It borrows many
