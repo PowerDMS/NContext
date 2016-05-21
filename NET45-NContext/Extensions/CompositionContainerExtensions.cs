@@ -1,8 +1,10 @@
 ﻿namespace NContext.Extensions
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.ComponentModel.Composition.Hosting;
+    using System.ComponentModel.Composition.ReflectionModel;
     using System.Linq;
 
     /// <summary>
@@ -10,9 +12,8 @@
     /// </summary>
     public static class CompositionContainerExtensions
     {
-        private static readonly Object _SyncLock = new Object();
-
-        private static volatile IEnumerable<Type> _ExportedTypes;
+        private static readonly ConcurrentDictionary<CompositionContainer, IEnumerable<Type>> _ExportedTypes = 
+            new ConcurrentDictionary<CompositionContainer, IEnumerable<Type>>();
 
         /// <summary>
         /// Gets all types within the <see cref="CompositionContainer"/>'s <see cref="CompositionContainer.Catalog"/>.
@@ -22,22 +23,11 @@
         /// <remarks></remarks>
         public static IEnumerable<Type> GetExportTypes(this CompositionContainer container)
         {
-            if (_ExportedTypes == null)
-            {
-                lock (_SyncLock)
-                {
-                    if (_ExportedTypes == null)
-                    {
-                        _ExportedTypes = container.Catalog.Parts
-                            .Select(part => part.GetType().GetMethod("GetLazyPartType").Invoke(part, null))
-                            .OfType<Lazy<Type>>()
-                            .Select(lazyPart => lazyPart.Value)
-                            .ToList();
-                    }
-                }
-            }
-
-            return _ExportedTypes;
+            return _ExportedTypes.GetOrAdd(
+                container,
+                c => c.Catalog.Parts
+                    .Select(part => ReflectionModelServices.GetPartType(part).Value)
+                    .ToList());
         }
 
         /// <summary>
@@ -54,10 +44,17 @@
                 .Where(typePart => typePart.IsAssignableToType(typeof(TExport))).ToList();
         }
 
+        /// <summary>
+        /// Gets all types within the <see cref="CompositionContainer" />'s <see cref="CompositionContainer.Catalog" />
+        /// which implement the specified <paramref name="type" />.
+        /// </summary>
+        /// <param name="container">The container.</param>
+        /// <param name="type">The type.</param>
+        /// <returns>Enumeration of derived / implementing <see cref="Type" />s.</returns>
         public static IEnumerable<Type> GetExportTypesThatImplement(this CompositionContainer container, Type type)
         {
             return container.GetExportTypes()
-                .Where(typePart => typePart.IsAssignableToType(type));
+                .Where(typePart => typePart.IsAssignableToType(type)).ToList();
         } 
 
         private static Boolean IsAssignableToType(this Type type, Type assignableType)

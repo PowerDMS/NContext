@@ -10,7 +10,10 @@ namespace NContext.Extensions.AutoMapper.Configuration
 
     public class AutoMapperManager : IManageAutoMapper
     {
-        private IMapperConfiguration _Configuration;
+        //        private IConfiguration _Configuration; // Uncomment with AM >= v4
+
+        private static readonly Lazy<IConfiguration> _ConfigurationStore =
+                    new Lazy<IConfiguration>(() => Mapper.Configuration); // REMOVE THIS with AM >= v4
 
         private Boolean _IsConfigured;
 
@@ -22,7 +25,7 @@ namespace NContext.Extensions.AutoMapper.Configuration
         {
             get
             {
-                return _Configuration;
+                return _ConfigurationStore.Value;
             }
         }
 
@@ -51,20 +54,23 @@ namespace NContext.Extensions.AutoMapper.Configuration
         public virtual void Configure(ApplicationConfigurationBase applicationConfiguration)
         {
             if (IsConfigured)
-            {
                 return;
-            }
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageAutoMapper>(this);
-
-            var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExportedValues<IConfigureAutoMapper>();
             
-            _Configuration = new MapperConfiguration(c =>
-            {
-                mappingConfigurations
-                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
-                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(c));
-            });
+            var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExportedValues<IConfigureAutoMapper>();
+            Mapper.Initialize(c => mappingConfigurations
+                .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
+                .ForEach(mappingConfiguration => mappingConfiguration.Configure(Configuration)));
+            
+
+            // Uncomment the following for AutoMapper >= version 4.
+            //            _Configuration = new MapperConfiguration(c =>
+            //            {
+            //                mappingConfigurations
+            //                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
+            //                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(c));
+            //            });
 
             _IsConfigured = true;
         }

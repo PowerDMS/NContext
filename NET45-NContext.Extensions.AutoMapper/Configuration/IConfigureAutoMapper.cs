@@ -12,14 +12,14 @@
     public interface IConfigureAutoMapper
     {
         /// <summary>
-        /// Configures the specified AutoMapper <see cref="IConfiguration"/>.
+        /// Configures the specified AutoMapper <see cref="IMapperConfiguration"/>.
         /// </summary>
         /// <param name="mapperConfiguration">The mapper configuration.</param>
         /// <remarks></remarks>
-        void Configure(IMapperConfiguration mapperConfiguration);
+        void Configure(IConfiguration mapperConfiguration);
 
         /// <summary>
-        /// Gets the priority used to configure the <see cref="IConfiguration"/>. Lower 
+        /// Gets the priority used to configure the <see cref="IMapperConfiguration"/>. Lower 
         /// priority will cause implementations to execute first.
         /// </summary>
         Int32 Priority { get; }
