@@ -63,6 +63,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AwaitBindAsync\when_using_AwaitBindAsync.cs" />
+    <Compile Include="AwaitBindAsync\with_data.cs" />
+    <Compile Include="AwaitBindAsync\with_error.cs" />
+    <Compile Include="AwaitBindAsync\with_exception.cs" />
+    <Compile Include="AwaitLetAsync\when_using_AwaitLetAsync.cs" />
+    <Compile Include="AwaitLetAsync\with_data.cs" />
+    <Compile Include="AwaitLetAsync\with_exception.cs" />
+    <Compile Include="BindAsync\when_using_BindAsync.cs" />
+    <Compile Include="BindAsync\with_data.cs" />
+    <Compile Include="BindAsync\with_error.cs" />
+    <Compile Include="when_using_a_future_ServiceResponse.cs" />
     <Compile Include="Fmap\DummyChild.cs" />
     <Compile Include="DummyCollection.cs" />
     <Compile Include="DummyData.cs" />
@@ -74,6 +85,7 @@
     <Compile Include="when_creating_a_ServiceResponse_with_enumerable_data.cs" />
     <Compile Include="Fmap\when_using_fmap.cs" />
     <Compile Include="Fmap\with_data_inheritence.cs" />
+    <Compile Include="when_using_a_ServiceResponse.cs" />
     <Compile Include="with_data_of_type_Dictionary.cs" />
     <Compile Include="with_data_of_type_inherits_from_Collection.cs" />
     <Compile Include="with_data_of_type_value_type.cs" />
@@ -103,6 +115,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bind\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

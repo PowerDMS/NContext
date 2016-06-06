@@ -77,7 +77,9 @@
     <Compile Include="Extensions\IListExtensions.cs" />
     <Compile Include="Extensions\IMaybeIEnumerableExtensions.cs" />
     <Compile Include="Extensions\IServiceResponseAsyncExtensions.cs" />
+    <Compile Include="Extensions\IServiceResponseAwaitExtensions.cs" />
     <Compile Include="Extensions\IServiceResponseEnumerableDataExtensions.cs" />
+    <Compile Include="Extensions\IServiceResponseHelper.cs" />
     <Compile Include="Extensions\IServiceResponseIEnumerableExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="IEither.cs" />

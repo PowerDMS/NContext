@@ -1,6 +1,7 @@
 ﻿namespace NContext.Common
 {
     using System;
+    using System.Linq;
     using System.Threading.Tasks;
 
     /// <summary>
@@ -24,7 +25,7 @@
             if (serviceResponse.Error != null)
             {
                 var tcs = new TaskCompletionSource<IServiceResponse<T2>>();
-                tcs.SetResult(new ErrorResponse<T2>(serviceResponse.Error));
+                tcs.SetResult(serviceResponse.CreateGenericErrorResponse<T, T2>(serviceResponse.Error));
 
                 return tcs.Task;
             }
@@ -70,7 +71,7 @@
             {
                 T result = continueWithFunction.Invoke(serviceResponse.Error);
 
-                tcs.SetResult(IServiceResponseExtensions.CreateGenericDataResponse<T>(serviceResponse, result));
+                tcs.SetResult(serviceResponse.CreateGenericDataResponse<T>(result));
             }
             else
             {
@@ -78,6 +79,36 @@
             }
 
             return tcs.Task;
+        }
+
+        /// <summary>
+        /// Invokes the specified action if <see cref="IServiceResponse{T}.Error" /> is null.
+        /// Returns the current <see cref="IServiceResponse{T}" /> instance unless the task 
+        /// from <paramref name="letFunc"/> <see cref="Task.IsFaulted"/>.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="serviceResponse">The service response.</param>
+        /// <param name="letFunc">The let function.</param>
+        /// <returns>Task&lt;IServiceResponse&lt;T&gt;&gt;.</returns>
+        public static Task<IServiceResponse<T>> LetAsync<T>(
+            this IServiceResponse<T> serviceResponse,
+            Func<T, Task> letFunc)
+        {
+            if (serviceResponse.Error != null)
+            {
+                return Task.FromResult(serviceResponse.CreateGenericErrorResponse(serviceResponse.Error));
+            }
+
+            return letFunc(serviceResponse.Data)
+                .ContinueWith(task =>
+                {
+                    if (task.IsFaulted)
+                    {
+                        return serviceResponse.CreateGenericErrorResponse(task.Exception.ToError());
+                    }
+
+                    return serviceResponse.CreateGenericDataResponse<T>(serviceResponse.Data);
+                });
         }
     }
 }
