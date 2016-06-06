@@ -15,6 +15,6 @@ namespace NContext.Common.Tests.Specs.BindAsync
             BindAsyncFunc = source => Task.Run<IServiceResponse<int>>(() => new ErrorResponse<int>(new Exception().ToError()));
         };
 
-        It should_bind_the_result_data = () => ResultResponse.IsLeft.ShouldBeTrue();
+        It should_return_a_left_response = () => ResultResponse.IsLeft.ShouldBeTrue();
     }
 }

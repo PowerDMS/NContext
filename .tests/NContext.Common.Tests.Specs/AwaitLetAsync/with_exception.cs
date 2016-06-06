@@ -13,6 +13,6 @@ namespace NContext.Common.Tests.Specs.AwaitLetAsync
             LetAsyncFunc = source => Task.Run(() => { throw new Exception("error"); });
         };
 
-        It should_bind_the_result_data = () => ResultResponse.IsLeft.ShouldBeTrue();
+        It should_return_a_left_response = () => ResultResponse.IsLeft.ShouldBeTrue();
     }
 }

@@ -13,6 +13,6 @@ namespace NContext.Common.Tests.Specs.AwaitBindAsync
             BindAsyncFunc = source => Task.Run<IServiceResponse<int>>(() => { throw new Exception(); return (IServiceResponse<int>)null; });
         };
 
-        It should_bind_the_result_data = () => ResultResponse.IsLeft.ShouldBeTrue();
+        It should_return_a_left_response = () => ResultResponse.IsLeft.ShouldBeTrue();
     }
 }
