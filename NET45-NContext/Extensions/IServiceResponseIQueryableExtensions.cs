@@ -29,7 +29,7 @@
                     return new ErrorResponse<T>(
                         new Error(
                             (Int32)HttpStatusCode.InternalServerError,
-                            "IResponseTransferObjectIQueryableExtensions_FirstResponse_NoMatch",
+                            "IServiceResponseIQueryableExtensions_FirstResponse_NoMatch",
                             new[] { "Enumerable is empty." }));
                 }
 
@@ -53,7 +53,7 @@
                     return new ErrorResponse<T>(
                         new Error(
                             (Int32)HttpStatusCode.InternalServerError,
-                            "IResponseTransferObjectIQueryableExtensions_SingleResponse_NoMatch",
+                            "IServiceResponseIQueryableExtensions_SingleResponse_NoMatch",
                             new[] { "Enumerable is empty." }));
                 }
 
@@ -67,7 +67,7 @@
             return new ErrorResponse<T>(
                 new Error(
                     (Int32)HttpStatusCode.InternalServerError,
-                    "IResponseTransferObjectIQueryableExtensions_SingleResponse_MoreThanOneMatch",
+                    "IServiceResponseIQueryableExtensions_SingleResponse_MoreThanOneMatch",
                     new[] { "Enumerable has more than one matched entry." }));
         }
 

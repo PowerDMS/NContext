@@ -5,8 +5,6 @@
 
     using Common;
 
-    using Extensions;
-
     using Machine.Specifications;
 
     public class when_using_AwaitLetAsync<T> : when_using_a_future_ServiceResponse<T>

@@ -34,6 +34,10 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FakeItEasy, Version=2.3.1.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FakeItEasy.2.3.1\lib\net40\FakeItEasy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Machine.Specifications, Version=0.9.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Machine.Specifications.0.9.3\lib\net45\Machine.Specifications.dll</HintPath>
       <Private>True</Private>
@@ -68,6 +72,7 @@
     <Compile Include="AwaitBindAsync\with_error.cs" />
     <Compile Include="AwaitLetAsync\when_using_AwaitLetAsync.cs" />
     <Compile Include="AwaitLetAsync\with_data.cs" />
+    <Compile Include="AwaitLetAsync\with_error.cs" />
     <Compile Include="AwaitLetAsync\with_exception.cs" />
     <Compile Include="BindAsync\when_using_BindAsync.cs" />
     <Compile Include="BindAsync\with_data.cs" />
