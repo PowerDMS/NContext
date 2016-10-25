@@ -111,7 +111,7 @@
             }
 
             var serviceResponse = await serviceResponseFuture;
-            return await serviceResponse.ToHttpResponseMessageAsync(httpRequestMessage);
+            return await serviceResponse.ToHttpResponseMessageAsync(httpRequestMessage, statusCode);
         }
 
         /// <summary>
