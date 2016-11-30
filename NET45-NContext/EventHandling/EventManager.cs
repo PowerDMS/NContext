@@ -8,6 +8,7 @@
     using System.ComponentModel.Composition.Hosting;
     using System.Linq;
     using System.Reflection;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using NContext.Configuration;
@@ -18,7 +19,7 @@
     /// </summary>
     public class EventManager : IManageEvents
     {
-        private readonly ConcurrentDictionary<Type, EventInformation> _EventHandlerCache;
+        private readonly ConcurrentDictionary<Type, Lazy<EventInformation>> _EventHandlerCache;
 
         private readonly IActivationProvider _ActivationProvider;
 
@@ -34,7 +35,7 @@
         /// <param name="activationProvider">The activation provider.</param>
         public EventManager(IActivationProvider activationProvider)
         {
-            _EventHandlerCache = new ConcurrentDictionary<Type, EventInformation>();
+            _EventHandlerCache = new ConcurrentDictionary<Type, Lazy<EventInformation>>();
             _ActivationProvider = activationProvider;
             _ActivationProviderCreateInstance = activationProvider
                 .GetType()
@@ -73,16 +74,16 @@
             var eventType = @event.GetType();
             var eventInformation = _EventHandlerCache.GetOrAdd(
                 eventType,
-                _ =>
+                _ => new Lazy<EventInformation>(() =>
                 {
-                    var eventHandlerInterfaceType = typeof (IHandleEvent<>).MakeGenericType(eventType);
+                    var eventHandlerInterfaceType = typeof(IHandleEvent<>).MakeGenericType(eventType);
                     var eventHandlers = _CompositionContainer.GetExportTypesThatImplement(eventHandlerInterfaceType)
                         .Select(handlerType =>
                         {
                             ParameterInfo[] parameters;
                             var handleMethod = handlerType
                                 .GetMethods(BindingFlags.Public | BindingFlags.Instance)
-                                .Single(m => 
+                                .Single(m =>
                                     m.Name.Equals("HandleAsync", StringComparison.Ordinal) &&
                                     (parameters = m.GetParameters()).Length == 1 &&
                                     parameters[0].ParameterType == eventType);
@@ -90,20 +91,22 @@
                             return new EventHandlerInformation(handlerType, handleMethod);
                         })
                         .ToList();
+
                     var parallelizeEvent = TypeDescriptor.GetAttributes(eventType).Contains(new HandleConcurrently());
                     var createInstanceMethod = _ActivationProviderCreateInstance.MakeGenericMethod(eventType);
 
                     if (eventHandlers.Count == 0)
                         throw new InvalidOperationException(
                             String.Format(
-                                "There is no event handler for event type '{0}'.  You must create a class which implements IHandleEvent<{0}>.", 
+                                "There is no event handler for event type '{0}'.  You must create a class which implements IHandleEvent<{0}>.",
                                 eventType.Name));
 
                     return new EventInformation(
-                        eventHandlers, 
+                        eventHandlers,
                         parallelizeEvent,
                         createInstanceMethod);
-                });
+                }, LazyThreadSafetyMode.ExecutionAndPublication))
+                .Value;
 
             if (eventInformation.Parallelize)
             {

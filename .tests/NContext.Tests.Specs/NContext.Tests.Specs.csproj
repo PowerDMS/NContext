@@ -70,8 +70,11 @@
     <Compile Include="EventHandling\DerivedEvent.cs" />
     <Compile Include="EventHandling\DerivedEventHandler.cs" />
     <Compile Include="EventHandling\DummyEvent.cs" />
+    <Compile Include="EventHandling\Serial\ExceptionThrowingEvent.cs" />
     <Compile Include="EventHandling\Serial\SerialEvent.cs" />
+    <Compile Include="EventHandling\Serial\SerialExceptionHandlers.cs" />
     <Compile Include="EventHandling\Serial\SerialHandlers.cs" />
+    <Compile Include="EventHandling\Serial\with_exception_serial_handlers.cs" />
     <Compile Include="EventHandling\Serial\with_serial_handlers.cs" />
     <Compile Include="EventHandling\when_raising_an_event.cs" />
     <Compile Include="EventHandling\with_a_derived_event_handler.cs" />

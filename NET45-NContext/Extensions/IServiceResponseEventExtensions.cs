@@ -1,6 +1,7 @@
 ﻿namespace NContext.Extensions
 {
     using System;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using NContext.Common;
@@ -37,7 +38,10 @@
             return eventManager.Raise(@event)
                 .ContinueWith(task => task.IsFaulted
                     ? new ErrorResponse<T>(task.Exception.ToError())
-                    : serviceResponse)
+                    : serviceResponse,
+                    CancellationToken.None,
+                    TaskContinuationOptions.ExecuteSynchronously,
+                    TaskScheduler.Default)
                 .Result;
         }
 
@@ -67,7 +71,10 @@
             return eventManager.Raise(eventFactory(serviceResponse.Data))
                 .ContinueWith(task => task.IsFaulted
                     ? new ErrorResponse<T>(task.Exception.ToError())
-                    : serviceResponse)
+                    : serviceResponse,
+                    CancellationToken.None,
+                    TaskContinuationOptions.ExecuteSynchronously,
+                    TaskScheduler.Default)
                 .Result;
         }
 
@@ -128,7 +135,10 @@
             return eventManager.Raise(eventFactory(eventParam))
                 .ContinueWith(task => task.IsFaulted
                     ? new ErrorResponse<T>(task.Exception.ToError())
-                    : serviceResponse);
+                    : serviceResponse,
+                    CancellationToken.None,
+                    TaskContinuationOptions.ExecuteSynchronously,
+                    TaskScheduler.Default);
         }
 
         public static async Task<IServiceResponse<T>> AwaitRaiseAsync<T, TEvent>(
