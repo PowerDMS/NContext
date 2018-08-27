@@ -1,9 +1,9 @@
-﻿namespace NContext.Extensions.AutoMapper.Configuration
+﻿using AutoMapper;
+
+namespace NContext.Extensions.AutoMapper.Configuration
 {
     using System;
     using System.ComponentModel.Composition;
-
-    using global::AutoMapper;
 
     /// <summary>
     /// Defines a role-interface for application composition and configuration of AutoMapper.
@@ -16,7 +16,7 @@
         /// </summary>
         /// <param name="mapperConfiguration">The mapper configuration.</param>
         /// <remarks></remarks>
-        void Configure(IConfiguration mapperConfiguration);
+        void Configure(IMapperConfigurationExpression mapperConfiguration);
 
         /// <summary>
         /// Gets the priority used to configure the <see cref="IMapperConfiguration"/>. Lower 

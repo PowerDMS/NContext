@@ -10,10 +10,9 @@ namespace NContext.Extensions.AutoMapper.Configuration
 
     public class AutoMapperManager : IManageAutoMapper
     {
-        //        private IConfiguration _Configuration; // Uncomment with AM >= v4
+        private IConfigurationProvider _ConfigurationProvder;
 
-        private static readonly Lazy<IConfiguration> _ConfigurationStore =
-                    new Lazy<IConfiguration>(() => Mapper.Configuration); // REMOVE THIS with AM >= v4
+        private IMapper _Mapper;
 
         private Boolean _IsConfigured;
 
@@ -21,11 +20,23 @@ namespace NContext.Extensions.AutoMapper.Configuration
         /// Gets the AutoMapper configuration.
         /// </summary>
         /// <remarks></remarks>
-        public virtual IConfiguration Configuration
+        public virtual IConfigurationProvider ConfigurationProvider
         {
             get
             {
-                return _ConfigurationStore.Value;
+                return _ConfigurationProvder;
+            }
+        }
+
+        /// <summary>
+        /// Gets the IMapper instance.
+        /// </summary>
+        /// <remarks></remarks>
+        public virtual IMapper Mapper
+        {
+            get
+            {
+                return _Mapper;
             }
         }
 
@@ -59,20 +70,16 @@ namespace NContext.Extensions.AutoMapper.Configuration
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageAutoMapper>(this);
             
             var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExportedValues<IConfigureAutoMapper>();
-            Mapper.Initialize(c => mappingConfigurations
-                .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
-                .ForEach(mappingConfiguration => mappingConfiguration.Configure(Configuration)));
-            
+            _ConfigurationProvder = new MapperConfiguration(c =>
+            {
+                mappingConfigurations
+                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
+                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(c));
+               });
 
-            // Uncomment the following for AutoMapper >= version 4.
-            //            _Configuration = new MapperConfiguration(c =>
-            //            {
-            //                mappingConfigurations
-            //                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
-            //                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(c));
-            //            });
+            _Mapper = _ConfigurationProvder.CreateMapper();
 
-            _IsConfigured = true;
+           _IsConfigured = true;
         }
     }
 }
