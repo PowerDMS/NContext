@@ -1,4 +1,6 @@
-﻿namespace NContext.Extensions.AutoMapper.Configuration
+﻿using AutoMapper.Configuration;
+
+namespace NContext.Extensions.AutoMapper.Configuration
 {
     using NContext.Configuration;
 
@@ -13,6 +15,6 @@
         /// Gets the AutoMapper configuration.
         /// </summary>
         /// <remarks></remarks>
-        IConfiguration Configuration { get; }
+        IConfigurationProvider ConfigurationProvider { get; }
     }
 }
