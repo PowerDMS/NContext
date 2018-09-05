@@ -1,10 +1,12 @@
+using System.Collections.Generic;
+using AutoMapper;
+using static AutoMapper.Mapper;
+
 namespace NContext.Extensions.AutoMapper.Configuration
 {
     using System;
     using System.Linq;
     using System.ComponentModel.Composition;
-
-    using global::AutoMapper;
 
     using NContext.Configuration;
 
@@ -68,18 +70,29 @@ namespace NContext.Extensions.AutoMapper.Configuration
                 return;
 
             applicationConfiguration.CompositionContainer.ComposeExportedValue<IManageAutoMapper>(this);
-            
             var mappingConfigurations = applicationConfiguration.CompositionContainer.GetExportedValues<IConfigureAutoMapper>();
+
             _ConfigurationProvder = new MapperConfiguration(c =>
             {
-                mappingConfigurations
-                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
-                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(c));
-               });
-
+                ConfigureMappings(c, mappingConfigurations);
+            });
             _Mapper = _ConfigurationProvder.CreateMapper();
 
+            Initialize(c =>
+            {
+                ConfigureMappings(c, mappingConfigurations);
+            });
+
            _IsConfigured = true;
+        }
+
+        private void ConfigureMappings(
+            IMapperConfigurationExpression mapperConfigurationExpression, 
+            IEnumerable<IConfigureAutoMapper> mappingConfigurations)
+        {
+                mappingConfigurations
+                    .OrderBy(mappingConfiguration => mappingConfiguration.Priority)
+                    .ForEach(mappingConfiguration => mappingConfiguration.Configure(mapperConfigurationExpression));
         }
     }
 }
