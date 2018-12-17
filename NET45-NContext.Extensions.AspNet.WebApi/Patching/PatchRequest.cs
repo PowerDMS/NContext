@@ -63,10 +63,11 @@
         /// </summary>
         /// <param name="original">The original object to patch.</param>
         /// <param name="afterPatch">The after patch action.</param>
+        /// <param name="settings">Json serializer settings for use</param>
         /// <returns>IServiceResponse{T}.</returns>
-        public virtual IServiceResponse<T> Patch(T original, PatchedAction<T> afterPatch)
+        public virtual IServiceResponse<T> Patch(T original, PatchedAction<T> afterPatch, JsonSerializerSettings settings = null)
         {
-            JsonConvert.PopulateObject(JsonRepresentation, original);
+            JsonConvert.PopulateObject(JsonRepresentation, original, settings ?? new JsonSerializerSettings());
 
             if (OnPatchedHandler != null)
             {
@@ -86,8 +87,9 @@
         /// </summary>
         /// <param name="original">The original object to patch.</param>
         /// <param name="afterPatch">The after patch action.</param>
+        /// <param name="settings">Json serializer settings for use</param>
         /// <returns>IServiceResponse{T}.</returns>
-        public virtual IServiceResponse<T> Patch(T original, ClonedPatchedAction<T> afterPatch)
+        public virtual IServiceResponse<T> Patch(T original, ClonedPatchedAction<T> afterPatch, JsonSerializerSettings settings = null)
         {
             T clone = null;
             if (afterPatch != null)
@@ -95,7 +97,7 @@
                 clone = original.Copy();
             }
 
-            JsonConvert.PopulateObject(JsonRepresentation, original);
+            JsonConvert.PopulateObject(JsonRepresentation, original, settings ?? new JsonSerializerSettings());
 
             if (OnPatchedHandler != null)
             {
